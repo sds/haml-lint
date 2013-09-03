@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'haml_lint'
+
+HamlLint::CLI.new(ARGV).tap do |cli|
+  cli.parse_arguments
+  cli.run
+end
