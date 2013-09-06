@@ -1,6 +1,7 @@
 module HamlLint
   autoload :CLI, 'haml_lint/cli'
   autoload :Parser, 'haml_lint/parser'
+  autoload :HamlVisitor, 'haml_lint/haml_visitor'
   autoload :Lint, 'haml_lint/lint'
   autoload :LinterRegistry, 'haml_lint/linter_registry'
   autoload :Linter, 'haml_lint/linter'
