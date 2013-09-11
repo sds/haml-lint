@@ -7,6 +7,7 @@ module HamlLint
   autoload :Linter, 'haml_lint/linter'
   autoload :Reporter, 'haml_lint/reporter'
   autoload :Runner, 'haml_lint/runner'
+  autoload :ScriptExtractor, 'haml_lint/script_extractor'
   autoload :Utils, 'haml_lint/utils'
   autoload :VERSION, 'haml_lint/version'
 
