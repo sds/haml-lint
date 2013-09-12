@@ -1,12 +1,10 @@
 require 'spec_helper'
 
 describe HamlLint::Linter::RubyScript do
-  let(:output)    { nil }
-  let(:has_lints) { true }
 
   # Need this block before including linter context so that stubbing occurs
   # before linter is run
-  before { subject.stub(:run_ruby_linter).and_return([output, has_lints]) }
+  before { subject.stub(:lint_file).and_return([offence].compact) }
 
   include_context 'linter'
 
@@ -16,16 +14,27 @@ describe HamlLint::Linter::RubyScript do
     %span to be
   HAML
 
-  context 'when the Ruby linter does not report any lints' do
-    let(:has_lints) { false }
+  context 'when Rubocop does not report offences' do
+    let(:offence) { nil }
     it { should_not report_lint }
   end
 
-  context 'when the Ruby linter reports lints' do
-    let(:output) { 'somefile.rb:1 A lint description' }
+  context 'when Rubocop reports offences' do
+    let(:line) { 1 }
+    let(:message) { 'Lint message' }
+    let(:cop_name) { 'SomeCopName' }
+
+    let(:offence) do
+      double('offence', line: line, message: message, cop_name: cop_name)
+    end
 
     it 'uses the source map to transform line numbers' do
       subject.should report_lint line: 2
+    end
+
+    context 'and the offence is from an ignored cop' do
+      let(:cop_name) { 'LineLength' }
+      it { should_not report_lint }
     end
   end
 end

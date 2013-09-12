@@ -1,20 +1,20 @@
+require 'rubocop'
 require 'tempfile'
 
 module HamlLint
   class Linter::RubyScript < Linter
     include LinterRegistry
 
+    def initialize
+      super
+      @rubocop = Rubocop::CLI.new
+    end
+
     def run(parser)
       @parser = parser
       @extractor = ScriptExtractor.new(parser)
       extracted_code = @extractor.extract
       find_lints(extracted_code)
-    end
-
-    # Provides a convenient wrapper that can be stubbed in tests
-    def run_ruby_linter(file_path)
-      output = `rubocop --format=emacs #{file_path} 2>&1`
-      [output, !$?.success?]
     end
 
   private
@@ -27,33 +27,27 @@ module HamlLint
         file.write(code)
         file.close
 
-        output, has_lints = run_ruby_linter(file.path)
-        extract_lints_from_output(output) if has_lints
+        extract_lints_from_offences(lint_file(file.path))
       ensure
         file.unlink
       end
     end
 
-    def extract_lints_from_output(output)
-      output.lines.each do |output_line|
-        if match = output_line.match(/^(?:[^:]+):(\d+)(?::\d*:)?(?: .:)? (.*)/)
-          line = match[1].to_i
-          description = match[2]
-
-          unless ignore_lint?(description)
-            @lints << Lint.new(@parser.filename,
-                               @extractor.source_map[line],
-                               description)
-          end
-        end
-      end
+    # Defined so we can stub the results in tests
+    def lint_file(file)
+      @rubocop.inspect_file(file)
     end
 
-    def ignore_lint?(description)
-      [
-        /line is too long/i,
-        /avoid more than \d+ levels of block nesting/i,
-      ].any? { |regex| description.match(regex) }
+    IGNORED_COPS = %w[BlockNesting LineLength]
+
+    def extract_lints_from_offences(offences)
+      offences.each do |offence|
+        next if IGNORED_COPS.include?(offence.cop_name)
+
+        @lints << Lint.new(@parser.filename,
+                           @extractor.source_map[offence.line],
+                           offence.message)
+      end
     end
   end
 end
