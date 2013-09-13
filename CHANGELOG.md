@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.1.0
 
 * New lint `SpaceBeforeScript` ensures that Ruby code in HAML indicated with the
   `-` and `=` characters always has one space separating them from code

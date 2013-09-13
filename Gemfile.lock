@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    haml-lint (0.0.1)
+    haml-lint (0.1.0)
       colorize
       haml (= 4.0.3)
       rubocop (>= 0.12.0)
