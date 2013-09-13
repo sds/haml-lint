@@ -38,7 +38,16 @@ module HamlLint
       @rubocop.inspect_file(file)
     end
 
-    IGNORED_COPS = %w[BlockNesting LineLength]
+    # These cops are incredibly noisy with Ruby code extracted from HAML,
+    # and are safe to ignore
+    IGNORED_COPS = %w[
+      BlockNesting
+      IfUnlessModifier
+      LineLength
+      TrailingWhitespace
+      WhileUntilModifier
+      Void
+    ]
 
     def extract_lints_from_offences(offences)
       offences.each do |offence|
