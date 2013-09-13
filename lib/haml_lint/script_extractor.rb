@@ -120,7 +120,7 @@ module HamlLint
       !!(text =~ /do\s*(?:\|\s*[^\|]*\s*\|)?\z/)
     end
 
-    START_BLOCK_KEYWORDS = %w[if unless case begin]
+    START_BLOCK_KEYWORDS = %w[if unless case begin for while]
     def start_block_keyword?(text)
       START_BLOCK_KEYWORDS.include?(block_keyword(text))
     end
@@ -131,6 +131,11 @@ module HamlLint
     end
 
     def block_keyword(text)
+      # Need to handle 'for'/'while' since regex stolen from HAML parser doesn't
+      if keyword = text.scan(/\s*([^\s]+)\s+/)[0]
+        return keyword[0] if %w[for while].include?(keyword[0])
+      end
+
       return unless keyword = text.scan(Haml::Parser::BLOCK_KEYWORD_REGEX)[0]
       keyword[0] || keyword[1]
     end

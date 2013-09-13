@@ -146,6 +146,34 @@ describe HamlLint::ScriptExtractor do
       RUBY
     end
 
+    context 'with a for loop' do
+      let(:haml) { <<-HAML }
+        - for value in list
+          = value
+      HAML
+
+      it { should == normalize_indent(<<-RUBY) }
+        for value in list
+          value
+        end
+      RUBY
+    end
+
+    context 'with a while loop' do
+      let(:haml) { <<-HAML }
+        - while value < 10
+          = value
+          - value += 1
+      HAML
+
+      it { should == normalize_indent(<<-RUBY) }
+        while value < 10
+          value
+          value += 1
+        end
+      RUBY
+    end
+
     context 'with a Ruby filter' do
       let(:haml) { <<-HAML }
         :ruby
