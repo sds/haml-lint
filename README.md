@@ -12,18 +12,24 @@ it into your SCM hooks. It uses rules established by the team at
 
 ## Installation
 
-`gem install haml-lint`
+```bash
+gem install haml-lint
+```
 
 ## Usage
 
 Run `haml-lint` from the command-line by passing in a directory (or multiple
 directories) to recursively scan:
 
-    haml-lint app/views/
+```bash
+haml-lint app/views/
+```
 
 You can also specify a list of files explicitly:
 
-    haml-lint app/**/*.html.haml
+```bash
+haml-lint app/**/*.html.haml
+```
 
 `haml-lint` will output any problems with your HAML, including the offending
 filename and line number.
@@ -48,7 +54,9 @@ feature, please add tests so that we can avoid breaking it in the future.
 
 Speaking of tests, we use `rspec`, which can be run like so:
 
-    bundle exec rspec
+```bash
+bundle exec rspec
+```
 
 ## See also
 
