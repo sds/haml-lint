@@ -203,5 +203,18 @@ describe HamlLint::ScriptExtractor do
         some_other_method
       RUBY
     end
+
+    context 'with a filter with interpolated values containing quotes' do
+      let(:haml) { <<-HAML }
+        :filter
+          Some text \#{some_method("hello")}
+          Some text \#{some_other_method('world')}
+      HAML
+
+      it { should == normalize_indent(<<-RUBY) }
+        some_method("hello")
+        some_other_method('world')
+      RUBY
+    end
   end
 end
