@@ -21,15 +21,11 @@ module HamlLint
 
     def find_lints(code)
       original_filename = "#{File.basename(@parser.filename)}_" if @parser.filename
-      file = Tempfile.new("haml-lint_#{original_filename}extracted_code")
 
-      begin
-        file.write(code)
-        file.close
-
-        extract_lints_from_offences(lint_file(file.path))
-      ensure
-        file.unlink
+      Tempfile.open("haml-lint_#{original_filename}extracted_code") do |f|
+        f.write(code)
+        f.close
+        extract_lints_from_offences(lint_file(f.path))
       end
     end
 
@@ -50,9 +46,8 @@ module HamlLint
     ]
 
     def extract_lints_from_offences(offences)
-      offences.each do |offence|
-        next if IGNORED_COPS.include?(offence.cop_name)
-
+      offences.select { |offence| !IGNORED_COPS.include?(offence.cop_name) }
+              .each do |offence|
         @lints << Lint.new(@parser.filename,
                            @extractor.source_map[offence.line],
                            offence.message)

@@ -3,7 +3,7 @@
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. You can run it manually from the command-line, or integrate
 it into your SCM hooks. It uses rules established by the team at
-[Causes.com](http://causes.com).
+[Causes.com](https://causes.com).
 
 ## Requirements
 

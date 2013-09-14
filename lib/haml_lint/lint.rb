@@ -4,8 +4,8 @@ module HamlLint
 
     def initialize(filename, line, message)
       @filename = filename
-      @line = line
-      @message = message
+      @line     = line
+      @message  = message
     end
   end
 end

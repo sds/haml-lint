@@ -16,8 +16,8 @@ module HamlLint
         # converts them to inline script by surrounding them in string quotes,
         # e.g. `%p Hello #{name}` becomes `%p= "Hello #{name}"`, causing the
         # above search to fail. Check for this case by removing added quotes.
-        if text.match(/\A"(.*)"\z/)
-          return unless index = tag_with_text.rindex($1)
+        if text_without_quotes = text[/\A"(.*)"\z/, 1]
+          return unless index = tag_with_text.rindex(text_without_quotes)
         end
       end
 
@@ -55,8 +55,10 @@ module HamlLint
       next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
       first_child = node.children.first
 
-      next_node_line = [[next_sibling, first_child].compact.map(&:line),
-                        parser.lines.count + 1].flatten.min
+      next_node_line = [
+        [next_sibling, first_child].compact.map(&:line),
+        parser.lines.count + 1,
+      ].flatten.min
 
       # Normalize each of the lines to ignore the multiline bar (|) and
       # excess whitespace

@@ -2,14 +2,14 @@ module HamlLint
   module HamlVisitor
     def visit(node)
       # Keep track of whether this block was consumed by the visitor. This
-      # allows us to visit all nodes by default, but can override the behaviour
+      # allows us to visit all nodes by default, but can override the behavior
       # by specifying `yield false` in a visit method, indicating that no
       # further visiting should occur for the current node's children.
       block_called = false
 
-      block = ->(continue = :children) do
+      block = ->(descend = :children) do
         block_called = true
-        visit_children(node) if continue == :children
+        visit_children(node) if descend == :children
       end
 
       method = "visit_#{node_name(node)}"

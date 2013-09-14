@@ -33,8 +33,6 @@ module HamlLint
       @source = @code.join("\n")
     end
 
-  protected
-
     def visit_root(node)
       @code = []
       @source_map = {}
@@ -104,23 +102,23 @@ module HamlLint
         # Since mid-block keywords are children of the corresponding start block
         # keyword, we need to reduce their indentation level by 1
         indent_level = @indent_level + (mid_block_keyword?(code) ? -1 : 0)
-        indent = ('  ' * indent_level)
+        indent = (' ' * 2 * indent_level)
 
         @code << indent + code
         @source_map[@code.count] =
-          if node_or_line.is_a?(Fixnum)
-            node_or_line
-          else
+          if node_or_line.respond_to?(:line)
             node_or_line.line
+          else
+            node_or_line
           end
       end
     end
 
     def anonymous_block?(text)
-      !!(text =~ /do\s*(?:\|\s*[^\|]*\s*\|)?\z/)
+      !!(text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?\z/)
     end
 
-    START_BLOCK_KEYWORDS = %w[if unless case begin for while]
+    START_BLOCK_KEYWORDS = %w[if unless case begin for until while]
     def start_block_keyword?(text)
       START_BLOCK_KEYWORDS.include?(block_keyword(text))
     end
@@ -132,8 +130,8 @@ module HamlLint
 
     def block_keyword(text)
       # Need to handle 'for'/'while' since regex stolen from HAML parser doesn't
-      if keyword = text.scan(/\s*([^\s]+)\s+/)[0]
-        return keyword[0] if %w[for while].include?(keyword[0])
+      if keyword = text[/\A\s*([^\s]+)\s+/, 1]
+        return keyword if %w[for until while].include?(keyword)
       end
 
       return unless keyword = text.scan(Haml::Parser::BLOCK_KEYWORD_REGEX)[0]
