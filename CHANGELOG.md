@@ -5,6 +5,7 @@
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID
   specified on the tag
 * New lint `TagName` ensures tag names are lowercase
+* Minimum version of Rubocop bumped to `0.13.0`
 
 ## 0.1.0
 

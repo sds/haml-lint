@@ -4,21 +4,21 @@ PATH
     haml-lint (0.1.0)
       colorize
       haml (= 4.0.3)
-      rubocop (>= 0.12.0)
+      rubocop (>= 0.13.0)
 
 GEM
   remote: http://rubygems.org/
   specs:
     ast (1.1.0)
-    backports (3.3.3)
+    backports (3.3.4)
     colorize (0.5.8)
     diff-lcs (1.2.4)
     haml (4.0.3)
       tilt
-    parser (2.0.0.pre6)
+    parser (2.0.0.pre8)
       ast (~> 1.1)
       slop (~> 3.4, >= 3.4.5)
-    powerpack (0.0.3)
+    powerpack (0.0.8)
     rainbow (1.1.4)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
@@ -28,10 +28,10 @@ GEM
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.13.1)
-    rubocop (0.12.0)
+    rubocop (0.13.0)
       backports (~> 3.3.3)
       parser (~> 2.0.0.pre6)
-      powerpack (~> 0.0.3)
+      powerpack (~> 0.0.6)
       rainbow (>= 1.1.4)
     slop (3.4.6)
     tilt (1.4.1)
