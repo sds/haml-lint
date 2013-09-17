@@ -13,8 +13,10 @@ module HamlLint
     def run(parser)
       @parser = parser
       @extractor = ScriptExtractor.new(parser)
-      extracted_code = @extractor.extract
-      find_lints(extracted_code)
+      extracted_code = @extractor.extract.strip
+
+      # Ensure a final newline in the code we feed to Rubocop
+      find_lints(extracted_code + "\n") unless extracted_code.empty?
     end
 
   private
