@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID
+  specified on the tag
+
 ## 0.1.0
 
 * New lint `SpaceBeforeScript` ensures that Ruby code in HAML indicated with the
