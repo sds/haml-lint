@@ -6,6 +6,8 @@
   specified on the tag
 * New lint `TagName` ensures tag names are lowercase
 * Minimum version of Rubocop bumped to `0.13.0`
+* New lint `MultilinePipe` ensures the pipe `|` character is never used for
+  wrapping lines
 
 ## 0.1.0
 
