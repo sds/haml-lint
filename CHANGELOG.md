@@ -1,6 +1,7 @@
 # HAML-Lint Changelog
 
 [![Gem Version](https://badge.fury.io/rb/haml-lint.png)](http://badge.fury.io/rb/haml-lint)
+[![Code Climate](https://codeclimate.com/github/causes/haml-lint.png)](https://codeclimate.com/github/causes/haml-lint)
 
 ## master (unreleased)
 
