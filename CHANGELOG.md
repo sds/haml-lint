@@ -1,9 +1,5 @@
 # HAML-Lint Changelog
 
-[![Gem Version](https://badge.fury.io/rb/haml-lint.png)](http://badge.fury.io/rb/haml-lint)
-[![Build Status](https://travis-ci.org/causes/haml-lint.png)](https://travis-ci.org/causes/haml-lint)
-[![Code Climate](https://codeclimate.com/github/causes/haml-lint.png)](https://codeclimate.com/github/causes/haml-lint)
-
 ## master (unreleased)
 
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID

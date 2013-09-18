@@ -1,5 +1,9 @@
 # HAML-Lint
 
+[![Gem Version](https://badge.fury.io/rb/haml-lint.png)](http://badge.fury.io/rb/haml-lint)
+[![Build Status](https://travis-ci.org/causes/haml-lint.png)](https://travis-ci.org/causes/haml-lint)
+[![Code Climate](https://codeclimate.com/github/causes/haml-lint.png)](https://codeclimate.com/github/causes/haml-lint)
+
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. You can run it manually from the command-line, or integrate
 it into your SCM hooks. It uses rules established by the team at
