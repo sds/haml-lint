@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.2.0
 
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID
   specified on the tag
