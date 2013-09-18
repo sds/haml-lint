@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+[![Gem Version](https://badge.fury.io/rb/haml-lint.png)](http://badge.fury.io/rb/haml-lint)
+
 ## master (unreleased)
 
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID
