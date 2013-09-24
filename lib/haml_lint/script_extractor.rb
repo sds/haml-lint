@@ -99,9 +99,16 @@ module HamlLint
 
     def add_line(code, node_or_line)
       unless code.empty?
-        # Since mid-block keywords are children of the corresponding start block
-        # keyword, we need to reduce their indentation level by 1
-        indent_level = @indent_level + (mid_block_keyword?(code) ? -1 : 0)
+        indent_level = @indent_level
+
+        if node_or_line.respond_to?(:line)
+          # Since mid-block keywords are children of the corresponding start block
+          # keyword, we need to reduce their indentation level by 1. However, we
+          # don't do this unless this is an actual tag node (a raw line number
+          # means this came from a `:ruby` filter).
+          indent_level -= 1 if mid_block_keyword?(code)
+        end
+
         indent = (' ' * 2 * indent_level)
 
         @code << indent + code

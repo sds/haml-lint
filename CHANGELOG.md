@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix bug in `ScriptExtractor` where incorrect indentation would be generated
+  for `:ruby` filters containing code with block keywords
+
 ## 0.2.0
 
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID

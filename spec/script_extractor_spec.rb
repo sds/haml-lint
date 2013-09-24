@@ -191,6 +191,47 @@ describe HamlLint::ScriptExtractor do
       RUBY
     end
 
+    context 'with a Ruby filter containing block keywords' do
+      let(:haml) { <<-HAML }
+        :ruby
+          if condition
+            do_something
+          else
+            do_something_else
+          end
+      HAML
+
+      it { should == normalize_indent(<<-RUBY) }
+        if condition
+          do_something
+        else
+          do_something_else
+        end
+      RUBY
+
+      context 'and the filter is nested' do
+        let(:haml) { <<-HAML }
+          - something do
+            :ruby
+              if condition
+                do_something
+              else
+                do_something_else
+              end
+        HAML
+
+        it { should == normalize_indent(<<-RUBY) }
+          something do
+            if condition
+              do_something
+            else
+              do_something_else
+            end
+          end
+        RUBY
+      end
+    end
+
     context 'with a filter with interpolated values' do
       let(:haml) { <<-HAML }
         :filter
