@@ -39,7 +39,7 @@ module HamlLint
         linter.run(parser)
       end
     rescue Haml::Error => ex
-      @lints << Lint.new(file, ex.line, ex.to_s)
+      @lints << Lint.new(file, ex.line, ex.to_s, :error)
     end
 
     def lints?

@@ -5,7 +5,9 @@ module HamlLint
     def report_lints
       if lints.any?
         lints.map do |lint|
-          "#{lint.filename}:".yellow + "#{lint.line} - #{lint.message}"
+          type = lint.error? ? '[E]'.red : '[W]'.yellow
+          "#{lint.filename.cyan}:" << "#{lint.line}".magenta <<
+                                      " #{type} #{lint.message}"
         end.join("\n") + "\n"
       end
     end

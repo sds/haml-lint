@@ -4,6 +4,8 @@
 
 * Fix bug in `ScriptExtractor` where incorrect indentation would be generated
   for `:ruby` filters containing code with block keywords
+* Differentiate between syntax errors and lint warnings by outputting severity
+  level for lint (`E` and `W`, respectively).
 
 ## 0.2.0
 

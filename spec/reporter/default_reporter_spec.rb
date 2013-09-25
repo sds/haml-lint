@@ -14,11 +14,13 @@ describe HamlLint::Reporter::DefaultReporter do
 
     context 'when there are lints' do
       let(:filenames)    { ['some-filename.haml', 'other-filename.haml'] }
-      let(:lines)        { [5, 7] }
+      let(:lines)        { [502, 724] }
       let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
+      let(:severities)   { [:warning] * 2 }
+
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(filename, lines[index], descriptions[index])
+          HamlLint::Lint.new(filename, lines[index], descriptions[index], severities[index])
         end
       end
 
@@ -45,6 +47,24 @@ describe HamlLint::Reporter::DefaultReporter do
       it 'prints the description for each lint' do
         descriptions.each do |description|
           subject.report_lints.scan(/#{description}/).count.should == 1
+        end
+      end
+
+      context 'when lints are warnings' do
+        it 'prints the warning severity code on each line' do
+          subject.report_lints.split("\n").each do |line|
+            line.scan(/\[W\]/).count.should == 1
+          end
+        end
+      end
+
+      context 'when lints are errors' do
+        let(:severities) { [:error] * 2 }
+
+        it 'prints the error severity code on each line' do
+          subject.report_lints.split("\n").each do |line|
+            line.scan(/\[E\]/).count.should == 1
+          end
         end
       end
     end
