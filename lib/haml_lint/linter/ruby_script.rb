@@ -33,7 +33,7 @@ module HamlLint
 
     # Defined so we can stub the results in tests
     def lint_file(file)
-      @rubocop.inspect_file(file)
+      @rubocop.send(:inspect_file, file)
     end
 
     # These cops are incredibly noisy with Ruby code extracted from HAML,

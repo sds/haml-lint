@@ -6,6 +6,7 @@
   for `:ruby` filters containing code with block keywords
 * Differentiate between syntax errors and lint warnings by outputting severity
   level for lint (`E` and `W`, respectively).
+* Upgrade `rubocop` dependency to `0.15.0`
 
 ## 0.2.0
 
