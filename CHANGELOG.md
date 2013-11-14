@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.3.0
 
 * Fix bug in `ScriptExtractor` where incorrect indentation would be generated
   for `:ruby` filters containing code with block keywords
