@@ -67,17 +67,17 @@ Rubocop-specific configuration you have set via `.rubocop.yml` files, but will
 also explicitly ignore some checks that don't make sense in the context of HAML
 (like `BlockAlignment`).
 
-    ```haml
-    -# example.haml
-    - name = 'James Brown'
-    - unused_variable = 42
+```haml
+-# example.haml
+- name = 'James Brown'
+- unused_variable = 42
 
-    %p Hello #{name}!
-    ```
+%p Hello #{name}!
+```
 
-    ```
-    example.haml:3 [W] Useless assignment to variable - unused_variable
-    ```
+```
+example.haml:3 [W] Useless assignment to variable - unused_variable
+```
 
 ### HAML Checks
 
