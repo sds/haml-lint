@@ -2,6 +2,7 @@ require 'rubocop'
 require 'tempfile'
 
 module HamlLint
+  # Runs Rubocop on Ruby code contained within HAML templates.
   class Linter::RubyScript < Linter
     include LinterRegistry
 
@@ -33,7 +34,8 @@ module HamlLint
 
     # Defined so we can stub the results in tests
     def lint_file(file)
-      @rubocop.send(:inspect_file, file)
+      @rubocop.run(%w[--format HamlLint::OffenceCollector] << file)
+      OffenceCollector.offences
     end
 
     # These cops are incredibly noisy with Ruby code extracted from HAML,
@@ -54,6 +56,23 @@ module HamlLint
                            @extractor.source_map[offence.line],
                            offence.message)
       end
+    end
+  end
+
+  # Collects offences detected by Rubocop.
+  class OffenceCollector < Rubocop::Formatter::BaseFormatter
+    attr_accessor :offences
+
+    class << self
+      attr_accessor :offences
+    end
+
+    def started(target_files)
+      self.class.offences = []
+    end
+
+    def file_finished(file, offences)
+      self.class.offences += offences
     end
   end
 end

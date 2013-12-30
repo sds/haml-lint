@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Upgrade `rubocop` dependency from `0.15.0` to `0.16.0`
+
 ## 0.3.0
 
 * Fix bug in `ScriptExtractor` where incorrect indentation would be generated
