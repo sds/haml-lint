@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.4.0
 
 * Upgrade `rubocop` dependency from `0.15.0` to `0.16.0`
 * Fix broken `--show-linters` flag
