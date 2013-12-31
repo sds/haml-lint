@@ -139,4 +139,26 @@ describe HamlLint::Linter::SpaceBeforeScript do
       it { should_not report_lint }
     end
   end
+
+  context 'when inline tag is nested in another tag' do
+    let(:haml) { <<-HAML }
+      %div
+        %div
+          %div= value
+      %div= array[value]
+    HAML
+
+    it { should_not report_lint }
+
+    context 'and the tag has siblings' do
+      let(:haml) { <<-HAML }
+        %div
+          %div Hello
+          %div= value
+        = array[value]
+      HAML
+
+      it { should_not report_lint }
+    end
+  end
 end

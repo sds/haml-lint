@@ -1,4 +1,5 @@
 module HamlLint
+  # Checks for Ruby script in HAML templates with no space after the `=`/`-`.
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
@@ -51,12 +52,10 @@ module HamlLint
     # Extracts all text for a tag node and normalizes it, including additional
     # lines following commas or multiline bar indicators ('|')
     def tag_with_inline_text(node)
-      siblings = node.parent.children
-      next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
-      first_child = node.children.first
-
+      # Next node is either the first child or the "next node" (node's sibling
+      # or next sibling of some ancestor)
       next_node_line = [
-        [next_sibling, first_child].compact.map(&:line),
+        [next_node(node), node.children.first].compact.map(&:line),
         parser.lines.count + 1,
       ].flatten.min
 
@@ -65,6 +64,21 @@ module HamlLint
       parser.lines[(node.line - 1)...(next_node_line - 1)].map do |line|
         line.strip.gsub(/\|\z/, '').rstrip
       end.join(' ')
+    end
+
+    # Gets the next node following this node, ascending up the ancestor chain
+    # recursively if this node has no siblings.
+    def next_node(node)
+      return unless node
+      siblings = node.parent.children
+
+      next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
+
+      if next_sibling
+        next_sibling
+      else
+        next_node(node.parent)
+      end
     end
   end
 end
