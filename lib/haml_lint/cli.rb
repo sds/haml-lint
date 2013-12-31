@@ -81,6 +81,20 @@ module HamlLint
       print output if output
     end
 
+    def print_linters
+      puts 'Installed linters:'
+
+      linter_names = LinterRegistry.linters.map do |linter|
+        linter.name.split('::').last
+      end
+
+      linter_names.sort.each do |linter_name|
+        puts " - #{linter_name}"
+      end
+
+      halt
+    end
+
     def print_help(help_message, err = nil)
       puts err, '' if err
       puts help_message
