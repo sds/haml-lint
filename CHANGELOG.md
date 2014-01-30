@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Relax HAML dependency from `4.0.3` to `4.0`+
+
 ## 0.4.0
 
 * Upgrade `rubocop` dependency from `0.15.0` to `0.16.0`
