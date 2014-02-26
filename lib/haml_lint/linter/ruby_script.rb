@@ -46,7 +46,6 @@ module HamlLint
       EndAlignment
       IndentationWidth
       IfUnlessModifier
-      LineLength
       TrailingWhitespace
       WhileUntilModifier
       Void
