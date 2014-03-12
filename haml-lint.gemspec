@@ -1,4 +1,5 @@
 $LOAD_PATH << File.expand_path('../lib', __FILE__)
+require 'haml_lint/constants'
 require 'haml_lint/version'
 
 Gem::Specification.new do |s|
@@ -9,7 +10,7 @@ Gem::Specification.new do |s|
   s.description      = 'Opinionated tool for writing clean and consistent HAML'
   s.authors          = ['Causes Engineering', 'Shane da Silva']
   s.email            = ['eng@causes.com', 'shane@causes.com']
-  s.homepage         = 'http://github.com/causes/haml-lint'
+  s.homepage         = HamlLint::REPO_URL
 
   s.require_paths    = ['lib']
 
