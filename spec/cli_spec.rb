@@ -5,7 +5,7 @@ describe HamlLint::CLI do
   before do
     # Silence console output
     @output = ''
-    STDOUT.stub!(:write) { |*args| @output.<<(*args) }
+    STDOUT.stub(:write) { |*args| @output.<<(*args) }
   end
 
   describe '#parse_arguments' do
