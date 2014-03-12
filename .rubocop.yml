@@ -1,0 +1,32 @@
+AmbiguousRegexpLiteral:
+  Enabled: false
+
+AccessModifierIndentation:
+  EnforcedStyle: outdent
+
+AssignmentInCondition:
+  Enabled: false
+
+CollectionMethods:
+  Enabled: false
+
+IfUnlessModifier:
+  Enabled: false
+
+LineLength:
+  Max: 100
+
+MethodLength:
+  Max: 20
+
+SignalException:
+  Enabled: false
+
+SpecialGlobalVars:
+  Enabled: false
+
+TrailingComma:
+  Enabled: false
+
+Void:
+  Enabled: false
