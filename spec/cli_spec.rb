@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'haml_lint/cli'
 
 describe HamlLint::CLI do
   before do

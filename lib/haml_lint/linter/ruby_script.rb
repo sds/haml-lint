@@ -1,3 +1,4 @@
+require 'haml_lint/script_extractor'
 require 'rubocop'
 require 'tempfile'
 
