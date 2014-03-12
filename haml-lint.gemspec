@@ -1,21 +1,21 @@
-# -*- encoding: utf-8 -*-
 $LOAD_PATH << File.expand_path('../lib', __FILE__)
 require 'haml_lint/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'haml-lint'
-  s.version     = HamlLint::VERSION
-  s.license     = 'MIT'
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ['Causes Engineering', 'Shane da Silva']
-  s.email       = ['eng@causes.com', 'shane@causes.com']
-  s.homepage    = 'http://github.com/causes/haml-lint'
-  s.summary     = 'HAML lint tool'
-  s.description = 'Opinionated tool to help you write better HAML'
+  s.name             = 'haml-lint'
+  s.version          = HamlLint::VERSION
+  s.license          = 'MIT'
+  s.summary          = 'HAML lint tool'
+  s.description      = 'Opinionated tool for writing clean and consistent HAML'
+  s.authors          = ['Causes Engineering', 'Shane da Silva']
+  s.email            = ['eng@causes.com', 'shane@causes.com']
+  s.homepage         = 'http://github.com/causes/haml-lint'
 
-  s.files         = Dir['lib/**/*.rb']
-  s.executables   = ['haml-lint']
-  s.require_paths = ['lib']
+  s.require_paths    = ['lib']
+
+  s.executables      = ['haml-lint']
+
+  s.files            = Dir['lib/**/*.rb']
 
   s.required_ruby_version = '>= 1.9.3'
 
