@@ -1,4 +1,5 @@
 module HamlLint
+  # Base implementation for all lint checks.
   class Linter
     include HamlVisitor
 
@@ -15,6 +16,11 @@ module HamlLint
 
     def message
       nil # Subclasses can implement if they want a default lint message
+    end
+
+    # Returns the simple name for this linter.
+    def name
+      self.class.name.split('::').last
     end
 
   protected

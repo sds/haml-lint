@@ -1,4 +1,7 @@
 require 'haml_lint/constants'
+require 'haml_lint/exceptions'
+require 'haml_lint/configuration'
+require 'haml_lint/configuration_loader'
 require 'haml_lint/parser'
 require 'haml_lint/haml_visitor'
 require 'haml_lint/lint'

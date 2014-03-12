@@ -1,0 +1,16 @@
+# Default application configuration that all configurations inherit from.
+linters:
+  ImplicitDiv:
+    enabled: true
+
+  MultilinePipe:
+    enabled: true
+
+  RubyScript:
+    enabled: true
+
+  SpaceBeforeScript:
+    enabled: true
+
+  TagName:
+    enabled: true

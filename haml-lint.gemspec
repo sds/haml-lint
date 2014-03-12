@@ -16,7 +16,8 @@ Gem::Specification.new do |s|
 
   s.executables      = ['haml-lint']
 
-  s.files            = Dir['lib/**/*.rb']
+  s.files            = Dir['config/**.yml'] +
+                       Dir['lib/**/*.rb']
 
   s.required_ruby_version = '>= 1.9.3'
 
