@@ -45,12 +45,13 @@ module HamlLint
       BlockAlignment
       BlockNesting
       EndAlignment
-      IndentationWidth
+      FileName
       IfUnlessModifier
+      IndentationWidth
       LineLength
       TrailingWhitespace
-      WhileUntilModifier
       Void
+      WhileUntilModifier
     ]
 
     def extract_lints_from_offences(offences)
