@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Ignore the `FileName` Rubocop cop
+
 ## 0.4.1
 
 * Relax HAML dependency from `4.0.3` to `4.0`+
