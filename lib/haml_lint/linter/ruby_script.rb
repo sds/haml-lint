@@ -24,9 +24,11 @@ module HamlLint
   private
 
     def find_lints(code)
-      original_filename = "#{File.basename(@parser.filename)}_" if @parser.filename
+      original_filename = @parser.filename || 'ruby_script'
+      filename = "#{File.basename(original_filename)}.haml_lint.tmp"
+      directory = File.dirname(original_filename)
 
-      Tempfile.open("haml-lint_#{original_filename}extracted_code") do |f|
+      Tempfile.open(filename, directory) do |f|
         f.write(code)
         f.close
         extract_lints_from_offences(lint_file(f.path))
