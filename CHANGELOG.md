@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Ignore the `FileName` Rubocop cop
+* Fix loading correct .rubocop.yml config
 
 ## 0.4.1
 
