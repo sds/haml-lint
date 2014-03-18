@@ -23,10 +23,15 @@ module HamlLint
 
   private
 
+    TEMP_DIR = './tmp'
+
     def find_lints(code)
       original_filename = "#{File.basename(@parser.filename)}_" if @parser.filename
+      filename = "haml-lint_#{original_filename}extracted_code"
 
-      Tempfile.open("haml-lint_#{original_filename}extracted_code") do |f|
+      Dir.mkdir(TEMP_DIR) unless Dir.exist?(TEMP_DIR)
+
+      Tempfile.open(filename, TEMP_DIR) do |f|
         f.write(code)
         f.close
         extract_lints_from_offences(lint_file(f.path))
