@@ -29,9 +29,13 @@ module HamlLint
       directory = File.dirname(original_filename)
 
       Tempfile.open(filename, directory) do |f|
-        f.write(code)
-        f.close
-        extract_lints_from_offences(lint_file(f.path))
+        begin
+          f.write(code)
+          f.close
+          extract_lints_from_offences(lint_file(f.path))
+        ensure
+          f.unlink
+        end
       end
     end
 
