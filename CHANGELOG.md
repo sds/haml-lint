@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.5.0
 
 * Ignore the `FileName` Rubocop cop
 * Fix loading correct .rubocop.yml config
