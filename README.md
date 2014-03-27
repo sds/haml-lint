@@ -12,7 +12,7 @@ established by the team at [Causes.com](https://causes.com).
 ## Requirements
 
  * Ruby 1.9.3+
- * HAML 4.0.3+
+ * HAML 4.0+
 
 ## Installation
 
