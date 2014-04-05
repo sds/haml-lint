@@ -3,7 +3,5 @@
 require 'haml_lint'
 require 'haml_lint/cli'
 
-HamlLint::CLI.new(ARGV).tap do |cli|
-  cli.parse_arguments
-  cli.run
-end
+logger = HamlLint::Logger.new(STDOUT)
+exit HamlLint::CLI.new(logger).run(ARGV)

@@ -1,114 +1,90 @@
-require 'optparse'
+require 'haml_lint/options'
+
+require 'sysexits'
 
 module HamlLint
+  # Command line application interface.
   class CLI
     attr_accessor :options
 
-    def initialize(args = [])
-      @args = args
-      @options = {}
+    # @param logger [HamlLint::Logger]
+    def initialize(logger)
+      @log = logger
     end
 
-    def parse_arguments
-      parser = OptionParser.new do |opts|
-        opts.banner = "Usage: #{opts.program_name} [options] [haml-files]"
+    # Parses the given command-line arguments and executes appropriate logic
+    # based on those arguments.
+    #
+    # @param args [Array<String>] command line arguments
+    # @return [Fixnum] exit status returned by the application
+    def run(args)
+      options = HamlLint::Options.new.parse(args)
 
-        opts.separator ''
-        opts.separator 'Common options:'
-
-        opts.on('-e', '--exclude file,...', Array,
-                'List of file names to exclude') do |files|
-          options[:excluded_files] = files
-        end
-
-        opts.on('-i', '--include-linter linter,...', Array,
-                'Specify which linters you want to run') do |linters|
-          options[:included_linters] = linters
-        end
-
-        opts.on('-x', '--exclude-linter linter,...', Array,
-                "Specify which linters you don't want to run") do |linters|
-          options[:excluded_linters] = linters
-        end
-
-        opts.on_tail('--show-linters', 'Shows available linters') do
-          print_linters
-        end
-
-        opts.on_tail('-h', '--help', 'Show this message') do
-          print_help opts.help
-        end
-
-        opts.on_tail('-v', '--version', 'Show version') do
-          print_version opts.program_name, VERSION
-        end
-      end
-
-      begin
-        parser.parse!(@args)
-
-        # Take the rest of the arguments as files/directories
-        options[:files] = @args
-      rescue OptionParser::InvalidOption => ex
-        print_help parser.help, ex
-      end
-    end
-
-    def run
-      runner = Runner.new(options)
-      runner.run(find_files)
-      report_lints(runner.lints)
-      halt 1 if runner.lints?
-    rescue NoFilesError, NoSuchLinter, Errno::ENOENT => ex
-      puts ex.message
-      halt -1
+      act_on_options(options)
+    rescue HamlLint::Exceptions::InvalidCLIOption => ex
+      log.error ex.message
+      log.log "Run `#{APP_NAME}` --help for usage documentation"
+      Sysexits::EX_USAGE
+    rescue => ex
+      print_unexpected_exception(ex)
+      Sysexits::EX_SOFTWARE
     end
 
   private
 
-    def find_files
-      excluded_files = options.fetch(:excluded_files, [])
+    attr_reader :log
 
-      Utils.extract_files_from(options[:files]).reject do |file|
-        excluded_files.include?(file)
+    def act_on_options(options)
+      if options[:help]
+        print_help(options)
+        SysExits::EX_OK
+      elsif options[:version]
+        print_version
+        Sysexits::EX_OK
+      elsif options[:show_linters]
+        print_available_linters
+        Sysexits::EX_OK
+      else
+        scan_for_lints(options)
       end
     end
 
-    def report_lints(lints)
-      sorted_lints = lints.sort_by { |l| [l.filename, l.line || 0] }
-      reporter = options.fetch(:reporter, Reporter::DefaultReporter).new(sorted_lints)
-      output = reporter.report_lints
-      print output if output
+    def scan_for_lints(options)
+      report = Runner.new.run(options)
+      print_report(report, options)
+      report.failed? ? Sysexits::EX_DATAERR : Sysexits::EX_OK
     end
 
-    def print_linters
-      puts 'Installed linters:'
+    def print_report(report, options)
+      reporter = options.fetch(:reporter, Reporter::DefaultReporter).new(log, report)
+      reporter.report_lints
+    end
+
+    def print_available_linters
+      log.info 'Available linters:'
 
       linter_names = LinterRegistry.linters.map do |linter|
         linter.name.split('::').last
       end
 
       linter_names.sort.each do |linter_name|
-        puts " - #{linter_name}"
+        log.log " - #{linter_name}"
       end
-
-      halt
     end
 
-    def print_help(help_message, err = nil)
-      puts err, '' if err
-      puts help_message
-      halt
+    def print_help(options)
+      log.log options[:help]
     end
 
-    def print_version(program_name, version)
-      puts "#{program_name} #{version}"
-      halt
+    def print_version
+      log.log "#{APP_NAME} #{HamlLint::VERSION}"
     end
 
-    # Used to to catch exit behaviour in tests
-    def halt(exit_status = 0)
-      exit exit_status
+    def print_unexpected_exception(ex)
+      log.bold_error ex.message
+      log.error ex.backtrace.join("\n")
+      log.warning 'Report this bug at ', false
+      log.info HamlLint::BUG_REPORT_URL
     end
   end
 end

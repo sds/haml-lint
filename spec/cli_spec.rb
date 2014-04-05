@@ -2,158 +2,113 @@ require 'spec_helper'
 require 'haml_lint/cli'
 
 describe HamlLint::CLI do
-  before do
-    # Silence console output
-    @output = ''
-    STDOUT.stub(:write) { |*args| @output.<<(*args) }
-  end
-
-  describe '#parse_arguments' do
-    let(:files)   { ['file1.scss', 'file2.scss'] }
-    let(:options) { [] }
-    subject       { HamlLint::CLI.new(options + files) }
-
-    def safe_parse
-      subject.parse_arguments
-    rescue SystemExit
-      # Keep running tests
-    end
-
-    context 'when the excluded files flag is set' do
-      let(:options) { %w[-e file1.haml,file3.haml] }
-
-      it 'sets the :excluded_files option' do
-        safe_parse
-        subject.options[:excluded_files].should =~ ['file1.haml', 'file3.haml']
-      end
-    end
-
-    context 'when the include linters flag is set' do
-      let(:options) { %w[-i SomeLinterName] }
-
-      it 'sets the :included_linters option' do
-        safe_parse
-        subject.options[:included_linters].should == ['SomeLinterName']
-      end
-    end
-
-    context 'when the exclude linters flag is set' do
-      let(:options) { %w[-x SomeLinterName] }
-
-      it 'sets the :excluded_linters option' do
-        safe_parse
-        subject.options[:excluded_linters].should == ['SomeLinterName']
-      end
-    end
-
-    context 'when the show linters flag is set' do
-      let(:options) { ['--show-linters'] }
-
-      it 'prints the linters' do
-        subject.should_receive(:print_linters)
-        safe_parse
-      end
-    end
-
-    context 'when the help flag is set' do
-      let(:options) { ['-h'] }
-
-      it 'prints a help message' do
-        subject.should_receive(:print_help)
-        safe_parse
-      end
-    end
-
-    context 'when the version flag is set' do
-      let(:options) { ['-v'] }
-
-      it 'prints the program version' do
-        subject.should_receive(:print_version)
-        safe_parse
-      end
-    end
-
-    context 'when an invalid option is specified' do
-      let(:options) { ['--non-existant-option'] }
-
-      it 'prints a help message' do
-        subject.should_receive(:print_help)
-        safe_parse
-      end
-    end
-
-    context 'when no files are specified' do
-      let(:files) { [] }
-
-      it 'sets :files option to the empty list' do
-        safe_parse
-        subject.options[:files].should be_empty
-      end
-    end
-
-    context 'when files are specified' do
-      it 'sets :files option to the list of files' do
-        safe_parse
-        subject.options[:files].should =~ files
-      end
-    end
-  end
+  let(:io) { StringIO.new }
+  let(:output) { io.string }
+  let(:logger) { HamlLint::Logger.new(io) }
+  let(:cli) { described_class.new(logger) }
 
   describe '#run' do
-    let(:files)   { ['file1.scss', 'file2.scss'] }
-    let(:options) { {} }
-    subject       { HamlLint::CLI.new }
+    subject { cli.run(args) }
+    let(:args) { [] }
+    let(:options) { HamlLint::Options.new }
 
-    before do
-      subject.stub(:options).and_return(options)
-      HamlLint::Utils.stub(:extract_files_from).and_return(files)
+    it 'passes the arguments to the Options#parse method' do
+      HamlLint::Options.any_instance.should_receive(:parse).with(args)
+      subject
     end
 
-    def safe_run
-      subject.run
-    rescue SystemExit
-      # Keep running tests
-    end
-
-    context 'when no files are specified' do
-      let(:files) { [] }
-
-      it 'exits with non-zero status' do
-        subject.should_receive(:halt).with(-1)
-        safe_run
-      end
-    end
-
-    context 'when files are specified' do
+    context 'when no arguments are given' do
       before { HamlLint::Runner.any_instance.stub(:run) }
 
-      it 'passes the set of files to the runner' do
-        HamlLint::Runner.any_instance.should_receive(:run).with(files)
-        safe_run
-      end
-
-      it 'uses the default reporter' do
-        HamlLint::Reporter::DefaultReporter.any_instance
-          .should_receive(:report_lints)
-        safe_run
+      it 'scans for lints' do
+        HamlLint::Runner.any_instance.should_receive(:run)
+        subject
       end
     end
 
-    context 'when there are no lints' do
+    context 'when arguments are given' do
+      let(:args) { %w[file.haml some-view-*.haml] }
+
+      before { HamlLint::Runner.any_instance.stub(:run) }
+
+      it 'scans for lints' do
+        HamlLint::Runner.any_instance.should_receive(:run)
+        subject
+      end
+    end
+
+    context 'when passed the --show-linters flag' do
+      let(:args) { ['--show-linters'] }
+
+      let(:fake_linter) do
+        linter = double('linter')
+        linter.stub(:name).and_return('FakeLinter')
+        linter
+      end
+
       before do
-        HamlLint::Runner.any_instance.stub(:run)
-        HamlLint::Runner.any_instance.stub(:lints).and_return([])
+        HamlLint::LinterRegistry.stub(:linters).and_return([fake_linter])
       end
 
-      it 'exits cleanly' do
-        subject.should_not_receive(:halt)
-        safe_run
+      it 'displays the available linters' do
+        subject
+        output.should include 'FakeLinter'
       end
 
-      it 'outputs nothing' do
-        safe_run
-        @output.should be_empty
+      it { should == Sysexits::EX_OK }
+    end
+
+    context 'when passed the --version flag' do
+      let(:args) { ['--version'] }
+
+      it 'displays the application name' do
+        subject
+        output.should include HamlLint::APP_NAME
       end
+
+      it 'displays the version' do
+        subject
+        output.should include HamlLint::VERSION
+      end
+    end
+
+    context 'when invalid argument is given' do
+      let(:args) { ['--some-invalid-argument'] }
+
+      it 'displays message about invalid option' do
+        subject
+        output.should =~ /invalid option/i
+      end
+
+      it { should == Sysexits::EX_USAGE }
+    end
+
+    context 'when an unhandled exception occurs' do
+      let(:backtrace) { %w[file1.rb:1 file2.rb:2] }
+      let(:error_msg) { 'Oops' }
+
+      let(:exception) do
+        StandardError.new(error_msg).tap { |e| e.set_backtrace(backtrace) }
+      end
+
+      before { cli.stub(:act_on_options).and_raise(exception) }
+
+      it 'displays error message' do
+        subject
+        output.should include error_msg
+      end
+
+      it 'displays backtrace' do
+        subject
+        output.should include backtrace.join("\n")
+      end
+
+      it 'displays link to bug report URL' do
+        subject
+        output.should include HamlLint::BUG_REPORT_URL
+      end
+
+      it { should == Sysexits::EX_SOFTWARE }
     end
   end
 
