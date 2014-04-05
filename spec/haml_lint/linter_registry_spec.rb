@@ -39,4 +39,3 @@ describe HamlLint::LinterRegistry do
     end
   end
 end
-

@@ -86,4 +86,3 @@ describe HamlLint::Reporter::DefaultReporter do
     end
   end
 end
-
