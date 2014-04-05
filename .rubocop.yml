@@ -7,8 +7,30 @@ AccessModifierIndentation:
 AssignmentInCondition:
   Enabled: false
 
+# Enforcing this results in a lot of unnecessary indentation.
+ClassAndModuleChildren:
+  Enabled: false
+
 CollectionMethods:
   Enabled: false
+
+Documentation:
+  Exclude:
+    - 'spec/haml_lint/*'
+    - 'spec/haml_lint/linter/*'
+
+DotPosition:
+  EnforcedStyle: leading
+
+FormatString:
+  Enabled: false
+
+FileName:
+  Exclude:
+    - 'bin/haml-lint'
+    - 'Gemfile'
+    - 'Rakefile'
+    - '*.gemspec'
 
 IfUnlessModifier:
   Enabled: false
@@ -19,12 +41,30 @@ LineLength:
 MethodLength:
   Max: 20
 
+# Prefer curly braces except for %i/%w/%W, since those return arrays.
 PercentLiteralDelimiters:
   PreferredDelimiters:
+    '%': '{}'
     '%i': '[]'
+    '%q': '{}'
+    '%Q': '{}'
+    '%r': '{}'
+    '%s': '()'
     '%w': '[]'
+    '%W': '[]'
+    '%x': '{}'
+
+# Renaming `has_something?` to `something?` obfuscates whether it is a "is-a" or
+# a "has-a" relationship.
+PredicateName:
+  Enabled: false
 
 SignalException:
+  Enabled: false
+
+# Forcing a particular name (e.g. |a, e|) for inject methods prevents you from
+# choosing intention-revealing names.
+SingleLineBlockParams:
   Enabled: false
 
 SpecialGlobalVars:
