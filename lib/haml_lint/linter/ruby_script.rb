@@ -55,6 +55,7 @@ module HamlLint
       IfUnlessModifier
       IndentationWidth
       LineLength
+      Next
       TrailingWhitespace
       Void
       WhileUntilModifier
