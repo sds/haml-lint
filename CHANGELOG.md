@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Ignore the `Next` Rubocop cop
+
 ## 0.5.0
 
 * Ignore the `FileName` Rubocop cop
