@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Ignore the `Next` Rubocop cop
+* Fix crash when reporting a lint inside string interpolation in a filter
 
 ## 0.5.0
 

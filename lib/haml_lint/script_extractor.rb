@@ -35,6 +35,7 @@ module HamlLint
 
     def visit_root(node)
       @code = []
+      @total_lines = 0
       @source_map = {}
       @indent_level = 0
 
@@ -112,12 +113,21 @@ module HamlLint
         indent = (' ' * 2 * indent_level)
 
         @code << indent + code
-        @source_map[@code.count] =
+
+        original_line =
           if node_or_line.respond_to?(:line)
             node_or_line.line
           else
             node_or_line
           end
+
+        # For interpolated code in filters that spans multiple lines, the
+        # resulting code will span multiple lines, so we need to create a
+        # mapping for each line.
+        (code.count("\n") + 1).times do
+          @total_lines += 1
+          @source_map[@total_lines] = original_line
+        end
       end
     end
 

@@ -257,5 +257,20 @@ describe HamlLint::ScriptExtractor do
         some_other_method('world')
       RUBY
     end
+
+    context 'with a filter with interpolated values spanning multiple lines' do
+      let(:haml) { <<-HAML }
+        :filter
+          Some text \#{some_method("hello",
+                                   "world")}
+      HAML
+
+      # TODO: Figure out if it's worth normalizing indentation for the generated
+      # code in this interpolated context
+      it { should == normalize_indent(<<-RUBY) }
+        some_method("hello",
+                                 "world")
+      RUBY
+    end
   end
 end
