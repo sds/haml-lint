@@ -7,6 +7,14 @@ describe HamlLint::Options do
     subject { super().parse(args) }
     let(:args) { [] }
 
+    context 'with a configuration file specified' do
+      let(:args) { %w[--config some-config.yml] }
+
+      it 'sets the `config_file` option to that file path' do
+        subject.should include config_file: 'some-config.yml'
+      end
+    end
+
     context 'with a list of files to exclude' do
       let(:args) { %w[--exclude some-glob-pattern/*.haml,some-other-pattern.haml] }
 

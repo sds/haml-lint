@@ -48,6 +48,11 @@ module HamlLint
     end
 
     def add_file_options(parser)
+      parser.on('-c', '--config config-file', String,
+                'Specify which configuration file you want to use') do |conf_file|
+        @options[:config_file] = conf_file
+      end
+
       parser.on('-e', '--exclude file,...', Array,
                 'List of file names to exclude') do |files|
         @options[:excluded_files] = files

@@ -19,7 +19,6 @@ module HamlLint
     # @return [Fixnum] exit status returned by the application
     def run(args)
       options = HamlLint::Options.new.parse(args)
-
       act_on_options(options)
     rescue HamlLint::Exceptions::InvalidCLIOption => ex
       log.error ex.message
