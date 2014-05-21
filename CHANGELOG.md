@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.5.1
 
 * Ignore the `Next` Rubocop cop
 * Fix crash when reporting a lint inside string interpolation in a filter
