@@ -3,13 +3,13 @@ require 'rubocop'
 require 'tempfile'
 
 module HamlLint
-  # Runs Rubocop on Ruby code contained within HAML templates.
+  # Runs RuboCop on Ruby code contained within HAML templates.
   class Linter::RubyScript < Linter
     include LinterRegistry
 
     def initialize
       super
-      @rubocop = Rubocop::CLI.new
+      @rubocop = RuboCop::CLI.new
     end
 
     def run(parser)
@@ -17,7 +17,7 @@ module HamlLint
       @extractor = ScriptExtractor.new(parser)
       extracted_code = @extractor.extract.strip
 
-      # Ensure a final newline in the code we feed to Rubocop
+      # Ensure a final newline in the code we feed to RuboCop
       find_lints(extracted_code + "\n") unless extracted_code.empty?
     end
 
@@ -71,8 +71,8 @@ module HamlLint
     end
   end
 
-  # Collects offences detected by Rubocop.
-  class OffenceCollector < Rubocop::Formatter::BaseFormatter
+  # Collects offences detected by RuboCop.
+  class OffenceCollector < RuboCop::Formatter::BaseFormatter
     attr_accessor :offences
 
     class << self

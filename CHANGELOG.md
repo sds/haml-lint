@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-* Use ~> 0.22.0 for rubocop dependency
+* Use >= 0.23.0 for RuboCop dependency
 
 ## 0.5.1
 

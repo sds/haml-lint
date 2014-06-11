@@ -61,9 +61,9 @@ Any lint can be disabled by using the `--exclude-linter` flag.
 
 ### Ruby Code Analysis
 
-`haml-lint` integrates with [Rubocop](https://github.com/bbatsov/rubocop) to
+`haml-lint` integrates with [RuboCop](https://github.com/bbatsov/rubocop) to
 check the actual Ruby code in your templates. It will respect any
-Rubocop-specific configuration you have set via `.rubocop.yml` files, but will
+RuboCop-specific configuration you have set via `.rubocop.yml` files, but will
 also explicitly ignore some checks that don't make sense in the context of HAML
 (like `BlockAlignment`).
 

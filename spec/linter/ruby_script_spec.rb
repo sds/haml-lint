@@ -14,12 +14,12 @@ describe HamlLint::Linter::RubyScript do
     %span to be
   HAML
 
-  context 'when Rubocop does not report offences' do
+  context 'when RuboCop does not report offences' do
     let(:offence) { nil }
     it { should_not report_lint }
   end
 
-  context 'when Rubocop reports offences' do
+  context 'when RuboCop reports offences' do
     let(:line) { 1 }
     let(:message) { 'Lint message' }
     let(:cop_name) { 'SomeCopName' }
