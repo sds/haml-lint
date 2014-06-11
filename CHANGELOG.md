@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## Unreleased
+## 0.5.2
 
 * Use >= 0.23.0 for RuboCop dependency
 
