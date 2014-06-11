@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## Unreleased
+
+* Use ~> 0.22.0 for rubocop dependency
+
 ## 0.5.1
 
 * Ignore the `Next` Rubocop cop
