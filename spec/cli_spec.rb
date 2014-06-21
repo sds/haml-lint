@@ -156,4 +156,26 @@ describe HamlLint::CLI do
       end
     end
   end
+
+  describe '#report_lints' do
+    context 'when the same file has 2 errors but only one line' do
+      let(:filenames)    { ['some-filename.haml', 'some-filename.haml'] }
+      let(:lines)        { [502, nil] }
+      let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
+      let(:severities)   { [:warning] * 2 }
+
+      let(:lints) do
+        filenames.each_with_index.map do |filename, index|
+          HamlLint::Lint.new(filename, lines[index], descriptions[index],
+                             severities[index])
+        end
+      end
+
+      subject { HamlLint::CLI.new }
+
+      it 'sorts nil line without blowing up' do
+        subject.send(:report_lints, lints).should_not raise_exception
+      end
+    end
+  end
 end

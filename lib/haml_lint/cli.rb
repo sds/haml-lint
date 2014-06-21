@@ -75,7 +75,7 @@ module HamlLint
     end
 
     def report_lints(lints)
-      sorted_lints = lints.sort_by { |l| [l.filename, l.line] }
+      sorted_lints = lints.sort_by { |l| [l.filename, l.line || 0] }
       reporter = options.fetch(:reporter, Reporter::DefaultReporter).new(sorted_lints)
       output = reporter.report_lints
       print output if output
