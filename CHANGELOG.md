@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix crash when reporting a lint from Rubocop that did not include a line
+  number
+
 ## 0.5.2
 
 * Use >= 0.23.0 for RuboCop dependency
