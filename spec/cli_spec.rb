@@ -173,8 +173,8 @@ describe HamlLint::CLI do
 
       subject { HamlLint::CLI.new }
 
-      it 'sorts nil line without blowing up' do
-        subject.send(:report_lints, lints).should_not raise_exception
+      it 'sorts without raising error' do
+        expect { subject.send(:report_lints, lints) }.to_not raise_error
       end
     end
   end
