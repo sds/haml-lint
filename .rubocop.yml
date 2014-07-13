@@ -16,8 +16,7 @@ CollectionMethods:
 
 Documentation:
   Exclude:
-    - 'spec/haml_lint/*'
-    - 'spec/haml_lint/linter/*'
+    - 'spec/**/*'
 
 DotPosition:
   EnforcedStyle: leading
