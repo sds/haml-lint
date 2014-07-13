@@ -4,6 +4,10 @@
 
 * Fix crash when reporting a lint from Rubocop that did not include a line
   number
+* Allow `haml-lint` to be configured via YAML file, either by automatically
+  loading `.haml-lint.yml` if it exists, or via a configuration file
+  explicitly passed in via the `--config` flag
+* Update RuboCop dependency to >= 0.24.1
 
 ## 0.5.2
 
