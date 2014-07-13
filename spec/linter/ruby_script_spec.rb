@@ -33,7 +33,7 @@ describe HamlLint::Linter::RubyScript do
     end
 
     context 'and the offence is from an ignored cop' do
-      let(:cop_name) { 'LineLength' }
+      let(:cop_name) { described_class::IGNORED_COPS.first }
       it { should_not report_lint }
     end
   end
