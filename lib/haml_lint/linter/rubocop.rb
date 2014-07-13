@@ -4,7 +4,7 @@ require 'tempfile'
 
 module HamlLint
   # Runs RuboCop on Ruby code contained within HAML templates.
-  class Linter::RubyScript < Linter
+  class Linter::RuboCop < Linter
     include LinterRegistry
 
     def initialize(config)

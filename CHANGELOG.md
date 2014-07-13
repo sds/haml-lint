@@ -8,6 +8,7 @@
   loading `.haml-lint.yml` if it exists, or via a configuration file
   explicitly passed in via the `--config` flag
 * Update RuboCop dependency to >= 0.24.1
+* Rename `RubyScript` linter to `RuboCop`
 
 ## 0.5.2
 

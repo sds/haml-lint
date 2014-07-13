@@ -64,7 +64,7 @@ linters:
   ImplicitDiv:
     enabled: false
 
-  RubyScript:
+  RuboCop:
     ignored_cops:
       - Style/GuardClause
 ```

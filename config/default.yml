@@ -6,7 +6,7 @@ linters:
   MultilinePipe:
     enabled: true
 
-  RubyScript:
+  RuboCop:
     enabled: true
     # These cops are incredibly noisy when it comes to HAML templates, so we
     # ignore them.

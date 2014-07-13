@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe HamlLint::Linter::RubyScript do
+describe HamlLint::Linter::RuboCop do
 
   # Need this block before including linter context so that stubbing occurs
   # before linter is run
