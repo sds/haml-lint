@@ -48,17 +48,17 @@ module HamlLint
     # These cops are incredibly noisy with Ruby code extracted from HAML,
     # and are safe to ignore
     IGNORED_COPS = %w[
-      BlockAlignment
-      BlockNesting
-      EndAlignment
-      FileName
-      IfUnlessModifier
-      IndentationWidth
-      LineLength
-      Next
-      TrailingWhitespace
-      Void
-      WhileUntilModifier
+      Lint/BlockAlignment
+      Lint/EndAlignment
+      Lint/Void
+      Style/BlockNesting
+      Style/FileName
+      Style/IfUnlessModifier
+      Style/IndentationWidth
+      Style/LineLength
+      Style/Next
+      Style/TrailingWhitespace
+      Style/WhileUntilModifier
     ]
 
     def extract_lints_from_offences(offences)

@@ -4,6 +4,7 @@
 
 * Fix crash when reporting a lint from Rubocop that did not include a line
   number
+* Fix names of excluded RuboCop cops
 
 ## 0.5.2
 
