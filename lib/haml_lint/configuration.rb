@@ -20,15 +20,17 @@ module HamlLint
 
     # Returns a non-modifiable configuration for the specified linter.
     #
-    # @param linter [HamlLint::Linter]
+    # @param linter [HamlLint::Linter,String]
     def for_linter(linter)
+      linter_name = linter.respond_to?(:name) ? linter.name : linter.to_s
+
       smart_merge(@hash['linters']['ALL'],
-                  @hash['linters'].fetch(linter.name, {})).freeze
+                  @hash['linters'].fetch(linter_name, {})).freeze
     end
 
     # Returns whether the specified linter is enabled by this configuration.
     #
-    # @param linter [HamlLint::Linter]
+    # @param linter [HamlLint::Linter,String]
     def linter_enabled?(linter)
       for_linter(linter)['enabled'] != false
     end

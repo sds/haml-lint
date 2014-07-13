@@ -5,7 +5,9 @@ module HamlLint
 
     attr_reader :parser, :lints
 
-    def initialize
+    # @param config [Hash] configuration for this linter
+    def initialize(config)
+      @config = config
       @lints = []
     end
 
@@ -23,7 +25,9 @@ module HamlLint
       self.class.name.split('::').last
     end
 
-  protected
+  private
+
+    attr_reader :config
 
     def add_lint(node, message = nil)
       @lints << Lint.new(parser.filename, node.line, message || self.message)

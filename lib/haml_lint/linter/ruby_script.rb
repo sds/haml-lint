@@ -7,9 +7,9 @@ module HamlLint
   class Linter::RubyScript < Linter
     include LinterRegistry
 
-    def initialize
+    def initialize(config)
       super
-      @rubocop = RuboCop::CLI.new
+      @rubocop = ::RuboCop::CLI.new
     end
 
     def run(parser)
@@ -45,24 +45,10 @@ module HamlLint
       OffenceCollector.offences
     end
 
-    # These cops are incredibly noisy with Ruby code extracted from HAML,
-    # and are safe to ignore
-    IGNORED_COPS = %w[
-      Lint/BlockAlignment
-      Lint/EndAlignment
-      Lint/Void
-      Style/BlockNesting
-      Style/FileName
-      Style/IfUnlessModifier
-      Style/IndentationWidth
-      Style/LineLength
-      Style/Next
-      Style/TrailingWhitespace
-      Style/WhileUntilModifier
-    ]
-
     def extract_lints_from_offences(offences)
-      offences.select { |offence| !IGNORED_COPS.include?(offence.cop_name) }
+      ignored_cops = Array(config['ignored_cops']).flatten
+
+      offences.select { |offence| !ignored_cops.include?(offence.cop_name) }
               .each do |offence|
         @lints << Lint.new(@parser.filename,
                            @extractor.source_map[offence.line],
@@ -72,7 +58,7 @@ module HamlLint
   end
 
   # Collects offences detected by RuboCop.
-  class OffenceCollector < RuboCop::Formatter::BaseFormatter
+  class OffenceCollector < ::RuboCop::Formatter::BaseFormatter
     attr_accessor :offences
 
     class << self

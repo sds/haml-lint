@@ -47,9 +47,13 @@ module HamlLint
 
       # After filtering out explicitly included/excluded linters, only include
       # linters which are enabled in the configuration
-      (included_linters - excluded_linters).map(&:new).select do |linter|
-        config.linter_enabled?(linter)
-      end
+      (included_linters - excluded_linters).map do |linter_class|
+        linter_name = linter_class.name.split('::').last
+
+        linter_config = config.for_linter(linter_name)
+
+        linter_class.new(linter_config) if linter_config['enabled']
+      end.compact
     end
 
     def find_lints(file, linters)

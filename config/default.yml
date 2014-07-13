@@ -8,6 +8,20 @@ linters:
 
   RubyScript:
     enabled: true
+    # These cops are incredibly noisy when it comes to HAML templates, so we
+    # ignore them.
+    ignored_cops:
+      - Lint/BlockAlignment
+      - Lint/EndAlignment
+      - Lint/Void
+      - Style/BlockNesting
+      - Style/FileName
+      - Style/IfUnlessModifier
+      - Style/IndentationWidth
+      - Style/LineLength
+      - Style/Next
+      - Style/TrailingWhitespace
+      - Style/WhileUntilModifier
 
   SpaceBeforeScript:
     enabled: true
