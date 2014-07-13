@@ -48,10 +48,7 @@ module HamlLint
       # After filtering out explicitly included/excluded linters, only include
       # linters which are enabled in the configuration
       (included_linters - excluded_linters).map do |linter_class|
-        linter_name = linter_class.name.split('::').last
-
-        linter_config = config.for_linter(linter_name)
-
+        linter_config = config.for_linter(linter_class)
         linter_class.new(linter_config) if linter_config['enabled']
       end.compact
     end
@@ -71,7 +68,9 @@ module HamlLint
 
       Utils.extract_files_from(options[:files]).reject do |file|
         excluded_files.any? do |exclusion_glob|
-          File.fnmatch?(exclusion_glob, file)
+          File.fnmatch?(exclusion_glob, file,
+                        File::FNM_PATHNAME | # Wildcards don't match path separators
+                        File::FNM_DOTMATCH)  # `*` wildcard matches dotfiles
         end
       end
     end

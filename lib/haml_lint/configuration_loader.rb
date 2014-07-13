@@ -34,6 +34,16 @@ module HamlLint
               error.backtrace
       end
 
+      def load_hash(hash)
+        config = HamlLint::Configuration.new(hash)
+
+        default_configuration.merge(config)
+      rescue => error
+        raise HamlLint::Exceptions::ConfigurationError,
+              "Unable to load configuration from '#{file}': #{error}",
+              error.backtrace
+      end
+
     private
 
       def load_from_file(file)

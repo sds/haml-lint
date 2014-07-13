@@ -20,9 +20,17 @@ module HamlLint
 
     # Returns a non-modifiable configuration for the specified linter.
     #
-    # @param linter [HamlLint::Linter,String]
+    # @param linter [HamlLint::Linter,Class]
     def for_linter(linter)
-      linter_name = linter.respond_to?(:name) ? linter.name : linter.to_s
+      linter_name =
+        case linter
+        when Class
+          linter.name.split('::').last
+        when HamlLint::Linter
+          linter.name
+        else
+          linter.to_s
+        end
 
       smart_merge(@hash['linters']['ALL'],
                   @hash['linters'].fetch(linter_name, {})).freeze

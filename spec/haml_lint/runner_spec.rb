@@ -3,13 +3,20 @@ require 'spec_helper'
 describe HamlLint::Runner do
   let(:options) { {} }
   let(:runner)  { HamlLint::Runner.new }
-  let(:config) { HamlLint::ConfigurationLoader.default_configuration }
+  let(:config) do
+    HamlLint::ConfigurationLoader.load_hash(
+      'linters' => {
+        'FakeLinter1' => { 'enabled' => true },
+        'FakeLinter2' => { 'enabled' => true },
+      },
+    )
+  end
 
   class FakeLinter1 < HamlLint::Linter; include HamlLint::LinterRegistry; end
   class FakeLinter2 < HamlLint::Linter; include HamlLint::LinterRegistry; end
 
   before do
-    HamlLint::ConfigurationLoader.stub(:load_file).and_return(config)
+    HamlLint::ConfigurationLoader.stub(:load_applicable_config).and_return(config)
     HamlLint::LinterRegistry.stub(:linters).and_return([FakeLinter1, FakeLinter2])
     runner.stub(:extract_applicable_files).and_return(files)
   end
@@ -106,7 +113,7 @@ describe HamlLint::Runner do
       let(:config) { double('config') }
 
       it 'loads that specified configuration file' do
-        config.stub(:linter_enabled?).and_return(true)
+        config.stub(:for_linter).and_return('enabled' => true)
 
         HamlLint::ConfigurationLoader.should_receive(:load_file)
                                      .with('some-config.yml')

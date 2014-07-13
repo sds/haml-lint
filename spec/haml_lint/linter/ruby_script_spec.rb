@@ -22,7 +22,7 @@ describe HamlLint::Linter::RubyScript do
   context 'when RuboCop reports offences' do
     let(:line) { 1 }
     let(:message) { 'Lint message' }
-    let(:cop_name) { 'SomeCopName' }
+    let(:cop_name) { 'Lint/SomeCopName' }
 
     let(:offence) do
       double('offence', line: line, message: message, cop_name: cop_name)
@@ -33,7 +33,7 @@ describe HamlLint::Linter::RubyScript do
     end
 
     context 'and the offence is from an ignored cop' do
-      let(:cop_name) { 'LineLength' }
+      let(:cop_name) { 'Style/LineLength' }
       it { should_not report_lint }
     end
   end
