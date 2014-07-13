@@ -25,5 +25,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rubocop', '>= 0.24.1'
   s.add_dependency 'sysexits', '~> 1.1'
 
-  s.add_development_dependency 'rspec', '2.14.1'
+  s.add_development_dependency 'rspec', '~> 3.0'
 end
