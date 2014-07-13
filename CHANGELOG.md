@@ -11,6 +11,7 @@
 * Rename `RubyScript` linter to `RuboCop`
 * Add customizable `LineLength` linter to check that the number of columns on
   each line in a file is no greater than some maximum amount (80 by default)
+* Gracefully handle invalid file paths and return semantic error code
 
 ## 0.5.2
 

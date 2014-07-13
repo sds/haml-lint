@@ -6,6 +6,9 @@ module HamlLint::Exceptions
   # Raised when invalid/incompatible command line options are provided.
   class InvalidCLIOption < StandardError; end
 
+  # Raised when an invalid file path is specified
+  class InvalidFilePath < StandardError; end
+
   # Raised when attempting to execute `Runner` with options that would result in
   # no linters being enabled.
   class NoLintersError < StandardError; end

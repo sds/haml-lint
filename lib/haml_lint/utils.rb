@@ -6,11 +6,20 @@ module HamlLint
     class << self
       def extract_files_from(list)
         files = []
+
         list.each do |file|
-          Find.find(file) do |f|
-            files << f if haml_file?(f)
+          begin
+            Find.find(file) do |f|
+              files << f if haml_file?(f)
+            end
+          rescue Errno::ENOENT
+            # One of the paths specified does not exist; raise a more
+            # descriptive exception so we know which one
+            raise HamlLint::Exceptions::InvalidFilePath,
+                  "File path '#{file}' does not exist"
           end
         end
+
         files.uniq
       end
 

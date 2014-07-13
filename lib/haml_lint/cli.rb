@@ -24,6 +24,9 @@ module HamlLint
       log.error ex.message
       log.log "Run `#{APP_NAME}` --help for usage documentation"
       Sysexits::EX_USAGE
+    rescue HamlLint::Exceptions::InvalidFilePath => ex
+      log.error ex.message
+      Sysexits::EX_NOINPUT
     rescue => ex
       print_unexpected_exception(ex)
       Sysexits::EX_SOFTWARE
