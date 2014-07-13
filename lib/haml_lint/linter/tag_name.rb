@@ -1,4 +1,5 @@
 module HamlLint
+  # Checks for tag names with uppercase letters.
   class Linter::TagName < Linter
     include LinterRegistry
 

@@ -1,4 +1,5 @@
 module HamlLint
+  # Contains information about a problem or issue with a HAML document.
   class Lint
     attr_reader :filename, :line, :message, :severity
 

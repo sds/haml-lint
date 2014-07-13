@@ -1,4 +1,5 @@
 module HamlLint
+  # Checks for uses of the multiline pipe character.
   class Linter::MultilinePipe < Linter
     include LinterRegistry
 

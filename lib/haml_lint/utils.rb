@@ -1,6 +1,7 @@
 require 'find'
 
 module HamlLint
+  # A miscellaneous set of utility functions.
   module Utils
     class << self
       def extract_files_from(list)

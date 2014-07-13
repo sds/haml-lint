@@ -1,6 +1,7 @@
 require 'haml'
 
 module HamlLint
+  # Parses a HAML document for inspection by linters.
   class Parser
     attr_reader :contents, :filename, :lines, :tree
 

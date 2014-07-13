@@ -1,6 +1,7 @@
 module HamlLint
   class NoSuchLinter < StandardError; end
 
+  # Stores all defined linters.
   module LinterRegistry
     @linters = []
 
