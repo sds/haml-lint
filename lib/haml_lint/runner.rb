@@ -8,8 +8,9 @@ module HamlLint
     # @raise [HamlLint::Exceptions::NoLintersError] when no linters are enabled
     # @return [HamlLint::Report] a summary of all lints found
     def run(options = {})
+      config = load_applicable_config(options)
       files = extract_applicable_files(options)
-      linters = extract_enabled_linters(options)
+      linters = extract_enabled_linters(config, options)
 
       raise HamlLint::Exceptions::NoLintersError, 'No linters specified' if linters.empty?
 
@@ -27,7 +28,15 @@ module HamlLint
 
   private
 
-    def extract_enabled_linters(options)
+    def load_applicable_config(options)
+      if options[:config_file]
+        HamlLint::ConfigurationLoader.load_file(options[:config_file])
+      else
+        HamlLint::ConfigurationLoader.load_applicable_config
+      end
+    end
+
+    def extract_enabled_linters(config, options)
       included_linters = LinterRegistry
         .extract_linters_from(options.fetch(:included_linters, []))
 
@@ -36,7 +45,11 @@ module HamlLint
       excluded_linters = LinterRegistry
         .extract_linters_from(options.fetch(:excluded_linters, []))
 
-      (included_linters - excluded_linters).map(&:new)
+      # After filtering out explicitly included/excluded linters, only include
+      # linters which are enabled in the configuration
+      (included_linters - excluded_linters).map(&:new).select do |linter|
+        config.linter_enabled?(linter)
+      end
     end
 
     def find_lints(file, linters)

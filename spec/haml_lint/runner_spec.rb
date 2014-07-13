@@ -3,18 +3,20 @@ require 'spec_helper'
 describe HamlLint::Runner do
   let(:options) { {} }
   let(:runner)  { HamlLint::Runner.new }
+  let(:config) { HamlLint::ConfigurationLoader.default_configuration }
 
   class FakeLinter1 < HamlLint::Linter; include HamlLint::LinterRegistry; end
   class FakeLinter2 < HamlLint::Linter; include HamlLint::LinterRegistry; end
 
   before do
+    HamlLint::ConfigurationLoader.stub(:load_file).and_return(config)
     HamlLint::LinterRegistry.stub(:linters).and_return([FakeLinter1, FakeLinter2])
     runner.stub(:extract_applicable_files).and_return(files)
   end
 
   describe '#run' do
     let(:files) { %w[file1.haml file2.haml] }
-    let(:mock_linter) { double('linter', lints: []) }
+    let(:mock_linter) { double('linter', lints: [], name: 'Blah') }
 
     let(:options) do
       {
@@ -96,6 +98,20 @@ describe HamlLint::Runner do
 
       it 'raises an error' do
         expect { subject }.to raise_error HamlLint::Exceptions::NoLintersError
+      end
+    end
+
+    context 'when :config_file option is specified' do
+      let(:options) { { config_file: 'some-config.yml' } }
+      let(:config) { double('config') }
+
+      it 'loads that specified configuration file' do
+        config.stub(:linter_enabled?).and_return(true)
+
+        HamlLint::ConfigurationLoader.should_receive(:load_file)
+                                     .with('some-config.yml')
+                                     .and_return(config)
+        subject
       end
     end
   end

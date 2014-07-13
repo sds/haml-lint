@@ -22,8 +22,15 @@ module HamlLint
     #
     # @param linter [HamlLint::Linter]
     def for_linter(linter)
-      smarge_merge(@hash['linters']['ALL'],
-                   @hash['linters'][linter.name]).freeze
+      smart_merge(@hash['linters']['ALL'],
+                  @hash['linters'].fetch(linter.name, {})).freeze
+    end
+
+    # Returns whether the specified linter is enabled by this configuration.
+    #
+    # @param linter [HamlLint::Linter]
+    def linter_enabled?(linter)
+      for_linter(linter)['enabled'] != false
     end
 
     # Merges the given configuration with this one, returning a new
@@ -41,13 +48,6 @@ module HamlLint
 
   private
 
-    # Returns whether the specified linter is enabled by this configuration.
-    #
-    # @param linter [HamlLint::Linter]
-    def linter_enabled?(linter)
-      for_linter(linter)['enabled'] != false
-    end
-
     # Validates the configuration for any invalid options, normalizing it where
     # possible.
     def validate
@@ -56,7 +56,7 @@ module HamlLint
     end
 
     def smart_merge(parent, child)
-      parent.merge(child) do |key, old, new|
+      parent.merge(child) do |_key, old, new|
         case old
         when Array
           old + Array(new)
@@ -74,7 +74,7 @@ module HamlLint
     end
 
     def convert_nils_to_empty_hashes(hash)
-      hash.inject({}) do |h, (key, value)|
+      hash.each_with_object({}) do |(key, value), h|
         h[key] =
           case value
           when nil  then {}
