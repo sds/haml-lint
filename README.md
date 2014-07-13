@@ -10,6 +10,17 @@ clean and readable. You can run it manually from the command-line, or integrate
 it into your [SCM hooks](https://github.com/causes/overcommit). It uses rules
 established by the team at [Causes.com](https://causes.com).
 
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [What Gets Linted](#what-gets-linted)
+* [Editor Integration](#editor-integration)
+* [Git Integration](#git-integration)
+* [Contributing](#contributing)
+* [Changelog](#changelog)
+* [License](#license)
+
 ## Requirements
 
  * Ruby 1.9.3+
@@ -76,12 +87,12 @@ defaults are defined in `config/default.yml`.
 ## What Gets Linted
 
 `haml-lint` is an opinionated tool that helps you enforce a consistent style in
-your HAML. As an opinionated tool, we've had to make calls about what we think
-are the "best" style conventions, even when there are often reasonable arguments
-for more than one possible style. While all of our choices have a rational
-basis, we think that the opinions themselves are less important than the fact
-that `haml-lint` provides us with an automated and low-cost means of enforcing
-consistency.
+your HAML files. As an opinionated tool, we've had to make calls about what we
+think are the "best" style conventions, even when there are often reasonable
+arguments for more than one possible style. While all of our choices have a
+rational basis, we think that the opinions themselves are less important than
+the fact that `haml-lint` provides us with an automated and low-cost means of
+enforcing consistency.
 
 Any lint can be disabled by using the `--exclude-linter` flag.
 
@@ -170,6 +181,19 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
     %body
     ```
 
+## Editor Integration
+
+If you use `vim`, you can have `haml-lint` automatically run against your HAML
+files after saving by using the
+[Syntastic](https://github.com/scrooloose/syntastic) plugin. If you already
+have the plugin, just add `let g:syntastic_haml_checkers = ['haml_lint']` to
+your `.vimrc`.
+
+## Git Integration
+
+If you'd like to integrate `haml-lint` into your Git workflow, check out our
+Git hook manager, [overcommit](https://github.com/causes/overcommit).
+
 ## Contributing
 
 We love getting feedback with or without pull requests. If you do add a new
@@ -181,10 +205,10 @@ Speaking of tests, we use `rspec`, which can be run like so:
 bundle exec rspec
 ```
 
-## See Also
+## Changelog
 
-If you'd like to integrate `haml-lint` with Git as a pre-commit hook, check out
-our Git hook manager, [overcommit](https://github.com/causes/overcommit).
+If you're interested in seeing the changes and bug fixes between each version
+of `haml-lint`, read the [HAML-Lint Changelog](CHANGELOG.md).
 
 ## License
 
