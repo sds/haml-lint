@@ -25,7 +25,7 @@ module HamlLint
     end
 
     def message
-      "Don't use the `|` character to split up lines. " <<
+      "Don't use the `|` character to split up lines. " \
       'Wrap on comma or extract code into helper.'
     end
 

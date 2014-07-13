@@ -17,7 +17,7 @@ module HamlLint
           begin
             HamlLint::Linter.const_get(linter_name)
           rescue NameError
-            raise NoSuchLinter.new("Linter #{linter_name} does not exist")
+            raise NoSuchLinter, "Linter #{linter_name} does not exist"
           end
         end
       end

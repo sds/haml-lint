@@ -3,7 +3,7 @@ module HamlLint
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
-    def visit_tag(node)
+    def visit_tag(node) # rubocop:disable CyclomaticComplexity
       # If this tag has inline script
       return unless node.value[:parse]
 
@@ -24,9 +24,9 @@ module HamlLint
 
       # Check if the character before the start of the script is a space
       # (need to do it this way as the parser strips whitespace from node)
-      if tag_with_text[index - 1] != ' '
-        add_lint(node, DESCRIPTION_FORMAT % '=')
-      end
+      return unless tag_with_text[index - 1] != ' '
+
+      add_lint(node, DESCRIPTION_FORMAT % '=')
     end
 
     def visit_script(node)

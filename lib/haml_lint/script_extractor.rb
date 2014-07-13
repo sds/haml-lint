@@ -33,7 +33,7 @@ module HamlLint
       @source = @code.join("\n")
     end
 
-    def visit_root(node)
+    def visit_root(_node)
       @code = []
       @total_lines = 0
       @source_map = {}
@@ -99,40 +99,36 @@ module HamlLint
   private
 
     def add_line(code, node_or_line)
-      unless code.empty?
-        indent_level = @indent_level
+      return if code.empty?
 
-        if node_or_line.respond_to?(:line)
-          # Since mid-block keywords are children of the corresponding start block
-          # keyword, we need to reduce their indentation level by 1. However, we
-          # don't do this unless this is an actual tag node (a raw line number
-          # means this came from a `:ruby` filter).
-          indent_level -= 1 if mid_block_keyword?(code)
-        end
+      indent_level = @indent_level
 
-        indent = (' ' * 2 * indent_level)
+      if node_or_line.respond_to?(:line)
+        # Since mid-block keywords are children of the corresponding start block
+        # keyword, we need to reduce their indentation level by 1. However, we
+        # don't do this unless this is an actual tag node (a raw line number
+        # means this came from a `:ruby` filter).
+        indent_level -= 1 if mid_block_keyword?(code)
+      end
 
-        @code << indent + code
+      indent = (' ' * 2 * indent_level)
 
-        original_line =
-          if node_or_line.respond_to?(:line)
-            node_or_line.line
-          else
-            node_or_line
-          end
+      @code << indent + code
 
-        # For interpolated code in filters that spans multiple lines, the
-        # resulting code will span multiple lines, so we need to create a
-        # mapping for each line.
-        (code.count("\n") + 1).times do
-          @total_lines += 1
-          @source_map[@total_lines] = original_line
-        end
+      original_line =
+        node_or_line.respond_to?(:line) ? node_or_line.line : node_or_line
+
+      # For interpolated code in filters that spans multiple lines, the
+      # resulting code will span multiple lines, so we need to create a
+      # mapping for each line.
+      (code.count("\n") + 1).times do
+        @total_lines += 1
+        @source_map[@total_lines] = original_line
       end
     end
 
     def anonymous_block?(text)
-      !!(text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?\z/)
+      text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?\z/
     end
 
     START_BLOCK_KEYWORDS = %w[if unless case begin for until while]
@@ -164,7 +160,7 @@ module HamlLint
           dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
 
           # Hacky way to turn a dumped string back into a regular string
-          yield eval('"' + dumped_interpolated_str + '"')
+          yield eval('"' + dumped_interpolated_str + '"') # rubocop:disable Eval
         end
       end
     end

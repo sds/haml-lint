@@ -11,10 +11,9 @@ module HamlLint
                     node.value[:attributes]['id']
 
       tag = @parser.lines[node.line - 1][/\s*([^\s={\(\[]+)/, 1]
+      return unless tag.start_with?('%div')
 
-      if tag.start_with?('%div')
-        add_lint(node, "`#{tag}` can be written as `#{tag[4..-1]}` since `%div` is implicit")
-      end
+      add_lint(node, "`#{tag}` can be written as `#{tag[4..-1]}` since `%div` is implicit")
     end
   end
 end

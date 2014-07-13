@@ -6,7 +6,7 @@ module HamlLint
     attr_reader :contents, :filename, :lines, :tree
 
     def initialize(haml_or_filename)
-      if File.exists?(haml_or_filename)
+      if File.exist?(haml_or_filename)
         @filename = haml_or_filename
         @contents = File.read(haml_or_filename)
       else
