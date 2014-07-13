@@ -131,6 +131,11 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
     .button
     ```
 
+* Wrap lines at 80 characters (configurable)
+
+    Lines longer than 80 characters are more difficult to read and are usually
+    a sign of complexity.
+
 * Don't span multiple lines using the multiline pipe (`|`) syntax.
 
     ```haml

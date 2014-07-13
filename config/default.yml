@@ -3,6 +3,10 @@ linters:
   ImplicitDiv:
     enabled: true
 
+  LineLength:
+    enabled: true
+    max: 80
+
   MultilinePipe:
     enabled: true
 

@@ -9,6 +9,8 @@
   explicitly passed in via the `--config` flag
 * Update RuboCop dependency to >= 0.24.1
 * Rename `RubyScript` linter to `RuboCop`
+* Add customizable `LineLength` linter to check that the number of columns on
+  each line in a file is no greater than some maximum amount (80 by default)
 
 ## 0.5.2
 
