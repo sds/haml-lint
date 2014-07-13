@@ -75,9 +75,8 @@ linters:
   ImplicitDiv:
     enabled: false
 
-  RuboCop:
-    ignored_cops:
-      - Style/GuardClause
+  LineLength:
+    max: 100
 ```
 
 All linters have an `enabled` option which can be `true` or `false`, which
