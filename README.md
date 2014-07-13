@@ -40,12 +40,37 @@ filename and line number.
 
 Command Line Flag         | Description
 --------------------------|----------------------------------------------------
+`-c`/`--config`           | Specify which configuration file to use
 `-e`/`--exclude`          | Exclude one or more files from being linted
 `-i`/`--include-linter`   | Specify which linters you specifically want to run
 `-x`/`--exclude-linter`   | Specify which linters you _don't_ want to run
 `-h`/`--help`             | Show command line flag documentation
 `--show-linters`          | Show all registered linters
 `-v`/`--version`          | Show version
+
+## Configuration
+
+`haml-lint` will automatically recognize and load any file with the name
+`.haml-lint.yml` as a configuration file. It loads the configuration based on
+the directory `haml-lint` is being run from, ascending until a configuration
+file is found. Any configuration loaded is automatically merged with the
+default configuration (see `config/default.yml`).
+
+Here's an example configuration file:
+
+```yaml
+linters:
+  ImplicitDiv:
+    enabled: false
+
+  RubyScript:
+    ignored_cops:
+      - Style/GuardClause
+```
+
+All linters have an `enabled` option which can be `true` or `false`, which
+controls whether the linter is run, along with linter-specific options. The
+defaults are defined in `config/default.yml`.
 
 ## What Gets Linted
 
