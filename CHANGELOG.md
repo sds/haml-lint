@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.6.0
 
 * Fix crash when reporting a lint from Rubocop that did not include a line
   number
