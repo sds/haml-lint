@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'colorize', '0.5.8'
   s.add_dependency 'haml', '>= 4.0'
-  s.add_dependency 'rubocop', '>= 0.23.0'
+  s.add_dependency 'rubocop', '>= 0.24.1'
   s.add_dependency 'sysexits', '~> 1.1'
 
   s.add_development_dependency 'rspec', '2.14.1'
