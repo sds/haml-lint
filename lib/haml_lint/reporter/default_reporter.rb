@@ -1,5 +1,3 @@
-require 'colorize'
-
 module HamlLint
   # Outputs lints in a simple format with the filename, line number, and lint
   # message.

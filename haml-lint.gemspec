@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.3'
 
-  s.add_dependency 'colorize', '0.5.8'
   s.add_dependency 'haml', '>= 4.0'
   s.add_dependency 'rubocop', '>= 0.24.1'
   s.add_dependency 'sysexits', '~> 1.1'
