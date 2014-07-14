@@ -21,6 +21,9 @@ Documentation:
 DotPosition:
   EnforcedStyle: leading
 
+Encoding:
+  EnforcedStyle: when_needed
+
 FormatString:
   Enabled: false
 
