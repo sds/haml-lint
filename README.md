@@ -187,11 +187,19 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
 
 ## Editor Integration
 
+### vim
+
 If you use `vim`, you can have `haml-lint` automatically run against your HAML
 files after saving by using the
 [Syntastic](https://github.com/scrooloose/syntastic) plugin. If you already
 have the plugin, just add `let g:syntastic_haml_checkers = ['haml_lint']` to
 your `.vimrc`.
+
+### Sublime Text 3
+
+If you use `SublimeLinter 3` with `Sublime Text 3` you can install the
+[SublimeLinter-haml-lint](https://github.com/jeroenj/SublimeLinter-contrib-haml-lint)
+plugin using [Package Control](https://sublime.wbond.net).
 
 ## Git Integration
 
