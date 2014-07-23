@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Add rake task integration
+
 ## 0.6.0
 
 * Fix crash when reporting a lint from Rubocop that did not include a line
