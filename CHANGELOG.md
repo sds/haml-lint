@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Add rake task integration
+* Fix broken `--help` switch
 
 ## 0.6.0
 

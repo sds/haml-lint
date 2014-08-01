@@ -39,7 +39,7 @@ module HamlLint
     def act_on_options(options)
       if options[:help]
         print_help(options)
-        SysExits::EX_OK
+        Sysexits::EX_OK
       elsif options[:version]
         print_version
         Sysexits::EX_OK
