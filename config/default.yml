@@ -18,11 +18,11 @@ linters:
       - Lint/BlockAlignment
       - Lint/EndAlignment
       - Lint/Void
+      - Metrics/LineLength
       - Style/BlockNesting
       - Style/FileName
       - Style/IfUnlessModifier
       - Style/IndentationWidth
-      - Style/LineLength
       - Style/Next
       - Style/TrailingWhitespace
       - Style/WhileUntilModifier

@@ -4,6 +4,7 @@
 
 * Add rake task integration
 * Fix broken `--help` switch
+* Silence `LineLength` RuboCop check
 
 ## 0.6.0
 
