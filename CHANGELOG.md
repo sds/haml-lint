@@ -1,10 +1,11 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.6.1
 
 * Add rake task integration
 * Fix broken `--help` switch
 * Silence `LineLength` RuboCop check
+* Upgrade Rubocop dependency to >= 0.25.0
 
 ## 0.6.0
 
