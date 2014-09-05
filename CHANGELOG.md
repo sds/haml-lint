@@ -4,6 +4,8 @@
 
 * New lint `UnnecessaryInterpolation` checks for interpolation in inline
   tag content that can be written more concisely as just the expression
+* New lint 'UnnecessaryStringOutput` checks for script output of literal
+  strings that could be converted to regular text content
 
 ## 0.6.1
 

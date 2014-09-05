@@ -195,6 +195,16 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
     %tag= expression
     ```
 
+* Don't output string expressions in Ruby when it isn't necessary
+
+    ```haml
+    // Incorrect
+    %tag= "Some #{interpolated} string"
+
+    // Correct - more concise
+    %tag Some #{interpolated} string
+    ```
+
 ## Editor Integration
 
 ### Vim

@@ -49,5 +49,102 @@ module HamlLint
     def contains_interpolation?(string)
       Haml::Util.contains_interpolation?(string)
     end
+
+    # Returns whether this tag node has inline script, e.g. is of the form
+    # %tag= ...
+    #
+    # @param tag_node [Haml::Parser::ParseNode]
+    # @return [true,false]
+    def tag_has_inline_script?(tag_node)
+      tag_with_inline_content = tag_with_inline_text(tag_node)
+      inline_content = inline_node_content(tag_node)
+
+      return false unless index = tag_with_inline_content.rindex(inline_content)
+
+      index -= 1
+      index -= 1 while [' ', '"', "'"].include?(tag_with_inline_content[index])
+
+      tag_with_inline_content[index] == '='
+    end
+
+    # Returns whether the inline content for a node is a string.
+    #
+    # For example, the following node has a literal string:
+    #
+    #   %tag= "A literal #{string}"
+    #
+    # whereas this one does not:
+    #
+    #   %tag A literal #{string}
+    #
+    # @param node [Haml::Parser::ParseNode]
+    # @return [true,false]
+    def inline_content_is_string?(node)
+      tag_with_inline_content = tag_with_inline_text(node)
+      inline_content = inline_node_content(node)
+
+      index = tag_with_inline_content.rindex(inline_content) - 1
+
+      %w[' "].include?(tag_with_inline_content[index])
+    end
+
+    # Get the inline content for this node.
+    #
+    # Inline content is the content that appears inline right after the
+    # tag/script. For example, in the code below...
+    #
+    #   %tag Some inline content
+    #
+    # ..."Some inline content" would be the inline content.
+    #
+    # @param node [Haml::Parser::ParseNode]
+    # @return [String]
+    def inline_node_content(node)
+      inline_content = node.value[:value]
+
+      if contains_interpolation?(inline_content)
+        strip_surrounding_quotes(inline_content)
+      else
+        inline_content
+      end
+    end
+
+    # Gets the next node following this node, ascending up the ancestor chain
+    # recursively if this node has no siblings.
+    #
+    # @param node [Haml::Parser::ParseNode]
+    # @return [Haml::Parser::ParseNode,nil]
+    def next_node(node)
+      return unless node
+      siblings = node.parent.children
+
+      next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
+
+      if next_sibling
+        next_sibling
+      else
+        next_node(node.parent)
+      end
+    end
+
+    # Extracts all text for a tag node and normalizes it, including additional
+    # lines following commas or multiline bar indicators ('|')
+    #
+    # @param tag_node [Haml::Parser::ParseNode]
+    # @return [String] source code of original parse node
+    def tag_with_inline_text(tag_node)
+      # Next node is either the first child or the "next node" (node's sibling
+      # or next sibling of some ancestor)
+      next_node_line = [
+        [next_node(tag_node), tag_node.children.first].compact.map(&:line),
+        parser.lines.count + 1,
+      ].flatten.min
+
+      # Normalize each of the lines to ignore the multiline bar (|) and
+      # excess whitespace
+      parser.lines[(tag_node.line - 1)...(next_node_line - 1)].map do |line|
+        line.strip.gsub(/\|\z/, '').rstrip
+      end.join(' ')
+    end
   end
 end
