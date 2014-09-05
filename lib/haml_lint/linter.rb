@@ -32,5 +32,22 @@ module HamlLint
     def add_lint(node, message = nil)
       @lints << Lint.new(parser.filename, node.line, message || self.message)
     end
+
+    # Remove the surrounding double quotes from a string, ignoring any
+    # leading/trailing whitespace.
+    #
+    # @param string [String]
+    # @return [String] stripped with leading/trailing double quotes removed.
+    def strip_surrounding_quotes(string)
+      string[/\A\s*"(.*)"\s*\z/, 1]
+    end
+
+    # Returns whether a string contains any interpolation.
+    #
+    # @param string [String]
+    # @return [true,false]
+    def contains_interpolation?(string)
+      Haml::Util.contains_interpolation?(string)
+    end
   end
 end

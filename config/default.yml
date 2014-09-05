@@ -32,3 +32,6 @@ linters:
 
   TagName:
     enabled: true
+
+  UnnecessaryInterpolation:
+    enabled: true

@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* New lint `UnnecessaryInterpolation` checks for interpolation in inline
+  tag content that can be written more concisely as just the expression
+
 ## 0.6.1
 
 * Add rake task integration

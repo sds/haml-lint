@@ -17,7 +17,7 @@ module HamlLint
         # converts them to inline script by surrounding them in string quotes,
         # e.g. `%p Hello #{name}` becomes `%p= "Hello #{name}"`, causing the
         # above search to fail. Check for this case by removing added quotes.
-        if text_without_quotes = text[/\A"(.*)"\z/, 1]
+        if text_without_quotes = strip_surrounding_quotes(text)
           return unless index = tag_with_text.rindex(text_without_quotes)
         end
       end

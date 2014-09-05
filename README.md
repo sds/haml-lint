@@ -185,6 +185,16 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
     %body
     ```
 
+* Don't use interpolation when it isn't necessary
+
+    ```haml
+    // Incorrect
+    %tag #{expression}
+
+    // Correct - more concise
+    %tag= expression
+    ```
+
 ## Editor Integration
 
 ### Vim
