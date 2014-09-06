@@ -3,9 +3,7 @@ module HamlLint
   # message.
   class Reporter::DefaultReporter < Reporter
     def report_lints
-      # TODO: Push this hack into the RubyScript linter, as it's the one that
-      # returns a nil line number for some Rubocop checks
-      sorted_lints = lints.sort_by { |l| [l.filename, l.line || 0] }
+      sorted_lints = lints.sort_by { |l| [l.filename, l.line] }
 
       sorted_lints.each do |lint|
         log.info lint.filename, false

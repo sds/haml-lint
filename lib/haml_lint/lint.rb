@@ -13,7 +13,7 @@ module HamlLint
     def initialize(linter, filename, line, message, severity = :warning)
       @linter   = linter
       @filename = filename
-      @line     = line
+      @line     = line || 0
       @message  = message
       @severity = severity
     end
