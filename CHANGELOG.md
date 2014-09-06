@@ -6,6 +6,8 @@
   tag content that can be written more concisely as just the expression
 * New lint 'UnnecessaryStringOutput` checks for script output of literal
   strings that could be converted to regular text content
+* New lint `ClassesBeforeIds` checks that classes are listed before IDs
+  in tags
 
 ## 0.6.1
 

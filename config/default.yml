@@ -3,6 +3,9 @@
 # This is an opinionated list of which hooks are valuable to run and what their
 # out of the box settings should be.
 linters:
+  ClassesBeforeIds:
+    enabled: true
+
   ImplicitDiv:
     enabled: true
 

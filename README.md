@@ -117,6 +117,16 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
 
 ### HAML Checks
 
+* List classes before IDs in tags
+
+    ```haml
+    // Incorrect
+    %tag#id.class
+
+    // Correct - ordered in increasing specificity
+    %tag.class#id
+    ```
+
 * Don't write unnecessary `%div` when it would otherwise be implicit.
 
     ```haml

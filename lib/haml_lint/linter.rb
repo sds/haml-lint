@@ -146,5 +146,13 @@ module HamlLint
         line.strip.gsub(/\|\z/, '').rstrip
       end.join(' ')
     end
+
+    # Extracts just the tag definition from a tag node.
+    #
+    # For example, it will extract `%tag.class#id` from
+    # `%tag.class#id{ attr: 'something' } Some inline content`.
+    def tag_definition(tag_node)
+      parser.lines[tag_node.line - 1][/\s*([^{( $]+)/, 1]
+    end
   end
 end
