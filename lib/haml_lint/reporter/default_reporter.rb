@@ -18,6 +18,10 @@ module HamlLint
           log.warning ' [W] ', false
         end
 
+        if lint.linter
+          log.success("#{lint.linter.name}: ", false)
+        end
+
         log.log lint.message
       end
     end

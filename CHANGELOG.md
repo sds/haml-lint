@@ -8,6 +8,7 @@
   strings that could be converted to regular text content
 * New lint `ClassesBeforeIds` checks that classes are listed before IDs
   in tags
+* Linter name is now included in output when error/warning reported
 
 ## 0.6.1
 

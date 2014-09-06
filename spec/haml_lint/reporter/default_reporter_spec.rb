@@ -29,7 +29,7 @@ describe HamlLint::Reporter::DefaultReporter do
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(filename, lines[index], descriptions[index], severities[index])
+          HamlLint::Lint.new(nil, filename, lines[index], descriptions[index], severities[index])
         end
       end
 

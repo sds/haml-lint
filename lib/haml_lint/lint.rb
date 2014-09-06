@@ -1,9 +1,17 @@
 module HamlLint
   # Contains information about a problem or issue with a HAML document.
   class Lint
-    attr_reader :filename, :line, :message, :severity
+    attr_reader :filename, :line, :linter, :message, :severity
 
-    def initialize(filename, line, message, severity = :warning)
+    # Creates a new lint.
+    #
+    # @param linter [HamlLint::Linter]
+    # @param filename [String]
+    # @param line [Fixnum]
+    # @param message [String]
+    # @param severity [Symbol]
+    def initialize(linter, filename, line, message, severity = :warning)
+      @linter   = linter
       @filename = filename
       @line     = line
       @message  = message

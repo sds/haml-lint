@@ -30,7 +30,7 @@ module HamlLint
     attr_reader :config
 
     def add_lint(node, message = nil)
-      @lints << Lint.new(parser.filename, node.line, message || self.message)
+      @lints << Lint.new(self, parser.filename, node.line, message || self.message)
     end
 
     # Remove the surrounding double quotes from a string, ignoring any

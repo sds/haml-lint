@@ -60,7 +60,7 @@ module HamlLint
         linter.run(parser)
       end
     rescue Haml::Error => ex
-      @lints << Lint.new(file, ex.line, ex.to_s, :error)
+      @lints << Lint.new(nil, file, ex.line, ex.to_s, :error)
     end
 
     def extract_applicable_files(options)

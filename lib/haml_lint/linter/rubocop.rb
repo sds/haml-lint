@@ -50,7 +50,8 @@ module HamlLint
 
       offences.select { |offence| !ignored_cops.include?(offence.cop_name) }
               .each do |offence|
-        @lints << Lint.new(@parser.filename,
+        @lints << Lint.new(self,
+                           @parser.filename,
                            @extractor.source_map[offence.line],
                            offence.message)
       end
