@@ -6,15 +6,19 @@
 [![Dependency Status](https://gemnasium.com/causes/haml-lint.svg)](https://gemnasium.com/causes/haml-lint)
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
-clean and readable. You can run it manually from the command-line, or integrate
-it into your [SCM hooks](https://github.com/causes/overcommit). It uses rules
+clean and readable. In addition to HAML-specific style and lint checks, it
+integrates with [RuboCop](https://github.com/bbatsov/rubocop) to bring its
+powerful static analysis tools to your HAML documents.
+
+You can run `haml-lint` manually from the command line, or integrate it into
+your [SCM hooks](https://github.com/causes/overcommit). It uses rules
 established by the team at [Causes.com](https://causes.com).
 
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
 * [Configuration](#configuration)
-* [What Gets Linted](#what-gets-linted)
+* [Linters](#linters)
 * [Editor Integration](#editor-integration)
 * [Git Integration](#git-integration)
 * [Contributing](#contributing)
@@ -34,7 +38,7 @@ gem install haml-lint
 
 ## Usage
 
-Run `haml-lint` from the command-line by passing in a directory (or multiple
+Run `haml-lint` from the command line by passing in a directory (or multiple
 directories) to recursively scan:
 
 ```bash
@@ -81,9 +85,11 @@ linters:
 
 All linters have an `enabled` option which can be `true` or `false`, which
 controls whether the linter is run, along with linter-specific options. The
-defaults are defined in `config/default.yml`.
+defaults are defined in [`config/default.yml`](config/default.yml).
 
-## What Gets Linted
+## Linters
+
+### [» Linters Documentation](lib/haml_lint/linter/README.md)
 
 `haml-lint` is an opinionated tool that helps you enforce a consistent style in
 your HAML files. As an opinionated tool, we've had to make calls about what we
@@ -92,128 +98,6 @@ arguments for more than one possible style. While all of our choices have a
 rational basis, we think that the opinions themselves are less important than
 the fact that `haml-lint` provides us with an automated and low-cost means of
 enforcing consistency.
-
-Any lint can be disabled by using the `--exclude-linter` flag.
-
-### Ruby Code Analysis
-
-`haml-lint` integrates with [RuboCop](https://github.com/bbatsov/rubocop) to
-check the actual Ruby code in your templates. It will respect any
-RuboCop-specific configuration you have set via `.rubocop.yml` files, but will
-also explicitly ignore some checks that don't make sense in the context of HAML
-(like `BlockAlignment`).
-
-```haml
--# example.haml
-- name = 'James Brown'
-- unused_variable = 42
-
-%p Hello #{name}!
-```
-
-```
-example.haml:3 [W] Useless assignment to variable - unused_variable
-```
-
-### HAML Checks
-
-* List classes before IDs in tags
-
-    ```haml
-    // Incorrect
-    %tag#id.class
-
-    // Correct - ordered in increasing specificity
-    %tag.class#id
-    ```
-
-* Don't write unnecessary `%div` when it would otherwise be implicit.
-
-    ```haml
-    // Incorrect - div is unnecessary when a class/ID is specified
-    %div.button
-
-    // Correct - div is required when no class/ID is specified
-    %div
-
-    // Correct
-    .button
-    ```
-
-* Wrap lines at 80 characters (configurable)
-
-    Lines longer than 80 characters are more difficult to read and are usually
-    a sign of complexity.
-
-* Don't span multiple lines using the multiline pipe (`|`) syntax.
-
-    ```haml
-    // Incorrect
-    %p= 'Some' + |
-        'long' + |
-        'string' |
-
-    // Correct - use helpers to generate long dynamic strings
-    %p= generate_long_string
-
-    // Correct - split long method calls on commas
-    %p= some_helper_method(some_value,
-                           another_value,
-                           yet_another_value)
-
-    // Correct - split attribute definitions/hashes on commas
-    %p{ data: { value: value,
-                name: name } }
-    ```
-
-    The multiline bar was [made awkward intentionally](http://haml.info/docs/yardoc/file.REFERENCE.html#multiline)
-    by the creators of HAML. `haml-lint` takes this a step further by
-    discouraging its use entirely, as it almost always suggests an
-    unnecessarily complicated template that should have its logic
-    extracted into a helper.
-
-* Separate script indicators (`-`/`=`) from their code with a single space.
-
-    ```haml
-    // Incorrect - no space between `=` and `some_value`
-    =some_value
-
-    // Correct
-    = some_value
-
-    // Correct
-    - some_value = 'Hello World'
-    ```
-
-* Tag names should comprise of all lowercase letters.
-
-    ```haml
-    // Incorrect
-    %BODY
-
-    // Correct
-    %body
-    ```
-
-* Don't use interpolation when it isn't necessary
-
-    ```haml
-    // Incorrect
-    %tag #{expression}
-
-    // Correct - more concise
-    %tag= expression
-    ```
-
-* Don't output string expressions in Ruby when it isn't necessary
-
-    ```haml
-    // Incorrect
-    %tag= "Some #{interpolated} string"
-
-    // Correct - more concise
-    %tag Some #{interpolated} string
-    ```
 
 ## Editor Integration
 
