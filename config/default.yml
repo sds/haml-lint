@@ -1,4 +1,7 @@
 # Default application configuration that all configurations inherit from.
+#
+# This is an opinionated list of which hooks are valuable to run and what their
+# out of the box settings should be.
 linters:
   ImplicitDiv:
     enabled: true
