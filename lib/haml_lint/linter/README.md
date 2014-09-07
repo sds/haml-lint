@@ -3,6 +3,7 @@
 Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 
 * [ClassesBeforeIds](#classesbeforeids)
+* [EmptyScript](#emptyscript)
 * [ImplicitDiv](#implicitdiv)
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
@@ -30,6 +31,22 @@ List classes before IDs in tags.
 These attributes should be listed in order of their specificity. Since the tag
 name (if specified) always comes first and has the lowest specificity, classes
 and then IDs should follow.
+
+## EmptyScript
+
+Don't write empty scripts.
+
+**Bad: script marker with no code**
+```haml
+-
+```
+
+**Good**
+```haml
+- some_expression
+```
+
+These serve no purpose and are usually left behind by mistake.
 
 ## ImplicitDiv
 

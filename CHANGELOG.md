@@ -11,6 +11,8 @@
 * Linter name is now included in output when error/warning reported
 * New lint `RubyComments` checks for comments that can be converted to
   HAML comments
+* New lint `EmptyScript` checks for empty scripts (e.g. `-` followed by
+  nothing)
 
 ## 0.6.1
 

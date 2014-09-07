@@ -6,6 +6,9 @@ linters:
   ClassesBeforeIds:
     enabled: true
 
+  EmptyScript:
+    enabled: true
+
   ImplicitDiv:
     enabled: true
 
