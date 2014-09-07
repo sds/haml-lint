@@ -27,6 +27,9 @@ module HamlLint
     rescue HamlLint::Exceptions::InvalidFilePath => ex
       log.error ex.message
       Sysexits::EX_NOINPUT
+    rescue HamlLint::Exceptions::NoLintersError => ex
+      log.error ex.message
+      Sysexits::EX_NOINPUT
     rescue => ex
       print_unexpected_exception(ex)
       Sysexits::EX_SOFTWARE

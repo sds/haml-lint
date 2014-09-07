@@ -15,6 +15,7 @@
   nothing)
 * New lint `LeadingCommentSpace` checks for a space after the `#` in
   comments
+* Fix bug where including and excluding the same linter would result in a crash
 
 ## 0.6.1
 
