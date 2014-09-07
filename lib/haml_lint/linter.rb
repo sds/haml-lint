@@ -116,7 +116,7 @@ module HamlLint
     # @return [Haml::Parser::ParseNode,nil]
     def next_node(node)
       return unless node
-      siblings = node.parent.children
+      siblings = node.parent ? node.parent.children : [node]
 
       next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
       return next_sibling if next_sibling

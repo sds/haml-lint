@@ -15,6 +15,10 @@ module HamlLint
 
       @lines = @contents.split("\n")
       @tree = Haml::Parser.new(@contents, Haml::Options.new).parse
+
+      # Remove the trailing empty HAML comment that the parser creates to signal
+      # the end of the HAML document
+      @tree.children.pop
     end
   end
 end
