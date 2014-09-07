@@ -9,6 +9,8 @@
 * New lint `ClassesBeforeIds` checks that classes are listed before IDs
   in tags
 * Linter name is now included in output when error/warning reported
+* New lint `RubyComments` checks for comments that can be converted to
+  HAML comments
 
 ## 0.6.1
 

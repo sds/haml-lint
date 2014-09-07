@@ -33,6 +33,9 @@ linters:
       - Style/TrailingWhitespace
       - Style/WhileUntilModifier
 
+  RubyComments:
+    enabled: true
+
   SpaceBeforeScript:
     enabled: true
 

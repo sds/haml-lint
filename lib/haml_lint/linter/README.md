@@ -7,6 +7,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
 * [RuboCop](#rubocop)
+* [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
 * [TagName](#tagname)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
@@ -142,6 +143,28 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
 You can customize which RuboCop warnings you want to ignore by modifying
 the `ignored_cops` option (see [`config/default.yml`](config/default.yml)
 for the full list of ignored cops).
+
+## RubyComments
+
+Prefer HAML's built-in comment over ad hoc comments in Ruby code.
+
+**Bad: Space after `#` means comment is actually treated as Ruby code**
+```haml
+- # A Ruby comment
+```
+
+**Good**
+```haml
+-# A HAML comment
+```
+
+While both comment types will result in nothing being output, HAML comments
+are a little more flexible in that you can have them span multiple lines, e.g.
+
+```haml
+-# This is a multi-line
+   HAML comment
+```
 
 ## SpaceBeforeScript
 
