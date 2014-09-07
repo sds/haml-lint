@@ -24,7 +24,11 @@ module HamlLint
     end
 
     def visit_children(parent)
-      parent.children.each { |node| visit(node) }
+      # The HAML parser ends all documents with an empty HAML comment to signal
+      # the end of the document. Exclude it from being visited.
+      children = parent.parent.nil? ? parent.children[0..-2] : parent.children
+
+      children.each { |node| visit(node) }
     end
 
   private

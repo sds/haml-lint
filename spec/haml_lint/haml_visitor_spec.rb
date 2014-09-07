@@ -156,6 +156,36 @@ describe HamlLint::HamlVisitor do
       end
     end
 
+    context 'when visitor defines a visit_haml_comment method' do
+      class HamlCommentVisitor < TrackingVisitor
+        def visit_haml_comment(node)
+          @node_order << node.value[:text]
+        end
+      end
+
+      let(:visitor) { HamlCommentVisitor.new }
+
+      context 'and the HAML document is empty' do
+        let(:haml) { '' }
+
+        it 'visits no nodes' do
+          visitor.node_order.should == []
+        end
+      end
+
+      context 'and there are comments in the document' do
+        let(:haml) { <<-HAML }
+          -# A comment
+          %tag
+          -# Another comment
+        HAML
+
+        it 'visits each comment' do
+          visitor.node_order.should == [' A comment', ' Another comment']
+        end
+      end
+    end
+
     context 'when visitor defines a visit_root method' do
       class RootVisitor < TrackingVisitor
         def visit_root(node)
