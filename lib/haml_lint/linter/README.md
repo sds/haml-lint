@@ -3,6 +3,7 @@
 Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 
 * [ClassesBeforeIds](#classesbeforeids)
+* [ConsecutiveComments](#consecutivecomments)
 * [EmptyScript](#emptyscript)
 * [ImplicitDiv](#implicitdiv)
 * [LeadingCommentSpace](#leadingcommentspace)
@@ -32,6 +33,24 @@ List classes before IDs in tags.
 These attributes should be listed in order of their specificity. Since the tag
 name (if specified) always comes first and has the lowest specificity, classes
 and then IDs should follow.
+
+## ConsecutiveComments
+
+Consecutive comments should be condensed into a single multiline comment.
+
+**Bad**
+```haml
+-# A collection
+-# of many
+-# consecutive comments
+```
+
+**Good**
+```haml
+-# A multiline comment
+   is much more clean
+   and concise
+```
 
 ## EmptyScript
 

@@ -16,6 +16,8 @@
 * New lint `LeadingCommentSpace` checks for a space after the `#` in
   comments
 * Fix bug where including and excluding the same linter would result in a crash
+* New lint `ConsecutiveComments` checks for consecutive comments that could be
+  condensed into a single multiline comment
 
 ## 0.6.1
 

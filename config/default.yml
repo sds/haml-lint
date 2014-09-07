@@ -6,6 +6,9 @@ linters:
   ClassesBeforeIds:
     enabled: true
 
+  ConsecutiveComments:
+    enabled: true
+
   EmptyScript:
     enabled: true
 
