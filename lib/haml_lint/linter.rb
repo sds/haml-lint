@@ -133,7 +133,7 @@ module HamlLint
       # Next node is either the first child or the "next node" (node's sibling
       # or next sibling of some ancestor)
       next_node_line = [
-        [next_node(tag_node), tag_node.children.first].compact.map(&:line),
+        [tag_node.children.first, next_node(tag_node)].compact.map(&:line),
         parser.lines.count + 1,
       ].flatten.min
 
