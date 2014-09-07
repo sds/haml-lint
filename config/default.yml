@@ -9,6 +9,10 @@ linters:
   ConsecutiveComments:
     enabled: true
 
+  ConsecutiveSilentScripts:
+    enabled: true
+    max_consecutive: 2
+
   EmptyScript:
     enabled: true
 

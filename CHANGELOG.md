@@ -18,6 +18,8 @@
 * Fix bug where including and excluding the same linter would result in a crash
 * New lint `ConsecutiveComments` checks for consecutive comments that could be
   condensed into a single multiline comment
+* New lint `ConsecutiveSilentScripts` checks for consecutive lines of Ruby code
+  that could be condensed into a single `:ruby` filter block
 
 ## 0.6.1
 
