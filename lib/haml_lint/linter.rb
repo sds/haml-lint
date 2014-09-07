@@ -119,12 +119,9 @@ module HamlLint
       siblings = node.parent.children
 
       next_sibling = siblings[siblings.index(node) + 1] if siblings.count > 1
+      return next_sibling if next_sibling
 
-      if next_sibling
-        next_sibling
-      else
-        next_node(node.parent)
-      end
+      next_node(node.parent)
     end
 
     # Extracts all text for a tag node and normalizes it, including additional
