@@ -12,6 +12,9 @@ linters:
   ImplicitDiv:
     enabled: true
 
+  LeadingCommentSpace:
+    enabled: true
+
   LineLength:
     enabled: true
     max: 80

@@ -5,6 +5,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [ClassesBeforeIds](#classesbeforeids)
 * [EmptyScript](#emptyscript)
 * [ImplicitDiv](#implicitdiv)
+* [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
 * [RuboCop](#rubocop)
@@ -69,6 +70,22 @@ Avoid writing `%div` when it would otherwise be implicit.
 
 HAML was designed to be concise, and not embracing this philosophy makes the
 tool less useful.
+
+## LeadingCommentSpace
+
+Separate comments from the leading `#` by a space.
+
+**Bad**
+```haml
+-#Comment with no space
+```
+
+**Good**
+```haml
+-# Comment with space
+```
+
+The latter is more readable.
 
 ## LineLength
 

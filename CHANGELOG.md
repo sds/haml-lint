@@ -13,6 +13,8 @@
   HAML comments
 * New lint `EmptyScript` checks for empty scripts (e.g. `-` followed by
   nothing)
+* New lint `LeadingCommentSpace` checks for a space after the `#` in
+  comments
 
 ## 0.6.1
 
