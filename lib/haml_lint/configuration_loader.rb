@@ -10,7 +10,7 @@ module HamlLint
     class << self
       def load_applicable_config
         directory = File.expand_path(Dir.pwd)
-        config_file = possible_config_files(directory).find { |path| path.file? }
+        config_file = possible_config_files(directory).find(&:file?)
 
         if config_file
           load_file(config_file.to_path)
