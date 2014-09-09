@@ -40,7 +40,7 @@ module HamlLint
       add_lint(node, DESCRIPTION_FORMAT % '-') if missing_space?(node)
     end
 
-  private
+    private
 
     DESCRIPTION_FORMAT = 'The %s symbol should have one space separating it from code'
 

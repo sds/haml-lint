@@ -54,7 +54,7 @@ module HamlLint
       self.class.new(smart_merge(@hash, config.hash))
     end
 
-  private
+    private
 
     # Validates the configuration for any invalid options, normalizing it where
     # possible.

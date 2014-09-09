@@ -44,7 +44,7 @@ module HamlLint
               error.backtrace
       end
 
-    private
+      private
 
       def load_from_file(file)
         hash =

@@ -21,7 +21,7 @@ module HamlLint
       find_lints(extracted_code + "\n") unless extracted_code.empty?
     end
 
-  private
+    private
 
     def find_lints(code)
       original_filename = @parser.filename || 'ruby_script'

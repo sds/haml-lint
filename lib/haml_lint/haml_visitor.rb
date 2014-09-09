@@ -27,7 +27,7 @@ module HamlLint
       parent.children.each { |node| visit(node) }
     end
 
-  private
+    private
 
     def node_name(node)
       node.type

@@ -29,7 +29,7 @@ module HamlLint
       'Wrap on comma or extract code into helper.'
     end
 
-  private
+    private
 
     MULTILINE_PIPE_REGEX = /\s+\|\s*$/
 

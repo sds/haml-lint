@@ -29,7 +29,7 @@ module HamlLint
       @tree.children.pop
     end
 
-  private
+    private
 
     def process_options(options)
       if options['skip_frontmatter'] &&

@@ -94,7 +94,7 @@ module HamlLint
       color(36, *args)
     end
 
-  private
+    private
 
     def color(code, output, newline = true)
       log(@out.tty? ? "\033[#{code}m#{output}\033[0m" : output, newline)

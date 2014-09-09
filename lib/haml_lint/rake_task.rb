@@ -24,7 +24,7 @@ module HamlLint
       end
     end
 
-  private
+    private
 
     def init_args(args)
       @name = args.shift || 'haml_lint'

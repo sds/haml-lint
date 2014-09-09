@@ -96,7 +96,7 @@ module HamlLint
       end
     end
 
-  private
+    private
 
     def add_line(code, node_or_line)
       return if code.empty?

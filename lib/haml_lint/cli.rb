@@ -35,7 +35,7 @@ module HamlLint
       Sysexits::EX_SOFTWARE
     end
 
-  private
+    private
 
     attr_reader :log
 

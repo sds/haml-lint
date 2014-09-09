@@ -26,7 +26,7 @@ module HamlLint
       HamlLint::Report.new(@lints)
     end
 
-  private
+    private
 
     def load_applicable_config(options)
       if options[:config_file]

@@ -28,7 +28,7 @@ module HamlLint
             ex.backtrace
     end
 
-  private
+    private
 
     def add_linter_options(parser)
       parser.on('-e', '--exclude file,...', Array,

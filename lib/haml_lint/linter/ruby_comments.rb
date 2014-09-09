@@ -9,7 +9,7 @@ module HamlLint
       end
     end
 
-  private
+    private
 
     def code_comment?(node)
       node.value[:text] =~ /\A\s+#/

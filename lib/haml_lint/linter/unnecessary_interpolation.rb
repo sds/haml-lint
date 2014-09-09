@@ -20,7 +20,7 @@ module HamlLint
       end
     end
 
-  private
+    private
 
     def only_interpolation?(content)
       content.lstrip.start_with?('"#{')

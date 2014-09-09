@@ -25,7 +25,7 @@ module HamlLint
       self.class.name.split('::').last
     end
 
-  private
+    private
 
     attr_reader :config
 
