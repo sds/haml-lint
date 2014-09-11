@@ -16,7 +16,7 @@ module HamlLint
 
       @lints = []
       files.each do |file|
-        find_lints(file, linters)
+        find_lints(file, linters, config)
       end
 
       linters.each do |linter|
@@ -53,8 +53,8 @@ module HamlLint
       end.compact
     end
 
-    def find_lints(file, linters)
-      parser = Parser.new(file)
+    def find_lints(file, linters, config)
+      parser = Parser.new(file, config.hash)
 
       linters.each do |linter|
         linter.run(parser)
