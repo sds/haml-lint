@@ -20,6 +20,7 @@
   condensed into a single multiline comment
 * New lint `ConsecutiveSilentScripts` checks for consecutive lines of Ruby code
   that could be condensed into a single `:ruby` filter block
+* Fix bug in Linter::UnnecessaryStringOutput when tag is empty
 
 ## 0.6.1
 
