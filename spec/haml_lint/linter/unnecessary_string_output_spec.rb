@@ -3,6 +3,13 @@ require 'spec_helper'
 describe HamlLint::Linter::UnnecessaryStringOutput do
   include_context 'linter'
 
+  context 'when tag is empty' do
+    let(:haml) { <<-HAML }
+      %tag
+    HAML
+    it { should_not report_lint }
+  end
+
   context 'when tag contains inline text without interpolation' do
     let(:haml) { '%tag Some inline text' }
     it { should_not report_lint }
