@@ -1,6 +1,8 @@
 module HamlLint
   # Stores configuration for haml-lint.
   class Configuration
+    attr_reader :hash
+
     # Creates a configuration from the given options hash.
     #
     # @param options [Hash]
@@ -51,10 +53,6 @@ module HamlLint
     def merge(config)
       self.class.new(smart_merge(@hash, config.hash))
     end
-
-  protected
-
-    attr_reader :hash
 
   private
 
