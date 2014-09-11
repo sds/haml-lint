@@ -47,6 +47,7 @@ module HamlLint
     # @param string [String]
     # @return [true,false]
     def contains_interpolation?(string)
+      return false unless string
       Haml::Util.contains_interpolation?(string)
     end
 
@@ -57,8 +58,7 @@ module HamlLint
     # @return [true,false]
     def tag_has_inline_script?(tag_node)
       tag_with_inline_content = tag_with_inline_text(tag_node)
-      inline_content = inline_node_content(tag_node)
-
+      return false unless inline_content = inline_node_content(tag_node)
       return false unless index = tag_with_inline_content.rindex(inline_content)
 
       index -= 1
