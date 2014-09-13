@@ -55,7 +55,7 @@ describe HamlLint::Parser do
     HAML
 
     it 'raises HAML error' do
-      expect { parser }.to raise_error('Invalid filter name ":key: value".')
+      expect { parser }.to raise_error Haml::Error
     end
   end
 end
