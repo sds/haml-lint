@@ -3,6 +3,9 @@ module HamlLint
   class Linter::MultilinePipe < Linter
     include LinterRegistry
 
+    MESSAGE = "Don't use the `|` character to split up lines. " \
+              'Wrap on commas or extract code into helper.'
+
     def visit_tag(node)
       check(node)
     end
@@ -21,12 +24,7 @@ module HamlLint
       # Plain text nodes are allowed to consist of a single pipe
       return if line.strip == '|'
 
-      add_lint(node) if line.match(MULTILINE_PIPE_REGEX)
-    end
-
-    def message
-      "Don't use the `|` character to split up lines. " \
-      'Wrap on comma or extract code into helper.'
+      add_lint(node, MESSAGE) if line.match(MULTILINE_PIPE_REGEX)
     end
 
     private
@@ -39,7 +37,7 @@ module HamlLint
 
     def check(node)
       line = line_text_for_node(node)
-      add_lint(node) if line.match(MULTILINE_PIPE_REGEX)
+      add_lint(node, MESSAGE) if line.match(MULTILINE_PIPE_REGEX)
     end
   end
 end
