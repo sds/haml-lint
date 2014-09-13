@@ -54,8 +54,8 @@ describe HamlLint::Parser do
       - 'some code'
     HAML
 
-    it 'raises HAML error' do
-      expect { parser }.to raise_error Haml::Error
+    it 'raises a HAML error' do
+      expect { parser }.to raise_error(/invalid filter/i)
     end
   end
 end
