@@ -87,6 +87,17 @@ All linters have an `enabled` option which can be `true` or `false`, which
 controls whether the linter is run, along with linter-specific options. The
 defaults are defined in [`config/default.yml`](config/default.yml).
 
+### Skipping Frontmatter
+
+Some static blog generators such as [Jekyll](http://jekyllrb.com/) include some
+leading frontmatter to the template for their own tracking purposes.
+`haml-lint` allows you to ignore these headers by specifying the
+`skip_frontmatter` option in your `.haml-lint.yml` configuration:
+
+```yaml
+skip_frontmatter: true
+```
+
 ## Linters
 
 ### [» Linters Documentation](lib/haml_lint/linter/README.md)

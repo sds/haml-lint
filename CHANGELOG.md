@@ -21,6 +21,9 @@
 * New lint `ConsecutiveSilentScripts` checks for consecutive lines of Ruby code
   that could be condensed into a single `:ruby` filter block
 * Fix bug in Linter::UnnecessaryStringOutput when tag is empty
+* Add `skip_frontmatter` option to configuration which customizes whether
+  frontmatter included at the beginning of HAML files in frameworks like
+  Jekyll/Middleman are ignored
 
 ## 0.6.1
 

@@ -2,6 +2,11 @@
 #
 # This is an opinionated list of which hooks are valuable to run and what their
 # out of the box settings should be.
+
+# Whether to ignore frontmatter at the beginning of HAML documents for
+# frameworks such as Jekyll/Middleman
+skip_frontmatter: false
+
 linters:
   ClassesBeforeIds:
     enabled: true
