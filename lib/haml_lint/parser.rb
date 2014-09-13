@@ -13,21 +13,7 @@ module HamlLint
         @contents = haml_or_filename
       end
 
-      if options['skip_frontmatter'] &&
-        @contents =~ /
-          # from the start of the string
-          \A
-          # first-capture match --- followed by optional whitespace up
-          # to a newline then 0 or more chars followed by an optional newline.
-          # this matches the --- and the contents of the frontmatter
-          (---\s*\n.*?\n?)
-          # from the start of the line
-          ^
-          # second capture match --- or ... followed by optional whitespace
-          # and newline. This matches the closing --- for the frontmatter.
-          (---|\.\.\.)\s*$\n?/mx
-        @contents = $POSTMATCH
-      end
+      process_options(options)
 
       @lines = @contents.split("\n")
       @tree = Haml::Parser.new(@contents, Haml::Options.new).parse
@@ -35,6 +21,26 @@ module HamlLint
       # Remove the trailing empty HAML comment that the parser creates to signal
       # the end of the HAML document
       @tree.children.pop
+    end
+
+  private
+
+    def process_options(options)
+      if options['skip_frontmatter'] &&
+        @contents =~ /
+          # From the start of the string
+          \A
+          # First-capture match --- followed by optional whitespace up
+          # to a newline then 0 or more chars followed by an optional newline.
+          # This matches the --- and the contents of the frontmatter
+          (---\s*\n.*?\n?)
+          # From the start of the line
+          ^
+          # Second capture match --- or ... followed by optional whitespace
+          # and newline. This matches the closing --- for the frontmatter.
+          (---|\.\.\.)\s*$\n?/mx
+        @contents = $POSTMATCH
+      end
     end
   end
 end
