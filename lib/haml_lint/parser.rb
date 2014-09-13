@@ -5,6 +5,12 @@ module HamlLint
   class Parser
     attr_reader :contents, :filename, :lines, :tree
 
+    # Creates a parser containing the parse tree of a HAML document.
+    #
+    # @param haml_or_filename [String]
+    # @param options [Hash]
+    # @option options [true,false] 'skip_frontmatter' Whether to skip
+    #   frontmatter included by frameworks such as Middleman or Jekyll
     def initialize(haml_or_filename, options = {})
       if File.exist?(haml_or_filename)
         @filename = haml_or_filename
