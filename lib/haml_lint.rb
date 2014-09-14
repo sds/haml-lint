@@ -18,6 +18,7 @@ require 'haml'
 
 # Load all parse tree node classes
 require 'haml_lint/tree/node'
+require 'haml_lint/node_transformer'
 Dir[File.expand_path('haml_lint/tree/*.rb', File.dirname(__FILE__))].each do |file|
   require file
 end

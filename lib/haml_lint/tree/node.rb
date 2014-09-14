@@ -9,18 +9,16 @@ module HamlLint::Tree
   #
   # @abstract
   class Node
-    attr_accessor :children
-    attr_reader :line, :parent, :type
+    attr_accessor :children, :parent
+    attr_reader :line, :type
 
     # Creates a node wrapping the given {Haml::Parser::ParseNode} struct.
     #
     # @param parser [HamlLint::Parser] parser that created this node
     # @param parse_node [Haml::Parser::ParseNode] parse node created by HAML's parser
-    # @param parent [HamlLint::Tree::Node] parent of this node
-    def initialize(parser, parse_node, parent)
+    def initialize(parser, parse_node)
       # TODO: Change signature to take source code object, not parser
       @line = parse_node.line
-      @parent = parent
       @parser = parser
       @value = parse_node.value
       @type = parse_node.type
@@ -31,6 +29,10 @@ module HamlLint::Tree
     # @return [String]
     def first_line_source
       @parser.lines[@line - 1]
+    end
+
+    def inspect
+      "#<#{self.class.name}>"
     end
 
     # Returns the text content of this node.

@@ -28,7 +28,8 @@ module HamlLint
       # the end of the HAML document
       original_tree.children.pop
 
-      @tree = decorate_tree(original_tree)
+      @node_transformer = HamlLint::NodeTransformer.new(self)
+      @tree = convert_tree(original_tree)
     end
 
     private
@@ -51,22 +52,16 @@ module HamlLint
       end
     end
 
-    # Decorates a HAML parse tree with {HamlLint::Tree::Node} objects.
+    # Converts a HAML parse tree to a tree of {HamlLint::Tree::Node} objects.
     #
     # This provides a cleaner interface with which the linters can interact with
     # the parse tree.
-    def decorate_tree(haml_node, parent = nil)
-      node_class = "#{HamlLint::Utils.camel_case(haml_node.type.to_s)}Node"
-
-      begin
-        new_node = HamlLint::Tree.const_get(node_class).new(self, haml_node, parent)
-      rescue NameError
-        # TODO: Wrap in parser error?
-        raise
-      end
+    def convert_tree(haml_node, parent = nil)
+      new_node = @node_transformer.transform(haml_node)
+      new_node.parent = parent
 
       new_node.children = haml_node.children.map do |child|
-        decorate_tree(child, new_node)
+        convert_tree(child, new_node)
       end
 
       new_node
