@@ -13,6 +13,11 @@ describe HamlLint::Linter::UnnecessaryInterpolation do
     it { should_not report_lint }
   end
 
+  context 'when tag contains inline text with interpolation at the start' do
+    let(:haml) { '%tag #{interpolation} -- #{more_interpolation}' }
+    it { should_not report_lint }
+  end
+
   context 'when tag contains inline text with only interpolation' do
     let(:haml) { '%tag #{only_interpolation}' }
     it { should report_lint }

@@ -90,7 +90,7 @@ module HamlLint
           add_line(line, node.line + index + 1)
         end
       else
-        extract_interpolated_values(node.text) do |interpolated_code|
+        HamlLint::Utils.extract_interpolated_values(node.text) do |interpolated_code|
           add_line(interpolated_code, node)
         end
       end
@@ -149,20 +149,6 @@ module HamlLint
 
       return unless keyword = text.scan(Haml::Parser::BLOCK_KEYWORD_REGEX)[0]
       keyword[0] || keyword[1]
-    end
-
-    # Yields interpolated values within a block of filter text.
-    def extract_interpolated_values(filter_text)
-      Haml::Util.handle_interpolation(filter_text.dump) do |scan|
-        escape_count = (scan[2].size - 1) / 2
-        scan.matched[0...-3 - escape_count]
-        if escape_count.even?
-          dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
-
-          # Hacky way to turn a dumped string back into a regular string
-          yield eval('"' + dumped_interpolated_str + '"') # rubocop:disable Eval
-        end
-      end
     end
   end
 end

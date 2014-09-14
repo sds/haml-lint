@@ -10,20 +10,20 @@ module HamlLint
     include LinterRegistry
 
     def visit_tag(node)
-      inline_content = node.script
-      return if inline_content.empty?
+      return if node.script.empty?
 
-      if contains_interpolation?(inline_content) &&
-         only_interpolation?(inline_content)
+      count = 0
+      chars = 2 # Include surrounding quote chars
+      HamlLint::Utils.extract_interpolated_values(node.script) do |interpolated_code|
+        count += 1
+        return if count > 1
+        chars += interpolated_code.length + 3
+      end
+
+      if chars == node.script.length
         add_lint(node, '`%... \#{expression}` can be written without ' \
                        'interpolation as `%...= expression`')
       end
-    end
-
-    private
-
-    def only_interpolation?(content)
-      content.lstrip.start_with?('"#{')
     end
   end
 end
