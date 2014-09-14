@@ -34,6 +34,9 @@ linters:
   MultilinePipe:
     enabled: true
 
+  ObjectReferenceAttributes:
+    enabled: true
+
   RuboCop:
     enabled: true
     # These cops are incredibly noisy when it comes to HAML templates, so we

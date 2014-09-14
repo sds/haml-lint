@@ -10,6 +10,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
+* [ObjectReferenceAttributes](#objectreferenceattributes)
 * [RuboCop](#rubocop)
 * [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
@@ -195,6 +196,30 @@ The multiline bar was
 `haml-lint` takes this a step further by discouraging its use entirely, as it
 almost always suggests an unnecessarily complicated template that should have
 its logic extracted into a helper.
+
+## ObjectReferenceAttributes
+
+Don't use the
+[object reference syntax](http://haml.info/docs/yardoc/file.REFERENCE.html#object_reference_)
+to set the class/id of an element.
+
+**Bad**
+```haml
+%li[@user]
+  = @user.name
+```
+
+**Good**
+```haml
+%li.user{ id: "user_#{@user.id}" }
+  = @user.name
+```
+
+The object reference syntax is a bit magical, and makes it difficult to find
+where in your code a particular class attribute is defined. It is also tied
+directly to the class names of the objects you pass to it, creating an
+unnecessarily coupling which can make refactoring your models affect your
+views.
 
 ## RuboCop
 

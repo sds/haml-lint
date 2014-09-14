@@ -26,6 +26,8 @@
   Jekyll/Middleman are ignored
 * Change parse tree hierarchy to use `HamlLint::Tree::Node` subclasses instead
   of the `Haml::Parser::ParseNode` struct to make working with it easier
+* New lint `ObjectReferenceAttributes` checks for the use of the object
+  reference syntax to set the class/id of an element
 
 ## 0.6.1
 
