@@ -10,8 +10,8 @@ module HamlLint
     include LinterRegistry
 
     def visit_tag(node)
-      inline_content = node.value[:value]
-      return unless inline_content
+      inline_content = node.script
+      return if inline_content.empty?
 
       if contains_interpolation?(inline_content) &&
          only_interpolation?(inline_content)

@@ -43,7 +43,7 @@ module HamlLint
     end
 
     def visit_tag(node)
-      additional_attributes = node.value[:attributes_hashes]
+      additional_attributes = node.attributes_hashes
 
       # Include dummy references to code executed in attributes list
       # (this forces a "use" of a variable to prevent "assigned but unused
@@ -58,12 +58,12 @@ module HamlLint
         add_line("{}.merge(#{attributes_code})", node)
       end
 
-      code = node.value[:value].to_s.strip
-      add_line(code, node) if node.value[:parse]
+      code = node.script.strip
+      add_line(code, node) unless code.empty?
     end
 
     def visit_script(node)
-      code = node.value[:text].to_s
+      code = node.text
       add_line(code.strip, node)
 
       start_block = anonymous_block?(code) || start_block_keyword?(code)
@@ -85,12 +85,12 @@ module HamlLint
     end
 
     def visit_filter(node)
-      if node.value[:name] == 'ruby'
-        node.value[:text].split("\n").each_with_index do |line, index|
+      if node.filter_type == 'ruby'
+        node.text.split("\n").each_with_index do |line, index|
           add_line(line, node.line + index + 1)
         end
       else
-        extract_interpolated_values(node.value[:text]) do |interpolated_code|
+        extract_interpolated_values(node.text) do |interpolated_code|
           add_line(interpolated_code, node)
         end
       end

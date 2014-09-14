@@ -5,15 +5,16 @@ module HamlLint
     include LinterRegistry
 
     def visit_tag(node)
-      return unless node.value[:name] == 'div'
+      return unless node.tag_name == 'div'
 
-      return unless node.value[:attributes]['class'] ||
-                    node.value[:attributes]['id']
+      return unless node.static_classes.any? || node.static_ids.any?
 
-      tag = @parser.lines[node.line - 1][/\s*([^\s={\(\[]+)/, 1]
+      tag = node.first_line_source[/\s*([^\s={\(\[]+)/, 1]
       return unless tag.start_with?('%div')
 
-      add_lint(node, "`#{tag}` can be written as `#{tag[4..-1]}` since `%div` is implicit")
+      add_lint(node,
+               "`#{tag}` can be written as `#{node.static_attributes_source}` " \
+               'since `%div` is implicit')
     end
   end
 end

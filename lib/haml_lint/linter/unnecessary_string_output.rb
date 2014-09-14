@@ -26,7 +26,7 @@ module HamlLint
     private
 
     def outputs_string_literal?(script_node)
-      %w[' "].include?(script_node.value[:text].lstrip[0])
+      %w[' "].include?(script_node.script.lstrip[0])
     end
   end
 end

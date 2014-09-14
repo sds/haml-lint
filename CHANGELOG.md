@@ -24,6 +24,8 @@
 * Add `skip_frontmatter` option to configuration which customizes whether
   frontmatter included at the beginning of HAML files in frameworks like
   Jekyll/Middleman are ignored
+* Change parse tree hierarchy to use `HamlLint::Tree::Node` subclasses instead
+  of the `Haml::Parser::ParseNode` struct to make working with it easier
 
 ## 0.6.1
 

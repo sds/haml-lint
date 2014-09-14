@@ -12,7 +12,7 @@ module HamlLint
     private
 
     def code_comment?(node)
-      node.value[:text] =~ /\A\s+#/
+      node.script =~ /\A\s+#/
     end
   end
 end

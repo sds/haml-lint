@@ -19,7 +19,7 @@ describe HamlLint::HamlVisitor do
     context 'when visitor defines a visit_* method with no yield statement' do
       class NoYieldVisitor < TrackingVisitor
         def visit_tag(node)
-          @node_order << node.value[:name]
+          @node_order << node.tag_name
         end
       end
 
@@ -39,7 +39,7 @@ describe HamlLint::HamlVisitor do
     context 'when visitor defines a visit_* method which yields :none' do
       class YieldFalseVisitor < TrackingVisitor
         def visit_tag(node)
-          @node_order << node.value[:name]
+          @node_order << node.tag_name
           yield :none
         end
       end
@@ -66,7 +66,7 @@ describe HamlLint::HamlVisitor do
       class YieldChildrenVisitor < TrackingVisitor
         def visit_tag(node)
           yield :children
-          @node_order << node.value[:name]
+          @node_order << node.tag_name
         end
       end
 
@@ -91,7 +91,7 @@ describe HamlLint::HamlVisitor do
     context 'when visitor defines a visit_script method' do
       class ScriptVisitor < TrackingVisitor
         def visit_script(node)
-          @node_order << node.value[:text].strip
+          @node_order << node.script.strip
         end
       end
 
@@ -125,7 +125,7 @@ describe HamlLint::HamlVisitor do
     context 'when visitor defines a visit_silent_script method' do
       class SilentScriptVisitor < TrackingVisitor
         def visit_silent_script(node)
-          @node_order << node.value[:text].strip
+          @node_order << node.script.strip
         end
       end
 
@@ -159,7 +159,7 @@ describe HamlLint::HamlVisitor do
     context 'when visitor defines a visit_haml_comment method' do
       class HamlCommentVisitor < TrackingVisitor
         def visit_haml_comment(node)
-          @node_order << node.value[:text]
+          @node_order << node.text
         end
       end
 

@@ -24,6 +24,11 @@ module HamlLint
       files.uniq
     end
 
+    # Converts a string containing underscores/hyphens/spaces into CamelCase.
+    def camel_case(str)
+      str.split(/_|-| /).map { |part| part.sub(/^\w/) { |c| c.upcase } }.join
+    end
+
     # Find all consecutive nodes satisfying the given {Proc} of a minimum size
     # and yield each group.
     #

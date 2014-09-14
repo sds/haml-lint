@@ -4,7 +4,7 @@ module HamlLint
     include LinterRegistry
 
     def visit_tag(node)
-      tag = node.value[:name]
+      tag = node.tag_name
       return unless tag.match(/[A-Z]/)
 
       add_lint(node, "`#{tag}` should be written in lowercase as `#{tag.downcase}`")

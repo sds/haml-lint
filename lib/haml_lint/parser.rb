@@ -22,11 +22,13 @@ module HamlLint
       process_options(options)
 
       @lines = @contents.split("\n")
-      @tree = Haml::Parser.new(@contents, Haml::Options.new).parse
+      original_tree = Haml::Parser.new(@contents, Haml::Options.new).parse
 
       # Remove the trailing empty HAML comment that the parser creates to signal
       # the end of the HAML document
-      @tree.children.pop
+      original_tree.children.pop
+
+      @tree = decorate_tree(original_tree)
     end
 
     private
@@ -47,6 +49,27 @@ module HamlLint
           (---|\.\.\.)\s*$\n?/mx
         @contents = $POSTMATCH
       end
+    end
+
+    # Decorates a HAML parse tree with {HamlLint::Tree::Node} objects.
+    #
+    # This provides a cleaner interface with which the linters can interact with
+    # the parse tree.
+    def decorate_tree(haml_node, parent = nil)
+      node_class = "#{HamlLint::Utils.camel_case(haml_node.type.to_s)}Node"
+
+      begin
+        new_node = HamlLint::Tree.const_get(node_class).new(self, haml_node, parent)
+      rescue NameError
+        # TODO: Wrap in parser error?
+        raise
+      end
+
+      new_node.children = haml_node.children.map do |child|
+        decorate_tree(child, new_node)
+      end
+
+      new_node
     end
   end
 end

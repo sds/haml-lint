@@ -3,11 +3,13 @@ module HamlLint
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
+    MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'
+
     def visit_tag(node) # rubocop:disable CyclomaticComplexity
       # If this tag has inline script
-      return unless node.value[:parse]
+      return unless node.contains_script?
 
-      text = node.value[:value].to_s
+      text = node.script.strip
       return if text.empty?
 
       tag_with_text = tag_with_inline_text(node)
@@ -26,26 +28,24 @@ module HamlLint
       # (need to do it this way as the parser strips whitespace from node)
       return unless tag_with_text[index - 1] != ' '
 
-      add_lint(node, DESCRIPTION_FORMAT % '=')
+      add_lint(node, MESSAGE_FORMAT % '=')
     end
 
     def visit_script(node)
       # Plain text nodes with interpolation are converted to script nodes, so we
       # need to ignore them here.
       return unless parser.lines[node.line - 1].lstrip.start_with?('=')
-      add_lint(node, DESCRIPTION_FORMAT % '=') if missing_space?(node)
+      add_lint(node, MESSAGE_FORMAT % '=') if missing_space?(node)
     end
 
     def visit_silent_script(node)
-      add_lint(node, DESCRIPTION_FORMAT % '-') if missing_space?(node)
+      add_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node)
     end
 
     private
 
-    DESCRIPTION_FORMAT = 'The %s symbol should have one space separating it from code'
-
     def missing_space?(node)
-      text = node.value[:text].to_s
+      text = node.script
       text[0] != ' ' if text
     end
   end

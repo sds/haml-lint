@@ -5,23 +5,20 @@ module HamlLint
 
     # Map of prefixes to the type of tag component
     TYPES_BY_PREFIX = {
-      '%' => :tag,
       '.' => :class,
       '#' => :id,
     }
 
     def visit_tag(node)
-      # Convert %tag.class#id into [%tag, .class, #id] (preserving order)
-      components = tag_definition(node).scan(/[%.#][^%.#]+/)
+      # Convert ".class#id" into [.class, #id] (preserving order)
+      components = node.static_attributes_source.scan(/[.#][^.#]+/)
 
-      component_types = components.map { |comp| [TYPES_BY_PREFIX[comp[0]], comp] }
-
-      # Check each pair component to the next to see if one is out of order
-      component_types[0..-2].zip(component_types[1..-1]).each do |(a_type, a), (b_type, b)|
-        next unless a_type == :id && b_type == :class
+      (1...components.count).each do |index|
+        next unless components[index].start_with?('.') &&
+                    components[index - 1].start_with?('#')
 
         add_lint(node, 'Classes should be listed before IDs '\
-                       "(#{b} should precede #{a})")
+                       "(#{components[index]} should precede #{components[index - 1]})")
         break
       end
     end

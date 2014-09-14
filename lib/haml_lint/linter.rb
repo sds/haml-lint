@@ -47,6 +47,14 @@ module HamlLint
       Haml::Util.contains_interpolation?(string)
     end
 
+    # Returns the portion of a string between two pairs of characters.
+    #
+    # @return [String, nil] the string matched within the balanced pair, or nil
+    #   if no balanced number of characters were found
+    def balance(string, start_char, close_char)
+      Haml::Util.balance(string, start_char, close_char)
+    end
+
     # Returns whether this tag node has inline script, e.g. is of the form
     # %tag= ...
     #
@@ -96,7 +104,7 @@ module HamlLint
     # @param node [Haml::Parser::ParseNode]
     # @return [String]
     def inline_node_content(node)
-      inline_content = node.value[:value]
+      inline_content = node.script
 
       if contains_interpolation?(inline_content)
         strip_surrounding_quotes(inline_content)
