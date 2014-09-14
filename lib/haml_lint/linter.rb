@@ -9,6 +9,7 @@ module HamlLint
     def initialize(config)
       @config = config
       @lints = []
+      @ruby_parser = nil
     end
 
     def run(parser)
@@ -27,6 +28,14 @@ module HamlLint
 
     def add_lint(node, message = nil)
       @lints << Lint.new(self, parser.filename, node.line, message || self.message)
+    end
+
+    # Parse Ruby code into an abstract syntax tree.
+    #
+    # @return [AST::Node]
+    def parse_ruby(source)
+      @ruby_parser ||= HamlLint::RubyParser.new
+      @ruby_parser.parse(source)
     end
 
     # Remove the surrounding double quotes from a string, ignoring any
