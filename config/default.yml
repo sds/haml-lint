@@ -8,6 +8,9 @@
 skip_frontmatter: false
 
 linters:
+  ClassAttributeWithStaticValue:
+    enabled: true
+
   ClassesBeforeIds:
     enabled: true
 

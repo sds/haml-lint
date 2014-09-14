@@ -30,6 +30,8 @@
   reference syntax to set the class/id of an element
 * New lint `HtmlAttributes` checks for the use of the HTML-style attributes
   syntax when defining attributes for an element
+* New lint `ClassAttributeWithStaticValue` checks for assigning static values
+  for class attributes in dynamic hashes
 
 ## 0.6.1
 

@@ -3,8 +3,12 @@ module HamlLint::Tree
   class TagNode < Node
     # Computed set of attribute hashes code.
     #
-    # This is intended to be used by the `ScriptExtractor` only.
-    def attributes_hashes
+    # This is a combination of all dynamically calculated attributes from the
+    # different attribute setting syntaxes (`{...}`/`(...)`), converted into
+    # Ruby code.
+    #
+    # @return [Array<String>]
+    def dynamic_attributes_sources
       @value[:attributes_hashes]
     end
 

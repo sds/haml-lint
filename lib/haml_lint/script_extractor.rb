@@ -43,7 +43,7 @@ module HamlLint
     end
 
     def visit_tag(node)
-      additional_attributes = node.attributes_hashes
+      additional_attributes = node.dynamic_attributes_sources
 
       # Include dummy references to code executed in attributes list
       # (this forces a "use" of a variable to prevent "assigned but unused
