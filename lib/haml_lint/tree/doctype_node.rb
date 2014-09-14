@@ -1,5 +1,5 @@
-module HamlLint
+module HamlLint::Tree
   # Represents a doctype definition for a HAML document.
-  class DoctypeNode
+  class DoctypeNode < Node
   end
 end
