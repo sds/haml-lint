@@ -1,4 +1,4 @@
-module HamlLint
+module HamlLint::Tree
   # Represents a visible XHTML comment in a HAML document.
   class CommentNode
   end
