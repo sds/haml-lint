@@ -21,6 +21,9 @@ linters:
   EmptyScript:
     enabled: true
 
+  HtmlAttributes:
+    enabled: true
+
   ImplicitDiv:
     enabled: true
 

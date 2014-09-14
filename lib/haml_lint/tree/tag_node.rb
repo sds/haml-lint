@@ -75,15 +75,15 @@ module HamlLint::Tree
             case rest[0]
             when '{'
               break if hash_attributes
-              hash_attributes, rest = balance(rest, '{', '}')
+              hash_attributes, rest = Haml::Util.balance(rest, '{', '}')
               dynamic_attributes[:hash] = hash_attributes
             when '('
               break if html_attributes
-              html_attributes, rest = balance(rest, '(', ')')
+              html_attributes, rest = Haml::Util.balance(rest, '(', ')')
               dynamic_attributes[:html] = html_attributes
             when '['
               break if object_reference
-              object_reference, rest = balance(rest, '[', ']')
+              object_reference, rest = Haml::Util.balance(rest, '[', ']')
               dynamic_attributes[:object_ref] = object_reference
             else
               break

@@ -28,6 +28,8 @@
   of the `Haml::Parser::ParseNode` struct to make working with it easier
 * New lint `ObjectReferenceAttributes` checks for the use of the object
   reference syntax to set the class/id of an element
+* New lint `HtmlAttributes` checks for the use of the HTML-style attributes
+  syntax when defining attributes for an element
 
 ## 0.6.1
 
