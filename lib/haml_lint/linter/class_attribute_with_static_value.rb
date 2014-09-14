@@ -26,7 +26,16 @@ module HamlLint
 
     def contains_class_attribute?(attributes_sources)
       attributes_sources.each do |code|
-        ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
+        begin
+          ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
+        rescue => ex
+          if ex.message =~ /tRCURLY/
+            # Code is likely a method call instead of a hash, so ignore it
+            next
+          else
+            raise
+          end
+        end
 
         ast_root.children.each do |pair|
           return true if static_class_attribute_value?(pair)
