@@ -44,4 +44,13 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
     let(:haml) { "= 'hello world'" }
     it { should report_lint }
   end
+
+  context 'when tag contains nested text with interpolation' do
+    let(:haml) { <<-'HAML' }
+      %tag
+        Some #{interpolated} text
+    HAML
+
+    it { should_not report_lint }
+  end
 end

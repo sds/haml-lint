@@ -18,6 +18,10 @@ module HamlLint
     end
 
     def visit_script(node)
+      # Some script nodes created by the HAML parser aren't actually script
+      # nodes declared via the `=` marker. Check for it.
+      return if node.first_line_source !~ /\s*=/
+
       if outputs_string_literal?(node)
         add_lint(node, MESSAGE)
       end
