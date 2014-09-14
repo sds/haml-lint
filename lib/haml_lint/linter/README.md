@@ -7,6 +7,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [ConsecutiveSilentScripts](#consecutivesilentscripts)
 * [EmptyScript](#emptyscript)
 * [ImplicitDiv](#implicitdiv)
+* [HtmlAttributes](#htmlattributes)
 * [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
