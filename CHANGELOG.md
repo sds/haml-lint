@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.7.0
 
 * New lint `UnnecessaryInterpolation` checks for interpolation in inline
   tag content that can be written more concisely as just the expression
