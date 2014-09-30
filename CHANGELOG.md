@@ -4,6 +4,8 @@
 
 * Fix bug in `ConsecutiveSilentScripts` where control statements with nested
   HAML would incorrectly be reported as silent scripts
+* Fix bug in `ImplicitDiv` where incorrect lint would be reported for `div`
+  tags with dynamic ids or classes
 
 ## 0.7.0
 
