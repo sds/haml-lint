@@ -290,7 +290,7 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
 ```
 
 You can customize which RuboCop warnings you want to ignore by modifying
-the `ignored_cops` option (see [`config/default.yml`](config/default.yml)
+the `ignored_cops` option (see [`config/default.yml`](/config/default.yml)
 for the full list of ignored cops).
 
 ## RubyComments
