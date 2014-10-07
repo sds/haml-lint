@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix bug in `ConsecutiveSilentScripts` where control statements with nested
+  HAML would incorrectly be reported as silent scripts
+
 ## 0.7.0
 
 * New lint `UnnecessaryInterpolation` checks for interpolation in inline

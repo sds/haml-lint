@@ -22,6 +22,22 @@ describe HamlLint::Linter::ConsecutiveSilentScripts do
       it { should report_lint line: 1 }
       it { should_not report_lint line: 2 }
       it { should_not report_lint line: 3 }
+
+      context 'and they contain nested content that results in output' do
+        let(:haml) { <<-HAML }
+          - if expression
+            = some_output
+            %br
+          - if expression2
+            = some_output2
+            %br
+          - if expression3
+            = some_output3
+            %br
+        HAML
+
+        it { should_not report_lint }
+      end
     end
   end
 

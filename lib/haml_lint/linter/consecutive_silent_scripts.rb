@@ -4,13 +4,15 @@ module HamlLint
   class Linter::ConsecutiveSilentScripts < Linter
     include LinterRegistry
 
-    SCRIPT_DETECTOR = ->(child) { child.type == :silent_script }
+    SILENT_SCRIPT_DETECTOR = ->(child) do
+      child.type == :silent_script && child.children.empty?
+    end
 
     def visit_root(node)
       HamlLint::Utils.find_consecutive(
         node.children,
         config['max_consecutive'] + 1,
-        SCRIPT_DETECTOR,
+        SILENT_SCRIPT_DETECTOR,
       ) do |group|
         add_lint(group.first,
                  "#{group.count} consecutive Ruby scripts can be merged into " \
