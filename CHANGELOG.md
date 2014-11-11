@@ -6,6 +6,8 @@
   HAML would incorrectly be reported as silent scripts
 * Fix bug in `ImplicitDiv` where incorrect lint would be reported for `div`
   tags with dynamic ids or classes
+* Fix bug in `ClassAttributeWithStaticValue` where syntax errors in attributes
+  would result in a crash
 
 ## 0.7.0
 

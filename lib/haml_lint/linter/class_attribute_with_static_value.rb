@@ -28,13 +28,8 @@ module HamlLint
       attributes_sources.each do |code|
         begin
           ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
-        rescue => ex
-          if ex.message =~ /tRCURLY/
-            # Code is likely a method call instead of a hash, so ignore it
-            next
-          else
-            raise
-          end
+        rescue ::Parser::SyntaxError
+          next # RuboCop linter will report syntax errors
         end
 
         ast_root.children.each do |pair|

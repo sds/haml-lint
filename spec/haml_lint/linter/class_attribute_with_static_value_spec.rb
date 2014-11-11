@@ -44,4 +44,10 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
 
     it { should_not report_lint }
   end
+
+  context 'when tag attributes contain syntax errors' do
+    let(:haml) { '%th{ :class: value }' }
+
+    it { should_not report_lint }
+  end
 end
