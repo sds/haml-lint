@@ -5,14 +5,14 @@ module HamlLint
 
     MSG = 'Line is too long. [%d/%d]'
 
-    def visit_root(node)
+    def visit_root(_node)
       max_length = config['max']
+      dummy_node = Struct.new(:line)
 
       parser.lines.each_with_index do |line, index|
         next if line.length <= max_length
 
-        node = Struct.new(:line)
-        add_lint(node.new(index + 1), format(MSG, line.length, max_length))
+        add_lint(dummy_node.new(index + 1), format(MSG, line.length, max_length))
       end
     end
   end

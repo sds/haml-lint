@@ -96,7 +96,7 @@ describe HamlLint::ScriptExtractor do
         %tag{ one: 1 }= script
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge(one: 1)
         script
       RUBY
@@ -122,7 +122,7 @@ describe HamlLint::ScriptExtractor do
           - script_three
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         if condition
           script_one
         elsif condition_two
@@ -139,7 +139,7 @@ describe HamlLint::ScriptExtractor do
           = script
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         link_to path do
           script
         end
@@ -152,7 +152,7 @@ describe HamlLint::ScriptExtractor do
           = value
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         for value in list
           value
         end
@@ -166,7 +166,7 @@ describe HamlLint::ScriptExtractor do
           - value += 1
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         while value < 10
           value
           value += 1
@@ -183,7 +183,7 @@ describe HamlLint::ScriptExtractor do
           end
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         method_one
         if condition
           method_two
@@ -201,7 +201,7 @@ describe HamlLint::ScriptExtractor do
           end
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         if condition
           do_something
         else
@@ -220,7 +220,7 @@ describe HamlLint::ScriptExtractor do
               end
         HAML
 
-        it { should == normalize_indent(<<-RUBY) }
+        it { should == normalize_indent(<<-RUBY).rstrip }
           something do
             if condition
               do_something
@@ -239,7 +239,7 @@ describe HamlLint::ScriptExtractor do
           Some more text \#{some_other_method} with interpolation.
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         some_method
         some_other_method
       RUBY
@@ -252,7 +252,7 @@ describe HamlLint::ScriptExtractor do
           Some text \#{some_other_method('world')}
       HAML
 
-      it { should == normalize_indent(<<-RUBY) }
+      it { should == normalize_indent(<<-RUBY).rstrip }
         some_method("hello")
         some_other_method('world')
       RUBY
@@ -261,15 +261,15 @@ describe HamlLint::ScriptExtractor do
     context 'with a filter with interpolated values spanning multiple lines' do
       let(:haml) { <<-HAML }
         :filter
-          Some text \#{some_method("hello",
-                                   "world")}
+          Some text \#{some_method('hello',
+                                   'world')}
       HAML
 
       # TODO: Figure out if it's worth normalizing indentation for the generated
       # code in this interpolated context
-      it { should == normalize_indent(<<-RUBY) }
-        some_method("hello",
-                                 "world")
+      it { should == normalize_indent(<<-RUBY).rstrip }
+        some_method('hello',
+                                 'world')
       RUBY
     end
   end

@@ -55,7 +55,7 @@ module HamlLint
         # Attributes can either be a method call or a literal hash, so wrap it
         # in a method call itself in order to avoid having to differentiate the
         # two.
-        add_line("{}.merge(#{attributes_code})", node)
+        add_line("{}.merge(#{attributes_code.strip})", node)
       end
 
       code = node.script.strip

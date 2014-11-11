@@ -8,6 +8,7 @@
   tags with dynamic ids or classes
 * Fix bug in `ClassAttributeWithStaticValue` where syntax errors in attributes
   would result in a crash
+* Add `TrailingWhitespace` linter which checks for whitespace at the end of a line
 
 ## 0.7.0
 

@@ -52,6 +52,7 @@ linters:
       - Lint/EndAlignment
       - Lint/Void
       - Metrics/LineLength
+      - Style/AlignParameters
       - Style/BlockNesting
       - Style/FileName
       - Style/IfUnlessModifier
@@ -67,6 +68,9 @@ linters:
     enabled: true
 
   TagName:
+    enabled: true
+
+  TrailingWhitespace:
     enabled: true
 
   UnnecessaryInterpolation:
