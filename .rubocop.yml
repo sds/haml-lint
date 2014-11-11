@@ -46,6 +46,9 @@ LineLength:
 MethodLength:
   Max: 20
 
+Metrics/AbcSize:
+  Max: 16
+
 # Prefer curly braces except for %i/%w/%W, since those return arrays.
 PercentLiteralDelimiters:
   PreferredDelimiters:
@@ -73,6 +76,9 @@ SingleLineBlockParams:
   Enabled: false
 
 SpecialGlobalVars:
+  Enabled: false
+
+Style/MultilineOperationIndentation:
   Enabled: false
 
 TrailingComma:

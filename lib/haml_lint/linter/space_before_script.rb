@@ -5,7 +5,7 @@ module HamlLint
 
     MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'
 
-    def visit_tag(node) # rubocop:disable CyclomaticComplexity
+    def visit_tag(node) # rubocop:disable Metrics/CyclomaticComplexity
       # If this tag has inline script
       return unless node.contains_script?
 

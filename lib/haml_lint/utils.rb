@@ -28,13 +28,12 @@ module HamlLint
     def extract_interpolated_values(filter_text)
       Haml::Util.handle_interpolation(filter_text.dump) do |scan|
         escape_count = (scan[2].size - 1) / 2
-        scan.matched[0...-3 - escape_count]
-        if escape_count.even?
-          dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
+        return unless escape_count.even?
 
-          # Hacky way to turn a dumped string back into a regular string
-          yield eval('"' + dumped_interpolated_str + '"') # rubocop:disable Eval
-        end
+        dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
+
+        # Hacky way to turn a dumped string back into a regular string
+        yield eval('"' + dumped_interpolated_str + '"') # rubocop:disable Eval
       end
     end
 

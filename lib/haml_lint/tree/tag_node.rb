@@ -66,32 +66,27 @@ module HamlLint::Tree
     #   { :hash => " id: 'hello' ", :html => "lang=en" }
     #
     # @return [Hash]
-    def dynamic_attributes_source # rubocop:disable CyclomaticComplexity, MethodLength
+    def dynamic_attributes_source
       @dynamic_attributes_source ||=
         begin
           _tag_name, _static_attrs, rest = first_line_source
             .scan(/%([-:\w]+)([-:\w\.\#]*)(.*)/)[0]
 
-          dynamic_attributes = {}
-          hash_attributes = html_attributes = object_reference = nil
+          attr_types = {
+            '{' => [:hash, %w[{ }]],
+            '(' => [:html, %w[( )]],
+            '[' => [:object_ref, %w[[ ]]],
+          }
 
+          dynamic_attributes = {}
           while rest
-            case rest[0]
-            when '{'
-              break if hash_attributes
-              hash_attributes, rest = Haml::Util.balance(rest, '{', '}')
-              dynamic_attributes[:hash] = hash_attributes
-            when '('
-              break if html_attributes
-              html_attributes, rest = Haml::Util.balance(rest, '(', ')')
-              dynamic_attributes[:html] = html_attributes
-            when '['
-              break if object_reference
-              object_reference, rest = Haml::Util.balance(rest, '[', ']')
-              dynamic_attributes[:object_ref] = object_reference
-            else
-              break
-            end
+            type, chars = attr_types[rest[0]]
+            break unless type # Not an attribute opening character, so we're done
+
+            # Can't define multiple of the same attribute type (e.g. two {...})
+            break if dynamic_attributes[type]
+
+            dynamic_attributes[type], rest = Haml::Util.balance(rest, *chars)
           end
 
           dynamic_attributes

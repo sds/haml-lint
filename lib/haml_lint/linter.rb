@@ -59,7 +59,7 @@ module HamlLint
     # Returns whether this tag node has inline script, e.g. is of the form
     # %tag= ...
     #
-    # @param tag_node [Haml::Parser::ParseNode]
+    # @param tag_node [HamlLint::Tree::TagNode]
     # @return [true,false]
     def tag_has_inline_script?(tag_node)
       tag_with_inline_content = tag_with_inline_text(tag_node)
@@ -82,7 +82,7 @@ module HamlLint
     #
     #   %tag A literal #{string}
     #
-    # @param node [Haml::Parser::ParseNode]
+    # @param node [HamlLint::Tree::Node]
     # @return [true,false]
     def inline_content_is_string?(node)
       tag_with_inline_content = tag_with_inline_text(node)
@@ -102,7 +102,7 @@ module HamlLint
     #
     # ..."Some inline content" would be the inline content.
     #
-    # @param node [Haml::Parser::ParseNode]
+    # @param node [HamlLint::Tree::Node]
     # @return [String]
     def inline_node_content(node)
       inline_content = node.script
@@ -117,8 +117,8 @@ module HamlLint
     # Gets the next node following this node, ascending up the ancestor chain
     # recursively if this node has no siblings.
     #
-    # @param node [Haml::Parser::ParseNode]
-    # @return [Haml::Parser::ParseNode,nil]
+    # @param node [HamlLint::Tree::Node]
+    # @return [HamlLint::Tree::Node,nil]
     def next_node(node)
       return unless node
       siblings = node.parent ? node.parent.children : [node]
@@ -129,22 +129,26 @@ module HamlLint
       next_node(node.parent)
     end
 
+    # Returns the line of the "following node" (child of this node or sibling or
+    # the last line in the file).
+    #
+    # @param node [HamlLint::Tree::Node]
+    def following_node_line(node)
+      [
+        [node.children.first, next_node(node)].compact.map(&:line),
+        parser.lines.count + 1,
+      ].flatten.min
+    end
+
     # Extracts all text for a tag node and normalizes it, including additional
     # lines following commas or multiline bar indicators ('|')
     #
-    # @param tag_node [Haml::Parser::ParseNode]
+    # @param tag_node [HamlLine::Tree::TagNode]
     # @return [String] source code of original parse node
     def tag_with_inline_text(tag_node)
-      # Next node is either the first child or the "next node" (node's sibling
-      # or next sibling of some ancestor)
-      next_node_line = [
-        [tag_node.children.first, next_node(tag_node)].compact.map(&:line),
-        parser.lines.count + 1,
-      ].flatten.min
-
       # Normalize each of the lines to ignore the multiline bar (|) and
       # excess whitespace
-      parser.lines[(tag_node.line - 1)...(next_node_line - 1)].map do |line|
+      parser.lines[(tag_node.line - 1)...(following_node_line(tag_node) - 1)].map do |line|
         line.strip.gsub(/\|\z/, '').rstrip
       end.join(' ')
     end

@@ -10,6 +10,7 @@ module HamlLint
     def initialize(config)
       super
       @rubocop = ::RuboCop::CLI.new
+      @ignored_cops = Array(config['ignored_cops']).flatten
     end
 
     def run(parser)
@@ -46,9 +47,7 @@ module HamlLint
     end
 
     def extract_lints_from_offences(offences)
-      ignored_cops = Array(config['ignored_cops']).flatten
-
-      offences.select { |offence| !ignored_cops.include?(offence.cop_name) }
+      offences.select { |offence| !@ignored_cops.include?(offence.cop_name) }
               .each do |offence|
         @lints << Lint.new(self,
                            @parser.filename,
