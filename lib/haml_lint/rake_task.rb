@@ -59,7 +59,8 @@ module HamlLint
       require 'haml_lint/cli'
 
       logger = HamlLint::Logger.new(STDOUT)
-      exit HamlLint::CLI.new(logger).run(cli_args)
+      result = HamlLint::CLI.new(logger).run(cli_args)
+      abort('HamlLint failed') unless result == 0
     end
   end
 end
