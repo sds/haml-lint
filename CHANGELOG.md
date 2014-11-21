@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.8.0
 
 * Fix bug in `ConsecutiveSilentScripts` where control statements with nested
   HAML would incorrectly be reported as silent scripts
