@@ -81,6 +81,9 @@ SpecialGlobalVars:
 Style/MultilineOperationIndentation:
   Enabled: false
 
+Style/TrivialAccessors:
+  Enabled: false
+
 TrailingComma:
   Enabled: false
 

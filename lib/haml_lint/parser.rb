@@ -13,15 +13,30 @@ module HamlLint
     #   frontmatter included by frameworks such as Middleman or Jekyll
     def initialize(haml_or_filename, options = {})
       if File.exist?(haml_or_filename)
-        @filename = haml_or_filename
-        @contents = File.read(haml_or_filename)
+        build_from_file(haml_or_filename)
       else
-        @contents = haml_or_filename
+        build_from_string(haml_or_filename)
       end
 
       process_options(options)
 
-      @lines = @contents.split("\n")
+      build_parse_tree
+    end
+
+    private
+
+    # @param path [String]
+    def build_from_file(path)
+      @filename = path
+      @contents = File.read(path)
+    end
+
+    # @param haml [String]
+    def build_from_string(haml)
+      @contents = haml
+    end
+
+    def build_parse_tree
       original_tree = Haml::Parser.new(@contents, Haml::Options.new).parse
 
       # Remove the trailing empty HAML comment that the parser creates to signal
@@ -31,8 +46,6 @@ module HamlLint
       @node_transformer = HamlLint::NodeTransformer.new(self)
       @tree = convert_tree(original_tree)
     end
-
-    private
 
     def process_options(options)
       if options['skip_frontmatter'] &&
@@ -50,6 +63,8 @@ module HamlLint
           (---|\.\.\.)\s*$\n?/mx
         @contents = $POSTMATCH
       end
+
+      @lines = @contents.split("\n")
     end
 
     # Converts a HAML parse tree to a tree of {HamlLint::Tree::Node} objects.
