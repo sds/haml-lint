@@ -41,7 +41,9 @@ module HamlLint
 
       # Remove the trailing empty HAML comment that the parser creates to signal
       # the end of the HAML document
-      original_tree.children.pop
+      if Gem.loaded_specs['haml'].version <= Gem::Version.new('4.0.5')
+        original_tree.children.pop
+      end
 
       @node_transformer = HamlLint::NodeTransformer.new(self)
       @tree = convert_tree(original_tree)
