@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version          = HamlLint::VERSION
   s.license          = 'MIT'
   s.summary          = 'HAML lint tool'
-  s.description      = 'Tool for writing clean and consistent HAML'
+  s.description      = 'Configurable tool for writing clean and consistent HAML'
   s.authors          = ['Causes Engineering', 'Shane da Silva']
   s.email            = ['eng@causes.com', 'shane@causes.com']
   s.homepage         = HamlLint::REPO_URL
