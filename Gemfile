@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 # Pin Rubocop for Travis builds.
 # This won't affect people installing via `gem install` since it's not in the
