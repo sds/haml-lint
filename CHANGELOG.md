@@ -9,6 +9,10 @@
 * Fix bug in `ClassAttributeWithStaticValue` where syntax errors in attributes
   would result in a crash
 * Add `TrailingWhitespace` linter which checks for whitespace at the end of a line
+* Fix bug where last statement of HAML document would be removed when using
+  `haml` 4.1.0.beta.1
+* Fix bug where `ObjectReferenceAttributes` would incorrectly report a bug for
+  all tags when using `haml` 4.1.0.beta.1
 
 ## 0.7.0
 
