@@ -142,7 +142,7 @@ module HamlLint::Tree
     #
     # @return [true,false]
     def object_reference?
-      @value[:object_ref] != 'nil'
+      @value[:object_ref].to_s != 'nil'
     end
 
     # Source code for the contents of the node's object reference.

@@ -20,4 +20,10 @@ describe HamlLint::Linter::ObjectReferenceAttributes do
 
     it { should report_lint }
   end
+
+  context 'when a tag has an object reference with nil inside' do
+    let(:haml) { '%tag[nil]' }
+
+    it { should report_lint }
+  end
 end
