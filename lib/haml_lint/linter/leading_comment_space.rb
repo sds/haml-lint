@@ -4,7 +4,7 @@ module HamlLint
     include LinterRegistry
 
     def visit_haml_comment(node)
-      return if node.text[0] == ' '
+      return if node.text.empty? || node.text[0] == ' '
 
       add_lint(node, 'Comment should have a space after the `#`')
     end

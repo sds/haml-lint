@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix bug in `LeadingCommentSpace` where empty comment lines would incorrectly
+  report lints.
+
 ## 0.8.0
 
 * Fix bug in `ConsecutiveSilentScripts` where control statements with nested
