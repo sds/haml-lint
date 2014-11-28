@@ -14,4 +14,10 @@ describe HamlLint::Linter::LeadingCommentSpace do
 
     it { should report_lint }
   end
+
+  context 'when a comment is on an empty line with no leading space' do
+    let(:haml) { '-#' }
+
+    it { should_not report_lint }
+  end
 end
