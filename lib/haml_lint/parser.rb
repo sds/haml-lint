@@ -41,7 +41,7 @@ module HamlLint
 
       # Remove the trailing empty HAML comment that the parser creates to signal
       # the end of the HAML document
-      if Gem.loaded_specs['haml'].version <= Gem::Version.new('4.0.5')
+      if Gem::Requirement.new('~> 4.0.0').satisfied_by?(Gem.loaded_specs['haml'].version)
         original_tree.children.pop
       end
 

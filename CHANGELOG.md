@@ -4,6 +4,8 @@
 
 * Fix bug in `LeadingCommentSpace` where empty comment lines would incorrectly
   report lints.
+* Fix bug where any `haml` version 4.0.6 or later would not remove the special
+  end-of-document marker from parse trees
 
 ## 0.8.0
 
