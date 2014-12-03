@@ -89,7 +89,7 @@ defaults are defined in [`config/default.yml`](config/default.yml).
 
 ### Skipping Frontmatter
 
-Some static blog generators such as [Jekyll](http://jekyllrb.com/) include some
+Some static blog generators such as [Jekyll](http://jekyllrb.com/) include
 leading frontmatter to the template for their own tracking purposes.
 `haml-lint` allows you to ignore these headers by specifying the
 `skip_frontmatter` option in your `.haml-lint.yml` configuration:
