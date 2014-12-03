@@ -24,6 +24,24 @@ module HamlLint::Tree
       @type = parse_node.type
     end
 
+    # Returns the first node found under the subtree which matches the given
+    # block.
+    #
+    # Returns nil if no node matching the given block was found.
+    #
+    # @return [HamlLint::Tree::Node,nil]
+    def find(&block)
+      return self if block.call(self)
+
+      children.each do |child|
+        if result = child.find(&block)
+          return result
+        end
+      end
+
+      nil # Otherwise no matching node was found
+    end
+
     # Source code of the first line of this node.
     #
     # @return [String]
