@@ -70,9 +70,10 @@ Consecutive comments should be condensed into a single multiline comment.
 
 **Good**
 ```haml
--# A multiline comment
-   is much more clean
-   and concise
+-#
+  A multiline comment
+  is much more clean
+  and concise
 ```
 
 ## ConsecutiveSilentScripts

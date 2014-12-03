@@ -20,4 +20,14 @@ describe HamlLint::Linter::LeadingCommentSpace do
 
     it { should_not report_lint }
   end
+
+  context 'when a comment spans multiple lines' do
+    let(:haml) { <<-HAML }
+      -#
+        One line
+        Two lines
+    HAML
+
+    it { should_not report_lint }
+  end
 end

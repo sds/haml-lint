@@ -35,6 +35,21 @@ module HamlLint::Tree
       "#<#{self.class.name}>"
     end
 
+    # Returns the node that follows this node, whether it be a sibling or an
+    # ancestor's child.
+    #
+    # Returns nil if there is no successor.
+    #
+    # @return [HamlLint::Tree::Node,nil]
+    def successor
+      siblings = parent ? parent.children : [self]
+
+      next_sibling = siblings[siblings.index(self) + 1] if siblings.count > 1
+      return next_sibling if next_sibling
+
+      parent.successor if parent
+    end
+
     # Returns the text content of this node.
     #
     # @return [String]
