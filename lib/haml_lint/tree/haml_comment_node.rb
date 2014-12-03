@@ -17,10 +17,12 @@ module HamlLint::Tree
       (line...last_possible_line).each do |line_number|
         # We strip all leading whitespace since the HAML parser won't allow
         # uneven amount of whitespace between subsequent comment lines
-        content += "\n#{@parser.lines[line_number].gsub(/\s*/, '')}"
+        line_content = @parser.lines[line_number].gsub(/\s*/, '')
+        content += "\n#{line_content}"
       end
 
-      content
+      # Strip trailing whitespace since it doesn't add value to the comment
+      content.rstrip
     end
   end
 end
