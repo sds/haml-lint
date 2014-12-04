@@ -7,4 +7,7 @@ source 'https://rubygems.org'
 # `bundle install` in this repository.
 gem 'rubocop', '0.27.1'
 
+# Run `wwtd` to emulate Travis builds locally
+gem 'wwtd'
+
 gemspec
