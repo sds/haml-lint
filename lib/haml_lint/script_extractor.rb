@@ -64,6 +64,10 @@ module HamlLint
         add_line("{}.merge(#{attributes_code.strip})", node)
       end
 
+      # We add a dummy puts statement to represent the tag name being output.
+      # This prevents some erroneous RuboCop warnings.
+      add_line("puts # #{node.tag_name}", node)
+
       code = node.script.strip
       add_line(code, node) unless code.empty?
     end

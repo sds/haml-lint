@@ -28,7 +28,7 @@ describe HamlLint::ScriptExtractor do
           %b Ipsum
       HAML
 
-      it { should == 'puts # Lorem' }
+      it { should == "puts # h1\nputs # p\nputs # Lorem\nputs # b" }
     end
 
     context 'with a silent script node' do
@@ -63,7 +63,7 @@ describe HamlLint::ScriptExtractor do
           - script
       HAML
 
-      it { should == 'script' }
+      it { should == "puts # tag\nscript" }
     end
 
     context 'with a tag containing a script node' do
@@ -72,7 +72,7 @@ describe HamlLint::ScriptExtractor do
           = script
       HAML
 
-      it { should == 'script' }
+      it { should == "puts # tag\nscript" }
     end
 
     context 'with a tag containing inline script' do
@@ -80,7 +80,7 @@ describe HamlLint::ScriptExtractor do
         %tag= script
       HAML
 
-      it { should == 'script' }
+      it { should == "puts # tag\nscript" }
     end
 
     context 'with a tag with hash attributes' do
@@ -88,7 +88,7 @@ describe HamlLint::ScriptExtractor do
         %tag{ one: 1, two: 2, 'three' => some_method }
       HAML
 
-      it { should == "{}.merge(one: 1, two: 2, 'three' => some_method)" }
+      it { should == "{}.merge(one: 1, two: 2, 'three' => some_method)\nputs # tag" }
     end
 
     context 'with a tag with HTML-style attributes' do
@@ -96,7 +96,7 @@ describe HamlLint::ScriptExtractor do
         %tag(one=1 two=2 three=some_method)
       HAML
 
-      it { should == '{}.merge({"one" => 1,"two" => 2,"three" => some_method,})' }
+      it { should == "{}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})\nputs # tag" }
     end
 
     context 'with a tag with hash attributes and inline script' do
@@ -106,6 +106,7 @@ describe HamlLint::ScriptExtractor do
 
       it { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge(one: 1)
+        puts # tag
         script
       RUBY
     end
@@ -117,7 +118,7 @@ describe HamlLint::ScriptExtractor do
               'three' => 3 }
       HAML
 
-      it { should == "{}.merge(one: 1, two: 2, 'three' => 3)" }
+      it { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag" }
     end
 
     context 'with a block statement' do
