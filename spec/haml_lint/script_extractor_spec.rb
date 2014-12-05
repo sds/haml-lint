@@ -20,6 +20,15 @@ describe HamlLint::ScriptExtractor do
       it { should == 'puts # Hello world' }
     end
 
+    context 'with multiple lines of plain text' do
+      let(:haml) { <<-HAML }
+        Hello world
+        how are you?
+      HAML
+
+      it { should == "puts # Hello world\nputs # how are you?" }
+    end
+
     context 'with only tags with text content' do
       let(:haml) { <<-HAML }
         %h1 Hello World
