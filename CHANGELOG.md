@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.9.0
 
 * Fix bug in `LeadingCommentSpace` where empty comment lines would incorrectly
   report lints.
