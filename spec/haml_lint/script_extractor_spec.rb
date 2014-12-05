@@ -12,6 +12,14 @@ describe HamlLint::ScriptExtractor do
       it { should == '' }
     end
 
+    context 'with plain text' do
+      let(:haml) { <<-HAML }
+        Hello world
+      HAML
+
+      it { should == 'puts # Hello world' }
+    end
+
     context 'with only tags with text content' do
       let(:haml) { <<-HAML }
         %h1 Hello World
@@ -20,7 +28,7 @@ describe HamlLint::ScriptExtractor do
           %b Ipsum
       HAML
 
-      it { should == '' }
+      it { should == 'puts # Lorem' }
     end
 
     context 'with a silent script node' do

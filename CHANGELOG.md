@@ -6,6 +6,8 @@
   report lints.
 * Fix bug where any `haml` version 4.0.6 or later would not remove the special
   end-of-document marker from parse trees
+* Fix bug where RuboCop's `Style/OneLineConditional` lint would incorrectly be
+  reported for HAML code with `if`/`else` statements
 
 ## 0.8.0
 

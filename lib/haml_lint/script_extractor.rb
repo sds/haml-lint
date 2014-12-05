@@ -42,6 +42,12 @@ module HamlLint
       yield # Collect lines of code from children
     end
 
+    def visit_plain(node)
+      # Comment out the actual text as we don't want to deal with RuboCop
+      # StringQuotes lints
+      add_line("puts # #{node.text}", node)
+    end
+
     def visit_tag(node)
       additional_attributes = node.dynamic_attributes_sources
 
