@@ -100,6 +100,32 @@ describe HamlLint::ScriptExtractor do
       it { should == "{}.merge(one: 1, two: 2, 'three' => some_method)\nputs # tag" }
     end
 
+    context 'with a tag with hash attributes with hashrockets and questionable spacing' do
+      let(:haml) { <<-HAML }
+        %tag.class_one.class_two#with_an_id{:type=>'checkbox', 'special' => :true }
+      HAML
+
+      it 'includes the hash attribute source for rubocop inspection' do
+        should == "{:type=>'checkbox', 'special' => :true }\nputs # tag"
+      end
+    end
+
+    context 'with a tag with mixed-style hash attributes' do
+      let(:haml) { <<-HAML }
+        %tag.class_one.class_two#with_an_id{ :type=>'checkbox', special: 'true' }
+      HAML
+
+      it { should == "{}.merge(:type=>'checkbox', special: 'true')\nputs # tag" }
+    end
+
+    context 'with a tag with hash attributes with a method call' do
+      let(:haml) { <<-HAML }
+        %tag{ tag_options_method }
+      HAML
+
+      it { should == "{}.merge(tag_options_method)\nputs # tag" }
+    end
+
     context 'with a tag with HTML-style attributes' do
       let(:haml) { <<-HAML }
         %tag(one=1 two=2 three=some_method)
