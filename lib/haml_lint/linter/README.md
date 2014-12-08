@@ -349,19 +349,19 @@ styles, `space` (default) or `no_space`:
 
 **Bad: inconsistent spacing inside hash attributes braces**
 ```haml
-some_tag{ foo: bar}
-some_tag{foo: bar }
-some_tag{  foo: bar }
+%tag{ foo: bar}
+%tag{foo: bar }
+%tag{  foo: bar }
 ```
 
 **Space: require a single space inside hash attributes braces**
 ```haml
-some_tag{ foo: bar }
+%tag{ foo: bar }
 ```
 
 **No Space: require no space inside hash attributes braces**
 ```haml
-some_tag{foo: bar}
+%tag{foo: bar}
 ```
 
 This offers the ability to ensure consistency of Haml hash
