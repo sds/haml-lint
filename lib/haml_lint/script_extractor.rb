@@ -64,6 +64,8 @@ module HamlLint
         add_line("{}.merge(#{attributes_code.strip})", node)
       end
 
+      check_tag_static_hash_source(node)
+
       # We add a dummy puts statement to represent the tag name being output.
       # This prevents some erroneous RuboCop warnings.
       add_line("puts # #{node.tag_name}", node)
@@ -107,6 +109,17 @@ module HamlLint
     end
 
     private
+
+    def check_tag_static_hash_source(node)
+      # Haml::Parser converts hashrocket-style hash attributes of strings and symbols
+      # to static attributes, and excludes them from the dynamic attribute sources:
+      # https://github.com/haml/haml/blob/08f97ec4dc8f59fe3d7f6ab8f8807f86f2a15b68/lib/haml/parser.rb#L400-L404
+      # https://github.com/haml/haml/blob/08f97ec4dc8f59fe3d7f6ab8f8807f86f2a15b68/lib/haml/parser.rb#L540-L554
+      # Here, we add the hash source back in so it can be inspected by rubocop.
+      if node.hash_attributes? && node.dynamic_attributes_sources.empty?
+        add_line("#{node.dynamic_attributes_source[:hash]}.merge(Hash.new(0))", node)
+      end
+    end
 
     def add_line(code, node_or_line)
       return if code.empty?
