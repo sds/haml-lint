@@ -16,6 +16,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [RuboCop](#rubocop)
 * [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
+* [SpaceInsideHashAttributes](#spaceinsidehashattributes)
 * [TagName](#tagname)
 * [TrailingWhitespace](#trailingwhitespace)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
@@ -340,6 +341,34 @@ Ensuring space after `-`/`=` enforces a consistency that all HAML tags/script
 indicators are separated from their inline content by a space. Since it is
 optional to add a space after `-`/`=` but required when writing `%tag` or
 similar, the consistency is best enforced via a linter.
+
+## SpaceInsideHashAttributes
+
+Check the style of hash attributes against one of two possible preferred
+styles, `space` (default) or `no_space`:
+
+**Bad: inconsistent spacing inside hash attributes braces**
+```haml
+%tag{ foo: bar}
+%tag{foo: bar }
+%tag{  foo: bar }
+```
+
+**With default `space` style option: require a single space inside
+hash attributes braces**
+```haml
+%tag{ foo: bar }
+```
+
+**With `no_space` style option: require no space inside
+hash attributes braces**
+```haml
+%tag{foo: bar}
+```
+
+This offers the ability to ensure consistency of Haml hash
+attributes style with ruby hash literal style (compare with
+the Style/SpaceInsideHashLiteralBraces cop in Rubocop).
 
 ## TagName
 

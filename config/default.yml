@@ -67,6 +67,10 @@ linters:
   SpaceBeforeScript:
     enabled: true
 
+  SpaceInsideHashAttributes:
+    enabled: true
+    style: space
+
   TagName:
     enabled: true
 
