@@ -106,7 +106,7 @@ describe HamlLint::ScriptExtractor do
       HAML
 
       it 'includes the hash attribute source for rubocop inspection' do
-        should == "{:type=>'checkbox', 'special' => :true }.merge(Hash.new(0))\nputs # tag"
+        should == "{:type=>'checkbox', 'special' => :true }\nputs # tag"
       end
     end
 

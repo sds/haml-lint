@@ -117,7 +117,7 @@ module HamlLint
       # https://github.com/haml/haml/blob/08f97ec4dc8f59fe3d7f6ab8f8807f86f2a15b68/lib/haml/parser.rb#L540-L554
       # Here, we add the hash source back in so it can be inspected by rubocop.
       if node.hash_attributes? && node.dynamic_attributes_sources.empty?
-        add_line("#{node.dynamic_attributes_source[:hash]}.merge(Hash.new(0))", node)
+        add_line(node.dynamic_attributes_source[:hash], node)
       end
     end
 
