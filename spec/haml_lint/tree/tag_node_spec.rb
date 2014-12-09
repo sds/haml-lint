@@ -34,7 +34,7 @@ describe HamlLint::Tree::TagNode do
       end
     end
 
-    context 'with on object reference' do
+    context 'with an object reference' do
       let(:haml) { '%my_tag.class_one.class_two[my_object]' }
 
       it do
