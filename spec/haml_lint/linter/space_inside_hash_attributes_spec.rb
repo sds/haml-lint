@@ -9,8 +9,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should_not report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should_not report_lint }
     end
   end
@@ -21,8 +22,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should_not report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should report_lint }
     end
   end
@@ -33,8 +35,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should_not report_lint }
     end
   end
@@ -45,8 +48,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should report_lint }
     end
   end
@@ -57,8 +61,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should report_lint }
     end
   end
@@ -69,8 +74,9 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should report_lint }
     end
   end
@@ -81,10 +87,10 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     context 'default config (space)' do
       it { should report_lint }
     end
+
     context 'with no_space config' do
-      let(:config) { super().merge('EnforcedStyle' => 'no_space') }
+      let(:config) { super().merge('style' => 'no_space') }
       it { should report_lint }
     end
   end
-
 end

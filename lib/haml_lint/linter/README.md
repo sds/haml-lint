@@ -354,12 +354,14 @@ styles, `space` (default) or `no_space`:
 %tag{  foo: bar }
 ```
 
-**Space: require a single space inside hash attributes braces**
+**With default `space` style option: require a single space inside
+hash attributes braces**
 ```haml
 %tag{ foo: bar }
 ```
 
-**No Space: require no space inside hash attributes braces**
+**With `no_space` style option: require no space inside
+hash attributes braces**
 ```haml
 %tag{foo: bar}
 ```

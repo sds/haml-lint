@@ -22,7 +22,7 @@ module HamlLint
     def visit_tag(node)
       return unless node.hash_attributes?
 
-      style = STYLE[config['EnforcedStyle'] == 'no_space' ? 'no_space' : 'space']
+      style = STYLE[config['style'] == 'no_space' ? 'no_space' : 'space']
       source = node.hash_attributes_source
 
       add_lint(node, style[:start_message]) unless source =~ style[:start_regex]

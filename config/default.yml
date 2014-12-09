@@ -69,10 +69,7 @@ linters:
 
   SpaceInsideHashAttributes:
     enabled: true
-    EnforcedStyle: space
-    SupportedStyles:
-      - space
-      - no_space
+    style: space
 
   TagName:
     enabled: true
