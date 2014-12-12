@@ -69,8 +69,8 @@ module HamlLint::Tree
     def dynamic_attributes_source
       @dynamic_attributes_source ||=
         begin
-          _tag_name, _static_attrs, rest = first_line_source
-            .scan(/%([-:\w]+)([-:\w\.\#]*)(.*)/)[0]
+          _tag_name, _static_attrs, rest = source_from_first_line
+            .scan(/%([-:\w]+)([-:\w\.\#]*)(.*)/m)[0]
 
           attr_types = {
             '{' => [:hash, %w[{ }]],

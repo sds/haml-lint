@@ -49,6 +49,13 @@ module HamlLint::Tree
       @parser.lines[@line - 1]
     end
 
+    # Source code starting at first line of this node.
+    #
+    # @return [String]
+    def source_from_first_line
+      @parser.lines[@line - 1..-1].join("\n")
+    end
+
     def inspect
       "#<#{self.class.name}>"
     end
