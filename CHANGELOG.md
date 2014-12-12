@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix bug where hash attributes consisting only of strings/symbols written in
+  hashrocket style were not being passed to RuboCop
+
 ## 0.9.0
 
 * Fix bug in `LeadingCommentSpace` where empty comment lines would incorrectly
