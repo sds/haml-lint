@@ -4,6 +4,8 @@
 
 * Fix bug where hash attributes consisting only of strings/symbols written in
   hashrocket style were not being passed to RuboCop
+* Add `SpaceInsideHashAttributes` linter which enforces spaces/no spaces inside
+  tag attributes
 
 ## 0.9.0
 
