@@ -10,17 +10,13 @@ describe HamlLint::Tree::TagNode do
     context 'with no dynamic attributes' do
       let(:haml) { '%my_tag.class_one.class_two#with_an_id' }
 
-      it do
-        should == {}
-      end
+      it { should == {} }
     end
 
     context 'with html attributes on one line' do
       let(:haml) { '%my_tag.class_one.class_two#with_an_id(three=3 four=4)' }
 
-      it do
-        should == { html: '(three=3 four=4)' }
-      end
+      it { should == { html: '(three=3 four=4)' } }
     end
 
     context 'with multi-line html attributes' do
@@ -29,25 +25,19 @@ describe HamlLint::Tree::TagNode do
                                     four=4)
       HAML
 
-      it do
-        should == { html:  "(three=3\n                            four=4)" }
-      end
+      it { should == { html:  "(three=3\n                            four=4)" } }
     end
 
     context 'with an object reference' do
       let(:haml) { '%my_tag.class_one.class_two[my_object]' }
 
-      it do
-        should == { object_ref: '[my_object]' }
-      end
+      it { should == { object_ref: '[my_object]' } }
     end
 
     context 'with hash attributes on one line' do
       let(:haml) { '%my_tag.class_one.class_two#with_an_id{ one: 1, two: 2 }' }
 
-      it do
-        should == { hash: '{ one: 1, two: 2 }' }
-      end
+      it { should == { hash: '{ one: 1, two: 2 }' } }
     end
 
     context 'with multi-line hash attributes' do
@@ -56,9 +46,7 @@ describe HamlLint::Tree::TagNode do
                                                 two: 2 }
       HAML
 
-      it do
-        should == { hash: "{ one: 1,\n                                        two: 2 }" }
-      end
+      it { should == { hash: "{ one: 1,\n                                        two: 2 }" } }
     end
 
     context 'with multi-line hash attributes with contextual noise' do
