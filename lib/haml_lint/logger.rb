@@ -27,8 +27,7 @@ module HamlLint
     # Print the specified output in bold face.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def bold(*args)
       color('1;37', *args)
@@ -37,8 +36,7 @@ module HamlLint
     # Print the specified output in a color indicative of error.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def error(*args)
       color(31, *args)
@@ -47,8 +45,7 @@ module HamlLint
     # Print the specified output in a bold face and color indicative of error.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def bold_error(*args)
       color('1;31', *args)
@@ -57,8 +54,7 @@ module HamlLint
     # Print the specified output in a color indicative of success.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def success(*args)
       color(32, *args)
@@ -67,8 +63,7 @@ module HamlLint
     # Print the specified output in a color indicative of a warning.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def warning(*args)
       color(33, *args)
@@ -77,8 +72,7 @@ module HamlLint
     # Print specified output in bold face in a color indicative of a warning.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def bold_warning(*args)
       color('1;33', *args)
@@ -87,8 +81,7 @@ module HamlLint
     # Print the specified output in a color indicating information.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
-    # @param output [String] the output to send
-    # @param newline [true,false] whether to append a newline
+    # @param args [Array<String>]
     # @return [nil]
     def info(*args)
       color(36, *args)
