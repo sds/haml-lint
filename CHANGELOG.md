@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.10.0
 
 * Fix bug where hash attributes consisting only of strings/symbols written in
   hashrocket style were not being passed to RuboCop
