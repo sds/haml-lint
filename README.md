@@ -3,6 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/haml-lint.svg)](http://badge.fury.io/rb/haml-lint)
 [![Build Status](https://travis-ci.org/causes/haml-lint.svg)](https://travis-ci.org/causes/haml-lint)
 [![Code Climate](https://codeclimate.com/github/causes/haml-lint.png)](https://codeclimate.com/github/causes/haml-lint)
+[![Inline docs](http://inch-ci.org/github/causes/haml-lint.svg?branch=master)](http://inch-ci.org/github/causes/haml-lint)
 [![Dependency Status](https://gemnasium.com/causes/haml-lint.svg)](https://gemnasium.com/causes/haml-lint)
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
