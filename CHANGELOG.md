@@ -6,6 +6,8 @@
   hashrocket style were not being passed to RuboCop
 * Add `SpaceInsideHashAttributes` linter which enforces spaces/no spaces inside
   tag attributes
+* Fix bug where the source code of tag hash attributes would be incorrectly
+  extracted for hashes spanning multiple lines
 
 ## 0.9.0
 
