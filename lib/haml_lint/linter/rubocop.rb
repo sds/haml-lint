@@ -52,7 +52,7 @@ module HamlLint
         @lints << Lint.new(self,
                            @parser.filename,
                            @extractor.source_map[offence.line],
-                           offence.message)
+                           "#{offence.cop_name}: #{offence.message}")
       end
     end
   end

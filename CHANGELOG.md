@@ -8,6 +8,7 @@
   tag attributes
 * Fix bug where the source code of tag hash attributes would be incorrectly
   extracted for hashes spanning multiple lines
+* Include name of cop in lints reported by `RuboCop`
 
 ## 0.9.0
 
