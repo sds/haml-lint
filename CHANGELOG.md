@@ -9,6 +9,8 @@
 * Fix bug where the source code of tag hash attributes would be incorrectly
   extracted for hashes spanning multiple lines
 * Include name of cop in lints reported by `RuboCop`
+* Fix `LeadingCommentSpace` to not report lints on comments with multiple
+  leading spaces
 
 ## 0.9.0
 

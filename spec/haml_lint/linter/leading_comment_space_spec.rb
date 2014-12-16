@@ -9,6 +9,12 @@ describe HamlLint::Linter::LeadingCommentSpace do
     it { should_not report_lint }
   end
 
+  context 'when a comment has multiple leading spaces' do
+    let(:haml) { '-#    A comment with multiple spaces' }
+
+    it { should_not report_lint }
+  end
+
   context 'when a comment has no leading space' do
     let(:haml) { '-#A comment with no space' }
 
