@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe HamlLint::Linter::RuboCop do
-
   # Need this block before including linter context so that stubbing occurs
   # before linter is run
   before { subject.stub(:lint_file).and_return([offence].compact) }

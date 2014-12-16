@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 # gemspec. It needs to come before the call to `gemspec` below in order to
 # prevent a warning being displayed about duplicate dependencies when running
 # `bundle install` in this repository.
-gem 'rubocop', '0.27.1'
+gem 'rubocop', '0.28.0'
 
 # Run `wwtd` to emulate Travis builds locally
 gem 'wwtd'

@@ -14,7 +14,6 @@ module HamlLint
       ) do |group|
         add_lint(group.first,
                  "#{group.count} consecutive comments can be merged into one")
-
       end
     end
   end
