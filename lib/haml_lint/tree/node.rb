@@ -49,11 +49,20 @@ module HamlLint::Tree
       @parser.lines[@line - 1]
     end
 
-    # Source code starting at first line of this node.
+    # Source code of all lines this node spans (excluding children).
     #
     # @return [String]
-    def source_from_first_line
-      @parser.lines[@line - 1..-1].join("\n")
+    def source_code
+      next_node_line =
+        if next_node
+          next_node.line - 1
+        else
+          @parser.lines.count + 1
+        end
+
+      @parser.lines[@line - 1...next_node_line]
+             .join("\n")
+             .gsub(/^\s*\z/m, '') # Remove blank lines at the end
     end
 
     def inspect
@@ -61,7 +70,9 @@ module HamlLint::Tree
     end
 
     # Returns the node that follows this node, whether it be a sibling or an
-    # ancestor's child.
+    # ancestor's child, but not a child of this node.
+    #
+    # If you are also willing to return the child, call {#next_node}.
     #
     # Returns nil if there is no successor.
     #
@@ -73,6 +84,15 @@ module HamlLint::Tree
       return next_sibling if next_sibling
 
       parent.successor if parent
+    end
+
+    # Returns the next node that appears after this node in the document.
+    #
+    # Returns nil if there is no next node.
+    #
+    # @return [HamlLint::Tree::Node,nil]
+    def next_node
+      children.first || successor
     end
 
     # Returns the text content of this node.

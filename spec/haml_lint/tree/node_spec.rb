@@ -42,6 +42,79 @@ describe HamlLint::Tree::Node do
     end
   end
 
+  describe '#source_code' do
+    subject { parser.tree.find { |node| node.type == :tag }.source_code }
+
+    context 'when node in the middle of the document' do
+      let(:haml) { <<-HAML }
+        - if some_conditional
+          %tag{ a: 1 }
+        - else
+          = some_script
+      HAML
+
+      it { should == '  %tag{ a: 1 }' }
+
+      context 'and it spans multiple lines' do
+        let(:haml) { <<-HAML }
+          - if some_conditional
+            %tag{ a: 1,
+                  b: 2,
+                  c: 3 }
+          - else
+            = some_script
+        HAML
+
+        it { should == "  %tag{ a: 1,\n        b: 2,\n        c: 3 }" }
+      end
+
+      context 'and it has children' do
+        let(:haml) { <<-HAML }
+          - if some_conditional
+            %tag{ a: 1,
+                  b: 2,
+                  c: 3 }
+              = some_script
+          - else
+            = some_script
+        HAML
+
+        it { should == "  %tag{ a: 1,\n        b: 2,\n        c: 3 }" }
+      end
+
+      context 'and it spans multiple lines with blank lines' do
+        let(:haml) { <<-HAML }
+          - if some_conditional
+            %tag{ a: 1,
+                  b: 2,
+                  c: 3 }
+
+
+          - else
+            = some_script
+        HAML
+
+        it { should == "  %tag{ a: 1,\n        b: 2,\n        c: 3 }\n" }
+      end
+    end
+
+    context 'when node is at the end of the document' do
+      let(:haml) { '%tag' }
+
+      it { should == '%tag' }
+
+      context 'and it spans multiple lines' do
+        let(:haml) { <<-HAML }
+          %tag{ a: 1,
+                b: 2,
+                c: 3 }
+        HAML
+
+        it { should == "%tag{ a: 1,\n      b: 2,\n      c: 3 }" }
+      end
+    end
+  end
+
   describe '#successor' do
     subject { parser.tree.find { |node| node.type == :haml_comment }.successor }
 
