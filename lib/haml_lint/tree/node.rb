@@ -42,13 +42,6 @@ module HamlLint::Tree
       nil # Otherwise no matching node was found
     end
 
-    # Source code of the first line of this node.
-    #
-    # @return [String]
-    def first_line_source
-      @parser.lines[@line - 1]
-    end
-
     # Source code of all lines this node spans (excluding children).
     #
     # @return [String]

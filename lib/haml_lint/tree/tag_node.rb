@@ -56,7 +56,7 @@ module HamlLint::Tree
     # @return [String]
     def static_attributes_source
       @static_attributes_source ||=
-        first_line_source[/^\s*(%[-:\w]+)?((\.|#)[^{( $]+)/, 2] || ''
+        source_code[/^\s*(%[-:\w]+)?((\.|#)[^{( $]+)/, 2] || ''
     end
 
     # Returns the source code for the dynamic attributes defined in `{...}`,
