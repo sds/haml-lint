@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
+
 ## 0.10.0
 
 * Fix bug where hash attributes consisting only of strings/symbols written in
