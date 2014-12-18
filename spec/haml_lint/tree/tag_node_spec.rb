@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe HamlLint::Tree::TagNode do
   let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
-  let(:tag_node) { parser.tree.find { |node| node.type == :tag && node.tag_name == 'my_tag' } }
+  let(:tag_node) { parser.tree.find { |node| node.type == :tag && node.tag_name == tag_name } }
+  let(:tag_name) { 'my_tag' }
 
   describe '#dynamic_attributes_source' do
     subject { tag_node.dynamic_attributes_source }
@@ -38,6 +39,22 @@ describe HamlLint::Tree::TagNode do
       let(:haml) { '%my_tag.class_one.class_two#with_an_id{ one: 1, two: 2 }' }
 
       it { should == { hash: '{ one: 1, two: 2 }' } }
+    end
+
+    context 'with hash attributes on an implicit div' do
+      let(:tag_name) { 'div' }
+
+      context 'at the beginning of a line' do
+        let(:haml) { '.class_one.class_two#with_an_id{ one: 1, two: 2 }' }
+
+        it { should == { hash: '{ one: 1, two: 2 }' } }
+      end
+
+      context 'with leading whitespace' do
+        let(:haml) { '  .class_one.class_two#with_an_id{ one: 1, two: 2 }' }
+
+        it { should == { hash: '{ one: 1, two: 2 }' } }
+      end
     end
 
     context 'with multi-line hash attributes' do

@@ -42,6 +42,19 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
     end
   end
 
+  context 'when an implicit-div tag contains hash attributes without leading or trailing spaces' do
+    let(:haml) { ".some_class{lang: 'en'}" }
+
+    context 'default config (space)' do
+      it { should report_lint }
+    end
+
+    context 'with no_space config' do
+      let(:config) { super().merge('style' => 'no_space') }
+      it { should_not report_lint }
+    end
+  end
+
   context 'when a tag contains hash attributes without a leading space but with a trailing space' do
     let(:haml) { "%tag{lang: 'en' }" }
 
