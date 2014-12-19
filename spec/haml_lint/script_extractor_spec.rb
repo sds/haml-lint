@@ -17,7 +17,7 @@ describe HamlLint::ScriptExtractor do
         Hello world
       HAML
 
-      it { should == 'puts # Hello world' }
+      it { should == 'puts' }
     end
 
     context 'with multiple lines of plain text' do
@@ -26,7 +26,7 @@ describe HamlLint::ScriptExtractor do
         how are you?
       HAML
 
-      it { should == "puts # Hello world\nputs # how are you?" }
+      it { should == "puts\nputs" }
     end
 
     context 'with only tags with text content' do
@@ -37,7 +37,7 @@ describe HamlLint::ScriptExtractor do
           %b Ipsum
       HAML
 
-      it { should == "puts # h1\nputs # p\nputs # Lorem\nputs # b" }
+      it { should == "puts # h1\nputs # p\nputs\nputs # b" }
     end
 
     context 'with a silent script node' do

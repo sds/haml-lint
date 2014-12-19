@@ -43,9 +43,10 @@ module HamlLint
     end
 
     def visit_plain(node)
-      # Comment out the actual text as we don't want to deal with RuboCop
-      # StringQuotes lints
-      add_line("puts # #{node.text}", node)
+      # Don't output the text, as we don't want to have to deal with any RuboCop
+      # cops regarding StringQuotes or AsciiComments, and it's not important to
+      # overall document anyway.
+      add_line('puts', node)
     end
 
     def visit_tag(node)

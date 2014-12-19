@@ -3,6 +3,8 @@
 ## master (unreleased)
 
 * Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
+* Fix `RuboCop` from incorrectly reporting `Style/AsciiComments` cops for
+  plain text nodes with Unicode characters
 
 ## 0.10.0
 
