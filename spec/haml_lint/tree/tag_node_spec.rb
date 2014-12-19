@@ -81,6 +81,10 @@ describe HamlLint::Tree::TagNode do
 
       it { should == { hash: "{ one: 1,\n                                        two: 2 }" } }
     end
+  end
+
+  describe '#attributes_source' do
+    subject { tag_node.attributes_source }
 
     context 'with multi-line hash attributes with contextual noise' do
       let(:haml) { <<-HAML }
@@ -93,10 +97,43 @@ describe HamlLint::Tree::TagNode do
 
       it do
         should == {
+          static: '.class_one.class_two',
           hash: "{ one: 1,\n                             two: 2 }",
           html:  '(three=3)',
           object_ref: '[my_object]'
         }
+      end
+    end
+  end
+
+  describe '#static_attributes_source' do
+    subject { tag_node.static_attributes_source }
+
+    context 'with no dynamic attributes' do
+      let(:haml) { '%my_tag.class_one.class_two#with_an_id' }
+
+      it { should == '.class_one.class_two#with_an_id' }
+    end
+
+    context 'with assorted dynamic attributes' do
+      let(:haml) { '%my_tag.class_one.class_two#with_an_id{ one: 1, two: 2 }(three=3)[my_object]' }
+
+      it { should == '.class_one.class_two#with_an_id' }
+    end
+
+    context 'with an implicit div' do
+      let(:tag_name) { 'div' }
+
+      context 'with a class' do
+        let(:haml) { '.class_one.class_two#with_an_id' }
+
+        it { should == '.class_one.class_two#with_an_id' }
+      end
+
+      context 'without a class, with an id' do
+        let(:haml) { '#with_an_id' }
+
+        it { should == '#with_an_id' }
       end
     end
   end

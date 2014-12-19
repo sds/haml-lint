@@ -55,8 +55,7 @@ module HamlLint::Tree
     #
     # @return [String]
     def static_attributes_source
-      @static_attributes_source ||=
-        source_code[/^\s*(%[-:\w]+)?((\.|#)[^{( $]+)/, 2] || ''
+      attributes_source[:static] || ''
     end
 
     # Returns the source code for the dynamic attributes defined in `{...}`,
@@ -68,9 +67,21 @@ module HamlLint::Tree
     # @return [Hash]
     def dynamic_attributes_source
       @dynamic_attributes_source ||=
+        attributes_source.reject { |key| key == :static }
+    end
+
+    # Returns the source code for the static and dynamic attributes
+    # of a tag.
+    #
+    # @example For `%tag.class{ id: 'hello' }(lang=en)`, this returns:
+    #   { :static => '.class', :hash => " id: 'hello' ", :html => "lang=en" }
+    #
+    # @return [Hash]
+    def attributes_source
+      @attr_source ||=
         begin
-          _tag_name, _static_attrs, rest = source_code
-            .scan(/(?:%|\A\s*[\.\#])([-:\w]+)([-:\w\.\#]*)(.*)/m)[0]
+          _explicit_tag, static_attrs, rest = source_code
+            .scan(/\A\s*(%[-:\w]+)?([-:\w\.\#]*)(.*)/m)[0]
 
           attr_types = {
             '{' => [:hash, %w[{ }]],
@@ -78,18 +89,18 @@ module HamlLint::Tree
             '[' => [:object_ref, %w[[ ]]],
           }
 
-          dynamic_attributes = {}
+          attr_source = { static: static_attrs }
           while rest
             type, chars = attr_types[rest[0]]
             break unless type # Not an attribute opening character, so we're done
 
             # Can't define multiple of the same attribute type (e.g. two {...})
-            break if dynamic_attributes[type]
+            break if attr_source[type]
 
-            dynamic_attributes[type], rest = Haml::Util.balance(rest, *chars)
+            attr_source[type], rest = Haml::Util.balance(rest, *chars)
           end
 
-          dynamic_attributes
+          attr_source
         end
     end
 
