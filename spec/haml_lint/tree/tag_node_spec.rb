@@ -44,16 +44,32 @@ describe HamlLint::Tree::TagNode do
     context 'with hash attributes on an implicit div' do
       let(:tag_name) { 'div' }
 
-      context 'at the beginning of a line' do
-        let(:haml) { '.class_one.class_two#with_an_id{ one: 1, two: 2 }' }
+      context 'with a class' do
+        context 'at the beginning of a line' do
+          let(:haml) { '.class_one.class_two#with_an_id{ one: 1, two: 2 }' }
 
-        it { should == { hash: '{ one: 1, two: 2 }' } }
+          it { should == { hash: '{ one: 1, two: 2 }' } }
+        end
+
+        context 'with leading whitespace' do
+          let(:haml) { '  .class_one.class_two#with_an_id{ one: 1, two: 2 }' }
+
+          it { should == { hash: '{ one: 1, two: 2 }' } }
+        end
       end
 
-      context 'with leading whitespace' do
-        let(:haml) { '  .class_one.class_two#with_an_id{ one: 1, two: 2 }' }
+      context 'with only an id' do
+        context 'at the beginning of a line' do
+          let(:haml) { '#with_an_id{ one: 1, two: 2 }' }
 
-        it { should == { hash: '{ one: 1, two: 2 }' } }
+          it { should == { hash: '{ one: 1, two: 2 }' } }
+        end
+
+        context 'with leading whitespace' do
+          let(:haml) { '  #with_an_id{ one: 1, two: 2 }' }
+
+          it { should == { hash: '{ one: 1, two: 2 }' } }
+        end
       end
     end
 
