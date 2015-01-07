@@ -32,7 +32,7 @@ module HamlLint
       @exclude_linter = []
       @config = ''
       @exclude = []
-      @pattern = %w[./**/*.haml]
+      @pattern = Dir.glob('./**/*.haml')
     end
 
     def cli_args
@@ -61,6 +61,8 @@ module HamlLint
       logger = HamlLint::Logger.new(STDOUT)
       result = HamlLint::CLI.new(logger).run(cli_args)
       abort('HamlLint failed') unless result == 0
+
+      result
     end
   end
 end
