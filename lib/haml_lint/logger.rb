@@ -1,6 +1,9 @@
 module HamlLint
   # Encapsulates all communication to an output source.
   class Logger
+    # Allow manual enabling of colorized output
+    attr_writer :color_enabled
+
     # Creates a logger which outputs nothing.
     # @return [HamlLint::Logger]
     def self.silent
@@ -89,8 +92,15 @@ module HamlLint
 
     private
 
+    # Get whether or not output should be in color
+    #
+    # @return [true, false]
+    def color_enabled
+      @out.tty? || @color_enabled || false
+    end
+
     def color(code, output, newline = true)
-      log(@out.tty? ? "\033[#{code}m#{output}\033[0m" : output, newline)
+      log(color_enabled ? "\033[#{code}m#{output}\033[0m" : output, newline)
     end
   end
 end
