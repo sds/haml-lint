@@ -64,8 +64,8 @@ module HamlLint
         @options[:show_linters] = true
       end
 
-      parser.on('--color', 'Force output to be colorized') do
-        @options[:color] = true
+      parser.on('--[no-]color', 'Force output to be colorized') do |color|
+        @options[:color] = color
       end
 
       parser.on_tail('-h', '--help', 'Display help documentation') do
