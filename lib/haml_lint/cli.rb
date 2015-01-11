@@ -20,19 +20,8 @@ module HamlLint
     def run(args)
       options = HamlLint::Options.new.parse(args)
       act_on_options(options)
-    rescue HamlLint::Exceptions::InvalidCLIOption => ex
-      log.error ex.message
-      log.log "Run `#{APP_NAME}` --help for usage documentation"
-      Sysexits::EX_USAGE
-    rescue HamlLint::Exceptions::InvalidFilePath => ex
-      log.error ex.message
-      Sysexits::EX_NOINPUT
-    rescue HamlLint::Exceptions::NoLintersError => ex
-      log.error ex.message
-      Sysexits::EX_NOINPUT
     rescue => ex
-      print_unexpected_exception(ex)
-      Sysexits::EX_SOFTWARE
+      handle_exception(ex)
     end
 
     private
@@ -51,6 +40,27 @@ module HamlLint
         Sysexits::EX_OK
       else
         scan_for_lints(options)
+      end
+    end
+
+    def handle_exception(ex)
+      case ex
+      when HamlLint::Exceptions::ConfigurationError
+        log.error ex.message
+        Sysexits::EX_CONFIG
+      when HamlLint::Exceptions::InvalidCLIOption
+        log.error ex.message
+        log.log "Run `#{APP_NAME}` --help for usage documentation"
+        Sysexits::EX_USAGE
+      when HamlLint::Exceptions::InvalidFilePath
+        log.error ex.message
+        Sysexits::EX_NOINPUT
+      when HamlLint::Exceptions::NoLintersError
+        log.error ex.message
+        Sysexits::EX_NOINPUT
+      else
+        print_unexpected_exception(ex)
+        Sysexits::EX_SOFTWARE
       end
     end
 

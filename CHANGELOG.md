@@ -5,6 +5,7 @@
 * Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
 * Fix `RuboCop` from incorrectly reporting `Style/AsciiComments` cops for
   plain text nodes with Unicode characters
+* Gracefully handle missing configuration files that are explicitly given
 
 ## 0.10.0
 
