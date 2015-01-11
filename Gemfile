@@ -7,6 +7,8 @@ source 'https://rubygems.org'
 # `bundle install` in this repository.
 gem 'rubocop', '0.28.0'
 
+gem 'overcommit', '0.21.0'
+
 # Run `wwtd` to emulate Travis builds locally
 gem 'wwtd'
 

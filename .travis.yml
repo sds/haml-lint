@@ -1,12 +1,16 @@
-sudo: false
-cache: bundler
 language: ruby
+
+sudo: false
+
+cache: bundler
+
 rvm:
   - 1.9.3
   - 2.0.0
   - 2.1.0
   - 2.1.1
   - 2.1.2
+
 script:
   - bundle exec rspec
-  - bundle exec rubocop
+  - bundle exec overcommit --run
