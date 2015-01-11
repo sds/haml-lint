@@ -60,7 +60,7 @@ module HamlLint
 
       logger = HamlLint::Logger.new(STDOUT)
       result = HamlLint::CLI.new(logger).run(cli_args)
-      abort('HamlLint failed') unless result == 0
+      fail 'HamlLint failed' unless result == 0
 
       result
     end

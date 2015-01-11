@@ -1,20 +1,34 @@
 require 'spec_helper'
 require 'haml_lint/rake_task'
+require 'tempfile'
 
 describe HamlLint::RakeTask do
+  let(:task) { HamlLint::RakeTask.new }
+
   before do
-    @task = HamlLint::RakeTask.new
+    Tempfile.new(%w[haml-file .haml]).tap do |f|
+      f.write(haml)
+      task.pattern = f.path
+    end
   end
 
   describe '#run' do
-    subject do
-      Rake::Task['haml_lint']
+    subject { Rake::Task['haml_lint'] }
+
+    context 'when HAML document is valid' do
+      let(:haml) { '%tag' }
+
+      it 'returns a successful exit code' do
+        expect(subject.invoke).to be_truthy
+      end
     end
 
-    it 'returns a successful exit code' do
-      @task.pattern = __FILE__
+    context 'when HAML document is invalid' do
+      let(:haml) { "%tag\n  %foo\n      %bar" }
 
-      expect(subject.invoke).to be_truthy
+      it 'returns a successful exit code' do
+        expect(subject.invoke).to be_falsey
+      end
     end
   end
 end
