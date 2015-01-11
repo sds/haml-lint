@@ -14,10 +14,16 @@ module HamlLint
             files << f if haml_file?(f)
           end
         rescue Errno::ENOENT
-          # One of the paths specified does not exist; raise a more
-          # descriptive exception so we know which one
-          raise HamlLint::Exceptions::InvalidFilePath,
-                "File path '#{file}' does not exist"
+          # File didn't exist; it might be a file glob pattern
+          matches = Dir.glob(file)
+          if matches.any?
+            files += matches
+          else
+            # One of the paths specified does not exist; raise a more
+            # descriptive exception so we know which one
+            raise HamlLint::Exceptions::InvalidFilePath,
+                  "File path '#{file}' does not exist"
+          end
         end
       end
 

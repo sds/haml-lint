@@ -132,6 +132,44 @@ plugin using [Package Control](https://sublime.wbond.net).
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
 Git hook manager, [overcommit](https://github.com/causes/overcommit).
 
+## Rake Integration
+
+To execute `haml-lint` via a [Rake](https://github.com/ruby/rake) task, add the
+following to your `Rakefile`:
+
+```ruby
+require 'haml_lint/rake_task'
+
+HamlLint::RakeTask.new
+```
+
+By default, when you execute `rake haml_lint`, the above configuration is
+equivalent to running `haml-lint .`, which will lint all `.haml` files in the
+current directory and its descendants.
+
+You can customize your task by writing:
+
+```ruby
+require 'haml_lint/rake_task'
+
+HamlLint::RakeTask.new do |t|
+  t.config = 'custom/config.yml'
+  t.files = ['app/views', 'custom/*.haml']
+  t.quiet = true # Don't display output from haml-lint to STDOUT
+end
+```
+
+You can also use this custom configuration with a set of files specified via
+the command line:
+
+```
+# Single quotes prevent shell glob expansion
+rake 'haml_lint[app/views, custom/*.haml]'
+```
+
+Files specified in this manner take precedence over the task's `files`
+attribute.
+
 ## Contributing
 
 We love getting feedback with or without pull requests. If you do add a new

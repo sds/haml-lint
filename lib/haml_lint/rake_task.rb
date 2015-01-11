@@ -2,67 +2,106 @@ require 'rake'
 require 'rake/tasklib'
 
 module HamlLint
-  # Rake task interface
+  # Rake task interface for haml-lint command line interface.
+  #
+  # @example
+  #   # Add the following to your Rakefile...
+  #   require 'haml_lint/rake_task'
+  #
+  #   HamlLint::RakeTask.new do |t|
+  #     t.config = 'path/to/custom/haml-lint.yml'
+  #     t.files = %w[app/views/**/*.haml custom/*.haml]
+  #     t.quiet = true # Don't display output from haml-lint
+  #   end
+  #
+  #   # ...and then execute from the command line:
+  #   rake haml_lint
+  #
+  # You can also specify the list of files as explicit task arguments:
+  #
+  # @example
+  #   # Add the following to your Rakefile...
+  #   require 'haml_lint/rake_task'
+  #
+  #   HamlLint::RakeTask.new
+  #
+  #   # ...and then execute from the command line (single quotes prevent shell
+  #   # glob expansion and allow us to have a space after commas):
+  #   rake 'haml_lint[app/views/**/*.haml, other_files/**/*.haml]'
+  #
   class RakeTask < Rake::TaskLib
+    # Name of the task.
+    # @return [String]
     attr_accessor :name
-    attr_accessor :include_linter
-    attr_accessor :exclude_linter
+
+    # Configuration file to use.
+    # @return [String]
     attr_accessor :config
-    attr_accessor :exclude
-    attr_accessor :pattern
 
-    def initialize(*args, &task_block)
-      init_args(args)
+    # List of files to lint (can contain shell globs).
+    #
+    # Note that this will be ignored if you explicitly pass a list of files as
+    # task arguments via the command line or a task definition.
+    # @return [Array<String>]
+    attr_accessor :files
 
-      desc 'Run haml-lint' unless ::Rake.application.last_comment
+    # Whether output from haml-lint should not be displayed to the standard out
+    # stream.
+    # @return [true,false]
+    attr_accessor :quiet
 
-      task(name, *args) do |_, task_args|
-        task_block &&
-          task_block.call(*[self, task_args].first(task_block.arity))
+    # Create the task so it exists in the current namespace.
+    def initialize(name = :haml_lint)
+      @name = name
+      @files = ['.'] # Search for everything under current directory by default
+      @quiet = false
 
-        run_cli
-      end
+      yield self if block_given?
+
+      define
     end
 
     private
 
-    def init_args(args)
-      @name = args.shift || 'haml_lint'
-      @include_linter = []
-      @exclude_linter = []
-      @config = ''
-      @exclude = []
-      @pattern = Dir.glob('./**/*.haml')
-    end
+    def define
+      desc default_description unless ::Rake.application.last_description
 
-    def cli_args
-      args = %w[@include_linter @exclude_linter @config @exclude].map do |ivar|
-        content = instance_variable_get(ivar)
-        next if content.empty?
+      task(name, [:files]) do |_task, task_args|
+        # Lazy-load so task doesn't affect Rakefile load time
+        require 'haml_lint'
+        require 'haml_lint/cli'
 
-        arg = ivar.tr('_', '-').delete('@')
-
-        if content.is_a?(String)
-          %W[--#{arg} #{content}]
-        elsif content.is_a?(Array)
-          %W[--#{arg} #{content.join(',')}]
-        else
-          fail ArgumentError, "Unexpected type for #{ivar}"
-        end
+        run_cli(task_args)
       end
-
-      (args << @pattern).flatten.compact
     end
 
-    def run_cli
-      require 'haml_lint'
-      require 'haml_lint/cli'
+    def run_cli(task_args)
+      cli_args = ['--config', config] if config
 
-      logger = HamlLint::Logger.new(STDOUT)
-      result = HamlLint::CLI.new(logger).run(cli_args)
-      fail 'HamlLint failed' unless result == 0
+      logger = quiet ? HamlLint::Logger.silent : HamlLint::Logger.new(STDOUT)
+      result = HamlLint::CLI.new(logger).run(Array(cli_args) + files_to_lint(task_args))
 
-      result
+      fail "haml-lint failed with exit code #{result}" unless result == 0
+    end
+
+    def files_to_lint(task_args)
+      # Note: we're abusing Rake's argument handling a bit here. We call the
+      # first argument `files` but it's actually only the first file--we pull
+      # the rest out of the `extras` from the task arguments. This is so we
+      # can specify an arbitrary list of files separated by commas on the
+      # command line or in a custom task definition.
+      explicit_files = Array(task_args[:files]) + task_args.extras
+
+      explicit_files.any? ? explicit_files : files
+    end
+
+    # Friendly description that shows the full command that will be executed.
+    def default_description
+      description = 'Run `haml-lint'
+      description += " --config #{config}" if config
+      description += " #{files.join(' ')}" if files.any?
+      description += ' [files...]`'
+      description
     end
   end
 end

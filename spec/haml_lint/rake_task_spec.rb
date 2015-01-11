@@ -3,32 +3,37 @@ require 'haml_lint/rake_task'
 require 'tempfile'
 
 describe HamlLint::RakeTask do
-  let(:task) { HamlLint::RakeTask.new }
-
-  before do
-    Tempfile.new(%w[haml-file .haml]).tap do |f|
-      f.write(haml)
-      task.pattern = f.path
+  before(:all) do
+    HamlLint::RakeTask.new do |t|
+      t.quiet = true
     end
   end
 
-  describe '#run' do
-    subject { Rake::Task['haml_lint'] }
-
-    context 'when HAML document is valid' do
-      let(:haml) { '%tag' }
-
-      it 'returns a successful exit code' do
-        expect(subject.invoke).to be_truthy
-      end
+  let(:file) do
+    Tempfile.new(%w[haml-file .haml]).tap do |f|
+      f.write(haml)
+      f.close
     end
+  end
 
-    context 'when HAML document is invalid' do
-      let(:haml) { "%tag\n  %foo\n      %bar" }
+  def run_task
+    Rake::Task[:haml_lint].reenable # Allows us to execute task multiple times
+    Rake::Task[:haml_lint].invoke(file.path)
+  end
 
-      it 'returns a successful exit code' do
-        expect(subject.invoke).to be_falsey
-      end
+  context 'when HAML document is valid' do
+    let(:haml) { '%tag' }
+
+    it 'executes without error' do
+      expect { run_task }.not_to raise_error
+    end
+  end
+
+  context 'when HAML document is invalid' do
+    let(:haml) { "%tag\n  %foo\n      %bar" }
+
+    it 'raises an error' do
+      expect { run_task }.to raise_error
     end
   end
 end

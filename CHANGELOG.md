@@ -6,6 +6,9 @@
 * Fix `RuboCop` from incorrectly reporting `Style/AsciiComments` cops for
   plain text nodes with Unicode characters
 * Gracefully handle missing configuration files that are explicitly given
+* Improve `HamlLint::RakeTask` to support passing a list of files as task
+  arguments. (breaks existing functionality; see
+  [README](README/#rake-integration) for details)
 
 ## 0.10.0
 
