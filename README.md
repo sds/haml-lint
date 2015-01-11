@@ -22,6 +22,7 @@ established by the team at [Causes.com](https://causes.com).
 * [Linters](#linters)
 * [Editor Integration](#editor-integration)
 * [Git Integration](#git-integration)
+* [Rake Integration](#rake-integration)
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [License](#license)
