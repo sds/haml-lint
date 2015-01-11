@@ -55,6 +55,24 @@ describe HamlLint::Options do
       end
     end
 
+    context 'color' do
+      describe 'manually on' do
+        let(:args) { ['--color'] }
+
+        it 'sets the `color` option to true' do
+          subject.should include color: true
+        end
+      end
+
+      describe 'manually off' do
+        let(:args) { ['--no-color'] }
+
+        it 'sets the `color option to false' do
+          subject.should include color: false
+        end
+      end
+    end
+
     context 'with a list of file glob patterns' do
       let(:args) { %w[app/**/*.haml some-dir/some-template.haml] }
 
