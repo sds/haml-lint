@@ -90,7 +90,7 @@ module HamlLint
       # the rest out of the `extras` from the task arguments. This is so we
       # can specify an arbitrary list of files separated by commas on the
       # command line or in a custom task definition.
-      explicit_files = Array(task_args[:files]) + task_args.extras
+      explicit_files = Array(task_args[:files]) + Array(task_args.extras)
 
       explicit_files.any? ? explicit_files : files
     end
