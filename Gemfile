@@ -1,15 +1,13 @@
 source 'https://rubygems.org'
 
-# Pin Rubocop for Travis builds.
-# This won't affect people installing via `gem install` since it's not in the
-# gemspec. It needs to come before the call to `gemspec` below in order to
-# prevent a warning being displayed about duplicate dependencies when running
-# `bundle install` in this repository.
-gem 'rubocop', '0.28.0'
+gemspec
 
+# Run all pre-commit hooks via Overcommit during CI runs
 gem 'overcommit', '0.21.0'
+
+# Pin tool versions (which are executed by Overcommit) for Travis builds
+gem 'rubocop', '0.28.0'
+gem 'travis', '~> 1.7'
 
 # Run `wwtd` to emulate Travis builds locally
 gem 'wwtd'
-
-gemspec
