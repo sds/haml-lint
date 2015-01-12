@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.11.0
 
 * Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
 * Fix `RuboCop` from incorrectly reporting `Style/AsciiComments` cops for
