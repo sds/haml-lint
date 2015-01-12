@@ -8,7 +8,7 @@
 * Gracefully handle missing configuration files that are explicitly given
 * Improve `HamlLint::RakeTask` to support passing a list of files as task
   arguments. (breaks existing functionality; see
-  [README](README/#rake-integration) for details)
+  [README](README.md/#rake-integration) for details)
 * Add `--[no-]color` flags allowing colored output to be explicitly set
 
 ## 0.10.0
