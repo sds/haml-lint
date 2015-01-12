@@ -1,38 +1,27 @@
 require 'spec_helper'
-require 'haml_lint/logger'
 
 describe HamlLint::Logger do
   let(:io)     { StringIO.new }
   let(:logger) { described_class.new(io) }
 
   describe '#color_enabled' do
-    subject { logger.send :color_enabled }
+    subject { io.string }
 
-    describe 'output is a tty' do
-      before { io.stub(:tty?).and_return(true) }
-
-      it { should eq true }
+    before do
+      logger.color_enabled = enabled
+      logger.success('Success!')
     end
 
-    describe 'output is not a tty' do
-      before { io.stub(:tty?).and_return(false) }
+    context 'when color is enabled' do
+      let(:enabled) { true }
 
-      it { should eq false }
+      it { should include '32' }
     end
 
-    describe 'color_enabled set to true' do
-      before { logger.color_enabled = true }
+    context 'when color is disabled' do
+      let(:enabled) { false }
 
-      it { should eq true }
-    end
-
-    describe 'tty is nil and color_enabled is nil' do
-      before do
-        io.stub(:tty?).and_return(nil)
-        logger.color_enabled = nil
-      end
-
-      it { should eq false }
+      it { should_not include '32' }
     end
   end
 end

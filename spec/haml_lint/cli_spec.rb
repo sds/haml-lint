@@ -37,6 +37,59 @@ describe HamlLint::CLI do
       end
     end
 
+    context 'when passed the --color flag' do
+      let(:args) { ['--color'] }
+
+      it 'sets the logger to output in color' do
+        subject
+        logger.color_enabled.should == true
+      end
+
+      context 'and the output stream is not a TTY' do
+        before do
+          io.stub(:tty?).and_return(false)
+        end
+
+        it 'sets the logger to output in color' do
+          subject
+          logger.color_enabled.should == true
+        end
+      end
+    end
+
+    context 'when passed the --no-color flag' do
+      let(:args) { ['--no-color'] }
+
+      it 'sets the logger to not output in color' do
+        subject
+        logger.color_enabled.should == false
+      end
+    end
+
+    context 'when --[no-]color flag is not specified' do
+      before do
+        io.stub(:tty?).and_return(tty)
+      end
+
+      context 'and the output stream is a TTY' do
+        let(:tty) { true }
+
+        it 'sets the logger to output in color' do
+          subject
+          logger.color_enabled.should == true
+        end
+      end
+
+      context 'and the output stream is not a TTY' do
+        let(:tty) { false }
+
+        it 'sets the logger to not output in color' do
+          subject
+          logger.color_enabled.should == false
+        end
+      end
+    end
+
     context 'when passed the --show-linters flag' do
       let(:args) { ['--show-linters'] }
 

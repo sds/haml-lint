@@ -29,7 +29,8 @@ module HamlLint
     attr_reader :log
 
     def act_on_options(options)
-      log.color_enabled = options[:color]
+      log.color_enabled = options.fetch(:color, log.tty?)
+
       if options[:help]
         print_help(options)
         Sysexits::EX_OK
