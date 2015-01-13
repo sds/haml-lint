@@ -129,6 +129,10 @@ If you use `SublimeLinter 3` with `Sublime Text 3` you can install the
 [SublimeLinter-haml-lint](https://github.com/jeroenj/SublimeLinter-contrib-haml-lint)
 plugin using [Package Control](https://sublime.wbond.net).
 
+### Atom
+
+If you use `atom`, you can install the [linter-haml](https://atom.io/packages/linter-haml) plugin.
+
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
