@@ -17,8 +17,10 @@ describe HamlLint::RakeTask do
   end
 
   def run_task
-    Rake::Task[:haml_lint].reenable # Allows us to execute task multiple times
-    Rake::Task[:haml_lint].invoke(file.path)
+    Rake::Task[:haml_lint].tap do |t|
+      t.reenable # Allows us to execute task multiple times
+      t.invoke(file.path)
+    end
   end
 
   context 'when HAML document is valid' do
