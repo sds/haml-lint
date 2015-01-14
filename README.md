@@ -23,6 +23,7 @@ established by the team at [Causes.com](https://causes.com).
 * [Editor Integration](#editor-integration)
 * [Git Integration](#git-integration)
 * [Rake Integration](#rake-integration)
+* [Documentation](#documentation)
 * [Contributing](#contributing)
 * [Changelog](#changelog)
 * [License](#license)
@@ -175,6 +176,14 @@ rake 'haml_lint[app/views, custom/*.haml]'
 
 Files specified in this manner take precedence over the task's `files`
 attribute.
+
+## Documentation
+
+[Code documentation] is generated with [YARD] and hosted by [RubyDoc.info].
+
+[Code documentation]: http://rdoc.info/github/causes/haml-lint/master/frames
+[YARD]: http://yardoc.org/
+[RubyDoc.info]: http://rdoc.info/
 
 ## Contributing
 
