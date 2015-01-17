@@ -34,7 +34,7 @@ module HamlLint
     # @param args [Array<String>]
     # @return [nil]
     def bold(*args)
-      color('1;37', *args)
+      color('1', *args)
     end
 
     # Print the specified output in a color indicative of error.

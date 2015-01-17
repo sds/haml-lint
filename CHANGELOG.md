@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix non-visible line number on light-colored terminal backgrounds
+
 ## 0.11.0
 
 * Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
