@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Fix non-visible line number on light-colored terminal backgrounds
+* Allow files without `.haml` extension to be linted when explicitly specified
 
 ## 0.11.0
 

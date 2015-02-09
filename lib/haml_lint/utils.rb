@@ -1,34 +1,7 @@
-require 'find'
-
 module HamlLint
   # A miscellaneous set of utility functions.
   module Utils
     module_function
-
-    def extract_files_from(list)
-      files = []
-
-      list.each do |file|
-        begin
-          Find.find(file) do |f|
-            files << f if haml_file?(f)
-          end
-        rescue Errno::ENOENT
-          # File didn't exist; it might be a file glob pattern
-          matches = Dir.glob(file)
-          if matches.any?
-            files += matches
-          else
-            # One of the paths specified does not exist; raise a more
-            # descriptive exception so we know which one
-            raise HamlLint::Exceptions::InvalidFilePath,
-                  "File path '#{file}' does not exist"
-          end
-        end
-      end
-
-      files.uniq
-    end
 
     # Yields interpolated values within a block of filter text.
     def extract_interpolated_values(filter_text)
@@ -80,12 +53,6 @@ module HamlLint
       count = 1
       count += 1 while (offset + count < items.count) && satisfies[items[offset + count]]
       count
-    end
-
-    def haml_file?(file)
-      return false unless FileTest.file?(file)
-
-      File.extname(file) == '.haml'
     end
   end
 end

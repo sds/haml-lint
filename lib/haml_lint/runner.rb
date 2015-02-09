@@ -9,7 +9,7 @@ module HamlLint
     # @return [HamlLint::Report] a summary of all lints found
     def run(options = {})
       config = load_applicable_config(options)
-      files = extract_applicable_files(options)
+      files = extract_applicable_files(options, config)
       linters = extract_enabled_linters(config, options)
 
       raise HamlLint::Exceptions::NoLintersError, 'No linters specified' if linters.empty?
@@ -63,16 +63,11 @@ module HamlLint
       @lints << Lint.new(nil, file, ex.line, ex.to_s, :error)
     end
 
-    def extract_applicable_files(options)
+    def extract_applicable_files(options, config)
+      included_patterns = options[:files]
       excluded_files = options.fetch(:excluded_files, [])
 
-      Utils.extract_files_from(options[:files]).reject do |file|
-        excluded_files.any? do |exclusion_glob|
-          File.fnmatch?(exclusion_glob, file,
-                        File::FNM_PATHNAME | # Wildcards don't match path separators
-                        File::FNM_DOTMATCH)  # `*` wildcard matches dotfiles
-        end
-      end
+      HamlLint::FileFinder.new(config).find(included_patterns, excluded_files)
     end
   end
 end
