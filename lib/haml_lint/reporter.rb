@@ -18,6 +18,15 @@ module HamlLint
       raise NotImplementedError
     end
 
+    # Keep tracking all the descendants of this class for the list of available reporters
+    def self.descendants
+      @descendants ||= []
+    end
+
+    def self.inherited(descendant)
+      descendants << descendant
+    end
+
     private
 
     attr_reader :log
