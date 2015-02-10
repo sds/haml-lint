@@ -111,6 +111,17 @@ describe HamlLint::CLI do
       it { should == Sysexits::EX_OK }
     end
 
+    context 'when passed the --show-reporters flag' do
+      let(:args) { ['--show-reporters'] }
+
+      it 'displays the available reporters' do
+        subject
+        output.should include 'default'
+      end
+
+      it { should == Sysexits::EX_OK }
+    end
+
     context 'when passed the --version flag' do
       let(:args) { ['--version'] }
 
