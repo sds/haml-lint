@@ -5,12 +5,14 @@ module HamlLint
   # @abstract
   class Reporter
     attr_reader :lints
+    attr_reader :files
 
     # @param logger [HamlLint::Logger]
     # @param report [HamlLint::Report]
     def initialize(logger, report)
       @log = logger
       @lints = report.lints
+      @files = report.files
     end
 
     # Implemented by subclasses to display lints from a {HamlLint::Report}.
