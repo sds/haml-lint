@@ -1,6 +1,9 @@
 module HamlLint
   # Responsible for running the applicable linters against the desired files.
   class Runner
+    # Make the list of applicable files available
+    attr_reader :files
+
     # Runs the appropriate linters against the desired files given the specified
     # options.
     #
@@ -23,7 +26,7 @@ module HamlLint
         @lints += linter.lints
       end
 
-      HamlLint::Report.new(@lints)
+      HamlLint::Report.new(@lints, files)
     end
 
     private

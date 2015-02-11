@@ -7,7 +7,7 @@ describe HamlLint::Reporter::DefaultReporter do
     let(:io) { StringIO.new }
     let(:output) { io.string }
     let(:logger) { HamlLint::Logger.new(io) }
-    let(:report) { HamlLint::Report.new(lints) }
+    let(:report) { HamlLint::Report.new(lints, []) }
     let(:reporter) { described_class.new(logger, report) }
 
     subject { reporter.report_lints }

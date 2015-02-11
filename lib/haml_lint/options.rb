@@ -45,6 +45,11 @@ module HamlLint
                 "Specify which linters you don't want to run") do |linters|
         @options[:excluded_linters] = linters
       end
+
+      parser.on('-r', '--reporter reporter', String,
+                "Specify which reporter you want to use to generate the output") do |reporter|
+        @options[:reporter] = HamlLint::Reporter.const_get("#{reporter.capitalize}Reporter")
+      end
     end
 
     def add_file_options(parser)
@@ -62,6 +67,10 @@ module HamlLint
     def add_info_options(parser)
       parser.on('--show-linters', 'Display available linters') do
         @options[:show_linters] = true
+      end
+
+      parser.on('--show-reporters', 'Display available reporters') do
+        @options[:show_reporters] = true
       end
 
       parser.on('--[no-]color', 'Force output to be colorized') do |color|

@@ -40,6 +40,9 @@ module HamlLint
       elsif options[:show_linters]
         print_available_linters
         Sysexits::EX_OK
+      elsif options[:show_reporters]
+        print_available_reporters
+        Sysexits::EX_OK
       else
         scan_for_lints(options)
       end
@@ -86,6 +89,18 @@ module HamlLint
 
       linter_names.sort.each do |linter_name|
         log.log " - #{linter_name}"
+      end
+    end
+
+    def print_available_reporters
+      log.info 'Available reporters:'
+
+      reporter_names = Reporter.descendants.map do |reporter|
+        reporter.name.split('::').last.sub(/Reporter$/, '').downcase
+      end
+
+      reporter_names.sort.each do |reporter_name|
+        log.log " - #{reporter_name}"
       end
     end
 
