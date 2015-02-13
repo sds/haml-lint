@@ -47,7 +47,7 @@ module HamlLint
       end
 
       parser.on('-r', '--reporter reporter', String,
-                "Specify which reporter you want to use to generate the output") do |reporter|
+                'Specify which reporter you want to use to generate the output') do |reporter|
         @options[:reporter] = HamlLint::Reporter.const_get("#{reporter.capitalize}Reporter")
       end
     end

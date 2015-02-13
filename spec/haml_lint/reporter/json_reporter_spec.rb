@@ -12,19 +12,14 @@ describe HamlLint::Reporter::JsonReporter do
 
     subject { reporter.report_lints }
 
-    shared_examples_for "output format specification" do
-      it 'output should be consistent with the specification' do
+    shared_examples_for 'output format specification' do
+      it 'matches the output specification' do
         subject
-        output.should be_a_kind_of(Hash)
-        output['metadata'].should be_a_kind_of(Hash)
-        output['metadata'].length.should eq 4
         output['metadata']['hamllint_version'].should_not be_empty
         output['metadata']['ruby_engine'].should eq RUBY_ENGINE
         output['metadata']['ruby_patchlevel'].should eq RUBY_PATCHLEVEL.to_s
         output['metadata']['ruby_platform'].should eq RUBY_PLATFORM.to_s
         output['files'].should be_a_kind_of(Array)
-        output['summary'].should be_a_kind_of(Hash)
-        output['summary'].length.should eq 3
         output['summary']['offense_count'].should be_a_kind_of(Integer)
         output['summary']['target_file_count'].should be_a_kind_of(Integer)
         output['summary']['inspected_file_count'].should be_a_kind_of(Integer)
@@ -45,7 +40,7 @@ describe HamlLint::Reporter::JsonReporter do
         output['summary']['target_file_count'].should == 0
       end
 
-      it_behaves_like "output format specification"
+      it_behaves_like 'output format specification'
     end
 
     context 'when there are lints' do
@@ -65,7 +60,7 @@ describe HamlLint::Reporter::JsonReporter do
         output['files'].map { |f| f['path'] }.sort.should eq filenames.sort
       end
 
-      it_behaves_like "output format specification"
+      it_behaves_like 'output format specification'
     end
   end
 end
