@@ -3,5 +3,8 @@ CommitMsg:
     enabled: true
 
 PreCommit:
-  Reek:
-    enabled: false
+  Rubocop:
+    command: ['bundle', 'exec', 'rubocop']
+  TravisLint:
+    command: ['bundle', 'exec', 'travis']
+    flags: ['--skip-version-check']
