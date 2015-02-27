@@ -58,6 +58,7 @@ linters:
       - Style/IfUnlessModifier
       - Style/IndentationWidth
       - Style/Next
+      - Style/TrailingBlankLines
       - Style/TrailingWhitespace
       - Style/WhileUntilModifier
 

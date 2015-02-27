@@ -4,6 +4,7 @@
 
 * Fix non-visible line number on light-colored terminal backgrounds
 * Allow files without `.haml` extension to be linted when explicitly specified
+* Ignore `Style/TrailingBlankLines` warnings from RuboCop by default
 
 ## 0.11.0
 
