@@ -7,4 +7,4 @@ PreCommit:
     command: ['bundle', 'exec', 'rubocop']
   TravisLint:
     command: ['bundle', 'exec', 'travis']
-    flags: ['--skip-version-check']
+    flags: ['lint', '--skip-version-check']
