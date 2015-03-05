@@ -156,6 +156,23 @@ describe HamlLint::ScriptExtractor do
       it { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag" }
     end
 
+    context 'with a tag with 1.8-style hash attributes of string key/values' do
+      let(:haml) { <<-HAML }
+        %tag{ 'one' => '1', 'two' => '2' }
+      HAML
+
+      it { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag" }
+
+      context 'that span multiple lines' do
+        let(:haml) { <<-HAML }
+          %div{ 'one' => '1',
+                'two' => '2' }
+        HAML
+
+        it { should == "{ 'one' => '1', 'two' => '2' }\nputs # div" }
+      end
+    end
+
     context 'with a block statement' do
       let(:haml) { <<-HAML }
         - if condition
