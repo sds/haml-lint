@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-# Need this for `bundle exec` to work in Overcommit runs in Travis
-gem 'bundler'
-
 # Run all pre-commit hooks via Overcommit during CI runs
 gem 'overcommit', '0.23.0'
 
