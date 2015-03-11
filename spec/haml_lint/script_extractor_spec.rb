@@ -301,6 +301,7 @@ describe HamlLint::ScriptExtractor do
       HAML
 
       it { should == normalize_indent(<<-RUBY).rstrip }
+        puts
         some_method
         some_other_method
       RUBY
@@ -314,6 +315,7 @@ describe HamlLint::ScriptExtractor do
       HAML
 
       it { should == normalize_indent(<<-RUBY).rstrip }
+        puts
         some_method("hello")
         some_other_method('world')
       RUBY
@@ -329,8 +331,28 @@ describe HamlLint::ScriptExtractor do
       # TODO: Figure out if it's worth normalizing indentation for the generated
       # code in this interpolated context
       it { should == normalize_indent(<<-RUBY).rstrip }
+        puts
         some_method('hello',
                                  'world')
+      RUBY
+    end
+
+    context 'with an if/else block containing only filters' do
+      let(:haml) { <<-HAML }
+        - if condition
+          :filter
+            Some text
+        - else
+          :filter
+            Some other text
+      HAML
+
+      it { should == normalize_indent(<<-RUBY).rstrip }
+        if condition
+          puts
+        else
+          puts
+        end
       RUBY
     end
   end

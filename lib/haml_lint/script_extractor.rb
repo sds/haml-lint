@@ -103,6 +103,7 @@ module HamlLint
           add_line(line, node.line + index + 1)
         end
       else
+        add_line('puts', node)
         HamlLint::Utils.extract_interpolated_values(node.text) do |interpolated_code|
           add_line(interpolated_code, node)
         end

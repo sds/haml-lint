@@ -5,8 +5,10 @@
 * Fix non-visible line number on light-colored terminal backgrounds
 * Allow files without `.haml` extension to be linted when explicitly specified
 * Ignore `Style/TrailingBlankLines` warnings from RuboCop by default
-* Fix RuboCop linter to not report `Style/AlignHash` warnings for HAML code with
-  1.8-style hash rockets spanning multiple lines
+* Fix `RuboCop` linter to not report `Style/AlignHash` warnings for HAML code
+  with 1.8-style hash rockets spanning multiple lines
+* Fix `RuboCop` linter to not report `Style/EmptyElse` warnings for HAML code
+  containing `if`/`else` blocks containing only HAML filters
 
 ## 0.11.0
 
