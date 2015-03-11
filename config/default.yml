@@ -40,6 +40,9 @@ linters:
   MultilinePipe:
     enabled: true
 
+  MultilineScript:
+    enabled: true
+
   ObjectReferenceAttributes:
     enabled: true
 

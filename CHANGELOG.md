@@ -9,6 +9,8 @@
   with 1.8-style hash rockets spanning multiple lines
 * Fix `RuboCop` linter to not report `Style/EmptyElse` warnings for HAML code
   containing `if`/`else` blocks containing only HAML filters
+* Add `MultilineScript` linter to report scripts with trailing operators that
+  should be merged with the following line
 
 ## 0.11.0
 
