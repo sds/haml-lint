@@ -20,6 +20,14 @@ module HamlLint::Tree
       @value[:parse] && !@value[:value].strip.empty?
     end
 
+    # Returns whether this tag has a specified attribute
+    # `=`).
+    #
+    # @return [true,false]
+    def has_hash_attribute?(attribute)
+      hash_attributes? && existing_attributes.include?(attribute)
+    end
+
     # List of classes statically defined for this tag.
     #
     # @example For `%tag.button.button-info{ class: status }`, this returns:
@@ -197,6 +205,18 @@ module HamlLint::Tree
     # @return [String]
     def text
       (@value[:value] if @value[:parse]) || ''
+    end
+
+    private
+
+    def parsed_attributes
+      HamlLint::RubyParser.new.parse(hash_attributes_source)
+    end
+
+    def existing_attributes
+      parsed_attributes.children.collect do |parsed_attribute|
+        parsed_attribute.children.first.to_a.first
+      end
     end
   end
 end
