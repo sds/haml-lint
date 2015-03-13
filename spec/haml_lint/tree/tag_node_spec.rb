@@ -5,6 +5,34 @@ describe HamlLint::Tree::TagNode do
   let(:tag_node) { parser.tree.find { |node| node.type == :tag && node.tag_name == tag_name } }
   let(:tag_name) { 'my_tag' }
 
+  describe '#has_hash_attribute?' do
+    subject { tag_node.has_hash_attribute?(:one) }
+
+    context 'when the node has the attribute' do
+      let(:haml) { '%my_tag{ one: 1 }' }
+
+      it { should == true }
+    end
+
+    context 'when the node does not have the attribute' do
+      let(:haml) { '%my_tag{ two: 2 }' }
+
+      it { should == false }
+    end
+
+    context 'when the node has multiple hash attributes' do
+      let(:haml) { '%my_tag{ one: 1, two: 2 }' }
+
+      it { should == true }
+    end
+
+    context 'when the node has no hash attributes' do
+      let(:haml) { '%my_tag' }
+
+      it { should == false  }
+    end
+  end
+
   describe '#dynamic_attributes_source' do
     subject { tag_node.dynamic_attributes_source }
 
