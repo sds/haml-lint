@@ -8,6 +8,9 @@
 skip_frontmatter: false
 
 linters:
+  AltText:
+    enabled: false
+
   ClassAttributeWithStaticValue:
     enabled: true
 
