@@ -20,8 +20,7 @@ module HamlLint::Tree
       @value[:parse] && !@value[:value].strip.empty?
     end
 
-    # Returns whether this tag has a specified attribute
-    # `=`).
+    # Returns whether this tag has a specified attribute.
     #
     # @return [true,false]
     def has_hash_attribute?(attribute)
