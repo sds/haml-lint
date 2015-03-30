@@ -204,4 +204,4 @@ of `haml-lint`, read the [HAML-Lint Changelog](CHANGELOG.md).
 
 ## License
 
-This project is released under the MIT license.
+This project is released under the [MIT license](MIT-LICENSE).
