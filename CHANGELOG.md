@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.12.0
 
 * Fix non-visible line number on light-colored terminal backgrounds
 * Allow files without `.haml` extension to be linted when explicitly specified
