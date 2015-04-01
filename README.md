@@ -1,10 +1,10 @@
 # HAML-Lint
 
 [![Gem Version](https://badge.fury.io/rb/haml-lint.svg)](http://badge.fury.io/rb/haml-lint)
-[![Build Status](https://travis-ci.org/causes/haml-lint.svg)](https://travis-ci.org/causes/haml-lint)
-[![Code Climate](https://codeclimate.com/github/causes/haml-lint.png)](https://codeclimate.com/github/causes/haml-lint)
-[![Inline docs](http://inch-ci.org/github/causes/haml-lint.svg?branch=master)](http://inch-ci.org/github/causes/haml-lint)
-[![Dependency Status](https://gemnasium.com/causes/haml-lint.svg)](https://gemnasium.com/causes/haml-lint)
+[![Build Status](https://travis-ci.org/brigade/haml-lint.svg)](https://travis-ci.org/brigade/haml-lint)
+[![Code Climate](https://codeclimate.com/github/brigade/haml-lint.png)](https://codeclimate.com/github/brigade/haml-lint)
+[![Inline docs](http://inch-ci.org/github/brigade/haml-lint.svg?branch=master)](http://inch-ci.org/github/brigade/haml-lint)
+[![Dependency Status](https://gemnasium.com/brigade/haml-lint.svg)](https://gemnasium.com/brigade/haml-lint)
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. In addition to HAML-specific style and lint checks, it
@@ -12,8 +12,7 @@ integrates with [RuboCop](https://github.com/bbatsov/rubocop) to bring its
 powerful static analysis tools to your HAML documents.
 
 You can run `haml-lint` manually from the command line, or integrate it into
-your [SCM hooks](https://github.com/causes/overcommit). It uses rules
-established by the team at [Causes.com](https://causes.com).
+your [SCM hooks](https://github.com/brigade/overcommit).
 
 * [Requirements](#requirements)
 * [Installation](#installation)
@@ -137,7 +136,7 @@ If you use `atom`, you can install the [linter-haml](https://atom.io/packages/li
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
-Git hook manager, [overcommit](https://github.com/causes/overcommit).
+Git hook manager, [overcommit](https://github.com/brigade/overcommit).
 
 ## Rake Integration
 
@@ -181,7 +180,7 @@ attribute.
 
 [Code documentation] is generated with [YARD] and hosted by [RubyDoc.info].
 
-[Code documentation]: http://rdoc.info/github/causes/haml-lint/master/frames
+[Code documentation]: http://rdoc.info/github/brigade/haml-lint/master/frames
 [YARD]: http://yardoc.org/
 [RubyDoc.info]: http://rdoc.info/
 
