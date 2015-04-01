@@ -12,6 +12,8 @@
 * Add `MultilineScript` linter to report scripts with trailing operators that
   should be merged with the following line
 * Add `AltText` linter to report missing `alt` attributes on `img` tags
+* Fix `UnnecessaryStringOutput` to not report warnings for strings with methods
+  called on them
 
 ## 0.11.0
 

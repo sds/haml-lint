@@ -53,4 +53,10 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
 
     it { should_not report_lint }
   end
+
+  context 'when script outputs literal string with method called on it' do
+    let(:haml) { "= 'user'.pluralize(@users.count)" }
+
+    it { should_not report_lint }
+  end
 end

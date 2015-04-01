@@ -30,7 +30,10 @@ module HamlLint
     private
 
     def outputs_string_literal?(script_node)
-      %w[' "].include?(script_node.script.lstrip[0])
+      tree = parse_ruby(script_node.script)
+      [:str, :dstr].include?(tree.type)
+    rescue ::Parser::SyntaxError # rubocop:disable Lint/HandleExceptions
+      # Gracefully ignore syntax errors, as that's managed by a different linter
     end
   end
 end
