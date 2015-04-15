@@ -16,7 +16,7 @@ module HamlLint
       chars = 2 # Include surrounding quote chars
       HamlLint::Utils.extract_interpolated_values(node.script) do |interpolated_code|
         count += 1
-        return if count > 1
+        return if count > 1 # rubocop:disable Lint/NonLocalExitFromIterator
         chars += interpolated_code.length + 3
       end
 

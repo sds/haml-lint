@@ -7,7 +7,7 @@ module HamlLint
     def extract_interpolated_values(filter_text)
       Haml::Util.handle_interpolation(filter_text.dump) do |scan|
         escape_count = (scan[2].size - 1) / 2
-        return unless escape_count.even?
+        return unless escape_count.even? # rubocop:disable Lint/NonLocalExitFromIterator
 
         dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
 
