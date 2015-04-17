@@ -26,8 +26,8 @@ module HamlLint
 
     attr_reader :config
 
-    def add_lint(node, message = nil)
-      @lints << Lint.new(self, parser.filename, node.line, message || self.message)
+    def add_lint(node, message)
+      @lints << Lint.new(self, parser.filename, node.line, message)
     end
 
     # Parse Ruby code into an abstract syntax tree.
