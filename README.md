@@ -1,6 +1,6 @@
 # HAML-Lint
 
-[![Gem Version](https://badge.fury.io/rb/haml-lint.svg)](http://badge.fury.io/rb/haml-lint)
+[![Gem Version](https://badge.fury.io/rb/haml_lint.svg)](http://badge.fury.io/rb/haml_lint)
 [![Build Status](https://travis-ci.org/brigade/haml-lint.svg)](https://travis-ci.org/brigade/haml-lint)
 [![Code Climate](https://codeclimate.com/github/brigade/haml-lint.png)](https://codeclimate.com/github/brigade/haml-lint)
 [![Inline docs](http://inch-ci.org/github/brigade/haml-lint.svg?branch=master)](http://inch-ci.org/github/brigade/haml-lint)
@@ -35,7 +35,7 @@ your [SCM hooks](https://github.com/brigade/overcommit).
 ## Installation
 
 ```bash
-gem install haml-lint
+gem install haml_lint
 ```
 
 ## Usage

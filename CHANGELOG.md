@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Rename `haml-lint` gem to `haml_lint` to follow RubyGems [conventions for
+  naming gems](http://guides.rubygems.org/name-your-gem/)
+
 ## 0.12.0
 
 * Fix non-visible line number on light-colored terminal backgrounds

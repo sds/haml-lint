@@ -3,7 +3,7 @@ require 'haml_lint/constants'
 require 'haml_lint/version'
 
 Gem::Specification.new do |s|
-  s.name             = 'haml-lint'
+  s.name             = 'haml_lint'
   s.version          = HamlLint::VERSION
   s.license          = 'MIT'
   s.summary          = 'HAML lint tool'
