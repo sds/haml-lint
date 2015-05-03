@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.13.0
 
 * Rename `haml-lint` gem to `haml_lint` to follow RubyGems [conventions for
   naming gems](http://guides.rubygems.org/name-your-gem/)
