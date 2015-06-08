@@ -1,3 +1,4 @@
+require 'haml_lint'
 require 'haml_lint/options'
 
 require 'sysexits'
@@ -5,8 +6,8 @@ require 'sysexits'
 module HamlLint
   # Command line application interface.
   class CLI
-    attr_accessor :options
-
+    # Create a CLI that outputs to the specified logger.
+    #
     # @param logger [HamlLint::Logger]
     def initialize(logger)
       @log = logger
@@ -16,7 +17,7 @@ module HamlLint
     # based on those arguments.
     #
     # @param args [Array<String>] command line arguments
-    # @return [Fixnum] exit status returned by the application
+    # @return [Integer] exit status code
     def run(args)
       options = HamlLint::Options.new.parse(args)
       act_on_options(options)
@@ -28,6 +29,9 @@ module HamlLint
 
     attr_reader :log
 
+    # Given the provided options, execute the appropriate command.
+    #
+    # @return [Integer] exit status code
     def act_on_options(options)
       log.color_enabled = options.fetch(:color, log.tty?)
 
@@ -48,6 +52,8 @@ module HamlLint
       end
     end
 
+    # Outputs a message and returns an appropriate error code for the specified
+    # exception.
     def handle_exception(ex)
       case ex
       when HamlLint::Exceptions::ConfigurationError
@@ -69,21 +75,27 @@ module HamlLint
       end
     end
 
+    # Scans the files specified by the given options for lints.
+    #
+    # @return [Integer] exit status code
     def scan_for_lints(options)
       report = Runner.new.run(options)
       print_report(report, options)
       report.failed? ? Sysexits::EX_DATAERR : Sysexits::EX_OK
     end
 
+    # Outputs a report of the linter run using the specified reporter.
     def print_report(report, options)
-      reporter = options.fetch(:reporter, Reporter::DefaultReporter).new(log, report)
-      reporter.report_lints
+      reporter = options.fetch(:reporter,
+                               HamlLint::Reporter::DefaultReporter).new(log)
+      reporter.display_report(report)
     end
 
+    # Outputs a list of all currently available linters.
     def print_available_linters
       log.info 'Available linters:'
 
-      linter_names = LinterRegistry.linters.map do |linter|
+      linter_names = HamlLint::LinterRegistry.linters.map do |linter|
         linter.name.split('::').last
       end
 
@@ -92,10 +104,11 @@ module HamlLint
       end
     end
 
+    # Outputs a list of currently available reporters.
     def print_available_reporters
       log.info 'Available reporters:'
 
-      reporter_names = Reporter.descendants.map do |reporter|
+      reporter_names = HamlLint::Reporter.descendants.map do |reporter|
         reporter.name.split('::').last.sub(/Reporter$/, '').downcase
       end
 
@@ -104,14 +117,18 @@ module HamlLint
       end
     end
 
+    # Outputs help documentation.
     def print_help(options)
       log.log options[:help]
     end
 
+    # Outputs the application name and version.
     def print_version
-      log.log "#{APP_NAME} #{HamlLint::VERSION}"
+      log.log "#{HamlLint::APP_NAME} #{HamlLint::VERSION}"
     end
 
+    # Outputs the backtrace of an exception with instructions on how to report
+    # the issue.
     def print_unexpected_exception(ex)
       log.bold_error ex.message
       log.error ex.backtrace.join("\n")

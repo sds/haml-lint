@@ -1,16 +1,14 @@
 require 'spec_helper'
 
 describe HamlLint::Reporter::DefaultReporter do
-  subject { HamlLint::Reporter::DefaultReporter.new(lints) }
-
-  describe '#report_lints' do
+  describe '#display_report' do
     let(:io) { StringIO.new }
     let(:output) { io.string }
     let(:logger) { HamlLint::Logger.new(io) }
     let(:report) { HamlLint::Report.new(lints, []) }
-    let(:reporter) { described_class.new(logger, report) }
+    let(:reporter) { described_class.new(logger) }
 
-    subject { reporter.report_lints }
+    subject { reporter.display_report(report) }
 
     context 'when there are no lints' do
       let(:lints) { [] }
@@ -26,10 +24,11 @@ describe HamlLint::Reporter::DefaultReporter do
       let(:lines)        { [502, 724] }
       let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
       let(:severities)   { [:warning] * 2 }
+      let(:linter)       { double(name: 'SomeLinter') }
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(nil, filename, lines[index], descriptions[index], severities[index])
+          HamlLint::Lint.new(linter, filename, lines[index], descriptions[index], severities[index])
         end
       end
 
@@ -80,6 +79,17 @@ describe HamlLint::Reporter::DefaultReporter do
           subject
           output.split("\n").each do |line|
             line.scan(/\[E\]/).count.should == 1
+          end
+        end
+      end
+
+      context 'when lint has no associated linter' do
+        let(:linter) { nil }
+
+        it 'prints the description for each lint' do
+          subject
+          descriptions.each do |description|
+            output.scan(/#{description}/).count.should == 1
           end
         end
       end

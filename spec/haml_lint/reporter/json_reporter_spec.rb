@@ -1,21 +1,19 @@
 require 'spec_helper'
 
 describe HamlLint::Reporter::JsonReporter do
-  subject { HamlLint::Reporter::JsonReporter.new(lints) }
-
-  describe '#report_lints' do
+  describe '#display_report' do
     let(:io) { StringIO.new }
     let(:output) { JSON.parse(io.string) }
     let(:logger) { HamlLint::Logger.new(io) }
     let(:report) { HamlLint::Report.new(lints, []) }
-    let(:reporter) { described_class.new(logger, report) }
+    let(:reporter) { described_class.new(logger) }
 
-    subject { reporter.report_lints }
+    subject { reporter.display_report(report) }
 
     shared_examples_for 'output format specification' do
       it 'matches the output specification' do
         subject
-        output['metadata']['hamllint_version'].should_not be_empty
+        output['metadata']['haml_lint_version'].should_not be_empty
         output['metadata']['ruby_engine'].should eq RUBY_ENGINE
         output['metadata']['ruby_patchlevel'].should eq RUBY_PATCHLEVEL.to_s
         output['metadata']['ruby_platform'].should eq RUBY_PLATFORM.to_s

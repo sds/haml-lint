@@ -1,10 +1,16 @@
 require 'spec_helper'
 
 describe HamlLint::Tree::Node do
-  let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
+  let(:options) do
+    {
+      config: HamlLint::ConfigurationLoader.default_configuration,
+    }
+  end
+
+  let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
 
   describe '#find' do
-    subject { parser.tree.find(&matcher) }
+    subject { document.tree.find(&matcher) }
     let(:matcher) { ->(node) { node.type == :haml_comment } }
 
     context 'when there are no nodes' do
@@ -43,7 +49,7 @@ describe HamlLint::Tree::Node do
   end
 
   describe '#source_code' do
-    subject { parser.tree.find { |node| node.type == :tag }.source_code }
+    subject { document.tree.find { |node| node.type == :tag }.source_code }
 
     context 'when node in the middle of the document' do
       let(:haml) { <<-HAML }
@@ -116,10 +122,10 @@ describe HamlLint::Tree::Node do
   end
 
   describe '#successor' do
-    subject { parser.tree.find { |node| node.type == :haml_comment }.successor }
+    subject { document.tree.find { |node| node.type == :haml_comment }.successor }
 
     context 'when finding the successor of the root node' do
-      subject { parser.tree.successor }
+      subject { document.tree.successor }
       let(:haml) { '-# Dummy node' }
 
       it { should be_nil }

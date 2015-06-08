@@ -61,6 +61,7 @@ linters:
       - Style/AlignParameters
       - Style/BlockNesting
       - Style/FileName
+      - Style/FinalNewline
       - Style/IfUnlessModifier
       - Style/IndentationWidth
       - Style/Next

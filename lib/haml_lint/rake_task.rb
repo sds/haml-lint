@@ -1,5 +1,6 @@
 require 'rake'
 require 'rake/tasklib'
+require 'haml_lint/constants'
 
 module HamlLint
   # Rake task interface for haml-lint command line interface.
@@ -51,6 +52,8 @@ module HamlLint
     attr_accessor :quiet
 
     # Create the task so it exists in the current namespace.
+    #
+    # @param name [Symbol] task name
     def initialize(name = :haml_lint)
       @name = name
       @files = ['.'] # Search for everything under current directory by default
@@ -63,27 +66,34 @@ module HamlLint
 
     private
 
+    # Defines the Rake task.
     def define
       desc default_description unless ::Rake.application.last_description
 
       task(name, [:files]) do |_task, task_args|
         # Lazy-load so task doesn't affect Rakefile load time
-        require 'haml_lint'
         require 'haml_lint/cli'
 
         run_cli(task_args)
       end
     end
 
+    # Executes the CLI given the specified task arguments.
+    #
+    # @param task_args [Rake::TaskArguments]
     def run_cli(task_args)
       cli_args = ['--config', config] if config
 
       logger = quiet ? HamlLint::Logger.silent : HamlLint::Logger.new(STDOUT)
       result = HamlLint::CLI.new(logger).run(Array(cli_args) + files_to_lint(task_args))
 
-      fail "haml-lint failed with exit code #{result}" unless result == 0
+      fail "#{HamlLint::APP_NAME} failed with exit code #{result}" unless result == 0
     end
 
+    # Returns the list of files that should be linted given the specified task
+    # arguments.
+    #
+    # @param task_args [Rake::TaskArguments]
     def files_to_lint(task_args)
       # Note: we're abusing Rake's argument handling a bit here. We call the
       # first argument `files` but it's actually only the first file--we pull
@@ -96,8 +106,13 @@ module HamlLint
     end
 
     # Friendly description that shows the full command that will be executed.
+    #
+    # This allows us to change the information displayed by `rake --tasks` based
+    # on the options passed to the constructor which defined the task.
+    #
+    # @return [String]
     def default_description
-      description = 'Run `haml-lint'
+      description = "Run `#{HamlLint::APP_NAME}"
       description += " --config #{config}" if config
       description += " #{files.join(' ')}" if files.any?
       description += ' [files...]`'

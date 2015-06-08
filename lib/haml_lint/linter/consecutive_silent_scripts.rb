@@ -9,10 +9,10 @@ module HamlLint
     end
 
     def visit_root(node)
-      HamlLint::Utils.find_consecutive(
+      HamlLint::Utils.for_consecutive_items(
         node.children,
-        config['max_consecutive'] + 1,
         SILENT_SCRIPT_DETECTOR,
+        config['max_consecutive'] + 1,
       ) do |group|
         add_lint(group.first,
                  "#{group.count} consecutive Ruby scripts can be merged into " \

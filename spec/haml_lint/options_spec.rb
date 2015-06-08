@@ -39,6 +39,32 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with a reporter option' do
+      context 'for a reporter that exists' do
+        let(:args) { %w[--reporter Json] }
+
+        it 'sets the `reporter` option' do
+          subject.should include reporter: HamlLint::Reporter::JsonReporter
+        end
+      end
+
+      context 'for a reporter that exists when capitalized' do
+        let(:args) { %w[--reporter json] }
+
+        it 'sets the `reporter` option' do
+          subject.should include reporter: HamlLint::Reporter::JsonReporter
+        end
+      end
+
+      context 'for a reporter that does not exist' do
+        let(:args) { %w[--reporter NonExistent] }
+
+        it 'raises an error' do
+          expect { subject }.to raise_error HamlLint::Exceptions::InvalidCLIOption
+        end
+      end
+    end
+
     context 'with the help option' do
       let(:args) { ['--help'] }
 

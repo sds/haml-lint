@@ -32,7 +32,7 @@ module HamlLint
     MULTILINE_PIPE_REGEX = /\s+\|\s*$/
 
     def line_text_for_node(node)
-      parser.lines[node.line - 1]
+      document.source_lines[node.line - 1]
     end
 
     def check(node)

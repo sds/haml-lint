@@ -122,6 +122,16 @@ describe HamlLint::CLI do
       it { should == Sysexits::EX_OK }
     end
 
+    context 'when passed the --help flag' do
+      let(:args) { ['--help'] }
+
+      it 'displays usage information' do
+        subject
+        output.should include HamlLint::APP_NAME
+        output.should include 'Usage'
+      end
+    end
+
     context 'when passed the --version flag' do
       let(:args) { ['--version'] }
 
@@ -136,15 +146,36 @@ describe HamlLint::CLI do
       end
     end
 
-    context 'when invalid argument is given' do
-      let(:args) { ['--some-invalid-argument'] }
+    context 'when a ConfigurationError is raised' do
+      before do
+        cli.stub(:act_on_options).and_raise(HamlLint::Exceptions::ConfigurationError)
+      end
 
-      it 'displays message about invalid option' do
-        subject
-        output.should =~ /invalid option/i
+      it { should == Sysexits::EX_CONFIG }
+    end
+
+    context 'when an InvalidCLIOption error is raised' do
+      before do
+        cli.stub(:act_on_options).and_raise(HamlLint::Exceptions::InvalidCLIOption)
       end
 
       it { should == Sysexits::EX_USAGE }
+    end
+
+    context 'when an InvalidFilePath error is raised' do
+      before do
+        cli.stub(:act_on_options).and_raise(HamlLint::Exceptions::InvalidFilePath)
+      end
+
+      it { should == Sysexits::EX_NOINPUT }
+    end
+
+    context 'when a NoLintersError is raised' do
+      before do
+        cli.stub(:act_on_options).and_raise(HamlLint::Exceptions::NoLintersError)
+      end
+
+      it { should == Sysexits::EX_NOINPUT }
     end
 
     context 'when an unhandled exception occurs' do

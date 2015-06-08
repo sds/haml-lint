@@ -9,7 +9,7 @@ module HamlLint
       max_length = config['max']
       dummy_node = Struct.new(:line)
 
-      parser.lines.each_with_index do |line, index|
+      document.source_lines.each_with_index do |line, index|
         next if line.length <= max_length
 
         add_lint(dummy_node.new(index + 1), format(MSG, line.length, max_length))

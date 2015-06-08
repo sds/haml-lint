@@ -1,28 +1,33 @@
 module HamlLint
   # Outputs report as a JSON document.
   class Reporter::JsonReporter < Reporter
-    def report_lints
+    def display_report(report)
+      lints = report.lints
       grouped = lints.group_by(&:filename)
 
-      report = {
-        metadata: {
-          hamllint_version: VERSION,
-          ruby_engine:      RUBY_ENGINE,
-          ruby_patchlevel:  RUBY_PATCHLEVEL.to_s,
-          ruby_platform:    RUBY_PLATFORM,
-        },
+      report_hash = {
+        metadata: metadata,
         files: grouped.map { |l| map_file(l) },
         summary: {
           offense_count: lints.length,
           target_file_count: grouped.length,
-          inspected_file_count: files.length,
+          inspected_file_count: report.files.length,
         },
       }
 
-      log.log report.to_json
+      log.log report_hash.to_json
     end
 
     private
+
+    def metadata
+      {
+        haml_lint_version: HamlLint::VERSION,
+        ruby_engine:      RUBY_ENGINE,
+        ruby_patchlevel:  RUBY_PATCHLEVEL.to_s,
+        ruby_platform:    RUBY_PLATFORM,
+      }
+    end
 
     def map_file(file)
       {

@@ -14,12 +14,11 @@ module HamlLint::Tree
 
     # Creates a node wrapping the given {Haml::Parser::ParseNode} struct.
     #
-    # @param parser [HamlLint::Parser] parser that created this node
+    # @param document [HamlLint::Document] Haml document that created this node
     # @param parse_node [Haml::Parser::ParseNode] parse node created by HAML's parser
-    def initialize(parser, parse_node)
-      # TODO: Change signature to take source code object, not parser
+    def initialize(document, parse_node)
       @line = parse_node.line
-      @parser = parser
+      @document = document
       @value = parse_node.value
       @type = parse_node.type
     end
@@ -50,12 +49,12 @@ module HamlLint::Tree
         if next_node
           next_node.line - 1
         else
-          @parser.lines.count + 1
+          @document.source_lines.count + 1
         end
 
-      @parser.lines[@line - 1...next_node_line]
-             .join("\n")
-             .gsub(/^\s*\z/m, '') # Remove blank lines at the end
+      @document.source_lines[@line - 1...next_node_line]
+               .join("\n")
+               .gsub(/^\s*\z/m, '') # Remove blank lines at the end
     end
 
     def inspect

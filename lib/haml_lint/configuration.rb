@@ -1,6 +1,12 @@
 module HamlLint
-  # Stores configuration for haml-lint.
+  # Stores runtime configuration for the application.
+  #
+  # The purpose of this class is to validate and ensure all configurations
+  # satisfy some basic pre-conditions so other parts of the application don't
+  # have to check the configuration for errors. It should have no knowledge of
+  # how these configuration values are ultimately used.
   class Configuration
+    # Internal hash storing the configuration.
     attr_reader :hash
 
     # Creates a configuration from the given options hash.
@@ -9,6 +15,14 @@ module HamlLint
     def initialize(options)
       @hash = options
       validate
+    end
+
+    # Access the configuration as if it were a hash.
+    #
+    # @param key [String]
+    # @return [Array,Hash,Number,String]
+    def [](key)
+      @hash[key]
     end
 
     # Compares this configuration with another.
@@ -30,19 +44,9 @@ module HamlLint
           linter.name.split('::').last
         when HamlLint::Linter
           linter.name
-        else
-          linter.to_s
         end
 
-      smart_merge(@hash['linters']['ALL'],
-                  @hash['linters'].fetch(linter_name, {})).freeze
-    end
-
-    # Returns whether the specified linter is enabled by this configuration.
-    #
-    # @param linter [HamlLint::Linter,String]
-    def linter_enabled?(linter)
-      for_linter(linter)['enabled'] != false
+      @hash['linters'].fetch(linter_name, {}).dup.freeze
     end
 
     # Merges the given configuration with this one, returning a new
@@ -56,18 +60,14 @@ module HamlLint
 
     private
 
-    # Validates the configuration for any invalid options, normalizing it where
-    # possible.
-    def validate
-      @hash = convert_nils_to_empty_hashes(@hash)
-      ensure_linter_section_exists(@hash)
-    end
-
+    # Merge two hashes such that nested hashes are merged rather than replaced.
+    #
+    # @param parent [Hash]
+    # @param child [Hash]
+    # @return [Hash]
     def smart_merge(parent, child)
       parent.merge(child) do |_key, old, new|
         case old
-        when Array
-          old + Array(new)
         when Hash
           smart_merge(old, new)
         else
@@ -76,21 +76,32 @@ module HamlLint
       end
     end
 
-    def ensure_linter_section_exists(hash)
-      hash['linters'] ||= {}
-      hash['linters']['ALL'] ||= {}
+    # Validates the configuration for any invalid options, normalizing it where
+    # possible.
+    def validate
+      ensure_exclude_option_array_exists
+      ensure_linter_section_exists
+      ensure_linter_include_exclude_arrays_exist
     end
 
-    def convert_nils_to_empty_hashes(hash)
-      hash.each_with_object({}) do |(key, value), h|
-        h[key] =
-          case value
-          when nil  then {}
-          when Hash then convert_nils_to_empty_hashes(value)
-          else
-            value
-          end
-        h
+    # Ensures the `exclude` global option is an array.
+    def ensure_exclude_option_array_exists
+      @hash['exclude'] = Array(@hash['exclude'])
+    end
+
+    # Ensures the `linters` configuration section exists.
+    def ensure_linter_section_exists
+      @hash['linters'] ||= {}
+    end
+
+    # Ensure `include` and `exclude` options for linters are arrays
+    # (since users can specify a single string glob pattern for convenience)
+    def ensure_linter_include_exclude_arrays_exist
+      @hash['linters'].keys.each do |linter_name|
+        %w[include exclude].each do |option|
+          linter_config = @hash['linters'][linter_name]
+          linter_config[option] = Array(linter_config[option])
+        end
       end
     end
   end

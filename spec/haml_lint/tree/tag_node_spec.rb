@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe HamlLint::Tree::TagNode do
-  let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
-  let(:tag_node) { parser.tree.find { |node| node.type == :tag && node.tag_name == tag_name } }
+  let(:options) do
+    {
+      config: HamlLint::ConfigurationLoader.default_configuration,
+    }
+  end
+
+  let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
+  let(:tag_node) { document.tree.find { |node| node.type == :tag && node.tag_name == tag_name } }
   let(:tag_name) { 'my_tag' }
 
   describe '#has_hash_attribute?' do

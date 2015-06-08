@@ -19,24 +19,33 @@ module HamlLint
   #       link_to 'Sign In', sign_in_path
   #     end
   #
-  class ScriptExtractor
+  # The translation won't be perfect, and won't make any real sense, but the
+  # relationship between variable declarations/uses and the flow control graph
+  # will remain intact.
+  class RubyExtractor
     include HamlVisitor
 
-    attr_reader :source, :source_map
+    # Stores the extracted source and a map of lines of generated source to the
+    # original source that created them.
+    #
+    # @attr_reader source [String] generated source code
+    # @attr_reader source_map [Hash] map of line numbers from generated source
+    #   to original source line number
+    RubySource = Struct.new(:source, :source_map)
 
-    def initialize(parser)
-      @parser = parser
-    end
-
-    def extract
-      visit(@parser.tree)
-      @source = @code.join("\n")
+    # Extracts Ruby code from Sexp representing a Slim document.
+    #
+    # @param document [HamlLint::Document]
+    # @return [HamlLint::RubyExtractor::RubySource]
+    def extract(document)
+      visit(document.tree)
+      RubySource.new(@source_lines.join("\n"), @source_map)
     end
 
     def visit_root(_node)
-      @code = []
-      @total_lines = 0
+      @source_lines = []
       @source_map = {}
+      @line_count = 0
       @indent_level = 0
 
       yield # Collect lines of code from children
@@ -140,7 +149,7 @@ module HamlLint
 
       indent = (' ' * 2 * indent_level)
 
-      @code << indent + code
+      @source_lines << indent + code
 
       original_line =
         node_or_line.respond_to?(:line) ? node_or_line.line : node_or_line
@@ -149,8 +158,8 @@ module HamlLint
       # resulting code will span multiple lines, so we need to create a
       # mapping for each line.
       (code.count("\n") + 1).times do
-        @total_lines += 1
-        @source_map[@total_lines] = original_line
+        @line_count += 1
+        @source_map[@line_count] = original_line
       end
     end
 

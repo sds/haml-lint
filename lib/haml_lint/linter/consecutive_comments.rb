@@ -3,13 +3,11 @@ module HamlLint
   class Linter::ConsecutiveComments < Linter
     include LinterRegistry
 
-    MIN_CONSECUTIVE = 2
     COMMENT_DETECTOR = ->(child) { child.type == :haml_comment }
 
     def visit_root(node)
-      HamlLint::Utils.find_consecutive(
+      HamlLint::Utils.for_consecutive_items(
         node.children,
-        MIN_CONSECUTIVE,
         COMMENT_DETECTOR,
       ) do |group|
         add_lint(group.first,

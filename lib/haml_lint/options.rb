@@ -31,11 +31,6 @@ module HamlLint
     private
 
     def add_linter_options(parser)
-      parser.on('-e', '--exclude file,...', Array,
-                'List of file names to exclude') do |files|
-        @options[:excluded_files] = files
-      end
-
       parser.on('-i', '--include-linter linter,...', Array,
                 'Specify which linters you want to run') do |linters|
         @options[:included_linters] = linters
@@ -48,8 +43,20 @@ module HamlLint
 
       parser.on('-r', '--reporter reporter', String,
                 'Specify which reporter you want to use to generate the output') do |reporter|
-        @options[:reporter] = HamlLint::Reporter.const_get("#{reporter.capitalize}Reporter")
+        @options[:reporter] = load_reporter_class(reporter.capitalize)
       end
+    end
+
+    # Returns the class of the specified Reporter.
+    #
+    # @param reporter_name [String]
+    # @raise [HamlLint::Exceptions::InvalidCLIOption] if reporter doesn't exist
+    # @return [Class]
+    def load_reporter_class(reporter_name)
+      HamlLint::Reporter.const_get("#{reporter_name}Reporter")
+    rescue NameError
+      raise HamlLint::Exceptions::InvalidCLIOption,
+            "#{reporter_name}Reporter does not exist"
     end
 
     def add_file_options(parser)

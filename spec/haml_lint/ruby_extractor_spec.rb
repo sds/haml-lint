@@ -1,15 +1,22 @@
 require 'spec_helper'
 
-describe HamlLint::ScriptExtractor do
-  let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
-  let(:extractor) { described_class.new(parser) }
+describe HamlLint::RubyExtractor do
+  let(:extractor) { described_class.new }
 
   describe '#extract' do
-    subject { extractor.extract }
+    let(:options) do
+      {
+        config: HamlLint::ConfigurationLoader.default_configuration,
+      }
+    end
+
+    let(:tree) { HamlLint::Document.new(normalize_indent(haml), options) }
+    subject { extractor.extract(tree) }
 
     context 'with an empty HAML document' do
       let(:haml) { '' }
-      it { should == '' }
+      its(:source) { should == '' }
+      its(:source_map) { should == {} }
     end
 
     context 'with plain text' do
@@ -17,7 +24,8 @@ describe HamlLint::ScriptExtractor do
         Hello world
       HAML
 
-      it { should == 'puts' }
+      its(:source) { should == 'puts' }
+      its(:source_map) { should == { 1 => 1 } }
     end
 
     context 'with multiple lines of plain text' do
@@ -26,7 +34,8 @@ describe HamlLint::ScriptExtractor do
         how are you?
       HAML
 
-      it { should == "puts\nputs" }
+      its(:source) { should == "puts\nputs" }
+      its(:source_map) { should == { 1 => 1, 2 => 2 } }
     end
 
     context 'with only tags with text content' do
@@ -37,7 +46,8 @@ describe HamlLint::ScriptExtractor do
           %b Ipsum
       HAML
 
-      it { should == "puts # h1\nputs # p\nputs\nputs # b" }
+      its(:source) { should == "puts # h1\nputs # p\nputs\nputs # b" }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3, 4 => 4 } }
     end
 
     context 'with a silent script node' do
@@ -45,7 +55,8 @@ describe HamlLint::ScriptExtractor do
         - silent_script
       HAML
 
-      it { should == 'silent_script' }
+      its(:source) { should == 'silent_script' }
+      its(:source_map) { should == { 1 => 1 } }
     end
 
     context 'with a script node' do
@@ -53,7 +64,8 @@ describe HamlLint::ScriptExtractor do
         = script
       HAML
 
-      it { should == 'script' }
+      its(:source) { should == 'script' }
+      its(:source_map) { should == { 1 => 1 } }
     end
 
     context 'with a script node that spans multiple lines' do
@@ -63,7 +75,8 @@ describe HamlLint::ScriptExtractor do
                   class: 'button'
       HAML
 
-      it { should == "link_to 'Link', path, class: 'button'" }
+      its(:source) { should == "link_to 'Link', path, class: 'button'" }
+      its(:source_map) { should == { 1 => 1 } }
     end
 
     context 'with a tag containing a silent script node' do
@@ -72,7 +85,8 @@ describe HamlLint::ScriptExtractor do
           - script
       HAML
 
-      it { should == "puts # tag\nscript" }
+      its(:source) { should == "puts # tag\nscript" }
+      its(:source_map) { should == { 1 => 1, 2 => 2 } }
     end
 
     context 'with a tag containing a script node' do
@@ -81,7 +95,8 @@ describe HamlLint::ScriptExtractor do
           = script
       HAML
 
-      it { should == "puts # tag\nscript" }
+      its(:source) { should == "puts # tag\nscript" }
+      its(:source_map) { should == { 1 => 1, 2 => 2 } }
     end
 
     context 'with a tag containing inline script' do
@@ -89,7 +104,8 @@ describe HamlLint::ScriptExtractor do
         %tag= script
       HAML
 
-      it { should == "puts # tag\nscript" }
+      its(:source) { should == "puts # tag\nscript" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with hash attributes' do
@@ -97,7 +113,8 @@ describe HamlLint::ScriptExtractor do
         %tag{ one: 1, two: 2, 'three' => some_method }
       HAML
 
-      it { should == "{}.merge(one: 1, two: 2, 'three' => some_method)\nputs # tag" }
+      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => some_method)\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with hash attributes with hashrockets and questionable spacing' do
@@ -105,9 +122,8 @@ describe HamlLint::ScriptExtractor do
         %tag.class_one.class_two#with_an_id{:type=>'checkbox', 'special' => :true }
       HAML
 
-      it 'includes the hash attribute source for rubocop inspection' do
-        should == "{:type=>'checkbox', 'special' => :true }\nputs # tag"
-      end
+      its(:source) { should == "{:type=>'checkbox', 'special' => :true }\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with mixed-style hash attributes' do
@@ -115,7 +131,8 @@ describe HamlLint::ScriptExtractor do
         %tag.class_one.class_two#with_an_id{ :type=>'checkbox', special: 'true' }
       HAML
 
-      it { should == "{}.merge(:type=>'checkbox', special: 'true')\nputs # tag" }
+      its(:source) { should == "{}.merge(:type=>'checkbox', special: 'true')\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with hash attributes with a method call' do
@@ -123,7 +140,8 @@ describe HamlLint::ScriptExtractor do
         %tag{ tag_options_method }
       HAML
 
-      it { should == "{}.merge(tag_options_method)\nputs # tag" }
+      its(:source) { should == "{}.merge(tag_options_method)\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with HTML-style attributes' do
@@ -131,7 +149,12 @@ describe HamlLint::ScriptExtractor do
         %tag(one=1 two=2 three=some_method)
       HAML
 
-      it { should == "{}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})\nputs # tag" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        {}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})
+        puts # tag
+      RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with hash attributes and inline script' do
@@ -139,11 +162,13 @@ describe HamlLint::ScriptExtractor do
         %tag{ one: 1 }= script
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge(one: 1)
         puts # tag
         script
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with hash attributes that span multiple lines' do
@@ -153,7 +178,8 @@ describe HamlLint::ScriptExtractor do
               'three' => 3 }
       HAML
 
-      it { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag" }
+      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
     end
 
     context 'with a tag with 1.8-style hash attributes of string key/values' do
@@ -161,7 +187,8 @@ describe HamlLint::ScriptExtractor do
         %tag{ 'one' => '1', 'two' => '2' }
       HAML
 
-      it { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag" }
+      its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag" }
+      its(:source_map) { should == { 1 => 1, 2 => 1 } }
 
       context 'that span multiple lines' do
         let(:haml) { <<-HAML }
@@ -169,7 +196,8 @@ describe HamlLint::ScriptExtractor do
                 'two' => '2' }
         HAML
 
-        it { should == "{ 'one' => '1', 'two' => '2' }\nputs # div" }
+        its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # div" }
+        its(:source_map) { should == { 1 => 1, 2 => 1 } }
       end
     end
 
@@ -183,7 +211,7 @@ describe HamlLint::ScriptExtractor do
           - script_three
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         if condition
           script_one
         elsif condition_two
@@ -192,6 +220,8 @@ describe HamlLint::ScriptExtractor do
           script_three
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 1 } }
     end
 
     context 'with an anonymous block' do
@@ -200,11 +230,13 @@ describe HamlLint::ScriptExtractor do
           = script
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         link_to path do
           script
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
     context 'with a for loop' do
@@ -213,11 +245,13 @@ describe HamlLint::ScriptExtractor do
           = value
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         for value in list
           value
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
     context 'with a while loop' do
@@ -227,12 +261,14 @@ describe HamlLint::ScriptExtractor do
           - value += 1
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         while value < 10
           value
           value += 1
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3, 4 => 1 } }
     end
 
     context 'with a Ruby filter' do
@@ -244,12 +280,14 @@ describe HamlLint::ScriptExtractor do
           end
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         method_one
         if condition
           method_two
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 2, 2 => 3, 3 => 4, 4 => 5 } }
     end
 
     context 'with a Ruby filter containing block keywords' do
@@ -262,13 +300,15 @@ describe HamlLint::ScriptExtractor do
           end
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         if condition
           do_something
         else
           do_something_else
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 2, 2 => 3, 3 => 4, 4 => 5, 5 => 6 } }
 
       context 'and the filter is nested' do
         let(:haml) { <<-HAML }
@@ -281,7 +321,7 @@ describe HamlLint::ScriptExtractor do
               end
         HAML
 
-        it { should == normalize_indent(<<-RUBY).rstrip }
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
           something do
             if condition
               do_something
@@ -290,6 +330,8 @@ describe HamlLint::ScriptExtractor do
             end
           end
         RUBY
+
+        its(:source_map) { should == { 1 => 1, 2 => 3, 3 => 4, 4 => 5, 5 => 6, 6 => 7, 7 => 1 } }
       end
     end
 
@@ -300,11 +342,13 @@ describe HamlLint::ScriptExtractor do
           Some more text \#{some_other_method} with interpolation.
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         puts
         some_method
         some_other_method
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a filter with interpolated values containing quotes' do
@@ -314,11 +358,13 @@ describe HamlLint::ScriptExtractor do
           Some text \#{some_other_method('world')}
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         puts
         some_method("hello")
         some_other_method('world')
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a filter with interpolated values spanning multiple lines' do
@@ -330,11 +376,13 @@ describe HamlLint::ScriptExtractor do
 
       # TODO: Figure out if it's worth normalizing indentation for the generated
       # code in this interpolated context
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         puts
         some_method('hello',
                                  'world')
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with an if/else block containing only filters' do
@@ -347,13 +395,15 @@ describe HamlLint::ScriptExtractor do
             Some other text
       HAML
 
-      it { should == normalize_indent(<<-RUBY).rstrip }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         if condition
           puts
         else
           puts
         end
       RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 4, 4 => 5, 5 => 1 } }
     end
   end
 end

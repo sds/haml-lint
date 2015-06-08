@@ -1,13 +1,15 @@
 require 'find'
 
 module HamlLint
-  # Finds HAML files that should be linted given a specified list of paths, glob
+  # Finds Haml files that should be linted given a specified list of paths, glob
   # patterns, and configuration.
   class FileFinder
     # List of extensions of files to include under a directory when a directory
     # is specified instead of a file.
     VALID_EXTENSIONS = %w[.haml]
 
+    # Create a file finder using the specified configuration.
+    #
     # @param config [HamlLint::Configuration]
     def initialize(config)
       @config = config
@@ -22,15 +24,18 @@ module HamlLint
     def find(patterns, excluded_patterns)
       extract_files_from(patterns).reject do |file|
         excluded_patterns.any? do |exclusion_glob|
-          ::File.fnmatch?(exclusion_glob, file,
-                          ::File::FNM_PATHNAME | # Wildcards don't match path separators
-                          ::File::FNM_DOTMATCH)  # `*` wildcard matches dotfiles
+          HamlLint::Utils.any_glob_matches?(exclusion_glob, file)
         end
       end
     end
 
     private
 
+    # Extract the list of matching files given the list of glob patterns, file
+    # paths, and directories.
+    #
+    # @param patterns [Array<String>]
+    # @return [Array<String>]
     def extract_files_from(patterns) # rubocop:disable MethodLength
       files = []
 
@@ -57,9 +62,13 @@ module HamlLint
         end
       end
 
-      files.uniq
+      files.uniq.sort
     end
 
+    # Whether the given file should be treated as a Haml file.
+    #
+    # @param file [String]
+    # @return [Boolean]
     def haml_file?(file)
       return false unless ::FileTest.file?(file)
 

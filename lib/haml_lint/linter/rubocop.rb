@@ -1,4 +1,4 @@
-require 'haml_lint/script_extractor'
+require 'haml_lint/ruby_extractor'
 require 'rubocop'
 require 'tempfile'
 
@@ -7,33 +7,35 @@ module HamlLint
   class Linter::RuboCop < Linter
     include LinterRegistry
 
-    def initialize(config)
-      super
-      @rubocop = ::RuboCop::CLI.new
-      @ignored_cops = Array(config['ignored_cops']).flatten
-    end
+    def visit_root(_node)
+      extractor = HamlLint::RubyExtractor.new
+      extracted_source = extractor.extract(document)
 
-    def run(parser)
-      @parser = parser
-      @extractor = ScriptExtractor.new(parser)
-      extracted_code = @extractor.extract.strip
+      return if extracted_source.source.empty?
 
-      # Ensure a final newline in the code we feed to RuboCop
-      find_lints(extracted_code + "\n") unless extracted_code.empty?
+      find_lints(extracted_source.source, extracted_source.source_map)
     end
 
     private
 
-    def find_lints(code)
-      original_filename = @parser.filename || 'ruby_script'
+    # Executes RuboCop against the given Ruby code and records the offenses as
+    # lints.
+    #
+    # @param ruby [String] Ruby code
+    # @param source_map [Hash] map of Ruby code line numbers to original line
+    #   numbers in the template
+    def find_lints(ruby, source_map)
+      rubocop = ::RuboCop::CLI.new
+
+      original_filename = document.file || 'ruby_script'
       filename = "#{File.basename(original_filename)}.haml_lint.tmp"
       directory = File.dirname(original_filename)
 
       Tempfile.open(filename, directory) do |f|
         begin
-          f.write(code)
+          f.write(ruby)
           f.close
-          extract_lints_from_offences(lint_file(f.path))
+          extract_lints_from_offenses(lint_file(rubocop, f.path), source_map)
         ensure
           f.unlink
         end
@@ -41,36 +43,61 @@ module HamlLint
     end
 
     # Defined so we can stub the results in tests
-    def lint_file(file)
-      @rubocop.run(%w[--format HamlLint::OffenceCollector] << file)
-      OffenceCollector.offences
+    #
+    # @param rubocop [RuboCop::CLI]
+    # @param file [String]
+    # @return [Array<RuboCop::Cop::Offense>]
+    def lint_file(rubocop, file)
+      rubocop.run(rubocop_flags << file)
+      OffenseCollector.offenses
     end
 
-    def extract_lints_from_offences(offences)
-      offences.select { |offence| !@ignored_cops.include?(offence.cop_name) }
-              .each do |offence|
+    # Aggregates RuboCop offenses and converts them to {HamlLint::Lint}s
+    # suitable for reporting.
+    #
+    # @param offenses [Array<RuboCop::Cop::Offense>]
+    # @param source_map [Hash]
+    def extract_lints_from_offenses(offenses, source_map)
+      offenses.select { |offense| !config['ignored_cops'].include?(offense.cop_name) }
+              .each do |offense|
         @lints << Lint.new(self,
-                           @parser.filename,
-                           @extractor.source_map[offence.line],
-                           "#{offence.cop_name}: #{offence.message}")
+                           document.file,
+                           source_map[offense.line],
+                           offense.message)
       end
+    end
+
+    # Returns flags that will be passed to RuboCop CLI.
+    #
+    # @return [Array<String>]
+    def rubocop_flags
+      flags = %w[--format HamlLint::OffenseCollector]
+      flags += ['--config', ENV['HAML_LINT_RUBOCOP_CONF']] if ENV['HAML_LINT_RUBOCOP_CONF']
+      flags
     end
   end
 
-  # Collects offences detected by RuboCop.
-  class OffenceCollector < ::RuboCop::Formatter::BaseFormatter
-    attr_accessor :offences
-
+  # Collects offenses detected by RuboCop.
+  class OffenseCollector < ::RuboCop::Formatter::BaseFormatter
     class << self
-      attr_accessor :offences
+      # List of offenses reported by RuboCop.
+      attr_accessor :offenses
     end
 
+    # Executed when RuboCop begins linting.
+    #
+    # @param _target_files [Array<String>]
     def started(_target_files)
-      self.class.offences = []
+      self.class.offenses = []
     end
 
-    def file_finished(_file, offences)
-      self.class.offences += offences
+    # Executed when a file has been scanned by RuboCop, adding the reported
+    # offenses to our collection.
+    #
+    # @param _file [String]
+    # @param offenses [Array<RuboCop::Cop::Offense>]
+    def file_finished(_file, offenses)
+      self.class.offenses += offenses
     end
   end
 end

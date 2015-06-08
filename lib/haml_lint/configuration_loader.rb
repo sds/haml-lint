@@ -4,10 +4,12 @@ require 'yaml'
 module HamlLint
   # Manages configuration file loading.
   class ConfigurationLoader
-    DEFAULT_CONFIG_PATH = File.join(HAML_LINT_HOME, 'config', 'default.yml')
+    DEFAULT_CONFIG_PATH = File.join(HamlLint::HOME, 'config', 'default.yml')
     CONFIG_FILE_NAME = '.haml-lint.yml'
 
     class << self
+      # Load configuration file given the current working directory the
+      # application is running within.
       def load_applicable_config
         directory = File.expand_path(Dir.pwd)
         config_file = possible_config_files(directory).find(&:file?)
@@ -19,33 +21,42 @@ module HamlLint
         end
       end
 
+      # Loads the built-in default configuration.
       def default_configuration
         @default_config ||= load_from_file(DEFAULT_CONFIG_PATH)
       end
 
       # Loads a configuration, ensuring it extends the default configuration.
+      #
+      # @param file [String]
+      # @return [HamlLint::Configuration]
       def load_file(file)
         config = load_from_file(file)
 
         default_configuration.merge(config)
-      rescue => error
+      rescue Psych::SyntaxError, Errno::ENOENT => error
         raise HamlLint::Exceptions::ConfigurationError,
               "Unable to load configuration from '#{file}': #{error}",
               error.backtrace
       end
 
+      # Creates a configuration from the specified hash, ensuring it extends the
+      # default configuration.
+      #
+      # @param hash [Hash]
+      # @return [HamlLint::Configuration]
       def load_hash(hash)
         config = HamlLint::Configuration.new(hash)
 
         default_configuration.merge(config)
-      rescue => error
-        raise HamlLint::Exceptions::ConfigurationError,
-              "Unable to load configuration from '#{file}': #{error}",
-              error.backtrace
       end
 
       private
 
+      # Parses and loads a configuration from the given file.
+      #
+      # @param file [String]
+      # @return [HamlLint::Configuration]
       def load_from_file(file)
         hash =
           if yaml = YAML.load_file(file)
@@ -57,6 +68,11 @@ module HamlLint
         HamlLint::Configuration.new(hash)
       end
 
+      # Returns a list of possible configuration files given the context of the
+      # specified directory.
+      #
+      # @param directory [String]
+      # @return [Array<Pathname>]
       def possible_config_files(directory)
         files = Pathname.new(directory)
                         .enum_for(:ascend)

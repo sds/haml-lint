@@ -2,9 +2,15 @@ require 'spec_helper'
 
 describe HamlLint::HamlVisitor do
   describe '#visit' do
-    let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
+    let(:options) do
+      {
+        config: HamlLint::ConfigurationLoader.default_configuration,
+      }
+    end
 
-    before { visitor.visit(parser.tree) }
+    let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
+
+    before { visitor.visit(document.tree) }
 
     class TrackingVisitor
       include HamlLint::HamlVisitor

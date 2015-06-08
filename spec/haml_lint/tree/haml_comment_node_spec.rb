@@ -1,8 +1,14 @@
 require 'spec_helper'
 
 describe HamlLint::Tree::HamlCommentNode do
-  let(:parser) { HamlLint::Parser.new(normalize_indent(haml)) }
-  subject { parser.tree.find { |node| node.type == :haml_comment } }
+  let(:options) do
+    {
+      config: HamlLint::ConfigurationLoader.default_configuration,
+    }
+  end
+
+  let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
+  subject { document.tree.find { |node| node.type == :haml_comment } }
 
   describe '#text' do
     subject { super().text }

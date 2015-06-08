@@ -2,8 +2,8 @@ module HamlLint
   # Outputs lints in a simple format with the filename, line number, and lint
   # message.
   class Reporter::DefaultReporter < Reporter
-    def report_lints
-      sorted_lints = lints.sort_by { |l| [l.filename, l.line] }
+    def display_report(report)
+      sorted_lints = report.lints.sort_by { |l| [l.filename, l.line] }
 
       sorted_lints.each do |lint|
         print_location(lint)

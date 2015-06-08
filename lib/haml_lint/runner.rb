@@ -1,76 +1,76 @@
 module HamlLint
   # Responsible for running the applicable linters against the desired files.
   class Runner
-    # Make the list of applicable files available
-    attr_reader :files
-
     # Runs the appropriate linters against the desired files given the specified
     # options.
     #
-    # @param options [Hash]
-    # @raise [HamlLint::Exceptions::NoLintersError] when no linters are enabled
+    # @param [Hash] options
+    # @option options :config_file [String] path of configuration file to load
+    # @option options :config [HamlLint::Configuration] configuration to use
+    # @option options :excluded_files [Array<String>]
+    # @option options :included_linters [Array<String>]
+    # @option options :excluded_linters [Array<String>]
     # @return [HamlLint::Report] a summary of all lints found
     def run(options = {})
       config = load_applicable_config(options)
-      files = extract_applicable_files(options, config)
-      linters = extract_enabled_linters(config, options)
+      files = extract_applicable_files(config, options)
 
-      raise HamlLint::Exceptions::NoLintersError, 'No linters specified' if linters.empty?
+      linter_selector = HamlLint::LinterSelector.new(config, options)
 
-      @lints = []
-      files.each do |file|
-        find_lints(file, linters, config)
-      end
+      lints = files.map do |file|
+        collect_lints(file, linter_selector, config)
+      end.flatten
 
-      linters.each do |linter|
-        @lints += linter.lints
-      end
-
-      HamlLint::Report.new(@lints, files)
+      HamlLint::Report.new(lints, files)
     end
 
     private
 
+    # Returns the {HamlLint::Configuration} that should be used given the
+    # specified options.
+    #
+    # @param options [Hash]
+    # @return [HamlLint::Configuration]
     def load_applicable_config(options)
       if options[:config_file]
         HamlLint::ConfigurationLoader.load_file(options[:config_file])
+      elsif options[:config]
+        options[:config]
       else
         HamlLint::ConfigurationLoader.load_applicable_config
       end
     end
 
-    def extract_enabled_linters(config, options)
-      included_linters = LinterRegistry
-        .extract_linters_from(options.fetch(:included_linters, []))
-
-      included_linters = LinterRegistry.linters if included_linters.empty?
-
-      excluded_linters = LinterRegistry
-        .extract_linters_from(options.fetch(:excluded_linters, []))
-
-      # After filtering out explicitly included/excluded linters, only include
-      # linters which are enabled in the configuration
-      (included_linters - excluded_linters).map do |linter_class|
-        linter_config = config.for_linter(linter_class)
-        linter_class.new(linter_config) if linter_config['enabled']
-      end.compact
-    end
-
-    def find_lints(file, linters, config)
-      parser = Parser.new(file, config.hash)
-
-      linters.each do |linter|
-        linter.run(parser)
+    # Runs all provided linters using the specified config against the given
+    # file.
+    #
+    # @param file [String] path to file to lint
+    # @param linter_selector [HamlLint::LinterSelector]
+    # @param config [HamlLint::Configuration]
+    def collect_lints(file, linter_selector, config)
+      begin
+        document = HamlLint::Document.new(File.read(file), file: file, config: config)
+      rescue Haml::Error => ex
+        return [HamlLint::Lint.new(nil, file, ex.line, ex.to_s, :error)]
       end
-    rescue Haml::Error => ex
-      @lints << Lint.new(nil, file, ex.line, ex.to_s, :error)
+
+      linter_selector.linters_for_file(file).map do |linter|
+        linter.run(document)
+      end.flatten
     end
 
-    def extract_applicable_files(options, config)
+    # Returns the list of files that should be linted given the specified
+    # configuration and options.
+    #
+    # @param config [HamlLint::Configuration]
+    # @param options [Hash]
+    # @return [Array<String>]
+    def extract_applicable_files(config, options)
       included_patterns = options[:files]
-      excluded_files = options.fetch(:excluded_files, [])
+      excluded_patterns = config['exclude']
+      excluded_patterns += options.fetch(:excluded_files, [])
 
-      HamlLint::FileFinder.new(config).find(included_patterns, excluded_files)
+      HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns)
     end
   end
 end

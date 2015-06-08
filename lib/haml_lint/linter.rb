@@ -1,33 +1,51 @@
 module HamlLint
   # Base implementation for all lint checks.
+  #
+  # @abstract
   class Linter
     include HamlVisitor
 
-    attr_reader :parser, :lints
+    # List of lints reported by this linter.
+    #
+    # @todo Remove once spec/support/shared_linter_context returns an array of
+    #   lints for the subject instead of the linter itself.
+    attr_reader :lints
 
+    # Initializes a linter with the specified configuration.
+    #
     # @param config [Hash] configuration for this linter
     def initialize(config)
       @config = config
       @lints = []
-      @ruby_parser = nil
     end
 
-    def run(parser)
-      @parser = parser
-      visit(parser.tree)
+    # Runs the linter against the given Haml document.
+    #
+    # @param document [HamlLint::Document]
+    def run(document)
+      @document = document
+      @lints = []
+      visit(document.tree)
+      @lints
     end
 
     # Returns the simple name for this linter.
+    #
+    # @return [String]
     def name
       self.class.name.split('::').last
     end
 
     private
 
-    attr_reader :config
+    attr_reader :config, :document
 
+    # Record a lint for reporting back to the user.
+    #
+    # @param node [#line] node to extract the line number from
+    # @param message [String] error/warning to display to the user
     def add_lint(node, message)
-      @lints << Lint.new(self, parser.filename, node.line, message)
+      @lints << HamlLint::Lint.new(self, @document.file, node.line, message)
     end
 
     # Parse Ruby code into an abstract syntax tree.
@@ -136,7 +154,7 @@ module HamlLint
     def following_node_line(node)
       [
         [node.children.first, next_node(node)].compact.map(&:line),
-        parser.lines.count + 1,
+        @document.source_lines.count + 1,
       ].flatten.min
     end
 
@@ -148,7 +166,8 @@ module HamlLint
     def tag_with_inline_text(tag_node)
       # Normalize each of the lines to ignore the multiline bar (|) and
       # excess whitespace
-      parser.lines[(tag_node.line - 1)...(following_node_line(tag_node) - 1)].map do |line|
+      @document.source_lines[(tag_node.line - 1)...(following_node_line(tag_node) - 1)]
+        .map do |line|
         line.strip.gsub(/\|\z/, '').rstrip
       end.join(' ')
     end
