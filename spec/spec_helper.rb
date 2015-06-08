@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'haml_lint'
 require 'rspec/its'
 

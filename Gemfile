@@ -11,3 +11,5 @@ gem 'travis', '~> 1.7'
 
 # Run `wwtd` to emulate Travis builds locally
 gem 'wwtd'
+
+gem 'coveralls'
