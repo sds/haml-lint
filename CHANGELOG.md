@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
+
 ## 0.13.0
 
 * Rename `haml-lint` gem to `haml_lint` to follow RubyGems [conventions for
