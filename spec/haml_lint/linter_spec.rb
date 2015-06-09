@@ -9,7 +9,7 @@ describe HamlLint::Linter do
     end
   end
 
-  let(:config) { double }
+  let(:config) { {} }
   let(:linter) { linter_class.new(config) }
 
   describe '#run' do

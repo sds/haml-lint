@@ -58,12 +58,11 @@ module HamlLint
     # @param offenses [Array<RuboCop::Cop::Offense>]
     # @param source_map [Hash]
     def extract_lints_from_offenses(offenses, source_map)
+      dummy_node = Struct.new(:line)
+
       offenses.select { |offense| !config['ignored_cops'].include?(offense.cop_name) }
               .each do |offense|
-        @lints << Lint.new(self,
-                           document.file,
-                           source_map[offense.line],
-                           offense.message)
+        record_lint(dummy_node.new(source_map[offense.line]), offense.message)
       end
     end
 

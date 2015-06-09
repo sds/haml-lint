@@ -82,6 +82,7 @@ module HamlLint
       ensure_exclude_option_array_exists
       ensure_linter_section_exists
       ensure_linter_include_exclude_arrays_exist
+      ensure_linter_severity_valid
     end
 
     # Ensures the `exclude` global option is an array.
@@ -101,6 +102,16 @@ module HamlLint
         %w[include exclude].each do |option|
           linter_config = @hash['linters'][linter_name]
           linter_config[option] = Array(linter_config[option])
+        end
+      end
+    end
+
+    def ensure_linter_severity_valid
+      @hash['linters'].each do |linter_name, linter_config|
+        severity = linter_config['severity']
+        unless [nil, 'warning', 'error'].include?(severity)
+          raise HamlLint::Exceptions::ConfigurationError,
+                "Invalid severity '#{severity}' specified for #{linter_name}"
         end
       end
     end

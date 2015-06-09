@@ -39,6 +39,22 @@ describe HamlLint::Configuration do
         subject['linters']['SomeLinter']['exclude'].should == ['**/*.ignore.haml']
       end
     end
+
+    context 'with a linter with an invalid severity' do
+      let(:hash) do
+        {
+          'linters' => {
+            'SomeLinter' => {
+              'severity' => 'invalid',
+            },
+          },
+        }
+      end
+
+      it 'raises an exception' do
+        expect { subject }.to raise_error HamlLint::Exceptions::ConfigurationError
+      end
+    end
   end
 
   describe '#for_linter' do
