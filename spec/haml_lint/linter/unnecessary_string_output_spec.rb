@@ -59,4 +59,46 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
 
     it { should_not report_lint }
   end
+
+  context 'when script outupts literal string starting with an HTML comment character' do
+    let(:haml) { '= "/ Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with a hash sign' do
+    let(:haml) { '= "# Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with a dash' do
+    let(:haml) { '= "- Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with a equals sign' do
+    let(:haml) { '= "= Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with a percent sign' do
+    let(:haml) { '= "% Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with a tilde' do
+    let(:haml) { '= "~ Something"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outupts literal string starting with interpolation' do
+    let(:haml) { '= "#{variable}"' }
+
+    it { should report_lint }
+  end
 end
