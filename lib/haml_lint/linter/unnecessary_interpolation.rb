@@ -21,8 +21,8 @@ module HamlLint
       end
 
       if chars == node.script.length
-        add_lint(node, '`%... \#{expression}` can be written without ' \
-                       'interpolation as `%...= expression`')
+        record_lint(node, '`%... \#{expression}` can be written without ' \
+                          'interpolation as `%...= expression`')
       end
     end
   end

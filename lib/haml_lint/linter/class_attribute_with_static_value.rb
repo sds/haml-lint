@@ -18,8 +18,8 @@ module HamlLint
     def visit_tag(node)
       return unless contains_class_attribute?(node.dynamic_attributes_sources)
 
-      add_lint(node, 'Avoid defining `class` in attributes hash ' \
-                     'for static class names')
+      record_lint(node, 'Avoid defining `class` in attributes hash ' \
+                        'for static class names')
     end
 
     private

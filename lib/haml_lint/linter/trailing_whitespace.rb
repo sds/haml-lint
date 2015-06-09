@@ -9,7 +9,7 @@ module HamlLint
       document.source_lines.each_with_index do |line, index|
         next unless line =~ /\s+$/
 
-        add_lint dummy_node.new(index + 1), 'Line contains trailing whitespace'
+        record_lint dummy_node.new(index + 1), 'Line contains trailing whitespace'
       end
     end
   end

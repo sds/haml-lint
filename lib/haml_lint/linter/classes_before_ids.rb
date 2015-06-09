@@ -17,8 +17,8 @@ module HamlLint
         next unless components[index].start_with?('.') &&
                     components[index - 1].start_with?('#')
 
-        add_lint(node, 'Classes should be listed before IDs '\
-                       "(#{components[index]} should precede #{components[index - 1]})")
+        record_lint(node, 'Classes should be listed before IDs '\
+                          "(#{components[index]} should precede #{components[index - 1]})")
         break
       end
     end

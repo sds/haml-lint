@@ -12,9 +12,9 @@ module HamlLint
       tag = node.source_code[/\s*([^\s={\(\[]+)/, 1]
       return unless tag.start_with?('%div')
 
-      add_lint(node,
-               "`#{tag}` can be written as `#{node.static_attributes_source}` " \
-               'since `%div` is implicit')
+      record_lint(node,
+                  "`#{tag}` can be written as `#{node.static_attributes_source}` " \
+                  'since `%div` is implicit')
     end
   end
 end

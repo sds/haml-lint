@@ -6,7 +6,7 @@ module HamlLint
     def visit_silent_script(node)
       return unless node.script =~ /\A\s*\Z/
 
-      add_lint(node, 'Empty script should be removed')
+      record_lint(node, 'Empty script should be removed')
     end
   end
 end

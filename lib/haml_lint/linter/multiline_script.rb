@@ -34,9 +34,9 @@ module HamlLint
     def check(node)
       operator = node.script[/\s+(\S+)\z/, 1]
       if SPLIT_OPERATORS.include?(operator)
-        add_lint(node,
-                 "Script with trailing operator `#{operator}` should be " \
-                 'merged with the script on the following line')
+        record_lint(node,
+                    "Script with trailing operator `#{operator}` should be " \
+                    'merged with the script on the following line')
       end
     end
   end

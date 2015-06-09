@@ -44,7 +44,7 @@ module HamlLint
     #
     # @param node [#line] node to extract the line number from
     # @param message [String] error/warning to display to the user
-    def add_lint(node, message)
+    def record_lint(node, message)
       @lints << HamlLint::Lint.new(self, @document.file, node.line, message)
     end
 

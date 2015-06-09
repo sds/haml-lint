@@ -7,7 +7,7 @@ module HamlLint
     def visit_tag(node)
       return unless node.object_reference?
 
-      add_lint(node, 'Avoid using object reference syntax to assign class/id ' \
+      record_lint(node, 'Avoid using object reference syntax to assign class/id ' \
                      'attributes for tags')
     end
   end

@@ -12,7 +12,7 @@ module HamlLint
       document.source_lines.each_with_index do |line, index|
         next if line.length <= max_length
 
-        add_lint(dummy_node.new(index + 1), format(MSG, line.length, max_length))
+        record_lint(dummy_node.new(index + 1), format(MSG, line.length, max_length))
       end
     end
   end

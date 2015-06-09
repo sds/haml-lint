@@ -13,7 +13,7 @@ module HamlLint
 
     def visit_tag(node)
       if tag_has_inline_script?(node) && inline_content_is_string?(node)
-        add_lint(node, MESSAGE)
+        record_lint(node, MESSAGE)
       end
     end
 
@@ -23,7 +23,7 @@ module HamlLint
       return if node.source_code !~ /\s*=/
 
       if outputs_string_literal?(node)
-        add_lint(node, MESSAGE)
+        record_lint(node, MESSAGE)
       end
     end
 

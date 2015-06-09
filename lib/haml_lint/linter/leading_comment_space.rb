@@ -8,7 +8,7 @@ module HamlLint
       # or starts with a space
       return if node.text.match(/\A(\s*|\s+\S.*)$/)
 
-      add_lint(node, 'Comment should have a space after the `#`')
+      record_lint(node, 'Comment should have a space after the `#`')
     end
   end
 end

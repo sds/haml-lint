@@ -10,8 +10,8 @@ module HamlLint
         node.children,
         COMMENT_DETECTOR,
       ) do |group|
-        add_lint(group.first,
-                 "#{group.count} consecutive comments can be merged into one")
+        record_lint(group.first,
+                    "#{group.count} consecutive comments can be merged into one")
       end
     end
   end

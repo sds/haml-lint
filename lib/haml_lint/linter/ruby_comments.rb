@@ -5,7 +5,7 @@ module HamlLint
 
     def visit_silent_script(node)
       if code_comment?(node)
-        add_lint(node, 'Use `-#` for comments instead of `- #`')
+        record_lint(node, 'Use `-#` for comments instead of `- #`')
       end
     end
 

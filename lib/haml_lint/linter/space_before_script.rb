@@ -28,18 +28,18 @@ module HamlLint
       # (need to do it this way as the parser strips whitespace from node)
       return unless tag_with_text[index - 1] != ' '
 
-      add_lint(node, MESSAGE_FORMAT % '=')
+      record_lint(node, MESSAGE_FORMAT % '=')
     end
 
     def visit_script(node)
       # Plain text nodes with interpolation are converted to script nodes, so we
       # need to ignore them here.
       return unless document.source_lines[node.line - 1].lstrip.start_with?('=')
-      add_lint(node, MESSAGE_FORMAT % '=') if missing_space?(node)
+      record_lint(node, MESSAGE_FORMAT % '=') if missing_space?(node)
     end
 
     def visit_silent_script(node)
-      add_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node)
+      record_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node)
     end
 
     private

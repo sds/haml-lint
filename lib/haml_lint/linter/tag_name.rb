@@ -7,7 +7,7 @@ module HamlLint
       tag = node.tag_name
       return unless tag.match(/[A-Z]/)
 
-      add_lint(node, "`#{tag}` should be written in lowercase as `#{tag.downcase}`")
+      record_lint(node, "`#{tag}` should be written in lowercase as `#{tag.downcase}`")
     end
   end
 end

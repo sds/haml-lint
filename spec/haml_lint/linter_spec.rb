@@ -4,7 +4,7 @@ describe HamlLint::Linter do
   let(:linter_class) do
     Class.new(described_class) do
       def visit_root(node)
-        add_lint(node, 'A lint!')
+        record_lint(node, 'A lint!')
       end
     end
   end

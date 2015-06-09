@@ -14,9 +14,9 @@ module HamlLint
         SILENT_SCRIPT_DETECTOR,
         config['max_consecutive'] + 1,
       ) do |group|
-        add_lint(group.first,
-                 "#{group.count} consecutive Ruby scripts can be merged into " \
-                 'a single `:ruby` filter')
+        record_lint(group.first,
+                    "#{group.count} consecutive Ruby scripts can be merged " \
+                    'into a single `:ruby` filter')
       end
     end
   end
