@@ -7,6 +7,8 @@
   reserved HAML characters (where enclosing in a string is required)
 * Add `severity` linter option allowing the severity of a lint to be explicitly
   specified
+* Fix `RuboCop` to report correct lines for cops reported on interpolated Ruby
+  code in filters
 
 ## 0.13.0
 

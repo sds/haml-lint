@@ -348,7 +348,7 @@ describe HamlLint::RubyExtractor do
         some_other_method
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3 } }
     end
 
     context 'with a filter with interpolated values containing quotes' do
@@ -364,7 +364,7 @@ describe HamlLint::RubyExtractor do
         some_other_method('world')
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3 } }
     end
 
     context 'with a filter with interpolated values spanning multiple lines' do
@@ -382,7 +382,7 @@ describe HamlLint::RubyExtractor do
                                  'world')
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 2 } }
     end
 
     context 'with an if/else block containing only filters' do

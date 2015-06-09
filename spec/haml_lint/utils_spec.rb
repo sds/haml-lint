@@ -33,6 +33,58 @@ describe HamlLint::Utils do
     end
   end
 
+  describe '.extract_interpolated_values' do
+    context 'with no interpolation' do
+      let(:text) { 'No interpolation here' }
+
+      it 'does not yield' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.not_to yield_control
+      end
+    end
+
+    context 'with interpolation on a single line' do
+      let(:text) { 'Some #{interpolation} here' }
+
+      it 'yields once' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(['interpolation', 1])
+      end
+    end
+
+    context 'with multiple interpolations on a single line' do
+      let(:text) { 'Some #{interpolation} will #{go} here' }
+
+      it 'yields for each interpolation' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(['interpolation', 1], ['go', 1])
+      end
+    end
+
+    context 'with an interpolation spreading multiple lines' do
+      let(:text) { "Here is \#{some_interpolation(arg1,\narg2,\narg3)}" }
+
+      it 'yields a single interpolation with newlines preserved' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(["some_interpolation(arg1,\narg2,\narg3)", 1])
+      end
+    end
+
+    context 'with multiple interpolations on a multiple line' do
+      let(:text) { "Some \#{interpolation}\nwill \#{go} \#{here}\n hopefully \#{correctly}" }
+
+      it 'yields for each interpolation' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(['interpolation', 1], ['go', 2], ['here', 2], ['correctly', 3])
+      end
+    end
+  end
+
   describe '.for_consecutive_items' do
     let(:min_items) { 2 }
     let(:matches_proc) { ->(item) { item } }
