@@ -91,6 +91,21 @@ All linters have an `enabled` option which can be `true` or `false`, which
 controls whether the linter is run, along with linter-specific options. The
 defaults are defined in [`config/default.yml`](config/default.yml).
 
+### Linter Options
+
+Option        | Description
+--------------|----------------------------------------------------------------
+`enabled`     | If `false`, this linter will never be run. This takes precedence over any other option.
+`include`     | List of files or glob patterns to scope this linter to. This narrows down any files specified via the command line.
+`exclude`     | List of files or glob patterns to exclude from this linter. This excludes any files specified via the command line or already filtered via the `include` option.
+
+### Global File Exclusion
+
+The `exclude` global configuration option allows you to specify a list of files
+or glob patterns to exclude from all linters. This is useful for ignoring
+third-party code that you don't maintain or care to lint. You can specify a
+single string or a list of strings for this option.
+
 ### Skipping Frontmatter
 
 Some static blog generators such as [Jekyll](http://jekyllrb.com/) include
