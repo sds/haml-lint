@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.14.0
 
 * Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
 * Fix false positives in `UnnecessaryStringOutput` for strings starting with
