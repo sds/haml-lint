@@ -5,6 +5,8 @@
 * Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
 * Fix false positives in `UnnecessaryStringOutput` for strings starting with
   reserved HAML characters (where enclosing in a string is required)
+* Add `severity` linter option allowing the severity of a lint to be explicitly
+  specified
 
 ## 0.13.0
 
