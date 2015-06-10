@@ -324,7 +324,7 @@ to set the class/id of an element.
 The object reference syntax is a bit magical, and makes it difficult to find
 where in your code a particular class attribute is defined. It is also tied
 directly to the class names of the objects you pass to it, creating an
-unnecessarily coupling which can make refactoring your models affect your
+unnecessary coupling which can make refactoring your models affect your
 views.
 
 ## RuboCop
