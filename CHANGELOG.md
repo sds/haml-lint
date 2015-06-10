@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.14.1
 
 * Fix bug in `UnnecessaryStringOutput` where false positives would still be
   reported for literal strings with interpolation
