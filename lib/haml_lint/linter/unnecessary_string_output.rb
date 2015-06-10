@@ -32,15 +32,16 @@ module HamlLint
     def outputs_string_literal?(script_node)
       tree = parse_ruby(script_node.script)
       [:str, :dstr].include?(tree.type) &&
-        starts_with_reserved_character?(tree.children.first)
+        !starts_with_reserved_character?(tree.children.first)
     rescue ::Parser::SyntaxError # rubocop:disable Lint/HandleExceptions
       # Gracefully ignore syntax errors, as that's managed by a different linter
     end
 
     # Returns whether a string starts with a character that would otherwise be
     # given special treatment, thus making enclosing it in a string necessary.
-    def starts_with_reserved_character?(string)
-      string !~ %r{\A\s*[/#-=%~]}
+    def starts_with_reserved_character?(stringish)
+      string = stringish.respond_to?(:children) ? stringish.children.first : stringish
+      string =~ %r{\A\s*[/#-=%~]}
     end
   end
 end

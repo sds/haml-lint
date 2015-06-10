@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix bug in `UnnecessaryStringOutput` where false positives would still be
+  reported for literal strings with interpolation
+
 ## 0.14.0
 
 * Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
