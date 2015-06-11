@@ -357,6 +357,22 @@ You can customize which RuboCop warnings you want to ignore by modifying
 the `ignored_cops` option (see [`config/default.yml`](/config/default.yml)
 for the full list of ignored cops).
 
+You can also explicitly set which RuboCop configuration to use via the
+`HAML_LINT_RUBOCOP_CONF` environment variable. This is intended to be used
+by external tools which run the linter on files in temporary directories
+separate from the directory where the HAML template originally resided (and
+thus where the normal `.rubocop.yml` would be picked up).
+
+### Displaying Cop Names
+
+You can display the name of the cop by adding the following to your
+`.rubocop.yml` configuration:
+
+```yaml
+AllCops:
+  DisplayCopNames: true
+```
+
 ## RubyComments
 
 Prefer HAML's built-in comment over ad hoc comments in Ruby code.
