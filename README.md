@@ -25,6 +25,7 @@ your [SCM hooks](https://github.com/brigade/overcommit).
 * [Rake Integration](#rake-integration)
 * [Documentation](#documentation)
 * [Contributing](#contributing)
+* [Community](#community)
 * [Changelog](#changelog)
 * [License](#license)
 
@@ -213,6 +214,13 @@ from the root directory of the repository:
 ```bash
 bundle exec rspec
 ```
+
+## Community
+
+All major discussion surrounding HAML-Lint happens on the
+[GitHub issues page](https://github.com/brigade/haml-lint/issues).
+
+You can also follow [@haml_lint on Twitter](https://twitter.com/haml_lint).
 
 ## Changelog
 
