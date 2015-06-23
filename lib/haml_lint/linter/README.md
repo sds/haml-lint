@@ -19,6 +19,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
 * [SpaceInsideHashAttributes](#spaceinsidehashattributes)
+* [SpacesForIndentation](#spacesforindentation)
 * [TagName](#tagname)
 * [TrailingWhitespace](#trailingwhitespace)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
@@ -446,6 +447,11 @@ hash attributes braces**
 This offers the ability to ensure consistency of Haml hash
 attributes style with ruby hash literal style (compare with
 the Style/SpaceInsideHashLiteralBraces cop in Rubocop).
+
+## SpacesForIndentation
+
+Check that hard tabs are not used for indentation.  Instead, spaces should be.
+Disabled by default, since tabs are actually allowed in HAML.
 
 ## TagName
 
