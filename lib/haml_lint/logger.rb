@@ -22,7 +22,6 @@ module HamlLint
     #
     # @param output [String] the output to send
     # @param newline [true,false] whether to append a newline
-    # @return [nil]
     def log(output, newline = true)
       @out.print(output)
       @out.print("\n") if newline
@@ -32,7 +31,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def bold(*args)
       color('1', *args)
     end
@@ -41,7 +39,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def error(*args)
       color(31, *args)
     end
@@ -50,7 +47,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def bold_error(*args)
       color('1;31', *args)
     end
@@ -59,7 +55,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def success(*args)
       color(32, *args)
     end
@@ -68,7 +63,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def warning(*args)
       color(33, *args)
     end
@@ -77,7 +71,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def bold_warning(*args)
       color('1;33', *args)
     end
@@ -86,7 +79,6 @@ module HamlLint
     # If output destination is not a TTY, behaves the same as {#log}.
     #
     # @param args [Array<String>]
-    # @return [nil]
     def info(*args)
       color(36, *args)
     end
