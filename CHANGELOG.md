@@ -3,6 +3,8 @@
 ## master (unreleased)
 
 * Improve bug reporting instructions in error message
+* Add `Indentation` linter to enforce that spaces or tabs are used for
+  indentation (enabled by default and defaults to spaces)
 
 ## 0.14.1
 

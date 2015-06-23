@@ -79,8 +79,9 @@ linters:
     enabled: true
     style: space
 
-  SpacesForIndentation:
-    enabled: false
+  Indentation:
+    enabled: true
+    character: space # or tab
 
   TagName:
     enabled: true

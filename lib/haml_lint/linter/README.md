@@ -8,8 +8,9 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [ConsecutiveComments](#consecutivecomments)
 * [ConsecutiveSilentScripts](#consecutivesilentscripts)
 * [EmptyScript](#emptyscript)
-* [ImplicitDiv](#implicitdiv)
 * [HtmlAttributes](#htmlattributes)
+* [ImplicitDiv](#implicitdiv)
+* [Indentation](#indentation)
 * [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
@@ -19,7 +20,6 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
 * [SpaceInsideHashAttributes](#spaceinsidehashattributes)
-* [SpacesForIndentation](#spacesforindentation)
 * [TagName](#tagname)
 * [TrailingWhitespace](#trailingwhitespace)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
@@ -187,6 +187,14 @@ Avoid writing `%div` when it would otherwise be implicit.
 
 HAML was designed to be concise, and not embracing this philosophy makes the
 tool less useful.
+
+## Indentation
+
+Check that spaces are used for indentation instead of hard tabs.
+
+Option          | Description
+----------------|-------------------------------------------------------------
+`character`     | Character to use for indentation. `space` or `tab` (default `space`)
 
 ## LeadingCommentSpace
 
@@ -447,11 +455,6 @@ hash attributes braces**
 This offers the ability to ensure consistency of Haml hash
 attributes style with ruby hash literal style (compare with
 the Style/SpaceInsideHashLiteralBraces cop in Rubocop).
-
-## SpacesForIndentation
-
-Check that hard tabs are not used for indentation.  Instead, spaces should be.
-Disabled by default, since tabs are actually allowed in HAML.
 
 ## TagName
 
