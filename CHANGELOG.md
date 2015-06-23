@@ -5,6 +5,8 @@
 * Improve bug reporting instructions in error message
 * Add `Indentation` linter to enforce that spaces or tabs are used for
   indentation (enabled by default and defaults to spaces)
+* Add `FinalNewline` linter to enforce the presence of a final newline
+  in files
 
 ## 0.14.1
 

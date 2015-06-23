@@ -24,7 +24,7 @@ describe HamlLint::RakeTask do
   end
 
   context 'when Haml document is valid' do
-    let(:haml) { '%p Hello world' }
+    let(:haml) { "%p Hello world\n" }
 
     it 'executes without error' do
       expect { run_task }.not_to raise_error
