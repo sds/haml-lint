@@ -83,6 +83,11 @@ module HamlLint
       color(36, *args)
     end
 
+    # Print a blank line.
+    def newline
+      log('')
+    end
+
     # Whether this logger is outputting to a TTY.
     #
     # @return [true,false]
