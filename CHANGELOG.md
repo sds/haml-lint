@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Improve bug reporting instructions in error message
+
 ## 0.14.1
 
 * Fix bug in `UnnecessaryStringOutput` where false positives would still be
