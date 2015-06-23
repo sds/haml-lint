@@ -110,6 +110,8 @@ module HamlLint
 
     # Calls a block of code with a modified set of environment variables,
     # restoring them once the code has executed.
+    #
+    # @param env [Hash] environment variables to set
     def with_environment(env)
       old_env = {}
       env.each do |var, value|
