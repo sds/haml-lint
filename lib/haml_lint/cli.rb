@@ -129,11 +129,20 @@ module HamlLint
 
     # Outputs the backtrace of an exception with instructions on how to report
     # the issue.
-    def print_unexpected_exception(ex)
+    def print_unexpected_exception(ex) # rubocop:disable Metrics/AbcSize
       log.bold_error ex.message
       log.error ex.backtrace.join("\n")
       log.warning 'Report this bug at ', false
       log.info HamlLint::BUG_REPORT_URL
+      log.newline
+      log.success 'To help fix this issue, please include:'
+      log.log '- The above stack trace'
+      log.log '- Haml-Lint version: ', false
+      log.info HamlLint::VERSION
+      log.log '- RuboCop version: ', false
+      log.info Gem.loaded_specs['rubocop'].version
+      log.log '- Ruby version: ', false
+      log.info RUBY_VERSION
     end
   end
 end
