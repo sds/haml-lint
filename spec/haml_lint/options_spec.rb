@@ -81,6 +81,14 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with the verbose version option' do
+      let(:args) { ['--verbose-version'] }
+
+      it 'sets the `verbose_version` option' do
+        subject.should include verbose_version: true
+      end
+    end
+
     context 'color' do
       describe 'manually on' do
         let(:args) { ['--color'] }
