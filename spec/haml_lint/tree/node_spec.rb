@@ -121,6 +121,13 @@ describe HamlLint::Tree::Node do
     end
   end
 
+  describe '#inspect' do
+    let(:haml) { '%span' }
+    subject { document.tree.inspect }
+
+    it { should == '#<HamlLint::Tree::RootNode>' }
+  end
+
   describe '#successor' do
     subject { document.tree.find { |node| node.type == :haml_comment }.successor }
 
