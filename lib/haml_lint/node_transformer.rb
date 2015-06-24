@@ -20,9 +20,6 @@ module HamlLint
       node_class = "#{HamlLint::Utils.camel_case(haml_node.type.to_s)}Node"
 
       HamlLint::Tree.const_get(node_class).new(@document, haml_node)
-    rescue NameError
-      # TODO: Wrap in parser error?
-      raise
     end
   end
 end
