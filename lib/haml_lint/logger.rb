@@ -67,14 +67,6 @@ module HamlLint
       color(33, *args)
     end
 
-    # Print specified output in bold face in a color indicative of a warning.
-    # If output destination is not a TTY, behaves the same as {#log}.
-    #
-    # @param args [Array<String>]
-    def bold_warning(*args)
-      color('1;33', *args)
-    end
-
     # Print the specified output in a color indicating information.
     # If output destination is not a TTY, behaves the same as {#log}.
     #
