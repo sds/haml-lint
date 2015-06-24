@@ -38,6 +38,18 @@ describe HamlLint::FileFinder do
         end
 
         it { should == ['test.txt'] }
+
+        context 'and that file is excluded directly' do
+          let(:excluded_patterns) { ['test.txt'] }
+
+          it { should == [] }
+        end
+
+        context 'and that file is excluded via glob pattern' do
+          let(:excluded_patterns) { ['test.*'] }
+
+          it { should == [] }
+        end
       end
 
       context 'and those files do not exist' do
@@ -84,6 +96,42 @@ describe HamlLint::FileFinder do
       context 'and those directories do not exist' do
         it 'raises an error' do
           expect { subject }.to raise_error HamlLint::Exceptions::InvalidFilePath
+        end
+      end
+    end
+
+    context 'when glob patterns are given' do
+      let(:patterns) { ['test*.txt'] }
+
+      context 'and no files match the glob pattern' do
+        before do
+          `touch some-file.txt`
+        end
+
+        it 'raises a descriptive error' do
+          expect { subject }.to raise_error HamlLint::Exceptions::InvalidFilePath
+        end
+      end
+
+      context 'and a file named the same as the glob pattern exists' do
+        before do
+          `touch 'test*.txt' test1.txt`
+        end
+
+        it { should == ['test*.txt'] }
+      end
+
+      context 'and files matching the glob pattern exist' do
+        before do
+          `touch test1.txt test-some-words.txt`
+        end
+
+        it { should == ['test-some-words.txt', 'test1.txt'] }
+
+        context 'and a glob pattern excludes a file' do
+          let(:excluded_patterns) { ['*some*'] }
+
+          it { should == ['test1.txt'] }
         end
       end
     end
