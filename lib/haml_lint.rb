@@ -1,3 +1,6 @@
+# Need to load haml before we can reference some Haml modules in our code
+require 'haml'
+
 require 'haml_lint/constants'
 require 'haml_lint/exceptions'
 require 'haml_lint/configuration'
@@ -16,8 +19,6 @@ require 'haml_lint/file_finder'
 require 'haml_lint/runner'
 require 'haml_lint/utils'
 require 'haml_lint/version'
-
-require 'haml'
 
 # Load all parse tree node classes
 require 'haml_lint/tree/node'

@@ -9,6 +9,9 @@ module HamlLint::Exceptions
   # Raised when an invalid file path is specified
   class InvalidFilePath < StandardError; end
 
+  # Raised when a problem occurs parsing a HAML document.
+  class ParseError < ::Haml::SyntaxError; end
+
   # Raised when attempting to execute `Runner` with options that would result in
   # no linters being enabled.
   class NoLintersError < StandardError; end

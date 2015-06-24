@@ -65,5 +65,25 @@ describe HamlLint::Document do
         end
       end
     end
+
+    context 'when given an invalid HAML document' do
+      let(:source) { normalize_indent(<<-HAML) }
+        %body
+          %div
+              %p
+      HAML
+
+      it 'raises an error' do
+        expect { subject }.to raise_error HamlLint::Exceptions::ParseError
+      end
+
+      it 'includes the line number in the exception' do
+        begin
+          subject
+        rescue HamlLint::Exceptions::ParseError => ex
+          ex.line.should == 2
+        end
+      end
+    end
   end
 end

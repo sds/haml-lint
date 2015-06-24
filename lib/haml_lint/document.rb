@@ -35,12 +35,15 @@ module HamlLint
     private
 
     # @param source [String] Haml code to parse
-    # @raise [Haml::Parser::Error] if there was a problem parsing the document
+    # @raise [HamlLint::Exceptions::ParseError] if there was a problem parsing
     def process_source(source)
       @source = strip_frontmatter(source)
       @source_lines = @source.split("\n")
 
       @tree = process_tree(Haml::Parser.new(@source, Haml::Options.new).parse)
+    rescue Haml::Error => ex
+      error = HamlLint::Exceptions::ParseError.new(ex.message, ex.line)
+      raise error
     end
 
     # Processes the {Haml::Parser::ParseNode} tree and returns a tree composed
