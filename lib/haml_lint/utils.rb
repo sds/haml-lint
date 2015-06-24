@@ -61,6 +61,9 @@ module HamlLint
     end
 
     # Converts a string containing underscores/hyphens/spaces into CamelCase.
+    #
+    # @param str [String]
+    # @return [String]
     def camel_case(str)
       str.split(/_|-| /).map { |part| part.sub(/^\w/) { |c| c.upcase } }.join
     end
