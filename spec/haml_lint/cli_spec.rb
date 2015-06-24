@@ -146,6 +146,35 @@ describe HamlLint::CLI do
       end
     end
 
+    context 'when passed the --verbose-version flag' do
+      let(:args) { ['--verbose-version'] }
+
+      it 'displays the application name' do
+        subject
+        output.should include HamlLint::APP_NAME
+      end
+
+      it 'displays the version' do
+        subject
+        output.should include HamlLint::VERSION
+      end
+
+      it 'displays the Haml version' do
+        subject
+        output.should include "haml #{Gem.loaded_specs['haml'].version}"
+      end
+
+      it 'displays the RuboCop version' do
+        subject
+        output.should include "rubocop #{Gem.loaded_specs['rubocop'].version}"
+      end
+
+      it 'displays the Ruby version' do
+        subject
+        output.should include RUBY_DESCRIPTION
+      end
+    end
+
     context 'when a ConfigurationError is raised' do
       before do
         cli.stub(:act_on_options).and_raise(HamlLint::Exceptions::ConfigurationError)

@@ -67,7 +67,8 @@ Command Line Flag         | Description
 `--[no-]color`            | Whether to output in color
 `--show-linters`          | Show all registered linters
 `-h`/`--help`             | Show command line flag documentation
-`-v`/`--version`          | Show version
+`-v`/`--version`          | Show `haml-lint` version
+`-V`/`--verbose-version`  | Show `haml-lint`, `haml`, and `ruby` version information
 
 ## Configuration
 

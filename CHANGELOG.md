@@ -8,6 +8,8 @@
 * Add `FinalNewline` linter to enforce the presence of a final newline
   in files
 * Fix `UnnecessaryStringOutput` to gracefully handle script output with comments
+* Add verbose version flag `-V/--verbose-version` to display `haml` and `ruby`
+  version information in addition to output of `-v/--version` flag
 
 ## 0.14.1
 

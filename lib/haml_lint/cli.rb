@@ -5,7 +5,7 @@ require 'sysexits'
 
 module HamlLint
   # Command line application interface.
-  class CLI
+  class CLI # rubocop:disable Metrics/ClassLength
     # Create a CLI that outputs to the specified logger.
     #
     # @param logger [HamlLint::Logger]
@@ -38,8 +38,8 @@ module HamlLint
       if options[:help]
         print_help(options)
         Sysexits::EX_OK
-      elsif options[:version]
-        print_version
+      elsif options[:version] || options[:verbose_version]
+        print_version(options)
         Sysexits::EX_OK
       elsif options[:show_linters]
         print_available_linters
@@ -123,8 +123,14 @@ module HamlLint
     end
 
     # Outputs the application name and version.
-    def print_version
+    def print_version(options)
       log.log "#{HamlLint::APP_NAME} #{HamlLint::VERSION}"
+
+      if options[:verbose_version]
+        log.log "haml #{Gem.loaded_specs['haml'].version}"
+        log.log "rubocop #{Gem.loaded_specs['rubocop'].version}"
+        log.log RUBY_DESCRIPTION
+      end
     end
 
     # Outputs the backtrace of an exception with instructions on how to report
