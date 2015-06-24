@@ -14,8 +14,11 @@ module HamlLint
       @document = document
     end
 
-    # Transforms the given {Haml::Parser::ParseNode} into its corresponding
-    # {HamlLint::Tree::Node}.
+    # Converts the given HAML parse node into its corresponding HAML-Lint parse
+    # node.
+    #
+    # @param haml_node [Haml::Parser::ParseNode]
+    # @return [HamlLint::Tree::Node]
     def transform(haml_node)
       node_class = "#{HamlLint::Utils.camel_case(haml_node.type.to_s)}Node"
 
