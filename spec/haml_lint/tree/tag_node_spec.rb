@@ -215,4 +215,48 @@ describe HamlLint::Tree::TagNode do
       end
     end
   end
+
+  describe '#remove_inner_whitespace?' do
+    subject { tag_node.remove_inner_whitespace? }
+
+    context 'when < symbol not present' do
+      let(:haml) { '%my_tag' }
+
+      it { should == false }
+    end
+
+    context 'when < symbol present' do
+      let(:haml) { '%my_tag<' }
+
+      it { should == true }
+    end
+
+    context 'when both <> symbols present' do
+      let(:haml) { '%my_tag<>' }
+
+      it { should == true }
+    end
+  end
+
+  describe '#remove_outer_whitespace?' do
+    subject { tag_node.remove_outer_whitespace? }
+
+    context 'when > symbol not present' do
+      let(:haml) { '%my_tag' }
+
+      it { should == false }
+    end
+
+    context 'when > symbol present' do
+      let(:haml) { '%my_tag>' }
+
+      it { should == true }
+    end
+
+    context 'when both <> symbols present' do
+      let(:haml) { '%my_tag<>' }
+
+      it { should == true }
+    end
+  end
 end

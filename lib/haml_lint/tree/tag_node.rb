@@ -186,7 +186,7 @@ module HamlLint::Tree
     #
     # @return [true,false]
     def remove_outer_whitespace?
-      @value[:nuke_inner_whitespace]
+      @value[:nuke_outer_whitespace]
     end
 
     # Returns the script source that will be evaluated to produce this tag's
