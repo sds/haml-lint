@@ -140,6 +140,28 @@ describe HamlLint::Tree::TagNode do
     end
   end
 
+  describe '#html_attributes_source' do
+    subject { tag_node.html_attributes_source }
+
+    context 'when no HTML attributes are present' do
+      let(:haml) { '%my_tag' }
+
+      it { should be_nil }
+    end
+
+    context 'when HTML attributes are present but empty' do
+      let(:haml) { '%my_tag()' }
+
+      it { should == '' }
+    end
+
+    context 'when HTML attributes are present' do
+      let(:haml) { '%my_tag(one=1 two=2 three=3)' }
+
+      it { should == 'one=1 two=2 three=3' }
+    end
+  end
+
   describe '#static_attributes_source' do
     subject { tag_node.static_attributes_source }
 

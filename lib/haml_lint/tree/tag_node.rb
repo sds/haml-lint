@@ -142,9 +142,10 @@ module HamlLint::Tree
     # @example For `%tag.class(lang=en)`, this returns:
     #   "lang=en"
     #
-    # @return [String] source without the surrounding parentheses
+    # @return [String,nil] source without the surrounding parentheses, or `nil`
+    #   if it has not been defined
     def html_attributes_source
-      dynamic_attributes_source[:html] || ''
+      dynamic_attributes_source[:html][/\A\((.*)\)\z/, 1] if html_attributes?
     end
 
     # Name of the HTML tag.
