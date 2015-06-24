@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.15.0
 
 * Improve bug reporting instructions in error message
 * Add `Indentation` linter to enforce that spaces or tabs are used for
