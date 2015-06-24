@@ -162,6 +162,28 @@ describe HamlLint::Tree::TagNode do
     end
   end
 
+  describe '#object_reference_source' do
+    subject { tag_node.object_reference_source }
+
+    context 'when no object references are present' do
+      let(:haml) { '%my_tag' }
+
+      it { should be_nil }
+    end
+
+    context 'when object reference is present but empty' do
+      let(:haml) { '%my_tag[]' }
+
+      it { should == '' }
+    end
+
+    context 'when object reference is present' do
+      let(:haml) { '%my_tag[@some_object]' }
+
+      it { should == '@some_object' }
+    end
+  end
+
   describe '#static_attributes_source' do
     subject { tag_node.static_attributes_source }
 

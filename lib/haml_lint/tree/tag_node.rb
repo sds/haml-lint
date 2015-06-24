@@ -170,7 +170,7 @@ module HamlLint::Tree
     # @return [String,nil] string source of object reference or `nil` if it has
     #   not been defined
     def object_reference_source
-      (@value[:object_ref] if object_reference?) || ''
+      @value[:object_ref][/\A\[(.*)\]\z/, 1] if object_reference?
     end
 
     # Whether this node had a `<` after it signifying that outer whitespace
