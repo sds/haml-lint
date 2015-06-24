@@ -197,16 +197,6 @@ module HamlLint::Tree
       (@value[:value] if @value[:parse]) || ''
     end
 
-    # Returns the static inner content for this tag.
-    #
-    # If this tag contains dynamic content of any kind, this will still return
-    # an empty string, and you'll have to use {#script} to obtain the source.
-    #
-    # @return [String]
-    def text
-      (@value[:value] if @value[:parse]) || ''
-    end
-
     private
 
     def parsed_attributes
