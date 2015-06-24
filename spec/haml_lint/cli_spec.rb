@@ -237,6 +237,11 @@ describe HamlLint::CLI do
         output.should include "Haml-Lint version: #{HamlLint::VERSION}"
       end
 
+      it 'displays the Haml version' do
+        subject
+        output.should include "Haml version: #{Gem.loaded_specs['haml'].version}"
+      end
+
       it 'displays the RuboCop version' do
         subject
         output.should include "RuboCop version: #{Gem.loaded_specs['rubocop'].version}"

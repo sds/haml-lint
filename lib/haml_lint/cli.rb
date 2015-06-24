@@ -145,6 +145,8 @@ module HamlLint
       log.log '- The above stack trace'
       log.log '- Haml-Lint version: ', false
       log.info HamlLint::VERSION
+      log.log '- Haml version: ', false
+      log.info Gem.loaded_specs['haml'].version
       log.log '- RuboCop version: ', false
       log.info Gem.loaded_specs['rubocop'].version
       log.log '- Ruby version: ', false
