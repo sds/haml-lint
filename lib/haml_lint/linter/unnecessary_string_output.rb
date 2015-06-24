@@ -30,7 +30,7 @@ module HamlLint
     private
 
     def outputs_string_literal?(script_node)
-      tree = parse_ruby(script_node.script)
+      return unless tree = parse_ruby(script_node.script)
       [:str, :dstr].include?(tree.type) &&
         !starts_with_reserved_character?(tree.children.first)
     rescue ::Parser::SyntaxError # rubocop:disable Lint/HandleExceptions

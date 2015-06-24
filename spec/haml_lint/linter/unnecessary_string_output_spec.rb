@@ -107,4 +107,10 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
 
     it { should report_lint }
   end
+
+  context 'when script is a comment' do
+    let(:haml) { '=# comment' }
+
+    it { should_not report_lint }
+  end
 end

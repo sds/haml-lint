@@ -7,6 +7,7 @@
   indentation (enabled by default and defaults to spaces)
 * Add `FinalNewline` linter to enforce the presence of a final newline
   in files
+* Fix `UnnecessaryStringOutput` to gracefully handle script output with comments
 
 ## 0.14.1
 
