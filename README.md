@@ -101,7 +101,7 @@ Option        | Description
 `enabled`     | If `false`, this linter will never be run. This takes precedence over any other option.
 `include`     | List of files or glob patterns to scope this linter to. This narrows down any files specified via the command line.
 `exclude`     | List of files or glob patterns to exclude from this linter. This excludes any files specified via the command line or already filtered via the `include` option.
-`severity`    | The severity of the linter. External tools consuming `haml-lint` output can use this to determine whether to warn or error based on the lints reported.
+`severity`    | The severity of the linter. External tools consuming `haml-lint` output can use this to determine whether to warn or error based on the lints reported. The allowed values are: `refactor`, `convention`, `warning`, `error` and `fatal`.
 
 ### Global File Exclusion
 

@@ -109,7 +109,7 @@ module HamlLint
     def ensure_linter_severity_valid
       @hash['linters'].each do |linter_name, linter_config|
         severity = linter_config['severity']
-        unless [nil, 'warning', 'error'].include?(severity)
+        unless [nil, 'refactor', 'convention', 'warning', 'error', 'fatal'].include?(severity)
           raise HamlLint::Exceptions::ConfigurationError,
                 "Invalid severity '#{severity}' specified for #{linter_name}"
         end
