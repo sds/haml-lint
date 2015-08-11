@@ -13,7 +13,7 @@ module HamlLint
       },
       'space' => {
         start_regex: /\A\{ [^ ]/,
-        end_regex:  /[^ ] \}\z/,
+        end_regex: /[^ ] \}\z/,
         start_message: 'Hash attribute should start with one space after the opening brace',
         end_message: 'Hash attribute should end with one space before the closing brace'
       }

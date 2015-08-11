@@ -35,7 +35,7 @@ describe HamlLint::Tree::TagNode do
     context 'when the node has no hash attributes' do
       let(:haml) { '%my_tag' }
 
-      it { should == false  }
+      it { should == false }
     end
   end
 
@@ -60,7 +60,7 @@ describe HamlLint::Tree::TagNode do
                                     four=4)
       HAML
 
-      it { should == { html:  "(three=3\n                            four=4)" } }
+      it { should == { html: "(three=3\n                            four=4)" } }
     end
 
     context 'with an object reference' do
@@ -133,7 +133,7 @@ describe HamlLint::Tree::TagNode do
         should == {
           static: '.class_one.class_two',
           hash: "{ one: 1,\n                             two: 2 }",
-          html:  '(three=3)',
+          html: '(three=3)',
           object_ref: '[my_object]'
         }
       end
