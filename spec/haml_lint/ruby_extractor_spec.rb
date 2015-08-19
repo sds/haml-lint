@@ -239,6 +239,21 @@ describe HamlLint::RubyExtractor do
       its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
+    context 'with an anonymous block with a trailing comment' do
+      let(:haml) { <<-HAML }
+        - list.each do |var, var2| # Some comment
+          = something
+      HAML
+
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        list.each do |var, var2| # Some comment
+          something
+        end
+      RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
+    end
+
     context 'with a for loop' do
       let(:haml) { <<-HAML }
         - for value in list

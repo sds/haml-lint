@@ -164,7 +164,7 @@ module HamlLint
     end
 
     def anonymous_block?(text)
-      text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?\z/
+      text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?(\s*#.*)?\z/
     end
 
     START_BLOCK_KEYWORDS = %w[if unless case begin for until while]

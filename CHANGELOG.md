@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `RuboCop` linter to properly parse files containing anonymous blocks with
+  trailing comments
+
 ## 0.15.0
 
 * Improve bug reporting instructions in error message
