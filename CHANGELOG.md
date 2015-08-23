@@ -4,6 +4,7 @@
 
 * Fix `RuboCop` linter to properly parse files containing anonymous blocks with
   trailing comments
+* Fix `exclude` option to work with paths prefixed with `./`
 
 ## 0.15.0
 

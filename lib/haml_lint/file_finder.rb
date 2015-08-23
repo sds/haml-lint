@@ -22,6 +22,8 @@ module HamlLint
     # @raise [HamlLint::Exceptions::InvalidFilePath]
     # @return [Array<String>] list of actual files
     def find(patterns, excluded_patterns)
+      excluded_patterns = excluded_patterns.map { |pattern| normalize_path(pattern) }
+
       extract_files_from(patterns).reject do |file|
         excluded_patterns.any? do |exclusion_glob|
           HamlLint::Utils.any_glob_matches?(exclusion_glob, file)
@@ -62,7 +64,15 @@ module HamlLint
         end
       end
 
-      files.uniq.sort
+      files.uniq.sort.map { |file| normalize_path(file) }
+    end
+
+    # Trim "./" from the front of relative paths.
+    #
+    # @param path [String]
+    # @return [String]
+    def normalize_path(path)
+      path.start_with?(".#{File::SEPARATOR}") ? path[2..-1] : path
     end
 
     # Whether the given file should be treated as a Haml file.
