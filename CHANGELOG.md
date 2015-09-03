@@ -5,6 +5,8 @@
 * Fix `RuboCop` linter to properly parse files containing anonymous blocks with
   trailing comments
 * Fix `exclude` option to work with paths prefixed with `./`
+* Fix `RuboCop` linter to not report erroneous `Style/Next` warnings for `if`
+  statements in `do` blocks
 
 ## 0.15.0
 
