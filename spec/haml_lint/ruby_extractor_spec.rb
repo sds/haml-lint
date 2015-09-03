@@ -46,8 +46,16 @@ describe HamlLint::RubyExtractor do
           %b Ipsum
       HAML
 
-      its(:source) { should == "puts # h1\nputs # p\nputs\nputs # b" }
-      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3, 4 => 4 } }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        puts # h1
+        puts # h1/
+        puts # p
+        puts
+        puts # b
+        puts # b/
+        puts # p/
+      RUBY
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 2, 4 => 3, 5 => 4, 6 => 4, 7 => 2 } }
     end
 
     context 'with a silent script node' do
@@ -85,8 +93,8 @@ describe HamlLint::RubyExtractor do
           - script
       HAML
 
-      its(:source) { should == "puts # tag\nscript" }
-      its(:source_map) { should == { 1 => 1, 2 => 2 } }
+      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
     context 'with a tag containing a script node' do
@@ -95,8 +103,8 @@ describe HamlLint::RubyExtractor do
           = script
       HAML
 
-      its(:source) { should == "puts # tag\nscript" }
-      its(:source_map) { should == { 1 => 1, 2 => 2 } }
+      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
     context 'with a tag containing inline script' do
@@ -104,8 +112,8 @@ describe HamlLint::RubyExtractor do
         %tag= script
       HAML
 
-      its(:source) { should == "puts # tag\nscript" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with hash attributes' do
@@ -113,8 +121,13 @@ describe HamlLint::RubyExtractor do
         %tag{ one: 1, two: 2, 'three' => some_method }
       HAML
 
-      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => some_method)\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        {}.merge(one: 1, two: 2, 'three' => some_method)
+        puts # tag
+        puts # tag/
+      RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with hash attributes with hashrockets and questionable spacing' do
@@ -122,8 +135,8 @@ describe HamlLint::RubyExtractor do
         %tag.class_one.class_two#with_an_id{:type=>'checkbox', 'special' => :true }
       HAML
 
-      its(:source) { should == "{:type=>'checkbox', 'special' => :true }\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == "{:type=>'checkbox', 'special' => :true }\nputs # tag\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with mixed-style hash attributes' do
@@ -131,8 +144,13 @@ describe HamlLint::RubyExtractor do
         %tag.class_one.class_two#with_an_id{ :type=>'checkbox', special: 'true' }
       HAML
 
-      its(:source) { should == "{}.merge(:type=>'checkbox', special: 'true')\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == normalize_indent(<<-RUBY.rstrip) }
+        {}.merge(:type=>'checkbox', special: 'true')
+        puts # tag
+        puts # tag/
+      RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with hash attributes with a method call' do
@@ -140,8 +158,8 @@ describe HamlLint::RubyExtractor do
         %tag{ tag_options_method }
       HAML
 
-      its(:source) { should == "{}.merge(tag_options_method)\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == "{}.merge(tag_options_method)\nputs # tag\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with HTML-style attributes' do
@@ -152,9 +170,10 @@ describe HamlLint::RubyExtractor do
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})
         puts # tag
+        puts # tag/
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with hash attributes and inline script' do
@@ -166,9 +185,10 @@ describe HamlLint::RubyExtractor do
         {}.merge(one: 1)
         puts # tag
         script
+        puts # tag/
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 1 } }
     end
 
     context 'with a tag with hash attributes that span multiple lines' do
@@ -178,8 +198,8 @@ describe HamlLint::RubyExtractor do
               'three' => 3 }
       HAML
 
-      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
     context 'with a tag with 1.8-style hash attributes of string key/values' do
@@ -187,8 +207,8 @@ describe HamlLint::RubyExtractor do
         %tag{ 'one' => '1', 'two' => '2' }
       HAML
 
-      its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag" }
-      its(:source_map) { should == { 1 => 1, 2 => 1 } }
+      its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag\nputs # tag/" }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
 
       context 'that span multiple lines' do
         let(:haml) { <<-HAML }
@@ -196,8 +216,8 @@ describe HamlLint::RubyExtractor do
                 'two' => '2' }
         HAML
 
-        its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # div" }
-        its(:source_map) { should == { 1 => 1, 2 => 1 } }
+        its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # div\nputs # div/" }
+        its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
       end
     end
 

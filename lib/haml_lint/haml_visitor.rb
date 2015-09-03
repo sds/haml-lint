@@ -14,13 +14,14 @@ module HamlLint
         visit_children(node) if descend == :children
       end
 
-      method = "visit_#{node_name(node)}"
-      send(method, node, &block) if respond_to?(method, true)
+      safe_send("visit_#{node_name(node)}", node, &block)
 
       # Visit all children by default unless the block was invoked (indicating
       # the user intends to not recurse further, or wanted full control over
       # when the children were visited).
       visit_children(node) unless block_called
+
+      safe_send("after_visit_#{node_name(node)}", node, &block)
     end
 
     def visit_children(parent)
@@ -31,6 +32,10 @@ module HamlLint
 
     def node_name(node)
       node.type
+    end
+
+    def safe_send(name, *args, &block)
+      send(name, *args, &block) if respond_to?(name, true)
     end
   end
 end

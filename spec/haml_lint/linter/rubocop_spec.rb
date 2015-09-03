@@ -30,7 +30,7 @@ describe HamlLint::Linter::RuboCop do
   end
 
   context 'when RuboCop reports offences' do
-    let(:line) { 4 }
+    let(:line) { 6 }
     let(:message) { 'Lint message' }
     let(:cop_name) { 'Lint/SomeCopName' }
 

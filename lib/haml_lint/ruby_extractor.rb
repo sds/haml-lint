@@ -84,6 +84,11 @@ module HamlLint
       add_line(code, node) unless code.empty?
     end
 
+    def after_visit_tag(node)
+      # We add a dummy puts statement for closing tag.
+      add_line("puts # #{node.tag_name}/", node)
+    end
+
     def visit_script(node)
       code = node.text
       add_line(code.strip, node)
