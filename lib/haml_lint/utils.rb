@@ -65,7 +65,7 @@ module HamlLint
     # @param str [String]
     # @return [String]
     def camel_case(str)
-      str.split(/_|-| /).map { |part| part.sub(/^\w/) { |c| c.upcase } }.join
+      str.split(/_|-| /).map { |part| part.sub(/^\w/, &:upcase) }.join
     end
 
     # Find all consecutive items satisfying the given block of a minimum size,
