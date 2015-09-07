@@ -58,6 +58,12 @@ haml-lint app/**/*.html.haml
 `haml-lint` will output any problems with your HAML, including the offending
 filename and line number.
 
+### File Encoding
+
+`haml-lint` assumes all files are encoded in UTF-8.
+
+### Command Line Flags
+
 Command Line Flag         | Description
 --------------------------|----------------------------------------------------
 `-c`/`--config`           | Specify which configuration file to use

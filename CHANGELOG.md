@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Assume UTF-8 as the default encoding for all linted files
+
 ## 0.15.1
 
 * Fix `RuboCop` linter to properly parse files containing anonymous blocks with

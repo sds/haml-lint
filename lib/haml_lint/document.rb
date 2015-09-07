@@ -37,6 +37,7 @@ module HamlLint
     # @param source [String] Haml code to parse
     # @raise [HamlLint::Exceptions::ParseError] if there was a problem parsing
     def process_source(source)
+      @source = process_encoding(source)
       @source = strip_frontmatter(source)
       @source_lines = @source.split("\n")
 
@@ -79,6 +80,18 @@ module HamlLint
       end
 
       new_node
+    end
+
+    # Ensures source code is interpreted as UTF-8.
+    #
+    # This is necessary as sometimes Ruby guesses the encoding of a file
+    # incorrectly, for example if the LC_ALL environment variable is set to "C".
+    # @see http://unix.stackexchange.com/a/87763
+    #
+    # @param source [String]
+    # @return [String] source encoded with UTF-8 encoding
+    def process_encoding(source)
+      source.force_encoding(Encoding::UTF_8)
     end
 
     # Removes YAML frontmatter
