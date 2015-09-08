@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.15.2
 
 * Assume UTF-8 as the default encoding for all linted files
 
