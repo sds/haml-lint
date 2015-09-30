@@ -32,6 +32,19 @@ module HamlLint
     private
 
     def check(node)
+      # Condition occurs when scripts do not contain nested content, e.g.
+      #
+      #   - if condition ||      <-- no children; its sibling is a continuation
+      #   -    other_condition
+      #
+      # ...whereas when it contains nested content it's not a multiline script:
+      #
+      #   - begin                <-- has children
+      #     some_helper
+      #   - rescue
+      #     An error occurred
+      return unless node.children.empty?
+
       operator = node.script[/\s+(\S+)\z/, 1]
       if SPLIT_OPERATORS.include?(operator)
         record_lint(node,

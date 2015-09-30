@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
+
 ## 0.15.2
 
 * Assume UTF-8 as the default encoding for all linted files

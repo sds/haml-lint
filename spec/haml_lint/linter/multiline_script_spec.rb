@@ -31,4 +31,15 @@ describe HamlLint::Linter::MultilineScript do
 
     it { should report_lint line: 1 }
   end
+
+  context 'when begin/rescue are used' do
+    let(:haml) { <<-HAML }
+      - begin
+        = some_helper
+      - rescue
+        An error occurred
+    HAML
+
+    it { should_not report_lint line: 1 }
+  end
 end
