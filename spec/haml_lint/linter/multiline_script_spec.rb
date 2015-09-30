@@ -40,6 +40,6 @@ describe HamlLint::Linter::MultilineScript do
         An error occurred
     HAML
 
-    it { should_not report_lint line: 1 }
+    it { should_not report_lint }
   end
 end
