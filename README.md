@@ -70,8 +70,10 @@ Command Line Flag         | Description
 `-e`/`--exclude`          | Exclude one or more files from being linted
 `-i`/`--include-linter`   | Specify which linters you specifically want to run
 `-x`/`--exclude-linter`   | Specify which linters you _don't_ want to run
+`-r`/`--reporter`         | Specify which reporter you want to use to generate the output
 `--[no-]color`            | Whether to output in color
 `--show-linters`          | Show all registered linters
+`--show-reporters`        | Display available reporters
 `-h`/`--help`             | Show command line flag documentation
 `-v`/`--version`          | Show `haml-lint` version
 `-V`/`--verbose-version`  | Show `haml-lint`, `haml`, and `ruby` version information
