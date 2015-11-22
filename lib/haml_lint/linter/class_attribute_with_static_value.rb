@@ -13,7 +13,6 @@ module HamlLint
     include LinterRegistry
 
     STATIC_TYPES = [:str, :sym]
-    STATIC_CLASSES = [String, Symbol]
 
     def visit_tag(node)
       return unless contains_class_attribute?(node.dynamic_attributes_sources)
@@ -45,7 +44,7 @@ module HamlLint
 
       STATIC_TYPES.include?(key.type) &&
         key.children.first.to_sym == :class &&
-        STATIC_CLASSES.include?(value.children.first.class)
+        STATIC_TYPES.include?(value.type)
     end
   end
 end

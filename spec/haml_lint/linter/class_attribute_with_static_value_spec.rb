@@ -39,6 +39,18 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
     it { should report_lint }
   end
 
+  context 'when tag contains dynamic class attribute with method call value' do
+    let(:haml) { '%th{ class: some_method_call }' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when tag contains dynamic class attribute with ivar value' do
+    let(:haml) { '%th{ class: @some_ivar }' }
+
+    it { should_not report_lint }
+  end
+
   context 'when tag contains attributes assigned via method call' do
     let(:haml) { '%tag{ some_method_call }' }
 

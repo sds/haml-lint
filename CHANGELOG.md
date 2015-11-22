@@ -3,6 +3,8 @@
 ## master (unreleased)
 
 * Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
+* Fix `ClassAttributeWithStaticValue` to not erroneously report `class`
+  attributes with method call or instance variable values
 
 ## 0.15.2
 
