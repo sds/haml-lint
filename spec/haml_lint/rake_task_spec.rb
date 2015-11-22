@@ -35,7 +35,7 @@ describe HamlLint::RakeTask do
     let(:haml) { "%tag\n  %foo\n      %bar" }
 
     it 'raises an error' do
-      expect { run_task }.to raise_error
+      expect { run_task }.to raise_error RuntimeError
     end
   end
 end
