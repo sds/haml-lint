@@ -1,3 +1,5 @@
+inherit_from: .rubocop_todo.yml
+
 AmbiguousRegexpLiteral:
   Enabled: false
 
@@ -84,7 +86,10 @@ Style/MultilineOperationIndentation:
 Style/TrivialAccessors:
   Enabled: false
 
-TrailingComma:
+Style/TrailingCommaInArguments:
+  Enabled: false
+
+TrailingCommaInLiteral:
   Enabled: false
 
 Void:
