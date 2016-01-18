@@ -32,7 +32,6 @@ module HamlLint
     def ==(other)
       super || @hash == other.hash
     end
-    alias_method :eql?, :==
 
     # Returns a non-modifiable configuration for the specified linter.
     #

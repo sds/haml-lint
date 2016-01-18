@@ -12,9 +12,9 @@ module HamlLint
       if config['present']
         record_lint(dummy_node,
                     'Files should end with a trailing newline') unless ends_with_newline
-      else
+      elsif ends_with_newline
         record_lint(dummy_node,
-                    'Files should not end with a trailing newline') if ends_with_newline
+                    'Files should not end with a trailing newline')
       end
     end
   end

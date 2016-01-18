@@ -28,9 +28,11 @@ module HamlLint::Tree
     #
     # Returns nil if no node matching the given block was found.
     #
+    # @yieldparam [HamlLint::Tree::Node] node
+    # @yieldreturn [Boolean] whether the node matches
     # @return [HamlLint::Tree::Node,nil]
     def find(&block)
-      return self if block.call(self)
+      return self if yield(self)
 
       children.each do |child|
         if result = child.find(&block)
@@ -53,8 +55,8 @@ module HamlLint::Tree
         end
 
       @document.source_lines[@line - 1...next_node_line]
-               .join("\n")
-               .gsub(/^\s*\z/m, '') # Remove blank lines at the end
+        .join("\n")
+        .gsub(/^\s*\z/m, '') # Remove blank lines at the end
     end
 
     def inspect

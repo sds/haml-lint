@@ -81,10 +81,13 @@ SpecialGlobalVars:
 Style/MultilineOperationIndentation:
   Enabled: false
 
-Style/TrivialAccessors:
+Style/TrailingCommaInArguments:
   Enabled: false
 
-TrailingComma:
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Style/TrivialAccessors:
   Enabled: false
 
 Void:

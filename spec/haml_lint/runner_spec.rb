@@ -53,9 +53,10 @@ describe HamlLint::Runner do
       end
 
       it 'passes the global exclude patterns to the FileFinder' do
-        HamlLint::FileFinder.any_instance.should_receive(:find)
-                                         .with(files, ['exclude-this-file.slim'])
-                                         .and_return([])
+        HamlLint::FileFinder.any_instance
+                            .should_receive(:find)
+                            .with(files, ['exclude-this-file.slim'])
+                            .and_return([])
         subject
       end
     end

@@ -12,7 +12,7 @@ module HamlLint
   class Linter::ClassAttributeWithStaticValue < Linter
     include LinterRegistry
 
-    STATIC_TYPES = [:str, :sym]
+    STATIC_TYPES = [:str, :sym].freeze
 
     def visit_tag(node)
       return unless contains_class_attribute?(node.dynamic_attributes_sources)
@@ -25,11 +25,8 @@ module HamlLint
 
     def contains_class_attribute?(attributes_sources)
       attributes_sources.each do |code|
-        begin
-          ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
-        rescue ::Parser::SyntaxError
-          next # RuboCop linter will report syntax errors
-        end
+        ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
+        next unless ast_root # RuboCop linter will report syntax errors
 
         ast_root.children.each do |pair|
           return true if static_class_attribute_value?(pair)

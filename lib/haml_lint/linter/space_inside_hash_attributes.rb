@@ -17,7 +17,7 @@ module HamlLint
         start_message: 'Hash attribute should start with one space after the opening brace',
         end_message: 'Hash attribute should end with one space before the closing brace'
       }
-    }
+    }.freeze
 
     def visit_tag(node)
       return unless node.hash_attributes?

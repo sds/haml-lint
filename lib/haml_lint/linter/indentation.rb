@@ -7,7 +7,7 @@ module HamlLint
     INDENT_REGEX = {
       space: /^[ ]*(?!\t)/,
       tab: /^\t*(?![ ])/,
-    }
+    }.freeze
 
     def visit_root(_node)
       regex = INDENT_REGEX[config['character'].to_sym]

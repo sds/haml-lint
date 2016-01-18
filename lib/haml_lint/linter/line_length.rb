@@ -3,7 +3,7 @@ module HamlLint
   class Linter::LineLength < Linter
     include LinterRegistry
 
-    MSG = 'Line is too long. [%d/%d]'
+    MSG = 'Line is too long. [%d/%d]'.freeze
 
     def visit_root(_node)
       max_length = config['max']

@@ -7,7 +7,7 @@ module HamlLint
     TYPES_BY_PREFIX = {
       '.' => :class,
       '#' => :id,
-    }
+    }.freeze
 
     def visit_tag(node)
       # Convert ".class#id" into [.class, #id] (preserving order)

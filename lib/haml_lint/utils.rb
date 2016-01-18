@@ -105,9 +105,9 @@ module HamlLint
     #   inclusion
     # @yieldreturn [Boolean] whether to include the item
     # @return [Integer]
-    def count_consecutive(items, offset = 0, &block)
+    def count_consecutive(items, offset = 0)
       count = 1
-      count += 1 while (offset + count < items.count) && block.call(items[offset + count])
+      count += 1 while (offset + count < items.count) && yield(items[offset + count])
       count
     end
 

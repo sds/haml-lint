@@ -87,8 +87,8 @@ module HamlLint::Tree
     def attributes_source
       @attr_source ||=
         begin
-          _explicit_tag, static_attrs, rest = source_code
-            .scan(/\A\s*(%[-:\w]+)?([-:\w\.\#]*)(.*)/m)[0]
+          _explicit_tag, static_attrs, rest =
+            source_code.scan(/\A\s*(%[-:\w]+)?([-:\w\.\#]*)(.*)/m)[0]
 
           attr_types = {
             '{' => [:hash, %w[{ }]],

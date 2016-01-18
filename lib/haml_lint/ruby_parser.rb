@@ -1,16 +1,18 @@
-require 'astrolabe/builder'
+require 'rubocop'
+require 'rubocop/ast_node/builder'
 require 'parser/current'
 
 module HamlLint
   # Parser for the Ruby language.
   #
   # This provides a convenient wrapper around the `parser` gem and the
-  # `astrolabe` integration to go with it. It is intended to be used for linter
+  # Astrolabe integration (now built-in to RuboCop, so no longer called
+  # Astrolabe) to go with it. It is intended to be used for linter
   # checks that require deep inspection of Ruby code.
   class RubyParser
     # Creates a reusable parser.
     def initialize
-      @builder = ::Astrolabe::Builder.new
+      @builder = ::RuboCop::Node::Builder.new
       @parser = ::Parser::CurrentRuby.new(@builder)
     end
 

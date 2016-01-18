@@ -3,7 +3,7 @@ module HamlLint
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
-    MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'
+    MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'.freeze
 
     def visit_tag(node) # rubocop:disable Metrics/CyclomaticComplexity
       # If this tag has inline script

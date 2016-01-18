@@ -6,7 +6,7 @@ module HamlLint
   class FileFinder
     # List of extensions of files to include under a directory when a directory
     # is specified instead of a file.
-    VALID_EXTENSIONS = %w[.haml]
+    VALID_EXTENSIONS = %w[.haml].freeze
 
     # Create a file finder using the specified configuration.
     #

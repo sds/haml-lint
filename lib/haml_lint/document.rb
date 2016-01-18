@@ -2,7 +2,7 @@ module HamlLint
   # Represents a parsed Haml document and its associated metadata.
   class Document
     # File name given to source code parsed from just a string.
-    STRING_SOURCE = '(string)'
+    STRING_SOURCE = '(string)'.freeze
 
     # @return [HamlLint::Configuration] Configuration used to parse template
     attr_reader :config

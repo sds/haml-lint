@@ -4,7 +4,7 @@ module HamlLint
     include LinterRegistry
 
     MESSAGE = "Don't use the `|` character to split up lines. " \
-              'Wrap on commas or extract code into helper.'
+              'Wrap on commas or extract code into helper.'.freeze
 
     def visit_tag(node)
       check(node)

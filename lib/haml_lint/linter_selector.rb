@@ -29,13 +29,13 @@ module HamlLint
     # @param options [Hash]
     # @return [Array<HamlLint::Linter>]
     def extract_enabled_linters(config, options)
-      included_linters = LinterRegistry
-        .extract_linters_from(options.fetch(:included_linters, []))
+      included_linters =
+        LinterRegistry.extract_linters_from(options.fetch(:included_linters, []))
 
       included_linters = LinterRegistry.linters if included_linters.empty?
 
-      excluded_linters = LinterRegistry
-        .extract_linters_from(options.fetch(:excluded_linters, []))
+      excluded_linters =
+        LinterRegistry.extract_linters_from(options.fetch(:excluded_linters, []))
 
       # After filtering out explicitly included/excluded linters, only include
       # linters which are enabled in the configuration

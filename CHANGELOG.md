@@ -5,6 +5,8 @@
 * Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
 * Fix `ClassAttributeWithStaticValue` to not erroneously report `class`
   attributes with method call or instance variable values
+* Update minimum RuboCop version to 0.36.0 to fix compatibility issues with
+  Astrolabe gem, switching to RuboCop's own implementation instead
 
 ## 0.15.2
 
