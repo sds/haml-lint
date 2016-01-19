@@ -22,7 +22,7 @@ module HamlLint
   # The translation won't be perfect, and won't make any real sense, but the
   # relationship between variable declarations/uses and the flow control graph
   # will remain intact.
-  class RubyExtractor
+  class RubyExtractor # rubocop:disable Metrics/ClassLength
     include HamlVisitor
 
     # Stores the extracted source and a map of lines of generated source to the
@@ -47,6 +47,7 @@ module HamlLint
       @source_map = {}
       @line_count = 0
       @indent_level = 0
+      @output_count = 0
 
       yield # Collect lines of code from children
     end
@@ -55,7 +56,7 @@ module HamlLint
       # Don't output the text, as we don't want to have to deal with any RuboCop
       # cops regarding StringQuotes or AsciiComments, and it's not important to
       # overall document anyway.
-      add_line('puts', node)
+      add_dummy_puts(node)
     end
 
     def visit_tag(node)
@@ -78,7 +79,7 @@ module HamlLint
 
       # We add a dummy puts statement to represent the tag name being output.
       # This prevents some erroneous RuboCop warnings.
-      add_line("puts # #{node.tag_name}", node)
+      add_dummy_puts(node, node.tag_name)
 
       code = node.script.strip
       add_line(code, node) unless code.empty?
@@ -86,7 +87,7 @@ module HamlLint
 
     def after_visit_tag(node)
       # We add a dummy puts statement for closing tag.
-      add_line("puts # #{node.tag_name}/", node)
+      add_dummy_puts(node, "#{node.tag_name}/")
     end
 
     def visit_script(node)
@@ -111,13 +112,13 @@ module HamlLint
       visit_script(node, &block)
     end
 
-    def visit_filter(node)
+    def visit_filter(node) # rubocop:disable Metrics/AbcSize
       if node.filter_type == 'ruby'
         node.text.split("\n").each_with_index do |line, index|
           add_line(line, node.line + index + 1)
         end
       else
-        add_line('puts', node)
+        add_dummy_puts(node, ":#{node.filter_type}")
         HamlLint::Utils.extract_interpolated_values(node.text) do |interpolated_code, line|
           add_line(interpolated_code, node.line + line)
         end
@@ -137,6 +138,14 @@ module HamlLint
 
         add_line(normalized_attr_source, node)
       end
+    end
+
+    # Adds a dummy method call with a unique name so we don't get
+    # Style/IdenticalConditionalBranches RuboCop warnings
+    def add_dummy_puts(node, annotation = nil)
+      annotation = " # #{annotation}" if annotation
+      add_line("_haml_lint_puts_#{@output_count}#{annotation}", node)
+      @output_count += 1
     end
 
     def add_line(code, node_or_line)

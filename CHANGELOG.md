@@ -7,6 +7,8 @@
   attributes with method call or instance variable values
 * Update minimum RuboCop version to 0.36.0 to fix compatibility issues with
   Astrolabe gem, switching to RuboCop's own implementation instead
+* Fix `RuboCop` linter to not erroneously report
+  `Style/IdenticalConditionalBranches` warnings
 
 ## 0.15.2
 

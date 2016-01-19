@@ -24,7 +24,7 @@ describe HamlLint::RubyExtractor do
         Hello world
       HAML
 
-      its(:source) { should == 'puts' }
+      its(:source) { should == '_haml_lint_puts_0' }
       its(:source_map) { should == { 1 => 1 } }
     end
 
@@ -34,7 +34,7 @@ describe HamlLint::RubyExtractor do
         how are you?
       HAML
 
-      its(:source) { should == "puts\nputs" }
+      its(:source) { should == "_haml_lint_puts_0\n_haml_lint_puts_1" }
       its(:source_map) { should == { 1 => 1, 2 => 2 } }
     end
 
@@ -47,13 +47,13 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        puts # h1
-        puts # h1/
-        puts # p
-        puts
-        puts # b
-        puts # b/
-        puts # p/
+        _haml_lint_puts_0 # h1
+        _haml_lint_puts_1 # h1/
+        _haml_lint_puts_2 # p
+        _haml_lint_puts_3
+        _haml_lint_puts_4 # b
+        _haml_lint_puts_5 # b/
+        _haml_lint_puts_6 # p/
       RUBY
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 2, 4 => 3, 5 => 4, 6 => 4, 7 => 2 } }
     end
@@ -93,7 +93,12 @@ describe HamlLint::RubyExtractor do
           - script
       HAML
 
-      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        _haml_lint_puts_0 # tag
+        script
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
@@ -103,7 +108,12 @@ describe HamlLint::RubyExtractor do
           = script
       HAML
 
-      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        _haml_lint_puts_0 # tag
+        script
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 1 } }
     end
 
@@ -112,7 +122,12 @@ describe HamlLint::RubyExtractor do
         %tag= script
       HAML
 
-      its(:source) { should == "puts # tag\nscript\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        _haml_lint_puts_0 # tag
+        script
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
@@ -123,8 +138,8 @@ describe HamlLint::RubyExtractor do
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge(one: 1, two: 2, 'three' => some_method)
-        puts # tag
-        puts # tag/
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
       RUBY
 
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
@@ -135,7 +150,12 @@ describe HamlLint::RubyExtractor do
         %tag.class_one.class_two#with_an_id{:type=>'checkbox', 'special' => :true }
       HAML
 
-      its(:source) { should == "{:type=>'checkbox', 'special' => :true }\nputs # tag\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        {:type=>'checkbox', 'special' => :true }
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
@@ -146,8 +166,8 @@ describe HamlLint::RubyExtractor do
 
       its(:source) { should == normalize_indent(<<-RUBY.rstrip) }
         {}.merge(:type=>'checkbox', special: 'true')
-        puts # tag
-        puts # tag/
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
       RUBY
 
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
@@ -158,7 +178,12 @@ describe HamlLint::RubyExtractor do
         %tag{ tag_options_method }
       HAML
 
-      its(:source) { should == "{}.merge(tag_options_method)\nputs # tag\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY.rstrip) }
+        {}.merge(tag_options_method)
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
@@ -169,8 +194,8 @@ describe HamlLint::RubyExtractor do
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})
-        puts # tag
-        puts # tag/
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
       RUBY
 
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
@@ -183,9 +208,9 @@ describe HamlLint::RubyExtractor do
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         {}.merge(one: 1)
-        puts # tag
+        _haml_lint_puts_0 # tag
         script
-        puts # tag/
+        _haml_lint_puts_1 # tag/
       RUBY
 
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 1 } }
@@ -198,7 +223,12 @@ describe HamlLint::RubyExtractor do
               'three' => 3 }
       HAML
 
-      its(:source) { should == "{}.merge(one: 1, two: 2, 'three' => 3)\nputs # tag\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        {}.merge(one: 1, two: 2, 'three' => 3)
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
     end
 
@@ -207,7 +237,12 @@ describe HamlLint::RubyExtractor do
         %tag{ 'one' => '1', 'two' => '2' }
       HAML
 
-      its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # tag\nputs # tag/" }
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        { 'one' => '1', 'two' => '2' }
+        _haml_lint_puts_0 # tag
+        _haml_lint_puts_1 # tag/
+      RUBY
+
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
 
       context 'that span multiple lines' do
@@ -216,7 +251,12 @@ describe HamlLint::RubyExtractor do
                 'two' => '2' }
         HAML
 
-        its(:source) { should == "{ 'one' => '1', 'two' => '2' }\nputs # div\nputs # div/" }
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+          { 'one' => '1', 'two' => '2' }
+          _haml_lint_puts_0 # div
+          _haml_lint_puts_1 # div/
+        RUBY
+
         its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
       end
     end
@@ -378,7 +418,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        puts
+        _haml_lint_puts_0 # :filter
         some_method
         some_other_method
       RUBY
@@ -394,7 +434,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        puts
+        _haml_lint_puts_0 # :filter
         some_method("hello")
         some_other_method('world')
       RUBY
@@ -412,7 +452,7 @@ describe HamlLint::RubyExtractor do
       # TODO: Figure out if it's worth normalizing indentation for the generated
       # code in this interpolated context
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        puts
+        _haml_lint_puts_0 # :filter
         some_method('hello',
                                  'world')
       RUBY
@@ -432,9 +472,9 @@ describe HamlLint::RubyExtractor do
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
         if condition
-          puts
+          _haml_lint_puts_0 # :filter
         else
-          puts
+          _haml_lint_puts_1 # :filter
         end
       RUBY
 
