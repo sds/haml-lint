@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for Ruby script in HAML templates with no space after the `=`/`-`.
   class Linter::SpaceBeforeScript < Linter

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for lines longer than a maximum number of columns.
   class Linter::LineLength < Linter

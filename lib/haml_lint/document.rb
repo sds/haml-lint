@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Represents a parsed Haml document and its associated metadata.
   class Document
