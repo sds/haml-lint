@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.16.0
 
 * Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
 * Fix `ClassAttributeWithStaticValue` to not erroneously report `class`
