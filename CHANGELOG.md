@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `RuboCop` linter to ignore `ElseAlignment` and
+  `FrozenStringLiteralComment` cops by default
+
 ## 0.16.0
 
 * Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
