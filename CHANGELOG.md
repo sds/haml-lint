@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.16.1
 
 * Fix `RuboCop` linter to ignore `ElseAlignment` and
   `FrozenStringLiteralComment` cops by default
