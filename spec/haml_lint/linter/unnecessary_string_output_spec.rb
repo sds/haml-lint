@@ -113,4 +113,10 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
 
     it { should_not report_lint }
   end
+
+  context 'when equals sign appears in the middle of the line' do
+    let(:haml) { '#{quantity} x #{amount} = #{price}' }
+
+    it { should_not report_lint }
+  end
 end
