@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.16.2
 
 * Fix `UnnecessaryStringOutput` to not erroneously warn on lines with equal
   signs in the middle of the line
