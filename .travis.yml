@@ -9,7 +9,6 @@ rvm:
   - 2.1
   - 2.2
   - 2.3.0
-  - rbx-2
 
 before_script:
   - git config --local user.email "travis@travis.ci"
