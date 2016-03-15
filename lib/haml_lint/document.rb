@@ -98,20 +98,22 @@ module HamlLint
 
     # Removes YAML frontmatter
     def strip_frontmatter(source)
-      if config['skip_frontmatter'] &&
-        source =~ /
-          # From the start of the string
-          \A
-          # First-capture match --- followed by optional whitespace up
-          # to a newline then 0 or more chars followed by an optional newline.
-          # This matches the --- and the contents of the frontmatter
-          (---\s*\n.*?\n?)
-          # From the start of the line
-          ^
-          # Second capture match --- or ... followed by optional whitespace
-          # and newline. This matches the closing --- for the frontmatter.
-          (---|\.\.\.)\s*$\n?/mx
-        source = $POSTMATCH
+      frontmatter = /
+        # From the start of the string
+        \A
+        # First-capture match --- followed by optional whitespace up
+        # to a newline then 0 or more chars followed by an optional newline.
+        # This matches the --- and the contents of the frontmatter
+        (---\s*\n.*?\n?)
+        # From the start of the line
+        ^
+        # Second capture match --- or ... followed by optional whitespace
+        # and newline. This matches the closing --- for the frontmatter.
+        (---|\.\.\.)\s*$\n?/mx
+
+      if config['skip_frontmatter'] && match = source.match(frontmatter)
+        newlines = match[0].count("\n")
+        source.sub!(frontmatter, "\n" * newlines)
       end
 
       source
