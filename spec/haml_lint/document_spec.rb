@@ -57,6 +57,10 @@ describe HamlLint::Document do
           subject.source.should_not include '---'
           subject.source.should include '%head'
         end
+
+        it 'reports line numbers as if frontmatter was not removed' do
+          expect(subject.tree.children.first.line).to eq(4)
+        end
       end
 
       context 'and the source does not contain frontmatter' do
