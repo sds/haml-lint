@@ -4,6 +4,7 @@
 
 * Fix `UnnecessaryStringOutput` to not erroneously warn on lines with equal
   signs in the middle of the line
+* Fix `skip_frontmatter` option to preserve line numbers
 
 ## 0.16.1
 
