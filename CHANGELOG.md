@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `UnnecessaryStringOutput` to not erroneously warn on lines with equal
+  signs in the middle of the line
+
 ## 0.16.1
 
 * Fix `RuboCop` linter to ignore `ElseAlignment` and
