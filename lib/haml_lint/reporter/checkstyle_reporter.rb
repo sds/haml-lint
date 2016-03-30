@@ -1,5 +1,3 @@
-require 'builder'
-
 module HamlLint
   # Outputs report as an XML checkstyle document.
   class Reporter::CheckstyleReporter < Reporter
@@ -7,29 +5,29 @@ module HamlLint
       lints = report.lints
       files = lints.group_by(&:filename)
 
-      builder = Builder::XmlMarkup.new(indent: 2)
+      xml = '<?xml version="1.0" encoding="utf-8"?>'
 
-      builder.instruct!
-      xml = builder.checkstyle(version: '5.7') do |b|
-        files.each do |filename, offenses|
-          b.file(name: filename) do
-            render_offenses(b, offenses)
-          end
-        end
+      xml << '<checkstyle version="5.7">'
+
+      files.each do |filename, offenses|
+        xml << "<file name=\"#{filename}\">"
+        xml << render_offenses(offenses)
+        xml << '</file>'
       end
 
+      xml << '</checkstyle>'
       log.log xml
     end
 
     private
 
-    def render_offenses(b, offenses)
+    def render_offenses(offenses)
+      xml = ''
       offenses.each do |offense|
-        b.error(line: offense.line,
-                severity: offense.severity,
-                message: offense.message,
-                source: offense.linter.name)
+        xml << "<error line=\"#{offense.line}\" severity=\"#{offense.severity}\" "
+        xml << "message=\"#{offense.message}\" source=\"#{offense.linter.name}\" />"
       end
+      xml
     end
   end
 end

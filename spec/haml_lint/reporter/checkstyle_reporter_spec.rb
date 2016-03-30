@@ -3,7 +3,7 @@ require 'spec_helper'
 describe HamlLint::Reporter::CheckstyleReporter do
   describe '#display_report' do
     let(:io) { StringIO.new }
-    let(:output) { Nokogiri::XML(io.string) }
+    let(:output) { io.string }
     let(:logger) { HamlLint::Logger.new(io) }
     let(:report) { HamlLint::Report.new(lints, []) }
     let(:reporter) { described_class.new(logger) }
@@ -13,8 +13,8 @@ describe HamlLint::Reporter::CheckstyleReporter do
     shared_examples_for 'output format specification' do
       it 'matches the output specification' do
         subject
-        output.errors.should be_empty
-        output.xpath('/checkstyle').should_not be_nil
+        output.should match /^<\?xml/
+        output.should match /<checkstyle/
       end
     end
 
@@ -24,7 +24,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
 
       it 'list of files is empty' do
         subject
-        output.xpath('//file').should be_empty
+        output.should_not match /<file/
       end
 
       it_behaves_like 'output format specification'
@@ -48,12 +48,18 @@ describe HamlLint::Reporter::CheckstyleReporter do
 
       it 'contains a list of files with offenses' do
         subject
-        output.xpath('//file').map { |f| f.attr('name') }.sort.should eq filenames.sort
+        output.should match /<file name="some-filename.haml"/
+        output.should match /<file name="other-filename.haml"/
       end
 
       it 'contains a list of errors within the files' do
         subject
-        output.xpath('//file/error').map { |f| f.attr('line') }.sort.should eq lines.sort
+        output.should match /<error line="724" severity="error"/
+        output.should match /message="Description of lint 2"/
+        output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
+        output.should match /<error line="502" severity="warning"/
+        output.should match /message="Description of lint 1"/
+        output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
       end
 
       it_behaves_like 'output format specification'

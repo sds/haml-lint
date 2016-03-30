@@ -10,7 +10,6 @@ end
 
 require 'haml_lint'
 require 'rspec/its'
-require 'nokogiri'
 
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
 
