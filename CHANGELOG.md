@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.17.0
 
 * Add `Checkstyle` output format
 * Add `EmptyObjectReference` linter to report tags with empty object references
