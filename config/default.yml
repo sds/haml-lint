@@ -24,6 +24,9 @@ linters:
     enabled: true
     max_consecutive: 2
 
+  EmptyObjectReference:
+    enabled: true
+
   EmptyScript:
     enabled: true
 

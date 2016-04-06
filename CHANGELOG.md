@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Add `Checkstyle` output format
+* Add `EmptyObjectReference` linter to report tags with empty object references
 
 ## 0.16.2
 

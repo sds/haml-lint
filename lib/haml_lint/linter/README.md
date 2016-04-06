@@ -7,6 +7,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [ClassesBeforeIds](#classesbeforeids)
 * [ConsecutiveComments](#consecutivecomments)
 * [ConsecutiveSilentScripts](#consecutivesilentscripts)
+* [EmptyObjectReference](#emptyobjectreference)
 * [EmptyScript](#emptyscript)
 * [FinalNewline](#finalnewline)
 * [HtmlAttributes](#htmlattributes)
@@ -128,6 +129,22 @@ In general, large blocks of Ruby code in HAML templates are a smell, and this
 check serves to warn you of that. However, for the cases where having the code
 inline can improve readability, you can signal your intention by using a
 `:ruby` filter block instead.
+
+## EmptyObjectReference
+
+Empty object references are no-ops and can safely be removed.
+
+**Bad**
+```haml
+%tag[]
+```
+
+**Good**
+```haml
+%tag
+```
+
+These serve no purpose and are usually left behind by mistake.
 
 ## EmptyScript
 
