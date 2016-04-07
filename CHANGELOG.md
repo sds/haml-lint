@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `Checkstyle` output format to properly quote characters in messages
+
 ## 0.17.0
 
 * Add `Checkstyle` output format
