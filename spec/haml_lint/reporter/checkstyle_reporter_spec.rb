@@ -33,7 +33,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
     context 'when there are lints' do
       let(:filenames)    { ['some-filename.haml', 'other-filename.haml'] }
       let(:lines)        { %w[502 724] }
-      let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
+      let(:descriptions) { ['Description of lint 1', 'Description of "lint" 2'] }
       let(:severities)   { [:warning, :error] }
 
       let(:lints) do
@@ -55,11 +55,15 @@ describe HamlLint::Reporter::CheckstyleReporter do
       it 'contains a list of errors within the files' do
         subject
         output.should match /<error line="724" severity="error"/
-        output.should match /message="Description of lint 2"/
         output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
         output.should match /<error line="502" severity="warning"/
         output.should match /message="Description of lint 1"/
         output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
+      end
+
+      it 'escapes the quotes' do
+        subject
+        output.should match /message="Description of &quot;lint&quot; 2"/
       end
 
       it_behaves_like 'output format specification'
