@@ -55,8 +55,8 @@ module HamlLint::Tree
         end
 
       @document.source_lines[@line - 1...next_node_line]
-        .join("\n")
-        .gsub(/^\s*\z/m, '') # Remove blank lines at the end
+               .join("\n")
+               .gsub(/^\s*\z/m, '') # Remove blank lines at the end
     end
 
     def inspect

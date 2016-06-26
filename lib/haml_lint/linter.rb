@@ -168,7 +168,7 @@ module HamlLint
       # Normalize each of the lines to ignore the multiline bar (|) and
       # excess whitespace
       @document.source_lines[(tag_node.line - 1)...(following_node_line(tag_node) - 1)]
-        .map do |line|
+               .map do |line|
         line.strip.gsub(/\|\z/, '').rstrip
       end.join(' ')
     end
