@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
+
 ## 0.17.1
 
 * Fix `Checkstyle` output format to properly quote characters in messages
