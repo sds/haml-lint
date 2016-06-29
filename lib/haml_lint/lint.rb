@@ -28,14 +28,14 @@ module HamlLint
       @filename = filename
       @line     = line || 0
       @message  = message
-      @severity = severity
+      @severity = Severity.new(severity)
     end
 
     # Return whether this lint has a severity of error.
     #
     # @return [Boolean]
     def error?
-      @severity == :error
+      @severity.error?
     end
   end
 end
