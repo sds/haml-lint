@@ -43,7 +43,9 @@ module HamlLint
         location: {
           line: offense.line,
         },
-      }
+      }.tap do |h|
+        h[:linter_name] = offense.linter.name if offense.linter
+      end
     end
   end
 end

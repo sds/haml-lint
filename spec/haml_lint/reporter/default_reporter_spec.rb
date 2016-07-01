@@ -63,6 +63,13 @@ describe HamlLint::Reporter::DefaultReporter do
         end
       end
 
+      it 'prints the linter name for each lint' do
+        subject
+        output.split("\n").each do |line|
+          line.scan(/#{linter.name}/).count.should == 1
+        end
+      end
+
       context 'when lints are warnings' do
         it 'prints the warning severity code on each line' do
           subject

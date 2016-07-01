@@ -7,6 +7,7 @@ describe HamlLint::Reporter::JsonReporter do
     let(:logger) { HamlLint::Logger.new(io) }
     let(:report) { HamlLint::Report.new(lints, []) }
     let(:reporter) { described_class.new(logger) }
+    let(:offenses) { output['files'].flat_map { |f| f['offenses'] } }
 
     subject { reporter.display_report(report) }
 
@@ -46,10 +47,11 @@ describe HamlLint::Reporter::JsonReporter do
       let(:lines)        { [502, 724] }
       let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
       let(:severities)   { [:warning, :error] }
+      let(:linter)       { double(name: 'SomeLinter') }
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(nil, filename, lines[index], descriptions[index], severities[index])
+          HamlLint::Lint.new(linter, filename, lines[index], descriptions[index], severities[index])
         end
       end
 
@@ -58,7 +60,31 @@ describe HamlLint::Reporter::JsonReporter do
         output['files'].map { |f| f['path'] }.sort.should eq filenames.sort
       end
 
+      it 'has the line number for each lint' do
+        subject
+        offenses.map { |o| o['location']['line'] }.sort.should eq lines.sort
+      end
+
+      it 'has the description for each lint' do
+        subject
+        offenses.map { |o| o['message'] }.sort.should eq descriptions.sort
+      end
+
+      it 'has the the linter name for each lint' do
+        subject
+        offenses.map { |o| o['linter_name'] }.uniq.should eq [linter.name]
+      end
+
       it_behaves_like 'output format specification'
+
+      context 'when lint has no associated linter' do
+        let(:linter) { nil }
+
+        it 'has the description for each lint' do
+          subject
+          offenses.map { |o| o['message'] }.sort.should eq descriptions.sort
+        end
+      end
     end
   end
 end
