@@ -13,13 +13,7 @@ module HamlLint
       # Convert ".class#id" into [.class, #id] (preserving order)
       components = node.static_attributes_source.scan(/[.#][^.#]+/)
 
-      enforced_style = config.fetch('EnforcedStyle', 'class')
-      first, second = case enforced_style
-                      when 'id'
-                        ['#', '.']
-                      else
-                        ['.', '#']
-                      end
+      first, second = attribute_prefix_order
 
       (1...components.count).each do |index|
         next unless components[index].start_with?(first) &&
@@ -28,6 +22,18 @@ module HamlLint
         record_lint(node, 'Classes should be listed before IDs '\
                           "(#{components[index]} should precede #{components[index - 1]})")
         break
+      end
+    end
+
+    private
+
+    def attribute_prefix_order
+      enforced_style = config.fetch('EnforcedStyle', 'class')
+      case enforced_style
+      when 'id'
+        ['#', '.']
+      else
+        ['.', '#']
       end
     end
   end
