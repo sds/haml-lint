@@ -33,16 +33,34 @@ describe HamlLint::Linter::ClassesBeforeIds do
     it { should_not report_lint }
   end
 
-  context 'when tag has classes before IDs' do
-    let(:haml) { '.class1.class2.class3#id1#id2#id3' }
+  context 'when configured with classes first (by default)' do
+    context 'when tag has classes before IDs' do
+      let(:haml) { '.class1.class2.class3#id1#id2#id3' }
 
-    it { should_not report_lint }
+      it { should_not report_lint }
+    end
+
+    context 'when tag has IDs before classes' do
+      let(:haml) { '#id1#id2#id3.class1.class2.class3' }
+
+      it { should report_lint }
+    end
   end
 
-  context 'when tag has IDs before classes' do
-    let(:haml) { '#id1#id2#id3.class1.class2.class3' }
+  context 'when configured with ids first' do
+    let(:config) { super().merge('EnforcedStyle' => 'id') }
 
-    it { should report_lint }
+    context 'when tag has IDs before classes' do
+      let(:haml) { '#id1#id2#id3.class1.class2.class3' }
+
+      it { should_not report_lint }
+    end
+
+    context 'when tag has classes before IDs' do
+      let(:haml) { '.class1.class2.class3#id1#id2#id3' }
+
+      it { should report_lint }
+    end
   end
 
   context 'when tag has a class then ID then class' do
