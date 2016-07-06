@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
+* Include linter name in JSON reporter output
 
 ## 0.17.1
 
