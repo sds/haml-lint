@@ -5,6 +5,8 @@
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
 * Include linter name in JSON reporter output
 * Allow IDs before classes to be preferred in `ClassesBeforeIds` linter
+* Respect HAML comments as Ruby code comments so RuboCop cops can be
+  disabled/enabled inline via comments
 
 ## 0.17.1
 

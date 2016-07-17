@@ -261,6 +261,22 @@ describe HamlLint::RubyExtractor do
       end
     end
 
+    context 'with a HAML comment' do
+      let(:haml) { <<-HAML }
+        -# rubocop:disable SomeCop
+        = some_code
+        -# rubocop:enable SomeCop
+      HAML
+
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        # rubocop:disable SomeCop
+        some_code
+        # rubocop:enable SomeCop
+      RUBY
+
+      its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 3 } }
+    end
+
     context 'with a block statement' do
       let(:haml) { <<-HAML }
         - if condition
