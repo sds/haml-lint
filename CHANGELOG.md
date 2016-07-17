@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.18.0
 
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
 * Include linter name in JSON reporter output
