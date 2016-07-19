@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.18.1
 
 * Fix handling of multiline HAML comments to not pass invalid Ruby code to
   RuboCop
