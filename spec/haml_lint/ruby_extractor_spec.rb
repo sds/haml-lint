@@ -295,6 +295,24 @@ describe HamlLint::RubyExtractor do
       RUBY
 
       its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 4, 5 => 5 } }
+
+      context 'with no leading spaces' do
+        let(:haml) { <<-HAML }
+          -#
+            This is a HAML
+            comment spanning
+            multiple lines
+        HAML
+
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+          #
+          # This is a HAML
+          # comment spanning
+          # multiple lines
+        RUBY
+
+        its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 1 } }
+      end
     end
 
     context 'with a block statement' do

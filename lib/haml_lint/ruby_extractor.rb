@@ -109,7 +109,13 @@ module HamlLint
     end
 
     def visit_haml_comment(node)
-      add_line("##{node.text.gsub("\n", "\n#")}", node)
+      # We want to preseve leading whitespace if it exists, but include leading
+      # whitespace if it doesn't exist so that RuboCop's LeadingCommentSpace
+      # doesn't complain
+      comment = node.text
+                    .gsub(/\n(\S)/, "\n# \\1")
+                    .gsub(/\n(\s)/, "\n#\\1")
+      add_line("##{comment}", node)
     end
 
     def visit_silent_script(node, &block)
