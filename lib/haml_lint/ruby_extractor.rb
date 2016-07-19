@@ -109,7 +109,7 @@ module HamlLint
     end
 
     def visit_haml_comment(node)
-      add_line("##{node.text}", node)
+      add_line("##{node.text.gsub("\n", "\n#")}", node)
     end
 
     def visit_silent_script(node, &block)

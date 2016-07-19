@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix handling of multiline HAML comments to not pass invalid Ruby code to
+  RuboCop
+
 ## 0.18.0
 
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
