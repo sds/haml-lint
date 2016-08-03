@@ -81,6 +81,9 @@ SpecialGlobalVars:
 Style/MultilineOperationIndentation:
   Enabled: false
 
+Style/NumericPredicate:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   Enabled: false
 
