@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `Checkstyle` output format to handle lints with no associated linter
+
 ## 0.18.1
 
 * Fix handling of multiline HAML comments to not pass invalid Ruby code to
