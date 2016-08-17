@@ -26,7 +26,8 @@ module HamlLint
       offenses.each do |offense|
         xml << "<error line=\"#{offense.line}\" severity=\"#{offense.severity}\" "
         xml << "message=\"#{CGI.escapeHTML offense.message}\" "
-        xml << "source=\"#{offense.linter.name}\" />"
+        xml << "source=\"#{offense.linter.name}\" " if offense.linter
+        xml << '/>'
       end
       xml
     end

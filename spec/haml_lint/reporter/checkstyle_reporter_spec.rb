@@ -7,6 +7,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
     let(:logger) { HamlLint::Logger.new(io) }
     let(:report) { HamlLint::Report.new(lints, []) }
     let(:reporter) { described_class.new(logger) }
+    let(:linter) { HamlLint::Linter::FinalNewline }
 
     subject { reporter.display_report(report) }
 
@@ -38,11 +39,23 @@ describe HamlLint::Reporter::CheckstyleReporter do
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(HamlLint::Linter::FinalNewline,
+          HamlLint::Lint.new(linter,
                              filename,
                              lines[index],
                              descriptions[index],
                              severities[index])
+        end
+      end
+
+      context 'when lint has no associated linter' do
+        let(:linter) { nil }
+
+        it 'has the description for each lint' do
+          subject
+          output.should match /<error line="724" severity="error"/
+          output.should match %r{message="Description of &quot;lint&quot; 2" \/>}
+          output.should match /<error line="502" severity="warning"/
+          output.should match %r{message="Description of lint 1" \/>}
         end
       end
 
