@@ -53,8 +53,9 @@ describe HamlLint::Reporter::CheckstyleReporter do
         it 'has the description for each lint' do
           subject
           output.should match /<error line="724" severity="error"/
+          output.should match %r{message="Description of &quot;lint&quot; 2" \/>}
           output.should match /<error line="502" severity="warning"/
-          output.should match /message="Description of lint 1"/
+          output.should match %r{message="Description of lint 1" \/>}
         end
       end
 
