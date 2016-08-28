@@ -7,7 +7,9 @@ module HamlLint
 
     MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'.freeze
 
-    def visit_tag(node) # rubocop:disable Metrics/CyclomaticComplexity
+    ALLOWED_SEPARATORS = [' ', '#'].freeze
+
+    def visit_tag(node) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/LineLength, Metrics/PerceivedComplexity
       # If this tag has inline script
       return unless node.contains_script?
 
@@ -25,6 +27,8 @@ module HamlLint
           return unless index = tag_with_text.rindex(text_without_quotes)
         end
       end
+
+      return if tag_with_text[index] == '#' # Ignore code comments
 
       # Check if the character before the start of the script is a space
       # (need to do it this way as the parser strips whitespace from node)
@@ -48,7 +52,7 @@ module HamlLint
 
     def missing_space?(node)
       text = node.script
-      text[0] != ' ' if text
+      !ALLOWED_SEPARATORS.include?(text[0]) if text
     end
   end
 end

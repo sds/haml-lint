@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 * Fix `Checkstyle` output format to handle lints with no associated linter
+* Ignore comments in `SpaceBeforeScript` linter
 
 ## 0.18.1
 

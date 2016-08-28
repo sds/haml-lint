@@ -51,6 +51,15 @@ describe HamlLint::Linter::SpaceBeforeScript do
     HAML
 
     it { should report_lint line: 2 }
+
+    context 'and is a comment' do
+      let(:haml) { <<-HAML }
+        %p=# A comment
+        %p=#A comment
+      HAML
+
+      it { should_not report_lint }
+    end
   end
 
   context 'when inline script has a separating space' do
