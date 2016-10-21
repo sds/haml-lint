@@ -42,18 +42,38 @@ RSpec::Matchers.define :report_lint do |options|
   end
 
   def has_lints?(linter, expected_line, count, expected_message)
-    if expected_line && count
-      linter.lints.count == count &&
-        lint_lines(linter).all? { |line| line == expected_line }
-    elsif expected_line
-      lint_lines(linter).include?(expected_line)
+    if expected_line
+      has_expected_line_lints?(linter, expected_line, count, expected_message)
     elsif count
       linter.lints.count == count
     elsif expected_message
-      lint_messages(linter).all? { |message| message == expected_message }
+      lint_messages_match?(linter, expected_message)
     else
-      linter.lints.count > 0
+      linter.lints.any?
     end
+  end
+
+  def has_expected_line_lints?(linter, expected_line, count, expected_message)
+    if count
+      multiple_lints_match_line?(linter, expected_line, count)
+    elsif expected_message
+      lint_on_line_matches_message?(linter, expected_line, expected_message)
+    else
+      lint_lines(linter).include?(expected_line)
+    end
+  end
+
+  def multiple_lints_match_line?(linter, expected_line, count)
+    linter.lints.count == count &&
+      lint_lines(linter).all? { |line| line == expected_line }
+  end
+
+  def lint_on_line_matches_message?(linter, expected_line, expected_message)
+    linter.lints.any? { |lint| lint.line == expected_line && lint.message == expected_message }
+  end
+
+  def lint_messages_match?(linter, expected_message)
+    lint_messages(linter).all? { |message| message == expected_message }
   end
 
   def lint_lines(linter)

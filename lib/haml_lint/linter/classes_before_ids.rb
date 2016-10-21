@@ -30,13 +30,13 @@ module HamlLint
     private
 
     def attribute_prefix_order
-      default = %w(. #)
+      default = %w[. #]
       default.reverse! if ids_first?
       default
     end
 
     def attribute_type_order
-      default = %w(Classes IDs)
+      default = %w[Classes IDs]
       default.reverse! if ids_first?
       default
     end

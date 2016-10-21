@@ -43,7 +43,11 @@ describe HamlLint::Linter::ClassesBeforeIds do
     context 'when tag has IDs before classes' do
       let(:haml) { '#id1#id2#id3.class1.class2.class3' }
 
-      it { should report_lint message: 'Classes should be listed before IDs (.class1 should precede #id3)' }
+      it do
+        should report_lint(
+          message: 'Classes should be listed before IDs (.class1 should precede #id3)'
+        )
+      end
     end
   end
 
@@ -59,19 +63,31 @@ describe HamlLint::Linter::ClassesBeforeIds do
     context 'when tag has classes before IDs' do
       let(:haml) { '.class1.class2.class3#id1#id2#id3' }
 
-      it { should report_lint message: 'IDs should be listed before Classes (#id1 should precede .class3)' }
+      it do
+        should report_lint(
+          message: 'IDs should be listed before Classes (#id1 should precede .class3)'
+        )
+      end
     end
   end
 
   context 'when tag has a class then ID then class' do
     let(:haml) { '.class1#id.class2' }
 
-    it { should report_lint message: 'Classes should be listed before IDs (.class2 should precede #id)' }
+    it do
+      should report_lint(
+        message: 'Classes should be listed before IDs (.class2 should precede #id)'
+      )
+    end
   end
 
   context 'when tag has an ID then class then ID' do
     let(:haml) { '#id1.class#id2' }
 
-    it { should report_lint message: 'Classes should be listed before IDs (.class should precede #id1)' }
+    it do
+      should report_lint(
+        message: 'Classes should be listed before IDs (.class should precede #id1)'
+      )
+    end
   end
 end
