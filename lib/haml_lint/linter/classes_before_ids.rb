@@ -9,18 +9,20 @@ module HamlLint
       '#' => :id,
     }.freeze
 
+    MSG = '%s should be listed before %s (%s should precede %s)'.freeze
+
     def visit_tag(node)
       # Convert ".class#id" into [.class, #id] (preserving order)
       components = node.static_attributes_source.scan(/[.#][^.#]+/)
 
       first, second = attribute_prefix_order
 
-      (1...components.count).each do |index|
-        next unless components[index].start_with?(first) &&
-                    components[index - 1].start_with?(second)
+      components.each_cons(2) do |current_val, next_val|
+        next unless next_val.start_with?(first) &&
+                    current_val.start_with?(second)
 
-        record_lint(node, 'Classes should be listed before IDs '\
-                          "(#{components[index]} should precede #{components[index - 1]})")
+        failure_message = format(MSG, *(attribute_type_order + [next_val, current_val]))
+        record_lint(node, failure_message)
         break
       end
     end
@@ -28,13 +30,23 @@ module HamlLint
     private
 
     def attribute_prefix_order
-      enforced_style = config.fetch('EnforcedStyle', 'class')
-      case enforced_style
-      when 'id'
-        ['#', '.']
-      else
-        ['.', '#']
-      end
+      default = %w[. #]
+      default.reverse! if ids_first?
+      default
+    end
+
+    def attribute_type_order
+      default = %w[Classes IDs]
+      default.reverse! if ids_first?
+      default
+    end
+
+    def enforced_style
+      config.fetch('EnforcedStyle', 'class')
+    end
+
+    def ids_first?
+      enforced_style == 'id'
     end
   end
 end

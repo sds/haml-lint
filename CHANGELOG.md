@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `ClassesBeforeIds` output format to handle `id` EnforcedStyle option better
+* Allow report_lint Rspec matcher to test lint message
+
 ## 0.18.2
 
 * Fix `Checkstyle` output format to handle lints with no associated linter
