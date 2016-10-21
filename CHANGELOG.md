@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `ClassesBeforeIds` output format to handle `id` EnforcedStyle option better
+* Add `report_lint` RSpec matcher to test lint message
+
 ## 0.18.3
 
 * Disable `Metrics/BlockLength` cop in `RuboCop` linter
