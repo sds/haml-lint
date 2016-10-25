@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+Disable `Metrics/BlockLength` cop in `RuboCop` linter
+
 ## 0.18.2
 
 * Fix `Checkstyle` output format to handle lints with no associated linter
