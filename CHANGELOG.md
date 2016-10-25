@@ -1,8 +1,8 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.18.3
 
-Disable `Metrics/BlockLength` cop in `RuboCop` linter
+* Disable `Metrics/BlockLength` cop in `RuboCop` linter
 
 ## 0.18.2
 
