@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.18.4
 
 * Fix `ClassesBeforeIds` output format to handle `id` EnforcedStyle option better
 * Add `report_lint` RSpec matcher to test lint message
