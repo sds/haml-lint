@@ -60,4 +60,10 @@ describe HamlLint::Linter::RuboCop do
         .to have_received(:run).with(array_including('--config', 'some-rubocop.yml'))
     end
   end
+
+  context 'when running inspecting a file containing CRLF line endings (#GH-167)' do
+    let(:haml) { "- if signed_in?(viewer)\r\n%span Stuff" }
+
+    it { should_not report_lint }
+  end
 end

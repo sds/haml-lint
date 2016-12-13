@@ -69,6 +69,7 @@ linters:
       - Style/AlignParameters
       - Style/BlockNesting
       - Style/ElseAlignment
+      - Style/EndOfLine
       - Style/FileName
       - Style/FinalNewline
       - Style/FrozenStringLiteralComment
