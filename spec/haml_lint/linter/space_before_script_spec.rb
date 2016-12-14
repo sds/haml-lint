@@ -111,6 +111,15 @@ describe HamlLint::Linter::SpaceBeforeScript do
       it { should_not report_lint }
     end
 
+    context 'and the script has a separating space and vertical pipes are indented' do
+      let(:haml) { <<-HAML }
+        %tag= link_to 'Click',                                   |
+                      'Here'                                     |
+      HAML
+
+      it { should_not report_lint }
+    end
+
     context 'and the script does not have a separating space' do
       let(:haml) { <<-HAML }
         %tag=link_to 'Click' + |

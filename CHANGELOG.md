@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `SpaceBeforeScript` to not error on tags with inline scripts spanning
+  multiple lines with indented vertical pipes
+
 ## 0.18.4
 
 * Fix `ClassesBeforeIds` output format to handle `id` EnforcedStyle option better
