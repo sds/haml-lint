@@ -161,6 +161,10 @@ plugin using [Package Control](https://sublime.wbond.net).
 
 If you use `atom`, you can install the [linter-haml](https://atom.io/packages/linter-haml) plugin.
 
+### TextMate 2
+
+If you use `TextMate 2`, you can install the [Haml-Lint.tmbundle](https://github.com/jjuliano/Haml-Lint.tmbundle) bundle.
+
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
