@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.19.0
 
 * Relax `rake` gem constraint to allow 12.x
 
