@@ -10,8 +10,9 @@ module HamlLint
       ends_with_newline = document.source.end_with?("\n")
 
       if config['present']
-        record_lint(dummy_node,
-                    'Files should end with a trailing newline') unless ends_with_newline
+        unless ends_with_newline
+          record_lint(dummy_node, 'Files should end with a trailing newline')
+        end
       elsif ends_with_newline
         record_lint(dummy_node,
                     'Files should not end with a trailing newline')
