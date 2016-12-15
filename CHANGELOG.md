@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Relax `rake` gem constraint to allow 12.x
+
 ## 0.18.5
 
 * Fix `SpaceBeforeScript` to not error on tags with inline scripts spanning
