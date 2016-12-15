@@ -4,6 +4,7 @@
 
 * Fix `SpaceBeforeScript` to not error on tags with inline scripts spanning
   multiple lines with indented vertical pipes
+* Disable `Style/EndOfLine` RuboCop cop by default
 
 ## 0.18.4
 
