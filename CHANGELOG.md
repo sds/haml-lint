@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.18.5
 
 * Fix `SpaceBeforeScript` to not error on tags with inline scripts spanning
   multiple lines with indented vertical pipes
