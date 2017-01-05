@@ -9,10 +9,16 @@ module HamlLint
   # ...over:
   #
   #   %tag{ class: 'class-name' }
+  #
+  # But will allow invalid class names for templating:
+  #
+  #   %tag{ class: '{{ template-var }}' }
   class Linter::ClassAttributeWithStaticValue < Linter
     include LinterRegistry
 
     STATIC_TYPES = [:str, :sym].freeze
+
+    VALID_CLASS_REGEX = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
 
     def visit_tag(node)
       return unless contains_class_attribute?(node.dynamic_attributes_sources)
@@ -41,7 +47,8 @@ module HamlLint
 
       STATIC_TYPES.include?(key.type) &&
         key.children.first.to_sym == :class &&
-        STATIC_TYPES.include?(value.type)
+        STATIC_TYPES.include?(value.type) &&
+        value.children.first =~ VALID_CLASS_REGEX
     end
   end
 end
