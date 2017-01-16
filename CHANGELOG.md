@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Update minimum RuboCop version to 0.47.0+ due to [breaking change in
+  RuboCop AST interface](https://github.com/bbatsov/rubocop/commit/48f1637eb36)
+
 ## 0.19.0
 
 * Relax `rake` gem constraint to allow 12.x
