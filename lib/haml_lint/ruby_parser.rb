@@ -1,5 +1,5 @@
 require 'rubocop'
-require 'rubocop/ast_node/builder'
+require 'rubocop/ast/builder'
 require 'parser/current'
 
 module HamlLint
@@ -12,7 +12,7 @@ module HamlLint
   class RubyParser
     # Creates a reusable parser.
     def initialize
-      @builder = ::RuboCop::Node::Builder.new
+      @builder = ::RuboCop::AST::Builder.new
       @parser = ::Parser::CurrentRuby.new(@builder)
     end
 

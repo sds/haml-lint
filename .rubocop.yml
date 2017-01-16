@@ -49,6 +49,10 @@ MethodLength:
 Metrics/AbcSize:
   Max: 16
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
 # Prefer curly braces except for %i/%w/%W, since those return arrays.
 PercentLiteralDelimiters:
   PreferredDelimiters:
