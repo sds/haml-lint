@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/haml_lint.svg)](http://badge.fury.io/rb/haml_lint)
 [![Build Status](https://travis-ci.org/brigade/haml-lint.svg?branch=master)](https://travis-ci.org/brigade/haml-lint)
-[![Code Climate](https://codeclimate.com/github/brigade/haml-lint.png)](https://codeclimate.com/github/brigade/haml-lint)
+[![Code Climate](https://codeclimate.com/github/brigade/haml-lint.svg)](https://codeclimate.com/github/brigade/haml-lint)
 [![Coverage Status](https://coveralls.io/repos/brigade/haml-lint/badge.svg)](https://coveralls.io/r/brigade/haml-lint)
 [![Dependency Status](https://gemnasium.com/brigade/haml-lint.svg)](https://gemnasium.com/brigade/haml-lint)
 [![Inline docs](http://inch-ci.org/github/brigade/haml-lint.svg?branch=master)](http://inch-ci.org/github/brigade/haml-lint)
