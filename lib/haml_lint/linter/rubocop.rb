@@ -1,6 +1,5 @@
 require 'haml_lint/ruby_extractor'
 require 'rubocop'
-require 'tempfile'
 
 module HamlLint
   # Runs RuboCop on Ruby code contained within HAML templates.
@@ -27,18 +26,10 @@ module HamlLint
     def find_lints(ruby, source_map)
       rubocop = ::RuboCop::CLI.new
 
-      original_filename = document.file || 'ruby_script'
-      filename = "#{File.basename(original_filename)}.haml_lint.tmp"
-      directory = File.dirname(original_filename)
+      filename = document.file || 'ruby_script'
 
-      Tempfile.open(filename, directory) do |f|
-        begin
-          f.write(ruby)
-          f.close
-          extract_lints_from_offenses(lint_file(rubocop, f.path), source_map)
-        ensure
-          f.unlink
-        end
+      with_ruby_from_stdin(ruby) do
+        extract_lints_from_offenses(lint_file(rubocop, filename), source_map)
       end
     end
 
@@ -72,7 +63,24 @@ module HamlLint
     def rubocop_flags
       flags = %w[--format HamlLint::OffenseCollector]
       flags += ['--config', ENV['HAML_LINT_RUBOCOP_CONF']] if ENV['HAML_LINT_RUBOCOP_CONF']
+      flags += ['--stdin']
       flags
+    end
+
+    # Overrides the global stdin to allow RuboCop to read Ruby code from it.
+    #
+    # @param ruby [String] the Ruby code to write to the overridden stdin
+    # @param _block [Block] the block to perform with the overridden stdin
+    # @return [void]
+    def with_ruby_from_stdin(ruby, &_block)
+      original_stdin = $stdin
+      stdin = StringIO.new
+      stdin.write(ruby)
+      stdin.rewind
+      $stdin = stdin
+      yield
+    ensure
+      $stdin = original_stdin
     end
   end
 
