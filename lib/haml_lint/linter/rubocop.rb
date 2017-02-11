@@ -28,10 +28,9 @@ module HamlLint
       rubocop = ::RuboCop::CLI.new
 
       original_filename = document.file || 'ruby_script'
-      filename = "#{File.basename(original_filename)}.haml_lint.tmp"
-      directory = File.dirname(original_filename)
+      filename = File.basename(original_filename)
 
-      Tempfile.open(filename, directory) do |f|
+      Tempfile.open(filename) do |f|
         begin
           f.write(ruby)
           f.close
