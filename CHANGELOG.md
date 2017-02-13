@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## 0.21.0
+
+* Stop using temp files for RuboCop (#172)
+
 ## 0.20.0
 
 * Update minimum RuboCop version to 0.47.0+ due to [breaking change in
