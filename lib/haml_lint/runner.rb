@@ -51,7 +51,8 @@ module HamlLint
       begin
         document = HamlLint::Document.new(File.read(file), file: file, config: config)
       rescue HamlLint::Exceptions::ParseError => ex
-        return [HamlLint::Lint.new(nil, file, ex.line, ex.to_s, :error)]
+        return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), file,
+                                   ex.line, ex.to_s, :error)]
       end
 
       linter_selector.linters_for_file(file).map do |linter|
