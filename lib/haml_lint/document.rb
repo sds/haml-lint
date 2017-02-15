@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'haml_lint/adapter'
+
 module HamlLint
   # Represents a parsed Haml document and its associated metadata.
   class Document
@@ -43,7 +45,7 @@ module HamlLint
       @source = strip_frontmatter(source)
       @source_lines = @source.split("\n")
 
-      @tree = process_tree(Haml::Parser.new(@source, Haml::Options.new).parse)
+      @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
     rescue Haml::Error => ex
       error = HamlLint::Exceptions::ParseError.new(ex.message, ex.line)
       raise error

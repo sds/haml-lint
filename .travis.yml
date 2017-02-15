@@ -10,6 +10,10 @@ rvm:
   - 2.2
   - 2.3.1
 
+gemfile:
+  - gemfiles/haml4.gemfile
+  - gemfiles/haml5.gemfile
+
 before_script:
   - git config --local user.email "travis@travis.ci"
   - git config --local user.name "Travis CI"

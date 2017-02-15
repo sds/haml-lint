@@ -221,12 +221,16 @@ attribute.
 We love getting feedback with or without pull requests. If you do add a new
 feature, please add tests so that we can avoid breaking it in the future.
 
-Speaking of tests, we use `rspec`, which can be run by executing the following
-from the root directory of the repository:
+Speaking of tests, we use [Appraisal] to test against both HAML 4 and the
+upcoming HAML 5 and use `rspec` to write our tests. To run the test suite,
+execute the following from the root directory of the repository:
 
 ```bash
-bundle exec rspec
+appraisal bundle install
+appraisal bundle exec rspec
 ```
+
+[Appraisal]: https://github.com/thoughtbot/appraisal
 
 ## Community
 
