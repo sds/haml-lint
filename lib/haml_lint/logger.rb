@@ -5,6 +5,10 @@ module HamlLint
     # @return [true,false]
     attr_accessor :color_enabled
 
+    # Whether to output a summary in the log for certain reporters.
+    # @return [true,false]
+    attr_accessor :summary_enabled
+
     # Creates a logger which outputs nothing.
     # @return [HamlLint::Logger]
     def self.silent
@@ -14,8 +18,10 @@ module HamlLint
     # Creates a new {HamlLint::Logger} instance.
     #
     # @param out [IO] the output destination.
-    def initialize(out)
+    # @param summary [true,false] whether to print summaries
+    def initialize(out, summary: true)
       @out = out
+      @summary_enabled = summary
     end
 
     # Print the specified output.

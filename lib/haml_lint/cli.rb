@@ -33,7 +33,7 @@ module HamlLint
     #
     # @return [Integer] exit status code
     def act_on_options(options)
-      log.color_enabled = options.fetch(:color, log.tty?)
+      configure_logger(options)
 
       if options[:help]
         print_help(options)
@@ -50,6 +50,14 @@ module HamlLint
       else
         scan_for_lints(options)
       end
+    end
+
+    # Given the provided options, configure the logger.
+    #
+    # @return [void]
+    def configure_logger(options)
+      log.color_enabled = options.fetch(:color, log.tty?)
+      log.summary_enabled = options.fetch(:summary, true)
     end
 
     # Outputs a message and returns an appropriate error code for the specified

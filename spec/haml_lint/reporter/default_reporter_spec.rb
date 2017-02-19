@@ -2,10 +2,12 @@ require 'spec_helper'
 
 describe HamlLint::Reporter::DefaultReporter do
   describe '#display_report' do
+    let(:filenames) { %w[some-filename.haml] }
     let(:io) { StringIO.new }
     let(:output) { io.string }
+    let(:output_without_summary) { output.split("\n")[0..-2].join("\n") }
     let(:logger) { HamlLint::Logger.new(io) }
-    let(:report) { HamlLint::Report.new(lints, []) }
+    let(:report) { HamlLint::Report.new(lints, filenames) }
     let(:reporter) { described_class.new(logger) }
 
     subject { reporter.display_report(report) }
@@ -13,9 +15,18 @@ describe HamlLint::Reporter::DefaultReporter do
     context 'when there are no lints' do
       let(:lints) { [] }
 
-      it 'prints nothing' do
+      it 'prints the summary' do
         subject
-        output.should be_empty
+        output.should == "\n1 file inspected, 0 lints detected\n"
+      end
+
+      context 'when summaries are disabled in the logger' do
+        let(:logger) { HamlLint::Logger.new(io, summary: false) }
+
+        it 'prints nothing' do
+          subject
+          output.should == ''
+        end
       end
     end
 
@@ -32,9 +43,9 @@ describe HamlLint::Reporter::DefaultReporter do
         end
       end
 
-      it 'prints each lint on its own line' do
+      it 'prints each lint and the summary on its own line' do
         subject
-        output.count("\n").should == 2
+        output_without_summary.count("\n").should == 2
       end
 
       it 'prints a trailing newline' do
@@ -65,7 +76,7 @@ describe HamlLint::Reporter::DefaultReporter do
 
       it 'prints the linter name for each lint' do
         subject
-        output.split("\n").each do |line|
+        output_without_summary.split("\n").each do |line|
           line.scan(/#{linter.name}/).count.should == 1
         end
       end
@@ -73,7 +84,7 @@ describe HamlLint::Reporter::DefaultReporter do
       context 'when lints are warnings' do
         it 'prints the warning severity code on each line' do
           subject
-          output.split("\n").each do |line|
+          output_without_summary.split("\n").each do |line|
             line.scan(/\[W\]/).count.should == 1
           end
         end
@@ -84,7 +95,7 @@ describe HamlLint::Reporter::DefaultReporter do
 
         it 'prints the error severity code on each line' do
           subject
-          output.split("\n").each do |line|
+          output_without_summary.split("\n").each do |line|
             line.scan(/\[E\]/).count.should == 1
           end
         end

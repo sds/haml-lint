@@ -107,6 +107,24 @@ describe HamlLint::Options do
       end
     end
 
+    context 'summary' do
+      describe 'manually on' do
+        let(:args) { ['--summary'] }
+
+        it 'sets the `summary` option to true' do
+          subject.should include summary: true
+        end
+      end
+
+      describe 'manually off' do
+        let(:args) { ['--no-summary'] }
+
+        it 'sets the `summary option to false' do
+          subject.should include summary: false
+        end
+      end
+    end
+
     context 'with a list of file glob patterns' do
       let(:args) { %w[app/**/*.haml some-dir/some-template.haml] }
 

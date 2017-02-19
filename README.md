@@ -72,6 +72,7 @@ Command Line Flag         | Description
 `-x`/`--exclude-linter`   | Specify which linters you _don't_ want to run
 `-r`/`--reporter`         | Specify which reporter you want to use to generate the output
 `--[no-]color`            | Whether to output in color
+`--[no-]summary`          | Whether to output a summary in the default reporter
 `--show-linters`          | Show all registered linters
 `--show-reporters`        | Display available reporters
 `-h`/`--help`             | Show command line flag documentation
