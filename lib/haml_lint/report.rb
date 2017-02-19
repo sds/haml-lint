@@ -19,7 +19,7 @@ module HamlLint
     end
 
     def failed?
-      return @lints.any unless @fail_level
+      return @lints.any? unless @fail_level
 
       @lints.find { |lint| lint.severity.level >= @fail_level.level }
     end
