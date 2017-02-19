@@ -51,6 +51,11 @@ module HamlLint
     # @return [true,false]
     attr_accessor :quiet
 
+    # Whether output from haml-lint should not be displayed to the standard out
+    # stream.
+    # @return [true,false]
+    attr_accessor :fail_level
+
     # Create the task so it exists in the current namespace.
     #
     # @param name [Symbol] task name
@@ -82,8 +87,7 @@ module HamlLint
     #
     # @param task_args [Rake::TaskArguments]
     def run_cli(task_args)
-      cli_args = ['--config', config] if config
-
+      cli_args = parse_args
       logger = quiet ? HamlLint::Logger.silent : HamlLint::Logger.new(STDOUT)
       result = HamlLint::CLI.new(logger).run(Array(cli_args) + files_to_lint(task_args))
 
@@ -117,6 +121,11 @@ module HamlLint
       description += " #{files.join(' ')}" if files.any?
       description += ' [files...]`'
       description
+    end
+
+    def parse_args
+      cli_args = config ? ['--config', config] : []
+      cli_args.concat(['--fail-level', fail_level]) if fail_level
     end
   end
 end

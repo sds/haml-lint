@@ -10,6 +10,7 @@ module HamlLint
     # @option options :excluded_files [Array<String>]
     # @option options :included_linters [Array<String>]
     # @option options :excluded_linters [Array<String>]
+    # @option options :fail_level
     # @return [HamlLint::Report] a summary of all lints found
     def run(options = {})
       config = load_applicable_config(options)
@@ -21,7 +22,7 @@ module HamlLint
         collect_lints(file, linter_selector, config)
       end.flatten
 
-      HamlLint::Report.new(lints, files)
+      HamlLint::Report.new(lints, files, options[:fail_level])
     end
 
     private
