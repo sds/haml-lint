@@ -65,6 +65,22 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with a fail level option' do
+      let(:args) { %w[--fail-level error] }
+
+      it 'sets the `fail_level` option' do
+        subject[:fail_level].should == :error
+      end
+
+      context 'for an unknown fail level' do
+        let(:args) { %w[--fail-level wazoo] }
+
+        it 'raise an error' do
+          expect { subject }.to raise_error HamlLint::Exceptions::UnknownSeverity
+        end
+      end
+    end
+
     context 'with the help option' do
       let(:args) { ['--help'] }
 

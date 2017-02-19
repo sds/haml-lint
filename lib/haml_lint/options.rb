@@ -48,7 +48,7 @@ module HamlLint
 
       parser.on('--fail-level fail_level', String,
                 'Specify which level you want the suite to fail') do |fail_level|
-        @options[:fail_level] = fail_level.to_sym
+        @options[:fail_level] = HamlLint::Severity.new(fail_level.to_sym)
       end
     end
 

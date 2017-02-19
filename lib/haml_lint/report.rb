@@ -3,7 +3,9 @@ module HamlLint
   class Report
     # List of lints that were found.
     attr_accessor :lints
-    attr_accessor :fail_level
+
+    # The level of lint to fail after detecting
+    attr_reader :fail_level
 
     # List of files that were linted.
     attr_reader :files
@@ -12,16 +14,18 @@ module HamlLint
     #
     # @param lints [Array<HamlLint::Lint>] lints that were found
     # @param files [Array<String>] files that were linted
-    def initialize(lints, files, fail_level = nil)
+    # @param fail_level [Symbol] the severity level to fail on
+    def initialize(lints, files, fail_level = :warning)
       @lints = lints.sort_by { |l| [l.filename, l.line] }
       @files = files
-      @fail_level = Severity.new(fail_level) if fail_level
+      @fail_level = Severity.new(fail_level)
     end
 
+    # Checks whether any lints were over the fail level
+    #
+    # @return [Boolean]
     def failed?
-      return @lints.any? unless @fail_level
-
-      @lints.find { |lint| lint.severity.level >= @fail_level.level }
+      @lints.any? { |lint| lint.severity >= fail_level }
     end
   end
 end

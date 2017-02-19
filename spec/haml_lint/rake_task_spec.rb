@@ -5,6 +5,7 @@ require 'tempfile'
 describe HamlLint::RakeTask do
   before(:all) do
     HamlLint::RakeTask.new do |t|
+      t.fail_level = 'warning'
       t.quiet = true
     end
   end

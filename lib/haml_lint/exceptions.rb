@@ -18,4 +18,7 @@ module HamlLint::Exceptions
 
   # Raised when an unsupported Haml version is detected
   class UnknownHamlVersion < StandardError; end
+
+  # Raised when a severity is not recognized
+  class UnknownSeverity < StandardError; end
 end

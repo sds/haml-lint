@@ -51,9 +51,14 @@ module HamlLint
     # @return [true,false]
     attr_accessor :quiet
 
-    # Whether output from haml-lint should not be displayed to the standard out
-    # stream.
-    # @return [true,false]
+    # The severity level above which we should fail the Rake task.
+    #
+    # @example
+    #   HamlLint::RakeTask.new do |task|
+    #     task.fail_level = 'error'
+    #   end
+    #
+    # @return [String]
     attr_accessor :fail_level
 
     # Create the task so it exists in the current namespace.
