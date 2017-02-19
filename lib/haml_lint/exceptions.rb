@@ -15,4 +15,7 @@ module HamlLint::Exceptions
   # Raised when attempting to execute `Runner` with options that would result in
   # no linters being enabled.
   class NoLintersError < StandardError; end
+
+  # Raised when an unsupported Haml version is detected
+  class UnknownHamlVersion < StandardError; end
 end

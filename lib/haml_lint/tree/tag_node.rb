@@ -184,9 +184,11 @@ module HamlLint::Tree
     # Whether this node had a `>` after it signifying that outer whitespace
     # should be removed.
     #
+    # rubocop:disable Style/DoubleNegation
+    #
     # @return [true,false]
     def remove_outer_whitespace?
-      @value[:nuke_outer_whitespace]
+      !!@value[:nuke_outer_whitespace]
     end
 
     # Returns the script source that will be evaluated to produce this tag's

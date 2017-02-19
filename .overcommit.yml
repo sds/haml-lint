@@ -1,6 +1,3 @@
-# Run Overcommit within a Bundler context using this repo's Gemfile
-gemfile: Gemfile
-
 PreCommit:
   BundleCheck:
     enabled: true
