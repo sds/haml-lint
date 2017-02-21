@@ -45,6 +45,11 @@ module HamlLint
                 'Specify which reporter you want to use to generate the output') do |reporter|
         @options[:reporter] = load_reporter_class(reporter.capitalize)
       end
+
+      parser.on('--fail-level fail_level', String,
+                'Specify which level you want the suite to fail') do |fail_level|
+        @options[:fail_level] = HamlLint::Severity.new(fail_level.to_sym)
+      end
     end
 
     # Returns the class of the specified Reporter.

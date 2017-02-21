@@ -19,6 +19,7 @@ require 'haml_lint/file_finder'
 require 'haml_lint/runner'
 require 'haml_lint/utils'
 require 'haml_lint/version'
+require 'haml_lint/severity'
 
 # Load all parse tree node classes
 require 'haml_lint/tree/node'
