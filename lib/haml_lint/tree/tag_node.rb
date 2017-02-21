@@ -148,6 +148,13 @@ module HamlLint::Tree
       dynamic_attributes_source[:html][/\A\((.*)\)\z/, 1] if html_attributes?
     end
 
+    # ID of the HTML tag.
+    #
+    # @return [String]
+    def tag_id
+      @value[:attributes]['id']
+    end
+
     # Name of the HTML tag.
     #
     # @return [String]

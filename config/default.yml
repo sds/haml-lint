@@ -37,6 +37,10 @@ linters:
   HtmlAttributes:
     enabled: true
 
+  IdNames:
+    enabled: true
+    style: lisp_case
+
   ImplicitDiv:
     enabled: true
 
