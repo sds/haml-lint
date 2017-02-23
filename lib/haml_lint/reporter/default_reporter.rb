@@ -10,9 +10,19 @@ module HamlLint
         print_type(lint)
         print_message(lint)
       end
+
+      print_summary(report)
     end
 
     private
+
+    def pluralize(word, count: 1)
+      if count.zero? || count > 1
+        "#{count} #{word}s"
+      else
+        "#{count} #{word}"
+      end
+    end
 
     def print_location(lint)
       log.info lint.filename, false
@@ -34,6 +44,30 @@ module HamlLint
       end
 
       log.log lint.message
+    end
+
+    def print_summary(report)
+      return unless log.summary_enabled
+
+      print_summary_files(report)
+      print_summary_lints(report)
+
+      log.log ' detected'
+    end
+
+    def print_summary_files(report)
+      log.log "\n#{pluralize('file', count: report.files.count)} inspected, ", false
+    end
+
+    def print_summary_lints(report)
+      lint_count = report.lints.size
+      lint_message = pluralize('lint', count: lint_count)
+
+      if lint_count == 0
+        log.log lint_message, false
+      else
+        log.error lint_message, false
+      end
     end
   end
 end

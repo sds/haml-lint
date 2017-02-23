@@ -15,6 +15,7 @@ module HamlLint
 
         add_linter_options parser
         add_file_options parser
+        add_logger_options parser
         add_info_options parser
       end.parse!(args)
 
@@ -85,10 +86,6 @@ module HamlLint
         @options[:show_reporters] = true
       end
 
-      parser.on('--[no-]color', 'Force output to be colorized') do |color|
-        @options[:color] = color
-      end
-
       parser.on_tail('-h', '--help', 'Display help documentation') do
         @options[:help] = parser.help
       end
@@ -99,6 +96,16 @@ module HamlLint
 
       parser.on_tail('-V', '--verbose-version', 'Display verbose version information') do
         @options[:verbose_version] = true
+      end
+    end
+
+    def add_logger_options(parser)
+      parser.on('--[no-]color', 'Force output to be colorized') do |color|
+        @options[:color] = color
+      end
+
+      parser.on('--[no-]summary', 'Print a summary of your linting report') do |summary|
+        @options[:summary] = summary
       end
     end
   end
