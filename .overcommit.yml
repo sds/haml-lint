@@ -9,6 +9,8 @@ PreCommit:
 
   HardTabs:
     enabled: true
+    exclude:
+      - 'lib/haml_lint/linter/README.md'
 
   RuboCop:
     enabled: true
