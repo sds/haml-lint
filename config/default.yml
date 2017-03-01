@@ -8,6 +8,9 @@
 skip_frontmatter: false
 
 linters:
+  AlignmentTabs:
+    enabled: true
+
   AltText:
     enabled: false
 
