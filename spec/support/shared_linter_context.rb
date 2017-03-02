@@ -10,9 +10,9 @@ shared_context 'linter' do
 
   let(:config) { options[:config].for_linter(described_class) }
 
+  let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
+
   subject { described_class.new(config) }
 
-  before do
-    subject.run(HamlLint::Document.new(normalize_indent(haml), options))
-  end
+  before { subject.run(document) }
 end
