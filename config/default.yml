@@ -47,6 +47,13 @@ linters:
   ImplicitDiv:
     enabled: true
 
+  InstanceVariables:
+    enabled: true
+    file_types: partials
+    matchers:
+      all: .*
+      partials: \A_.*\.haml\z
+
   LeadingCommentSpace:
     enabled: true
 

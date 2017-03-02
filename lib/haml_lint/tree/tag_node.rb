@@ -180,6 +180,20 @@ module HamlLint::Tree
       @value[:object_ref][/\A\[(.*)\]\z/, 1] if object_reference?
     end
 
+    # The attributes given to the tag parsed into a Ruby syntax tree.
+    #
+    # @return [ParsedRuby] syntax tree in the form returned by Parser gem
+    def parsed_attributes
+      HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(hash_attributes_source || ''))
+    end
+
+    # The Ruby script contents of a tag parsed into a syntax tree.
+    #
+    # @return [ParsedRuby] syntax tree in the form returned by Parser gem
+    def parsed_script
+      HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(script || ''))
+    end
+
     # Whether this node had a `<` after it signifying that outer whitespace
     # should be removed.
     #
@@ -207,10 +221,6 @@ module HamlLint::Tree
     end
 
     private
-
-    def parsed_attributes
-      HamlLint::RubyParser.new.parse(hash_attributes_source)
-    end
 
     def existing_attributes
       parsed_attributes.children.collect do |parsed_attribute|
