@@ -21,6 +21,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [MultilinePipe](#multilinepipe)
 * [MultilineScript](#multilinescript)
 * [ObjectReferenceAttributes](#objectreferenceattributes)
+* [RepeatedId](#repeatedid)
 * [RuboCop](#rubocop)
 * [RubyComments](#rubycomments)
 * [SpaceBeforeScript](#spacebeforescript)
@@ -477,6 +478,25 @@ where in your code a particular class attribute is defined. It is also tied
 directly to the class names of the objects you pass to it, creating an
 unnecessary coupling which can make refactoring your models affect your
 views.
+
+## RepeatedId
+
+The `id` attribute [must be unique] on the page since is intended to be a unique
+identifier. Repeating an `id` is an error in the HTML specification.
+
+**Bad**
+```haml
+#my-id
+#my-id
+```
+
+**Better**
+```haml
+#my-id
+#my-id-2
+```
+
+[must be unique]: https://www.w3.org/TR/html5/dom.html#the-id-attribute
 
 ## RuboCop
 
