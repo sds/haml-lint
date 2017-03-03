@@ -1,9 +1,13 @@
+require 'haml_lint/reporter/hooks'
+
 module HamlLint
   # Abstract lint reporter. Subclass and override {#display_report} to
   # implement a custom lint reporter.
   #
   # @abstract
   class Reporter
+    include Reporter::Hooks
+
     # Creates the reporter that will display the given report.
     #
     # @param logger [HamlLint::Logger]

@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe HamlLint::Runner do
-  let(:options) { {} }
-  let(:runner)  { described_class.new }
+  let(:base_options) { { reporter: reporter } }
+  let(:options) { base_options }
+  let(:reporter) { HamlLint::Reporter::HashReporter.new(StringIO.new) }
+  let(:runner) { described_class.new }
 
   before do
     runner.stub(:extract_applicable_files).and_return(files)
@@ -13,9 +15,7 @@ describe HamlLint::Runner do
     let(:mock_linter) { double('linter', lints: [], name: 'Blah') }
 
     let(:options) do
-      {
-        files: files,
-      }
+      base_options.merge(files: files, reporter: reporter)
     end
 
     subject { runner.run(options) }
@@ -30,7 +30,7 @@ describe HamlLint::Runner do
     end
 
     context 'when :config_file option is specified' do
-      let(:options) { { config_file: 'some-config.yml' } }
+      let(:options) { base_options.merge(config_file: 'some-config.yml') }
       let(:config) { double('config') }
 
       it 'loads that specified configuration file' do
@@ -44,7 +44,7 @@ describe HamlLint::Runner do
     end
 
     context 'when `exclude` global config option specifies a list of patterns' do
-      let(:options) { { config: config, files: files } }
+      let(:options) { base_options.merge(config: config, files: files) }
       let(:config) { HamlLint::Configuration.new(config_hash) }
       let(:config_hash) { { 'exclude' => 'exclude-this-file.slim' } }
 

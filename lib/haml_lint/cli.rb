@@ -87,16 +87,11 @@ module HamlLint
     #
     # @return [Integer] exit status code
     def scan_for_lints(options)
-      report = Runner.new.run(options)
-      print_report(report, options)
-      report.failed? ? Sysexits::EX_DATAERR : Sysexits::EX_OK
-    end
-
-    # Outputs a report of the linter run using the specified reporter.
-    def print_report(report, options)
       reporter = options.fetch(:reporter,
                                HamlLint::Reporter::DefaultReporter).new(log)
-      reporter.display_report(report)
+      report = Runner.new.run(options.merge(reporter: reporter))
+      report.display
+      report.failed? ? Sysexits::EX_DATAERR : Sysexits::EX_OK
     end
 
     # Outputs a list of all currently available linters.

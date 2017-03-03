@@ -4,8 +4,10 @@ RSpec.describe HamlLint::Report do
   let(:fail_level) { :warning }
   let(:filenames) { ['some-filename.haml'] }
   let(:lints) { [] }
+  let(:logger) { HamlLint::Logger.new(StringIO.new) }
+  let(:reporter) { HamlLint::Reporter::DefaultReporter.new(logger) }
 
-  subject(:report) { described_class.new(lints, filenames, fail_level) }
+  subject(:report) { described_class.new(lints, filenames, fail_level, reporter: reporter) }
 
   describe '#failed?' do
     subject { report.failed? }

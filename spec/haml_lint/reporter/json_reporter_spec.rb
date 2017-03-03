@@ -5,7 +5,7 @@ describe HamlLint::Reporter::JsonReporter do
     let(:io) { StringIO.new }
     let(:output) { JSON.parse(io.string) }
     let(:logger) { HamlLint::Logger.new(io) }
-    let(:report) { HamlLint::Report.new(lints, []) }
+    let(:report) { HamlLint::Report.new(lints, [], reporter: reporter) }
     let(:reporter) { described_class.new(logger) }
     let(:offenses) { output['files'].flat_map { |f| f['offenses'] } }
 
