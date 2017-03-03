@@ -8,6 +8,8 @@ module HamlLint
     SEVERITY_ERROR = :error
     SEVERITY_WARNING = :warning
 
+    COLORS = { error: :red, warning: :yellow }.freeze
+    MARKS = { error: 'E', warning: 'W' }.freeze
     NAMES = [SEVERITY_WARNING, SEVERITY_ERROR].freeze
 
     # Creates a new severity for a lint
@@ -22,6 +24,13 @@ module HamlLint
       name ||= :warning
       fail Exceptions::UnknownSeverity, "Unknown severity: #{name}" unless NAMES.include?(name)
       super
+    end
+
+    # The color of the mark in reporters.
+    #
+    # @return [Symbol]
+    def color
+      COLORS[__getobj__]
     end
 
     # Checks whether the severity is an error
@@ -43,6 +52,23 @@ module HamlLint
       NAMES.index(__getobj__) + 1
     end
 
+    # The symbol to use in a {HamlLint::Reporter::ProgressReporter}.
+    #
+    # @returns [String]
+    def mark
+      MARKS[__getobj__]
+    end
+
+    # The colorized symbol to use in a reporter.
+    #
+    # @returns [String]
+    def mark_with_color
+      Rainbow.global.wrap(mark).public_send(color)
+    end
+
+    # The name of the severity.
+    #
+    # @returns [Symbol]
     def name
       __getobj__
     end

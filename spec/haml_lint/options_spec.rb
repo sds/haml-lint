@@ -81,6 +81,14 @@ describe HamlLint::Options do
       end
     end
 
+    context 'fail fast' do
+      let(:args) { %w[--fail-fast] }
+
+      it 'sets the fail_fast option' do
+        subject[:fail_fast].should == true
+      end
+    end
+
     context 'with the help option' do
       let(:args) { ['--help'] }
 

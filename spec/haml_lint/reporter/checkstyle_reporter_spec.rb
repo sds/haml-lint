@@ -5,7 +5,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
     let(:io) { StringIO.new }
     let(:output) { io.string }
     let(:logger) { HamlLint::Logger.new(io) }
-    let(:report) { HamlLint::Report.new(lints, []) }
+    let(:report) { HamlLint::Report.new(lints, [], reporter: reporter) }
     let(:reporter) { described_class.new(logger) }
     let(:linter) { HamlLint::Linter::FinalNewline }
 

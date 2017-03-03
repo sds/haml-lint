@@ -71,6 +71,8 @@ Command Line Flag         | Description
 `-i`/`--include-linter`   | Specify which linters you specifically want to run
 `-x`/`--exclude-linter`   | Specify which linters you _don't_ want to run
 `-r`/`--reporter`         | Specify which reporter you want to use to generate the output
+`--fail-fast`             | Specify whether to fail after the first file with lint
+`--fail-level`            | Specify the severity above which the lint should fail
 `--[no-]color`            | Whether to output in color
 `--[no-]summary`          | Whether to output a summary in the default reporter
 `--show-linters`          | Show all registered linters
