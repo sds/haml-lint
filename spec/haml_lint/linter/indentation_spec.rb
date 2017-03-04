@@ -19,12 +19,15 @@ describe HamlLint::Linter::Indentation do
   end
 
   context 'when line contains only tabs for indentation' do
-    let(:haml) { <<-HAML }
-      %span
-      \tHello
-    HAML
+    let(:haml) { "%span\n\tHello" }
 
     it { should report_lint line: 2 }
+
+    context 'but the linter is disabled in the file' do
+      let(:haml) { "-# haml-lint:disable Indentation\n" + super() }
+
+      it { should_not report_lint }
+    end
   end
 
   context 'when line contains tabs that are not indentation' do
@@ -43,12 +46,15 @@ describe HamlLint::Linter::Indentation do
     end
 
     context 'when line contains spaces for indentation' do
-      let(:haml) { <<-HAML }
-        %span
-          Hello
-      HAML
+      let(:haml) { "%span\n  Hello" }
 
       it { should report_lint line: 2 }
+
+      context 'but the linter is disabled in the file' do
+        let(:haml) { "-# haml-lint:disable Indentation\n" + super() }
+
+        it { should_not report_lint }
+      end
     end
 
     context 'when line contains only tabs for indentation' do

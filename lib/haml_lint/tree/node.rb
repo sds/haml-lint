@@ -116,6 +116,13 @@ module HamlLint::Tree
       children.first || successor
     end
 
+    # The sibling nodes that come after this node in the tree.
+    #
+    # @return [Array<HamlLint::Tree::Node>]
+    def subsequents
+      siblings.subsequents(self)
+    end
+
     # Returns the text content of this node.
     #
     # @return [String]

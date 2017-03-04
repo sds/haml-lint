@@ -23,6 +23,12 @@ describe HamlLint::Linter::ConsecutiveSilentScripts do
       it { should_not report_lint line: 2 }
       it { should_not report_lint line: 3 }
 
+      context 'but the linter is disabled in the file' do
+        let(:haml) { "-# haml-lint:disable ConsecutiveSilentScripts\n" + super() }
+
+        it { should_not report_lint }
+      end
+
       context 'and they contain nested content that results in output' do
         let(:haml) { <<-HAML }
           - if expression
@@ -47,5 +53,11 @@ describe HamlLint::Linter::ConsecutiveSilentScripts do
 
     it { should_not report_lint line: 1 }
     it { should report_lint line: 5 }
+
+    context 'but the linter is disabled in the file' do
+      let(:haml) { "-# haml-lint:disable ConsecutiveSilentScripts\n" + super() }
+
+      it { should_not report_lint }
+    end
   end
 end
