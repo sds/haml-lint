@@ -33,7 +33,7 @@ module HamlLint
     #
     # @return [String]
     def name
-      self.class.name.split('::').last
+      self.class.name.to_s.split('::').last
     end
 
     private
