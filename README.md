@@ -144,6 +144,75 @@ rational basis, we think that the opinions themselves are less important than
 the fact that `haml-lint` provides us with an automated and low-cost means of
 enforcing consistency.
 
+## Disabling Linters within Source Code
+
+One or more individual linters can be disabled locally in a file by adding
+a directive comment. These comments look like the following:
+
+```haml
+-# haml-lint:disable AltText, LineLength
+[...]
+-# haml-lint:enable AltText, LineLength
+```
+
+You can disable *all* linters for a section with the following:
+
+```haml
+-# haml-lint:disable all
+```
+
+### Directive Scope
+
+A directive will disable the given linters for the scope of the block. This
+scope is inherited by child elements and sibling elements that come after the
+comment. For example:
+
+```haml
+-# haml-lint:disable AltText
+#content
+  %img#will-not-show-lint-1{ src: "will-not-show-lint-1.png" }
+  -# haml-lint:enable AltText
+  %img#will-show-lint-1{ src: "will-show-lint-1.png" }
+  .sidebar
+    %img#will-show-lint-2{ src: "will-show-lint-2.png" }
+%img#will-not-show-lint-2{ src: "will-not-show-lint-2.png" }
+```
+
+The `#will-not-show-lint-1` image on line 2 will not raise an `AltText` lint
+because of the directive on line 1. Since that directive is at the top level of
+the tree, it applies everywhere.
+
+However, on line 4, the directive enables the `AltText` linter for the remainder
+of the `#content` element's content. This means that the `#will-show-lint-1`
+image on line 5 will raise an `AltText` lint because it is a sibling of the
+enabling directive that appears later in the `#content` element. Likewise, the
+`#will-show-lint-2` image on line 7 will raise an `AltText` lint because it is
+a child of a sibling of the enabling directive.
+
+Lastly, the `#will-not-show-lint-2` image on line 8 will not raise an `AltText`
+lint because the enabling directive on line 4 exists in a separate element and
+is not a sibling of the it.
+
+### Directive Precedence
+
+If there are multiple directives for the same linter in an element, the last
+directive wins. For example:
+
+```haml
+-# haml-lint:enable AltText
+%p Hello, world!
+-# haml-lint:disable AltText
+%img#will-not-show-lint{ src: "will-not-show-lint.png" }
+```
+
+There are two conflicting directives for the `AltText` linter. The first one
+enables it, but the second one disables it. Since the disable directive came
+later, the `#will-not-show-lint` element will not raise an `AltText` lint.
+
+You can use this functionality to selectively enable directives within a file by
+first using the `haml-lint:disable all` directive to disable all linters in the
+file, then selectively using `haml-lint:enable` to enable linters one at a time.
+
 ## Editor Integration
 
 ### Vim

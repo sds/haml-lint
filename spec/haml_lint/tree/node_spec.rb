@@ -9,6 +9,29 @@ describe HamlLint::Tree::Node do
 
   let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
 
+  describe '#directives' do
+    subject do
+      document.tree.find { |node| node.type == :tag && node.tag_id == 'my-node' }.directives
+    end
+
+    let(:haml) { <<-HAML }
+      -# haml-lint:disable AltText
+      %one
+      %two
+        %three
+          #my-node
+        %five
+        - # haml-lint:enable AltText
+      %five
+    HAML
+
+    it 'inherits from its ancestors and ignore the out-of-scope directives' do
+      expected = HamlLint::Directive.new('-# haml-lint:disable AltText', 1, 'disable', %w[AltText])
+
+      subject.should == [expected]
+    end
+  end
+
   describe '#find' do
     subject { document.tree.find(&matcher) }
     let(:matcher) { ->(node) { node.type == :haml_comment } }
@@ -126,6 +149,56 @@ describe HamlLint::Tree::Node do
     subject { document.tree.inspect }
 
     it { should == '#<HamlLint::Tree::RootNode>' }
+  end
+
+  describe '#predecessor' do
+    subject { document.tree.find { |node| node.type == :haml_comment }.predecessor }
+
+    context 'when finding the predecessor of the root node' do
+      subject { document.tree.predecessor }
+      let(:haml) { '-# Dummy node' }
+
+      it { should be_nil }
+    end
+
+    context 'when there are no prior nodes' do
+      let(:haml) { '-# Just a lonely node' }
+
+      it { should eq(document.tree) }
+    end
+
+    context 'when there are prior nodes' do
+      let(:haml) { <<-HAML }
+        -#Predecessor
+        -# A regular node
+        -#NotAPredecessor
+      HAML
+
+      subject do
+        document.tree.find do |node|
+          node.type == :haml_comment && node.text == ' A regular node'
+        end.predecessor
+      end
+
+      its(:text) { should == 'Predecessor' }
+    end
+
+    context 'when there are prior nodes for a deeply nested node' do
+      let(:haml) { <<-HAML }
+        %one
+          %two
+            %three
+              -# Deeply nested node
+      HAML
+
+      subject do
+        document.tree.find do |node|
+          node.type == :haml_comment && node.text == ' Deeply nested node'
+        end.predecessor
+      end
+
+      its(:tag_name) { should eq('three') }
+    end
   end
 
   describe '#successor' do

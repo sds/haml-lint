@@ -222,5 +222,30 @@ describe HamlLint::HamlVisitor do
         end
       end
     end
+
+    context 'when a node disables the visitor' do
+      class DisabledVisitor < TrackingVisitor
+        def visit_child(node)
+          @node_order << node.type
+        end
+
+        def visit_root(node)
+          @node_order << node.type
+        end
+      end
+
+      let(:child_node) { double('child', children: [], disabled?: false, type: :child) }
+      let(:document) { double('document', tree: node) }
+      let(:node) { double('node', children: [child_node], disabled?: true, type: :root) }
+      let(:visitor) { DisabledVisitor.new }
+
+      it 'does not visit the node' do
+        visitor.node_order.should_not include(:root)
+      end
+
+      it 'visits the child node' do
+        visitor.node_order.should include(:child)
+      end
+    end
   end
 end

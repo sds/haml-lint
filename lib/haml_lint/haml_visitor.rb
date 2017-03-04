@@ -14,14 +14,16 @@ module HamlLint
         visit_children(node) if descend == :children
       end
 
-      safe_send("visit_#{node_name(node)}", node, &block)
+      disabled = node.disabled?(self)
+
+      safe_send("visit_#{node_name(node)}", node, &block) unless disabled
 
       # Visit all children by default unless the block was invoked (indicating
       # the user intends to not recurse further, or wanted full control over
       # when the children were visited).
       visit_children(node) unless block_called
 
-      safe_send("after_visit_#{node_name(node)}", node, &block)
+      safe_send("after_visit_#{node_name(node)}", node, &block) unless disabled
     end
 
     def visit_children(parent)
