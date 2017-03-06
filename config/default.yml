@@ -70,6 +70,10 @@ linters:
   ObjectReferenceAttributes:
     enabled: true
 
+  RepeatedId:
+    enabled: true
+    severity: error
+
   RuboCop:
     enabled: true
     # These cops are incredibly noisy when it comes to HAML templates, so we
