@@ -22,6 +22,12 @@ describe HamlLint::Linter::FinalNewline do
       let(:haml) { '%span' }
 
       it { should report_lint line: 1 }
+
+      context 'but the linter is disabled in the file' do
+        let(:haml) { "-# haml-lint:disable FinalNewline\n" + super() }
+
+        it { should_not report_lint }
+      end
     end
   end
 
@@ -38,6 +44,12 @@ describe HamlLint::Linter::FinalNewline do
       let(:haml) { "%span\n" }
 
       it { should report_lint line: 1 }
+
+      context 'but the linter is disabled in the file' do
+        let(:haml) { "-# haml-lint:disable FinalNewline\n" + super() }
+
+        it { should_not report_lint }
+      end
     end
 
     context 'when the file does not end with a newline' do

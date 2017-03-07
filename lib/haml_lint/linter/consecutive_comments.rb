@@ -5,14 +5,31 @@ module HamlLint
 
     COMMENT_DETECTOR = ->(child) { child.type == :haml_comment }
 
-    def visit_root(node)
+    def visit_haml_comment(node)
+      return if previously_reported?(node)
+
       HamlLint::Utils.for_consecutive_items(
-        node.children,
+        possible_group(node),
         COMMENT_DETECTOR,
       ) do |group|
+        group.each { |group_node| reported_nodes << group_node }
         record_lint(group.first,
                     "#{group.count} consecutive comments can be merged into one")
       end
+    end
+
+    private
+
+    def possible_group(node)
+      node.subsequents.unshift(node)
+    end
+
+    def previously_reported?(node)
+      reported_nodes.include?(node)
+    end
+
+    def reported_nodes
+      @reported_nodes ||= []
     end
   end
 end

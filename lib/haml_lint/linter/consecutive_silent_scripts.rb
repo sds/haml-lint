@@ -8,9 +8,11 @@ module HamlLint
       child.type == :silent_script && child.children.empty?
     end
 
-    def visit_root(node)
+    def visit_silent_script(node)
+      return if previously_reported?(node)
+
       HamlLint::Utils.for_consecutive_items(
-        node.children,
+        possible_group(node),
         SILENT_SCRIPT_DETECTOR,
         config['max_consecutive'] + 1,
       ) do |group|
@@ -18,6 +20,20 @@ module HamlLint
                     "#{group.count} consecutive Ruby scripts can be merged " \
                     'into a single `:ruby` filter')
       end
+    end
+
+    private
+
+    def possible_group(node)
+      node.subsequents.unshift(node)
+    end
+
+    def previously_reported?(node)
+      reported_nodes.include?(node)
+    end
+
+    def reported_nodes
+      @reported_nodes ||= []
     end
   end
 end

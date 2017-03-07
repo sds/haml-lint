@@ -3,19 +3,20 @@ module HamlLint
   class Linter::FinalNewline < Linter
     include LinterRegistry
 
-    def visit_root(_node)
+    def visit_root(root)
       return if document.source.empty?
 
-      dummy_node = Struct.new(:line).new(document.source_lines.count)
+      node = root.node_for_line(document.source_lines.count)
+      return if node.disabled?(self)
+
       ends_with_newline = document.source.end_with?("\n")
 
       if config['present']
         unless ends_with_newline
-          record_lint(dummy_node, 'Files should end with a trailing newline')
+          record_lint(node, 'Files should end with a trailing newline')
         end
       elsif ends_with_newline
-        record_lint(dummy_node,
-                    'Files should not end with a trailing newline')
+        record_lint(node, 'Files should not end with a trailing newline')
       end
     end
   end

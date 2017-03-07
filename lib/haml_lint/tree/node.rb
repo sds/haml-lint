@@ -1,3 +1,5 @@
+require 'haml_lint/comment_configuration'
+
 module HamlLint::Tree
   # Decorator class that provides a convenient set of helpers for HAML's
   # {Haml::Parser::ParseNode} struct.
@@ -9,6 +11,8 @@ module HamlLint::Tree
   #
   # @abstract
   class Node
+    include Enumerable
+
     attr_accessor :children, :parent
     attr_reader :line, :type
 
@@ -23,24 +27,42 @@ module HamlLint::Tree
       @type = parse_node.type
     end
 
-    # Returns the first node found under the subtree which matches the given
-    # block.
+    # Holds any configuration that is created from Haml comments.
     #
-    # Returns nil if no node matching the given block was found.
-    #
-    # @yieldparam [HamlLint::Tree::Node] node
-    # @yieldreturn [Boolean] whether the node matches
-    # @return [HamlLint::Tree::Node,nil]
-    def find(&block)
-      return self if yield(self)
+    # @return [HamlLint::CommentConfiguration]
+    def comment_configuration
+      @comment_configuration ||= HamlLint::CommentConfiguration.new(self)
+    end
 
-      children.each do |child|
-        if result = child.find(&block)
-          return result
-        end
+    # Checks whether a visitor is disabled due to comment configuration.
+    #
+    # @param [HamlLint::HamlVisitor]
+    # @return [true, false]
+    def disabled?(visitor)
+      visitor.is_a?(HamlLint::Linter) &&
+        comment_configuration.disabled?(visitor.name)
+    end
+
+    # Implements the Enumerable interface to walk through an entire tree.
+    #
+    # @return [Enumerator, HamlLint::Tree::Node]
+    def each
+      return to_enum(__callee__) unless block_given?
+
+      node = self
+      loop do
+        yield node
+        break unless (node = node.next_node)
       end
+    end
 
-      nil # Otherwise no matching node was found
+    # The comment directives to apply to the node.
+    #
+    # @return [Array<HamlLint::Directive>]
+    def directives
+      directives = []
+      directives << predecessor.directives if predecessor
+      directives.flatten
     end
 
     # Source code of all lines this node spans (excluding children).
@@ -63,6 +85,13 @@ module HamlLint::Tree
       "#<#{self.class.name}>"
     end
 
+    # The previous node to be traversed in the tree.
+    #
+    # @return [HamlLint::Tree::Node, nil]
+    def predecessor
+      siblings.previous(self) || parent
+    end
+
     # Returns the node that follows this node, whether it be a sibling or an
     # ancestor's child, but not a child of this node.
     #
@@ -72,9 +101,7 @@ module HamlLint::Tree
     #
     # @return [HamlLint::Tree::Node,nil]
     def successor
-      siblings = parent ? parent.children : [self]
-
-      next_sibling = siblings[siblings.index(self) + 1] if siblings.count > 1
+      next_sibling = siblings.next(self)
       return next_sibling if next_sibling
 
       parent.successor if parent
@@ -89,11 +116,84 @@ module HamlLint::Tree
       children.first || successor
     end
 
+    # The sibling nodes that come after this node in the tree.
+    #
+    # @return [Array<HamlLint::Tree::Node>]
+    def subsequents
+      siblings.subsequents(self)
+    end
+
     # Returns the text content of this node.
     #
     # @return [String]
     def text
       @value[:text].to_s
+    end
+
+    private
+
+    # The siblings of this node within the tree.
+    #
+    # @api private
+    # @return [Array<HamlLint::Tree::Node>]
+    def siblings
+      @siblings ||= Siblings.new(parent ? parent.children : [self])
+    end
+
+    # Finds the node's siblings within the tree and makes them queryable.
+    class Siblings < SimpleDelegator
+      # Finds the next sibling in the tree for a given node.
+      #
+      # @param node [HamlLint::Tree::Node]
+      # @return [HamlLint::Tree::Node, nil]
+      def next(node)
+        subsequents(node).first
+      end
+
+      # Finds the previous sibling in the tree for a given node.
+      #
+      # @param node [HamlLint::Tree::Node]
+      # @return [HamlLint::Tree::Node, nil]
+      def previous(node)
+        priors(node).last
+      end
+
+      # Finds all sibling notes that appear before a node in the tree.
+      #
+      # @param node [HamlLint::Tree::Node]
+      # @return [Array<HamlLint::Tree::Node>]
+      def priors(node)
+        position = position(node)
+        if position.zero?
+          []
+        else
+          siblings[0..(position - 1)]
+        end
+      end
+
+      # Finds all sibling notes that appear after a node in the tree.
+      #
+      # @param node [HamlLint::Tree::Node]
+      # @return [Array<HamlLint::Tree::Node>]
+      def subsequents(node)
+        siblings[(position(node) + 1)..-1]
+      end
+
+      private
+
+      # The set of siblings within the tree.
+      #
+      # @api private
+      # @return [Array<HamlLint::Tree::Node>]
+      alias siblings __getobj__
+
+      # Finds the position of a node within a set of siblings.
+      #
+      # @api private
+      # @return [Integer, nil]
+      def position(node)
+        siblings.index(node)
+      end
     end
   end
 end
