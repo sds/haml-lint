@@ -1,5 +1,18 @@
 # HAML-Lint Changelog
 
+## 0.22.0
+
+* Allow linters to be toggled with inline comments
+* Add new `progress` reporter
+* Allow linter to `--fail-fast` on first file that has a lint above the given `--fail-level`
+* Add new `InstanceVariable` linter to find usage of `@instance_variable`s
+* Add new `hash` reporter to make integrations with other tools simpler
+* Add new `AlignmentTabs` to catch usage of tabs for alignment
+* Show summary at the end when the `--summary` flag is used
+* Report syntax errors as a `Syntax` linter
+* Add new `IdNames` linter, checking format of `#id-strings`
+* Add support for Haml 5
+
 ## 0.21.0
 
 * Stop using temp files for RuboCop (#172)
