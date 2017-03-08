@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## 0.22.1
+
+* Include `json` amongst list produced by `--show-reporters`
+
 ## 0.22.0
 
 * Allow linters to be toggled with inline comments
