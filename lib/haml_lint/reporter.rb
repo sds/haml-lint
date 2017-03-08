@@ -8,6 +8,31 @@ module HamlLint
   class Reporter
     include Reporter::Hooks
 
+    # The CLI names of all configured reporters.
+    #
+    # @return [Array<String>]
+    def self.available
+      descendants.flat_map do |reporter|
+        available = reporter.available
+        available.unshift(reporter) if reporter.available?
+        available
+      end
+    end
+
+    # A flag for whether to show the reporter on the command line.
+    #
+    # @return [Boolean]
+    def self.available?
+      true
+    end
+
+    # The name of the reporter as passed from the CLI.
+    #
+    # @return [String]
+    def self.cli_name
+      name.split('::').last.sub(/Reporter$/, '').downcase
+    end
+
     # Creates the reporter that will display the given report.
     #
     # @param logger [HamlLint::Logger]
