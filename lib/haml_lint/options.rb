@@ -14,6 +14,7 @@ module HamlLint
         parser.banner = "Usage: #{APP_NAME} [options] [file1, file2, ...]"
 
         add_linter_options parser
+        add_report_options parser
         add_file_options parser
         add_logger_options parser
         add_info_options parser
@@ -41,9 +42,13 @@ module HamlLint
                 "Specify which linters you don't want to run") do |linters|
         @options[:excluded_linters] = linters
       end
+    end
 
+    def add_report_options(parser)
+      reporters = HamlLint::Reporter.available.map(&:cli_name).sort
       parser.on('-r', '--reporter reporter', String,
-                'Specify which reporter you want to use to generate the output') do |reporter|
+                'Specify which reporter you want to use to generate the output. One of:',
+                *reporters.map { |name| "  - #{name}" }) do |reporter|
         @options[:reporter] = load_reporter_class(reporter.capitalize)
       end
 

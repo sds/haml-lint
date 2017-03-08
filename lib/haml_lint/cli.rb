@@ -111,11 +111,7 @@ module HamlLint
     def print_available_reporters
       log.info 'Available reporters:'
 
-      reporter_names = HamlLint::Reporter.descendants.map do |reporter|
-        reporter.name.split('::').last.sub(/Reporter$/, '').downcase
-      end
-
-      reporter_names.sort.each do |reporter_name|
+      HamlLint::Reporter.available.map(&:cli_name).sort.each do |reporter_name|
         log.log " - #{reporter_name}"
       end
     end

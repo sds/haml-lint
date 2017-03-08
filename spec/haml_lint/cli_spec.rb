@@ -117,6 +117,7 @@ describe HamlLint::CLI do
       it 'displays the available reporters' do
         subject
         output.should include 'default'
+        output.should include 'json'
       end
 
       it { should == Sysexits::EX_OK }

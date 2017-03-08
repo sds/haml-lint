@@ -1,6 +1,13 @@
 module HamlLint
   # Outputs report as a Ruby Hash for easy use by other tools.
   class Reporter::HashReporter < Reporter
+    # Disables this reporter on the CLI since it doesn't output anything.
+    #
+    # @return [false]
+    def self.available?
+      false
+    end
+
     def display_report(report)
       lints = report.lints
       grouped = lints.group_by(&:filename)
