@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## 0.23.0
+
+* Fix issue with running haml-lint on empty files
+* Keep empty lines within Ruby filters
+
 ## 0.22.1
 
 * Include `json` amongst list produced by `--show-reporters`
