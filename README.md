@@ -223,6 +223,10 @@ files after saving by using the
 have the plugin, just add `let g:syntastic_haml_checkers = ['haml_lint']` to
 your `.vimrc`.
 
+### Vim 8 / Neovim
+
+If you use `vim` 8+ or `Neovim`, you can have `haml-lint` automatically run against your HAML files as you type by using the [Asynchronous Lint Engine (ALE)](https://github.com/w0rp/ale) plugin. ALE will automatically lint your HAML files if it detects `haml-lint` in your `PATH`.
+
 ### Sublime Text 3
 
 If you use `SublimeLinter 3` with `Sublime Text 3` you can install the
