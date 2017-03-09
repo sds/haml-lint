@@ -464,6 +464,29 @@ describe HamlLint::RubyExtractor do
       end
     end
 
+    context 'with a Ruby filter containing block keywords' do
+      let(:haml) { <<-HAML }
+        :ruby
+          def foo
+            42
+          end
+
+          def bar
+            23
+          end
+      HAML
+
+      its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+        def foo
+          42
+        end
+
+        def bar
+          23
+        end
+      RUBY
+    end
+
     context 'with a filter with interpolated values' do
       let(:haml) { <<-HAML }
         :filter
