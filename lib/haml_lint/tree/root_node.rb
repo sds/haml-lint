@@ -15,7 +15,7 @@ module HamlLint::Tree
     # @param line [Integer] the line number of the node
     # @return [HamlLint::Node]
     def node_for_line(line)
-      find(HamlLint::Tree::NullNode) { |node| node.line == line }
+      find(-> { HamlLint::Tree::NullNode.new }) { |node| node.line == line }
     end
   end
 end
