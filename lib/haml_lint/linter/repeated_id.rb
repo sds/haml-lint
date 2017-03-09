@@ -5,6 +5,10 @@ module HamlLint
 
     MESSAGE_FORMAT = %{Do not repeat id "#%s" on the page}.freeze
 
+    def visit_root(_node)
+      @id_map = Hash.new { |hash, key| hash[key] = [] }
+    end
+
     def visit_tag(node)
       id = node.tag_id
       return unless id && !id.empty?
@@ -19,16 +23,14 @@ module HamlLint
 
     private
 
+    attr_reader :id_map
+
     def add_lint(node, id)
       record_lint(node, MESSAGE_FORMAT % id)
     end
 
     def add_lints_for_first_duplications(nodes)
       nodes.each { |node| add_lint(node, node.tag_id) }
-    end
-
-    def id_map
-      @id_map ||= Hash.new { |hash, key| hash[key] = [] }
     end
   end
 end
