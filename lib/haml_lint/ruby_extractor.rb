@@ -125,7 +125,7 @@ module HamlLint
     def visit_filter(node) # rubocop:disable Metrics/AbcSize
       if node.filter_type == 'ruby'
         node.text.split("\n").each_with_index do |line, index|
-          add_line(line, node.line + index + 1)
+          add_line(line, node.line + index + 1, false)
         end
       else
         add_dummy_puts(node, ":#{node.filter_type}")
@@ -158,8 +158,8 @@ module HamlLint
       @output_count += 1
     end
 
-    def add_line(code, node_or_line)
-      return if code.empty?
+    def add_line(code, node_or_line, discard_blanks = true)
+      return if code.empty? && discard_blanks
 
       indent_level = @indent_level
 
