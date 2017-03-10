@@ -16,4 +16,16 @@ RSpec.describe HamlLint::Linter::RepeatedId do
     it { should report_lint line: 3, severity: :error }
     it { should report_lint line: 4, severity: :error }
   end
+
+  context 'with repeated ids across files' do
+    let(:haml) { '#don' }
+
+    it 'should not report when run on two separate files' do
+      second_document = HamlLint::Document.new(normalize_indent(haml), options)
+
+      subject.run(second_document)
+
+      subject.should_not report_lint
+    end
+  end
 end
