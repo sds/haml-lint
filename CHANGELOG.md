@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## 0.23.1
+
+* Ensure RepeatedId linter resets between files
+
 ## 0.23.0
 
 * Fix issue with running haml-lint on empty files
