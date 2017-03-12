@@ -43,7 +43,7 @@ module HamlLint
     def process_source(source)
       @source = process_encoding(source)
       @source = strip_frontmatter(source)
-      @source_lines = @source.split("\n")
+      @source_lines = @source.split(/\r\n|\r|\n/)
 
       @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
     rescue Haml::Error => ex
