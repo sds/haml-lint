@@ -97,5 +97,23 @@ describe HamlLint::Document do
         expect { subject }.to_not raise_error
       end
     end
+
+    context 'when given a file with different line endings' do
+      context 'that are just carriage returns' do
+        let(:source) { "%div\r  %p\r    Hello, world" }
+
+        it 'interprets the line endings as newlines, like Haml' do
+          expect { subject }.to_not raise_error
+        end
+      end
+
+      context 'that are Windows-style CRLF' do
+        let(:source) { "%div\r\n  %p\r\n    Hello, world" }
+
+        it 'interprets the line endings as newlines, like Haml' do
+          expect { subject }.to_not raise_error
+        end
+      end
+    end
   end
 end
