@@ -32,4 +32,19 @@ describe HamlLint::Linter::LineLength do
 
     it { should_not report_lint }
   end
+
+  context 'when a file contains lines within a multiline node that are too long' do
+    let(:haml) do
+      [
+        '- if model.setup_state_manual?',
+        "  = render 'no_validators_box'",
+        '',
+        ':ruby',
+        '  active_engines = model.validators.active.to_a',
+        '  engines = ::BlaBlaBlaBlaBlaBlaBlaBla.decorate_collection(::BlaBlaBlaBlaBla.all)',
+      ].join("\n")
+    end
+
+    it { should report_lint line: 6 }
+  end
 end

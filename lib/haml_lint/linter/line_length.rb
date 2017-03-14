@@ -5,6 +5,11 @@ module HamlLint
   class Linter::LineLength < Linter
     include LinterRegistry
 
+    # A marker for a line within a multiline node.
+    #
+    # @api private
+    DummyNode = Struct.new(:line)
+
     MSG = 'Line is too long. [%d/%d]'.freeze
 
     def visit_root(root)
@@ -15,7 +20,7 @@ module HamlLint
 
         node = root.node_for_line(index + 1)
         unless node.disabled?(self)
-          record_lint(node, format(MSG, line.length, max_length))
+          record_lint(DummyNode.new(index + 1), format(MSG, line.length, max_length))
         end
       end
     end
