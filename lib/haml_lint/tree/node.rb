@@ -85,6 +85,26 @@ module HamlLint::Tree
       "#<#{self.class.name}>"
     end
 
+    # The lines of text, if any, that are contained in the node.
+    #
+    # @api public
+    # @return [Array<String>]
+    def lines
+      return [] unless @value && text
+
+      text.split(/\r\n|\r|\n/)
+    end
+
+    # The line numbers that are contained within the node.
+    #
+    # @api public
+    # @return [Range]
+    def line_numbers
+      return (line..line) unless @value && text
+
+      (line..line + lines.count)
+    end
+
     # The previous node to be traversed in the tree.
     #
     # @return [HamlLint::Tree::Node, nil]
