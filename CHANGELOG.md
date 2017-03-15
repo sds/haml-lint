@@ -1,5 +1,12 @@
 # HAML-Lint Changelog
 
+## 0.23.2
+
+* Handle different line endings in files
+* Report real line number with lint for LineLength
+
+* Ensure RepeatedId linter resets between files
+
 ## 0.23.1
 
 * Ensure RepeatedId linter resets between files
