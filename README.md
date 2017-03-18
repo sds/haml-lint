@@ -132,6 +132,26 @@ leading frontmatter to the template for their own tracking purposes.
 skip_frontmatter: true
 ```
 
+### Inheriting from Other Configuration Files
+
+The `inherits_from` global configuration option allows you to specify an
+inheritance chain for a configuration file. It accepts either a scalar value of
+a single file name or a vector of multiple files to inherit from. The inherited
+files are resolved in a first in, first out order and with "last one wins"
+precedence. For example:
+
+```yaml
+inherits_from:
+  - .shared_haml-lint.yml
+  - .personal_haml-lint.yml
+```
+
+First, the default configuration is loaded. Then the `.shared_haml-lint.yml`
+configuration is loaded, followed by `.personal_haml-lint.yml`. Each of these
+overwrite each other in the event of a collision in configuration value. Once
+the inheritance chain is resolved, the base configuration is loaded and applies
+its rules to overwrite any in the intermediate configuration.
+
 ## Linters
 
 ### [» Linters Documentation](lib/haml_lint/linter/README.md)

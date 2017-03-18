@@ -31,11 +31,14 @@ module HamlLint
       # Loads a configuration, ensuring it extends the default configuration.
       #
       # @param file [String]
+      # @param loaded_files [Array<String>] any previously loaded files in an
+      #   inheritance chain
       # @return [HamlLint::Configuration]
-      def load_file(file)
+      def load_file(file, loaded_files = [])
         config = load_from_file(file)
 
-        default_configuration.merge(config)
+        [default_configuration, resolve_inheritance(config, loaded_files), config]
+          .reduce { |acc, elem| acc.merge(elem) }
       rescue Psych::SyntaxError, Errno::ENOENT => error
         raise HamlLint::Exceptions::ConfigurationError,
               "Unable to load configuration from '#{file}': #{error}",
@@ -80,6 +83,33 @@ module HamlLint
                         .enum_for(:ascend)
                         .map { |path| path + CONFIG_FILE_NAME }
         files << Pathname.new(CONFIG_FILE_NAME)
+      end
+
+      # Resolves an inherited file and loads it.
+      #
+      # @param file [String] the path to the file
+      # @param loaded_files [Array<String>] previously loaded files in the
+      #   inheritance chain
+      # @return [HamlLint::Configuration, nil]
+      def resolve(file, loaded_files)
+        return unless File.exist?(file)
+        return if loaded_files.include?(file)
+
+        loaded_files << file
+        load_file(file, loaded_files)
+      end
+
+      # Resolves the chain of `inherits_from` directives in a configuration.
+      #
+      # @param config [HamlLint::Configuration] the pre-existing configuration
+      # @param loaded_files [Array<String>] any previously loaded files in an
+      #   inheritance chain
+      # @return [HamlLint::Configuration]
+      def resolve_inheritance(config, loaded_files)
+        Array(config['inherits_from'])
+          .map { |config_file| resolve(config_file, loaded_files) }
+          .compact
+          .reduce { |acc, elem| acc.merge(elem) } || config
       end
     end
   end
