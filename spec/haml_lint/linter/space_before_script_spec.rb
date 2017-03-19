@@ -33,6 +33,67 @@ describe HamlLint::Linter::SpaceBeforeScript do
     it { should report_lint line: 2 }
   end
 
+  context 'when unsafe script has separating space' do
+    let(:haml) { <<-HAML }
+      %span Hello
+      != some_code
+      %span World
+    HAML
+
+    it { should_not report_lint }
+
+    context 'and nested' do
+      let(:haml) { <<-HAML }
+        %span Hello
+        %span
+          != some_code
+        %span World
+      HAML
+
+      it { should_not report_lint }
+    end
+  end
+
+  context 'when unsafe script has no separating space' do
+    let(:haml) { <<-HAML }
+      %span Hello
+      !=some_code
+      %span World
+    HAML
+
+    it { should report_lint line: 2 }
+
+    context 'and inline' do
+      let(:haml) { <<-HAML }
+        %span Hello
+        %span!=some_code
+        %span World
+      HAML
+
+      it { should report_lint line: 2 }
+    end
+  end
+
+  context 'when escaping script has no separating space' do
+    let(:haml) { <<-HAML }
+      %span Hello
+      &=some_code
+      %span World
+    HAML
+
+    it { should report_lint line: 2 }
+
+    context 'and inline' do
+      let(:haml) { <<-HAML }
+        %span Hello
+        %span&=some_code
+        %span World
+      HAML
+
+      it { should report_lint line: 2 }
+    end
+  end
+
   context 'when script has a separating space' do
     let(:haml) { <<-HAML }
       %span Hello

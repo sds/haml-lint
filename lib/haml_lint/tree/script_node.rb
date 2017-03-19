@@ -10,7 +10,7 @@ module HamlLint::Tree
       HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(script))
     end
 
-    # Returns the source for the script following the `-` marker.
+    # Returns the source for the script following the `=` marker.
     #
     # @return [String]
     def script
