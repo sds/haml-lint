@@ -15,6 +15,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [IdNames](#idnames)
 * [ImplicitDiv](#implicitdiv)
 * [Indentation](#indentation)
+* [IndentationSpaces](#indentationspaces)
 * [InstanceVariables](#instancevariables)
 * [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
@@ -308,6 +309,32 @@ Check that spaces are used for indentation instead of hard tabs.
 Option          | Description
 ----------------|-------------------------------------------------------------
 `character`     | Character to use for indentation. `space` or `tab` (default `space`)
+
+## IndentationSpaces
+
+Check that the configured number of spaces is used for indentation.
+
+Option        | Description
+--------------|-------------------------------------------------------------
+`width`       | Number of spaces to use per indentation level. (default 2)
+
+**Bad: Button text is indented only 1 space**
+```haml
+%button
+ Hit me
+```
+
+**Good: Button text is indented 2 spaces**
+```haml
+%button
+  Hit me
+```
+
+HAML ordinarily allows any number of spaces (or tabs) to indicate indentation
+levels; this linter forces consistency in the number of spaces used. If tabs
+are being used, this linter always passes.
+
+See the [Indentation](#indentation) rule to require only spaces or only tabs.
 
 ## InstanceVariables
 
