@@ -56,4 +56,16 @@ describe HamlLint::Linter::IndentationSpaces do
 
     it { should_not report_lint }
   end
+
+  context 'when HAML is split across multiple lines' do
+    let(:haml) { "%span{ alpha: 'bravo',\n       charlie: 'delta' }\n  Hello" }
+
+    it { should_not report_lint }
+
+    context 'unless the following line has the wrong number of spaces' do
+      let(:config) { super().merge('width' => 3) }
+
+      it { should report_lint }
+    end
+  end
 end
