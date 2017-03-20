@@ -86,4 +86,30 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
       it { should_not report_lint }
     end
   end
+
+  context 'when the partial is actually an ERB file that writes Haml' do
+    let(:options) do
+      {
+        config: HamlLint::ConfigurationLoader.default_configuration,
+        file: '_partial.html.haml'
+      }
+    end
+
+    let(:haml) do
+      [
+        '<%- model_attrs.each do |attr| -%>',
+        '= form.text_field :<%= attr.name %>',
+        '<%- end -%>',
+        '',
+        '= form.form_group :class => "form-actions" do',
+        '  = form.submit :class => "btn btn-primary"'
+      ].join("\n")
+    end
+
+    it 'does not raise an error' do
+      expect { subject }.not_to raise_error
+    end
+
+    it { should report_lint line: 1, message: 'unterminated string meets end of file' }
+  end
 end

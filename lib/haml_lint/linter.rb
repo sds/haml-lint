@@ -27,6 +27,16 @@ module HamlLint
       @lints = []
       visit(document.tree)
       @lints
+    rescue Parser::SyntaxError => ex
+      location = ex.diagnostic.location
+      @lints <<
+        HamlLint::Lint.new(
+          HamlLint::Linter::Syntax.new(config),
+          document.file,
+          location.line,
+          ex.to_s,
+          :error
+        )
     end
 
     # Returns the simple name for this linter.
