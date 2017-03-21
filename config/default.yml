@@ -47,6 +47,10 @@ linters:
   ImplicitDiv:
     enabled: true
 
+  Indentation:
+    enabled: true
+    character: space # or tab
+
   InstanceVariables:
     enabled: true
     file_types: partials
@@ -107,10 +111,6 @@ linters:
   SpaceInsideHashAttributes:
     enabled: true
     style: space
-
-  Indentation:
-    enabled: true
-    character: space # or tab
 
   TagName:
     enabled: true
