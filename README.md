@@ -152,6 +152,9 @@ overwrite each other in the event of a collision in configuration value. Once
 the inheritance chain is resolved, the base configuration is loaded and applies
 its rules to overwrite any in the intermediate configuration.
 
+Lastly, in order to match your RuboCop configuration style, you can also use the
+`inherit_from` directive, which is an alias for `inherits_from`.
+
 ## Linters
 
 ### [» Linters Documentation](lib/haml_lint/linter/README.md)

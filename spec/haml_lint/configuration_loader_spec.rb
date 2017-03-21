@@ -247,6 +247,58 @@ describe HamlLint::ConfigurationLoader do
               described_class.default_configuration.merge(custom_config)
           end
         end
+
+        context 'and an inherit_from directive' do
+          let(:config_file) do
+            [
+              'inherits_from:',
+              "  - #{other_config}",
+              'inherit_from:',
+              "  - #{third_config}",
+              'skip_frontmatter: true',
+              'linters:',
+              '  AltText:',
+              '    enabled: true'
+            ].join("\n")
+          end
+          let(:other_config_file) do
+            [
+              'linters:',
+              '  AltText:',
+              '    enabled: false',
+              '  Indentation:',
+              '    enabled: false'
+            ].join("\n")
+          end
+          let(:third_config) { 'other.yml' }
+          let(:third_config_file) do
+            [
+              'linters:',
+              '  AltText:',
+              '    enabled: true',
+              '  Indentation:',
+              '    enabled: true'
+            ].join("\n")
+          end
+
+          before do
+            File.open(third_config, 'w') { |f| f.write(third_config_file) }
+          end
+
+          it 'combines the inherit_from directive with the inherits_from directive' do
+            custom_config = HamlLint::Configuration.new(
+              'inherits_from' => [other_config, third_config],
+              'skip_frontmatter' => true,
+              'linters' => {
+                'AltText' => { 'enabled' => true },
+                'Indentation' => { 'enabled' => true }
+              }
+            )
+
+            subject.should ==
+              described_class.default_configuration.merge(custom_config)
+          end
+        end
       end
     end
   end

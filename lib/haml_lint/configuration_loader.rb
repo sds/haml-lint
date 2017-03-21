@@ -70,6 +70,11 @@ module HamlLint
             {}
           end
 
+        if hash.key?('inherit_from')
+          hash['inherits_from'] ||= []
+          hash['inherits_from'].concat(Array(hash.delete('inherit_from')))
+        end
+
         HamlLint::Configuration.new(hash)
       end
 
