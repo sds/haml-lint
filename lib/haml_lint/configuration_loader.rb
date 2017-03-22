@@ -6,6 +6,7 @@ require 'yaml'
 module HamlLint
   # Manages configuration file loading.
   class ConfigurationLoader
+    AUTO_GENERATED_FILE = '.haml-lint_todo.yml'.freeze
     DEFAULT_CONFIG_PATH = File.join(HamlLint::HOME, 'config', 'default.yml').freeze
     CONFIG_FILE_NAME = '.haml-lint.yml'.freeze
 

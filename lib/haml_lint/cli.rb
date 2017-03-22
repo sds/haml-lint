@@ -83,12 +83,26 @@ module HamlLint
       end
     end
 
+    # Instantiates a new reporter based on the options.
+    #
+    # @param options [HamlLint::Configuration]
+    # @option options [true, nil] :auto_gen_config whether to use the config
+    #   generating reporter
+    # @option options [Class] :reporter the class of reporter to use
+    # @return [HamlLint::Reporter]
+    def reporter_from_options(options)
+      if options[:auto_gen_config]
+        HamlLint::Reporter::DisabledConfigReporter.new(log)
+      else
+        options.fetch(:reporter, HamlLint::Reporter::DefaultReporter).new(log)
+      end
+    end
+
     # Scans the files specified by the given options for lints.
     #
     # @return [Integer] exit status code
     def scan_for_lints(options)
-      reporter = options.fetch(:reporter,
-                               HamlLint::Reporter::DefaultReporter).new(log)
+      reporter = reporter_from_options(options)
       report = Runner.new.run(options.merge(reporter: reporter))
       report.display
       report.failed? ? Sysexits::EX_DATAERR : Sysexits::EX_OK

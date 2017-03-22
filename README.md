@@ -236,6 +236,25 @@ You can use this functionality to selectively enable directives within a file by
 first using the `haml-lint:disable all` directive to disable all linters in the
 file, then selectively using `haml-lint:enable` to enable linters one at a time.
 
+## Onboarding Onto a Preexisting Project
+
+Adding a new linter into a project that wasn't previously using one can be
+a daunting task. To help ease the pain of starting to use Haml-Lint, you can
+generate a configuration file that will exclude all linters from reporting lint
+in files that currently have lint. This gives you something similar to a to-do
+list where the violations that you had when you started using Haml-Lint are
+listed for you to whittle away, but ensuring that any views you create going
+forward are properly linted.
+
+To use this functionality, call Haml-Lint like:
+
+    haml-lint --auto-gen-config
+
+This will generate a `.haml-lint_todo.yml` file that contains all existing lint
+as exclusions. You can then add `inherits_from: .haml-lint_todo.yml` to your
+`.haml-lint.yml` configuration file to ensure these exclusions are used whenever
+you call `haml-lint`.
+
 ## Editor Integration
 
 ### Vim
