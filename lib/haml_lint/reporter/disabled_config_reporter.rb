@@ -66,8 +66,8 @@ module HamlLint
       if lints.any?
         lints.each do |lint|
           linters_with_lints[lint.linter.name] << lint.filename
+          linters_lint_count[lint.linter.name] += 1
         end
-        linters_lint_count[lint.linter.name] = lints.count
       end
     end
 
