@@ -50,6 +50,7 @@ linters:
   Indentation:
     enabled: true
     character: space # or tab
+    width: 2
 
   InstanceVariables:
     enabled: true

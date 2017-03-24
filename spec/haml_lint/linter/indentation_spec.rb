@@ -15,7 +15,56 @@ describe HamlLint::Linter::Indentation do
         Hello
     HAML
 
+    context 'when preferred width is 2 spaces' do
+      it { should_not report_lint }
+    end
+
+    context 'when preferred width is 1 space' do
+      let(:config) { super().merge('width' => 1) }
+
+      it { should report_lint line: 2 }
+    end
+
+    context 'when preferred width is 4 spaces' do
+      let(:config) { super().merge('width' => 4) }
+
+      it { should report_lint line: 2 }
+    end
+
+    context 'when preferred width is unset' do
+      let(:config) { super().merge('width' => nil) }
+
+      it { should_not report_lint }
+    end
+  end
+
+  context 'when haml element spans multiple lines' do
+    let(:haml) { <<-HAML }
+      %span{ alpha: :bravo,
+             charlie: :delta }
+    HAML
+
     it { should_not report_lint }
+
+    context 'and a child element is properly indented' do
+      let(:haml) { <<-HAML }
+        %span{ alpha: :bravo,
+               charlie: :delta }
+          Hello
+      HAML
+
+      it { should_not report_lint }
+    end
+
+    context 'but a child element is improperly indented' do
+      let(:haml) { <<-HAML }
+        %span{ alpha: :bravo,
+               charlie: :delta }
+            Hello
+      HAML
+
+      it { should report_lint line: 3 }
+    end
   end
 
   context 'when line contains only tabs for indentation' do
@@ -64,6 +113,12 @@ describe HamlLint::Linter::Indentation do
       HAML
 
       it { should_not report_lint }
+
+      context 'and should ignore the preferred width' do
+        let(:config) { super().merge('width' => 42) }
+
+        it { should_not report_lint }
+      end
     end
   end
 end
