@@ -47,6 +47,10 @@ linters:
   ImplicitDiv:
     enabled: true
 
+  IndentationSpaces:
+    enabled: true
+    width: 2
+
   InstanceVariables:
     enabled: true
     file_types: partials
