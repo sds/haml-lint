@@ -65,7 +65,7 @@ module HamlLint
 
       if lints.any?
         lints.each do |lint|
-          linters_with_lints[lint.linter.name] << lint.filename
+          linters_with_lints[lint.linter.name] |= [lint.filename]
           linters_lint_count[lint.linter.name] += 1
         end
       end
@@ -79,6 +79,7 @@ module HamlLint
     def config_file_contents
       output = []
       output << HEADING
+      output << 'linters:' if linters_with_lints.any?
       linters_with_lints.each do |linter, files|
         output << generate_config_for_linter(linter, files)
       end
@@ -92,11 +93,11 @@ module HamlLint
     # @return [String] a Yaml-formatted configuration
     def generate_config_for_linter(linter, files)
       [].tap do |output|
-        output << "# Offense count: #{linters_lint_count[linter]}"
-        output << "#{linter}:"
-        output << '  Exclude:'
+        output << "  # Offense count: #{linters_lint_count[linter]}"
+        output << "  #{linter}:"
+        output << '    exclude:'
         files.each do |filename|
-          output << %{    - "#{filename}"}
+          output << %{      - "#{filename}"}
         end
       end.join("\n")
     end
