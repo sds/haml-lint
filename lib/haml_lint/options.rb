@@ -21,7 +21,7 @@ module HamlLint
       end.parse!(args)
 
       # Any remaining arguments are assumed to be files
-      @options[:files] = args
+      @options[:files] = args.empty? ? ["."] : args
 
       @options
     rescue OptionParser::InvalidOption => ex
