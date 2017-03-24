@@ -328,6 +328,8 @@ Option          | Description
   Hit me
 ```
 
+**Note:** `width` is ignored when `character` is set to `tab`.
+
 ## InstanceVariables
 
 Checks that instance variables are not used in the specified type of files.

@@ -40,16 +40,20 @@ module HamlLint
     def check_width(width, root)
       dummy_node = Struct.new(:line)
 
-      # to avoid excessive noise, only check children of top level nodes
-      # if indentation is proper below that, then `haml` will warn about inconsistent indentation
       root.children.each do |top_node|
-        top_node.children.each do |node|
+        # once we've found one line with leading space, there's no need to check any more lines
+        # `haml` will check indenting_at_start, deeper_indenting, inconsistent_indentation
+        break if top_node.children.find do |node|
           line = node.source_code
-          match = LEADING_SPACES_REGEX.match(line)
+          leading_space = LEADING_SPACES_REGEX.match(line)
 
-          if match && match[1] != ' ' * width && !node.disabled?(self)
-            record_lint dummy_node.new(node.line), "Line is not indented #{width} spaces"
+          break unless leading_space && !node.disabled?(self)
+
+          if leading_space[1] != ' ' * width
+            record_lint dummy_node.new(node.line), "File does not use #{width}-space indentation"
           end
+
+          break true
         end
       end
     end
