@@ -1,5 +1,12 @@
 # HAML-Lint Changelog
 
+## 0.24.0
+
+* Add new Indentation linter
+* Add `--auto-gen-config` to generate a "todo-list" of offenses to fix
+* Add `inherits_from` to configuration to allow reusability
+* Prevent crashing when unexpected syntax is discovered
+
 ## 0.23.2
 
 * Handle different line endings in files
