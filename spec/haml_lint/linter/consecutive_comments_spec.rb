@@ -58,7 +58,7 @@ describe HamlLint::Linter::ConsecutiveComments do
     it { should report_lint line: 8 }
 
     context 'but the linter is disabled in the file' do
-      let(:haml) { "-# haml-lint:disable ConsecutiveSilentScripts\n" + super() }
+      let(:haml) { "-# haml-lint:disable ConsecutiveComments\n" + super() }
 
       it { should_not report_lint }
     end
