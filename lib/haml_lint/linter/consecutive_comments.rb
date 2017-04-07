@@ -11,6 +11,7 @@ module HamlLint
       HamlLint::Utils.for_consecutive_items(
         possible_group(node),
         COMMENT_DETECTOR,
+        config['max_consecutive'] + 1,
       ) do |group|
         group.each { |group_node| reported_nodes << group_node }
         record_lint(group.first,
