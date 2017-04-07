@@ -132,6 +132,10 @@ consistent vertical alignment of IDs.
 
 ## ConsecutiveComments
 
+Option            | Description
+------------------|-------------------------------------------------------------
+`max_consecutive` | Maximum number of consecutive comments allowed before warning (default `1`)
+
 Consecutive comments should be condensed into a single multiline comment.
 
 **Bad**
