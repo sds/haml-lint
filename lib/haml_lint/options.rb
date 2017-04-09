@@ -56,12 +56,12 @@ module HamlLint
         @options[:reporter] = load_reporter_class(reporter.capitalize)
       end
 
-      parser.on('--fail-fast', 'Fail after the first file with lint above the fail level') do
+      parser.on('--fail-fast', 'Fail after the first file with lint at or above the fail level') do
         @options[:fail_fast] = true
       end
 
       parser.on('--fail-level fail_level', String,
-                'Specify which level you want the suite to fail') do |fail_level|
+                'Specify which level (warning or error) you want the suite to fail') do |fail_level|
         @options[:fail_level] = HamlLint::Severity.new(fail_level.to_sym)
       end
     end
