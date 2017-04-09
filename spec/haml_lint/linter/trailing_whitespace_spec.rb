@@ -27,6 +27,19 @@ describe HamlLint::Linter::TrailingWhitespace do
     end
   end
 
+  context 'for a multiline node' do
+    let(:haml) do
+      [
+        '= content_for :head_javascript do',
+        '  :plain',
+        '    var arch_to_show = "#{@default_architecture}"; ',
+        '    var time_to_show = "24";'
+      ].join("\n")
+    end
+
+    it { should report_lint line: 3 }
+  end
+
   context 'when line contains trailing newline' do
     let(:haml) { "- some_code_with_trailing_whitespace\n" }
 

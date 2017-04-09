@@ -3,13 +3,15 @@ module HamlLint
   class Linter::TrailingWhitespace < Linter
     include LinterRegistry
 
+    DummyNode = Struct.new(:line)
+
     def visit_root(root)
       document.source_lines.each_with_index do |line, index|
         next unless line =~ /\s+$/
 
         node = root.node_for_line(index + 1)
         unless node.disabled?(self)
-          record_lint node, 'Line contains trailing whitespace'
+          record_lint DummyNode.new(index + 1), 'Line contains trailing whitespace'
         end
       end
     end
