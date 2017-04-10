@@ -39,7 +39,7 @@ module HamlLint
       @reporter.display_report(self)
     end
 
-    # Checks whether any lints were over the fail level
+    # Checks whether any lints were at or above the fail level
     #
     # @return [Boolean]
     def failed?
