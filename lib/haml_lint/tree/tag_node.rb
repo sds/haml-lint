@@ -9,7 +9,7 @@ module HamlLint::Tree
     #
     # @return [Array<String>]
     def dynamic_attributes_sources
-      @value[:attributes_hashes]
+      @value.fetch(:attributes_hashes, [])
     end
 
     # Returns whether this tag contains executable script (e.g. is followed by a
