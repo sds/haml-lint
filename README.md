@@ -40,6 +40,12 @@ your [SCM hooks](https://github.com/brigade/overcommit).
 gem install haml_lint
 ```
 
+If you'd rather install `haml-lint` using `bundler`, don't require it in your `Gemfile`:
+
+```ruby
+gem 'haml-lint', require: false
+```
+
 ## Usage
 
 Run `haml-lint` from the command line by passing in a directory (or multiple
