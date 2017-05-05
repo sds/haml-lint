@@ -40,11 +40,13 @@ your [SCM hooks](https://github.com/brigade/overcommit).
 gem install haml_lint
 ```
 
-If you'd rather install `haml-lint` using `bundler`, don't require it in your `Gemfile`:
+If you'd rather install `haml-lint` using `bundler`, don't `require` it in your `Gemfile`:
 
 ```ruby
 gem 'haml-lint', require: false
 ```
+
+You can still use `haml-lint` from the command line, but its source code won't be auto-loaded inside your application.
 
 ## Usage
 
