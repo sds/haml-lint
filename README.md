@@ -43,10 +43,10 @@ gem install haml_lint
 If you'd rather install `haml-lint` using `bundler`, don't `require` it in your `Gemfile`:
 
 ```ruby
-gem 'haml-lint', require: false
+gem 'haml_lint', require: false
 ```
 
-You can still use `haml-lint` from the command line, but its source code won't be auto-loaded inside your application.
+Then you can still use `haml-lint` from the command line, but its source code won't be auto-loaded inside your application.
 
 ## Usage
 
