@@ -15,6 +15,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [IdNames](#idnames)
 * [ImplicitDiv](#implicitdiv)
 * [Indentation](#indentation)
+* [InlineStyles](#inlinestyles)
 * [InstanceVariables](#instancevariables)
 * [LeadingCommentSpace](#leadingcommentspace)
 * [LineLength](#linelength)
@@ -333,6 +334,25 @@ Option          | Description
 ```
 
 **Note:** `width` is ignored when `character` is set to `tab`.
+
+## InlineStyles
+
+Tags should not contain inline style attributes.
+
+**Bad**
+```haml
+%p{ style: 'color: red;' }
+```
+
+**Good**
+```haml
+%p.warning
+```
+
+Exceptions may need to be made for dynamic content and email templates.
+
+See [CodeAcademy](https://www.codecademy.com/articles/html-inline-styles) to
+learn more.
 
 ## InstanceVariables
 

@@ -53,6 +53,9 @@ linters:
     character: space # or tab
     width: 2 # ignored if character == tab
 
+  InlineStyles:
+    enabled: true
+
   InstanceVariables:
     enabled: true
     file_types: partials
