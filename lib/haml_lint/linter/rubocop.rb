@@ -51,7 +51,7 @@ module HamlLint
     def extract_lints_from_offenses(offenses, source_map)
       dummy_node = Struct.new(:line)
 
-      offenses.select { |offense| !Array(config['ignored_cops']).include?(offense.cop_name) }
+      offenses.reject { |offense| Array(config['ignored_cops']).include?(offense.cop_name) }
               .each do |offense|
         record_lint(dummy_node.new(source_map[offense.line]), offense.message)
       end

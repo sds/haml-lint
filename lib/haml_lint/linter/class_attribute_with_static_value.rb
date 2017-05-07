@@ -16,7 +16,7 @@ module HamlLint
   class Linter::ClassAttributeWithStaticValue < Linter
     include LinterRegistry
 
-    STATIC_TYPES = [:str, :sym].freeze
+    STATIC_TYPES = %i[str sym].freeze
 
     VALID_CLASS_REGEX = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
 

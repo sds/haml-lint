@@ -35,7 +35,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
       let(:filenames)    { ['some-filename.haml', 'other-filename.haml'] }
       let(:lines)        { %w[502 724] }
       let(:descriptions) { ['Description of lint 1', 'Description of "lint" 2'] }
-      let(:severities)   { [:warning, :error] }
+      let(:severities)   { %i[warning error] }
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|

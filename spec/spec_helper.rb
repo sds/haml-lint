@@ -21,7 +21,7 @@ RSpec.configure do |config|
   config.include DirectorySpecHelpers
 
   config.expect_with :rspec do |c|
-    c.syntax = [:expect, :should]
+    c.syntax = %i[expect should]
   end
 
   config.mock_with :rspec do |c|
