@@ -7,5 +7,5 @@ appraise 'haml4.1-beta' do
 end
 
 appraise 'haml5' do
-  gem 'haml', '~> 5.0.0.beta.2', git: 'https://github.com/haml/haml.git'
+  gem 'haml', '~> 5.0.0', git: 'https://github.com/haml/haml.git'
 end
