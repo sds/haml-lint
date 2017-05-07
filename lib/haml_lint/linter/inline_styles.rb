@@ -3,11 +3,11 @@ module HamlLint
   class Linter::InlineStyles < Linter
     include LinterRegistry
 
-    MESSAGE = %{Do not use inline style attributes}.freeze
+    MESSAGE = 'Do not use inline style attributes'.freeze
 
     def visit_tag(node)
       if node.has_hash_attribute?(:style)
-        record_lint(node, "Do not use inline style attributes")
+        record_lint(node, MESSAGE)
       end
     end
   end
