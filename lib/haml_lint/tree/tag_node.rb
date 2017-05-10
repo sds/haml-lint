@@ -7,9 +7,20 @@ module HamlLint::Tree
     # different attribute setting syntaxes (`{...}`/`(...)`), converted into
     # Ruby code.
     #
+    # @note This has to be memoized because of a design decision in Haml 5. When
+    # calling `DynamicAttributes#to_literal`, they mutate the "old" parameter using
+    # `String#sub!` instead of returning a new string. This means that any subsequent
+    # calls can return a nil instead of a string for that attribute, which causes
+    # any subsequent calls to the method to raise an error.
+    #
     # @return [Array<String>]
     def dynamic_attributes_sources
-      @value[:attributes_hashes]
+      @dynamic_attributes_sources ||=
+        if Gem::Version.new(Haml::VERSION) < Gem::Version.new('5')
+          @value[:attributes_hashes]
+        else
+          Array(@value[:dynamic_attributes].to_literal).reject(&:empty?)
+        end
     end
 
     # Returns whether this tag contains executable script (e.g. is followed by a
