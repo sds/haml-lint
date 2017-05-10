@@ -5,9 +5,9 @@ source "https://rubygems.org"
 gem "rspec", "~> 3.0"
 gem "rspec-its", "~> 1.0"
 gem "appraisal"
-gem "overcommit", "0.37.0"
-gem "rubocop", "0.47.0"
-gem "coveralls", require: false
-gem "haml", "~> 5.0.0.beta.2", git: "https://github.com/haml/haml.git"
+gem "overcommit", "0.39.1"
+gem "rubocop", "0.48.1"
+gem "coveralls", :require => false
+gem "haml", "~> 5.0.0"
 
-gemspec path: "../"
+gemspec :path => "../"
