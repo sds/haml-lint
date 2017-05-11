@@ -16,7 +16,7 @@ module HamlLint
     # @param files [Array<String>] files that were linted
     # @param fail_level [Symbol] the severity level to fail on
     # @param reporter [HamlLint::Reporter] the reporter for the report
-    def initialize(lints = [], files = [], fail_level = :warning, reporter:)
+    def initialize(lints = [], files = [], fail_level = :warning, reporter: nil)
       @lints = lints.sort_by { |l| [l.filename, l.line] }
       @files = files
       @fail_level = Severity.new(fail_level)
