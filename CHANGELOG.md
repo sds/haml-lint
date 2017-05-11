@@ -1,5 +1,12 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Add `max_consecutive` option to `ConsecutiveComments` linter
+* Fix `TrailingWhitespace` linter to report correct line for multiline nodes
+* Add `InlineStyles` linter to check for use of the `style` attribute
+* Add support for Haml 5.0.0+
+
 ## 0.24.0
 
 * Add new Indentation linter
