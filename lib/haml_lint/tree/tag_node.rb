@@ -1,5 +1,6 @@
 module HamlLint::Tree
   # Represents a tag node in a HAML document.
+  # rubocop:disable ClassLength
   class TagNode < Node
     # Computed set of attribute hashes code.
     #
@@ -234,7 +235,9 @@ module HamlLint::Tree
     private
 
     def existing_attributes
-      parsed_attributes.children.collect do |parsed_attribute|
+      parsed_attrs = parsed_attributes
+      return {} unless parsed_attrs.respond_to?(:children)
+      parsed_attrs.children.collect do |parsed_attribute|
         parsed_attribute.children.first.to_a.first
       end
     end
