@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.25.0
 
 * Add `max_consecutive` option to `ConsecutiveComments` linter
 * Fix `TrailingWhitespace` linter to report correct line for multiline nodes
