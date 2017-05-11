@@ -37,6 +37,12 @@ describe HamlLint::Tree::TagNode do
 
       it { should == false }
     end
+
+    context 'when the node has attributes from a variable' do
+      let(:haml) { '%my_tag{some_variable}' }
+
+      it { should == false }
+    end
   end
 
   describe '#dynamic_attributes_source' do
