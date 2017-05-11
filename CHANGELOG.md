@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## 0.25.1
+
+* Fix error on nodes with attributes assigned dynamically (#232)
+
 ## 0.25.0
 
 * Add `max_consecutive` option to `ConsecutiveComments` linter
