@@ -35,26 +35,43 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
     end
 
     context 'when there are lints' do
-      let(:files)        { ['some-filename.haml', 'some-filename.haml', 'other-filename.haml'] }
-      let(:lines)        { [502, 504, 724] }
-      let(:descriptions) { Array.new(3) { |i| "Description of lint #{i + 1}" } }
+      let(:files1)       { ['other-filename.haml', 'some-filename.haml', 'some-filename.haml'] }
+      let(:files2)       { [*'some-filename.haml01'..'some-filename.haml16'] }
+      let(:files)        { files1 + files2 }
+      let(:lines)        { [502, 504, 724, *1..files2.length] }
+      let(:descriptions) { Array.new(19) { |i| "Description of lint #{i + 1}" } }
       let(:header)       { output.split("\n")[0..3].join("\n") }
-      let(:linter)       { double(name: 'SomeLinter') }
+      let(:linters)      { [double(name: 'SomeLinter'), double(name: 'OtherLinter')] }
       let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
       let(:output_without_summary) { output.split("\n").reject(&:empty?)[0..-2].join("\n") }
-      let(:severities)   { [:warning] * 3 }
+      let(:severities)   { [:warning] * files.length }
       let(:summary)      { output.split("\n")[-4..-1].join("\n") }
 
       let(:lints) do
         files.each_with_index.map do |file, index|
-          HamlLint::Lint.new(linter, file, lines[index], descriptions[index], severities[index])
+          lint_for_file = index < files1.length ? linters[0] : linters[1]
+          HamlLint::Lint.new(lint_for_file,
+                             file,
+                             lines[index],
+                             descriptions[index],
+                             severities[index])
         end
+      end
+
+      let(:offenses_msg) do
+        offenses_msg = ''
+        files.each_with_index.map do |file, index|
+          name = index < files1.length ? linters[0].name : linters[1].name
+          offenses_msg += "#{file}:#{lines[index]} [W] #{name}: Description of lint #{index + 1}\n"
+        end
+        offenses_msg += "19 files inspected, 19 lints detected\n"
+        offenses_msg + 'Created .haml-lint_todo.yml.'
       end
 
       # This is a hack to get around the fact that the method isn't called in isolation
       before do
-        linters_with_lints = { linter.name => files.uniq }
-        linters_lint_count = { linter.name => lints.size }
+        linters_with_lints = { linters[0].name => files1.uniq, linters[1].name => files2.uniq }
+        linters_lint_count = { linters[0].name => files1.length, linters[1].name => files2.length }
         reporter.__send__(:instance_variable_set, :@linters_with_lints, linters_with_lints)
         reporter.__send__(:instance_variable_set, :@linters_lint_count, linters_lint_count)
       end
@@ -66,23 +83,18 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
 
       it 'prints each lint on its own line' do
         subject
-        offenses.should == \
-          "other-filename.haml:724 [W] SomeLinter: Description of lint 3\n" \
-          "some-filename.haml:502 [W] SomeLinter: Description of lint 1\n" \
-          "some-filename.haml:504 [W] SomeLinter: Description of lint 2\n" \
-          "3 files inspected, 3 lints detected\n" \
-          'Created .haml-lint_todo.yml.'
+        offenses.should == offenses_msg
       end
 
       it 'prints the summary' do
         subject
-        summary.should == "\n3 files inspected, 3 lints detected\n" \
+        summary.should == "\n19 files inspected, 19 lints detected\n" \
           "Created .haml-lint_todo.yml.\n" \
           'Run `haml-lint --config .haml-lint_todo.yml`, or add '\
           '`inherits_from: .haml-lint_todo.yml` in a .haml-lint.yml file.'
       end
 
-      it 'creates a file with the disabled configs' do
+      it 'creates a file with the disabled/excluded linters' do
         subject
         config.should ==
           [
@@ -93,8 +105,12 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
             '  # Offense count: 3',
             '  SomeLinter:',
             '    exclude:',
+            '      - "other-filename.haml"',
             '      - "some-filename.haml"',
-            '      - "other-filename.haml"'
+            '',
+            '  # Offense count: 16',
+            '  OtherLinter:',
+            '    enabled: false'
           ].join("\n")
       end
     end
