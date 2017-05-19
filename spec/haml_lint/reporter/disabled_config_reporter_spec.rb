@@ -6,7 +6,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
   let(:io)       { StringIO.new }
   let(:output)   { io.string }
   let(:logger)   { HamlLint::Logger.new(io) }
-  let(:report)   { HamlLint::Report.new(lints, files, reporter: reporter) }
+  let(:report)   { HamlLint::Report.new(lints, files.uniq, reporter: reporter) }
   let(:reporter) { described_class.new(logger) }
 
   around do |example|
@@ -64,7 +64,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
           name = index < files1.length ? linters[0].name : linters[1].name
           offenses_msg += "#{file}:#{lines[index]} [W] #{name}: Description of lint #{index + 1}\n"
         end
-        offenses_msg += "19 files inspected, 19 lints detected\n"
+        offenses_msg += "18 files inspected, 19 lints detected\n"
         offenses_msg + 'Created .haml-lint_todo.yml.'
       end
 
@@ -88,7 +88,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
 
       it 'prints the summary' do
         subject
-        summary.should == "\n19 files inspected, 19 lints detected\n" \
+        summary.should == "\n18 files inspected, 19 lints detected\n" \
           "Created .haml-lint_todo.yml.\n" \
           'Run `haml-lint --config .haml-lint_todo.yml`, or add '\
           '`inherits_from: .haml-lint_todo.yml` in a .haml-lint.yml file.'
