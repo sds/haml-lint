@@ -31,6 +31,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [TrailingWhitespace](#trailingwhitespace)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
 * [UnnecessaryStringOutput](#unnecessarystringoutput)
+* [ViewLength](#viewlength)
 
 ## AlignmentTabs
 
@@ -717,3 +718,13 @@ Avoid outputting string expressions in Ruby when static text will suffice.
 
 HAML gracefully handles string interpolation in static text, so you don't need
 to work with Ruby strings in order to use interpolation.
+
+## ViewLength
+
+Keep view templates to a manageable length.
+
+Large views can be split into separate partials.
+
+Presentation logic can be extracted to a view helper, presenter or decorator.
+
+Domain logic can be extracted to a model or service object.
