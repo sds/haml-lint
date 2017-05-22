@@ -128,3 +128,7 @@ linters:
 
   UnnecessaryStringOutput:
     enabled: true
+
+  ViewLength:
+    enabled: true
+    max: 100
