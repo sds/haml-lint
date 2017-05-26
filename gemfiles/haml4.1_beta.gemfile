@@ -6,8 +6,8 @@ gem "rspec", "~> 3.0"
 gem "rspec-its", "~> 1.0"
 gem "appraisal"
 gem "overcommit", "0.39.1"
-gem "rubocop", "0.48.1"
-gem "coveralls", :require => false
+gem "rubocop", "0.49.0"
+gem "coveralls", require: false
 gem "haml", "4.1.0.beta.1"
 
-gemspec :path => "../"
+gemspec path: "../"
