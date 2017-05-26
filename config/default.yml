@@ -91,9 +91,12 @@ linters:
       - Lint/BlockAlignment
       - Lint/EndAlignment
       - Lint/Void
+      - Layout/AlignParameters
+      - Layout/IndentationWidth
+      - Layout/TrailingBlankLines
+      - Layout/TrailingWhitespace
       - Metrics/BlockLength
       - Metrics/LineLength
-      - Style/AlignParameters
       - Style/BlockNesting
       - Style/ElseAlignment
       - Style/EndOfLine
@@ -101,10 +104,7 @@ linters:
       - Style/FinalNewline
       - Style/FrozenStringLiteralComment
       - Style/IfUnlessModifier
-      - Style/IndentationWidth
       - Style/Next
-      - Style/TrailingBlankLines
-      - Style/TrailingWhitespace
       - Style/WhileUntilModifier
 
   RubyComments:

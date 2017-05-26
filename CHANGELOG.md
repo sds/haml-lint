@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Add support for RuboCop 0.49.0+
+* Require RuboCop 0.49.0+ due to breaking upstream change
+
 ## 0.25.1
 
 * Fix error on nodes with attributes assigned dynamically (#232)
