@@ -82,7 +82,7 @@ SingleLineBlockParams:
 SpecialGlobalVars:
   Enabled: false
 
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   Enabled: false
 
 Style/NumericPredicate:

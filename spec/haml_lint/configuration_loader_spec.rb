@@ -319,7 +319,7 @@ describe HamlLint::ConfigurationLoader do
 
       it 'extends the default configuration' do
         subject.should == described_class.default_configuration
-                          .merge(HamlLint::Configuration.new(hash))
+                                         .merge(HamlLint::Configuration.new(hash))
       end
     end
   end
