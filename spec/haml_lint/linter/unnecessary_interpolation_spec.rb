@@ -30,4 +30,9 @@ describe HamlLint::Linter::UnnecessaryInterpolation do
     HAML
     it { should_not report_lint }
   end
+
+  context 'when a non-interpolated 2-char variable is used' do
+    let(:haml) { '%tag= ab' }
+    it { should_not report_lint }
+  end
 end

@@ -10,7 +10,7 @@ module HamlLint
     include LinterRegistry
 
     def visit_tag(node)
-      return if node.script.empty?
+      return if node.script.length <= 2
 
       count = 0
       chars = 2 # Include surrounding quote chars
