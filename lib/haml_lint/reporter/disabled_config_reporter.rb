@@ -95,9 +95,15 @@ module HamlLint
       [].tap do |output|
         output << "  # Offense count: #{linters_lint_count[linter]}"
         output << "  #{linter}:"
-        output << '    exclude:'
-        files.each do |filename|
-          output << %{      - "#{filename}"}
+        # disable the linter when there are many files with offenses.
+        # exclude the affected files otherwise.
+        if files.count > 15
+          output << '    enabled: false'
+        else
+          output << '    exclude:'
+          files.each do |filename|
+            output << %{      - "#{filename}"}
+          end
         end
       end.join("\n")
     end
