@@ -39,7 +39,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
       let(:files2)       { [*'some-filename.haml01'..'some-filename.haml16'] }
       let(:files)        { files1 + files2 }
       let(:lines)        { [502, 504, 724, *1..files2.length] }
-      let(:descriptions) { Array.new(19) { |i| "Description of lint #{i + 1}" } }
+      let(:descriptions) { Array.new(files.size) { |i| "Description of lint #{i + 1}" } }
       let(:header)       { output.split("\n")[0..3].join("\n") }
       let(:linters)      { [double(name: 'SomeLinter'), double(name: 'OtherLinter')] }
       let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
