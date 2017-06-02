@@ -26,7 +26,12 @@ module HamlLint
     def find_lints(ruby, source_map)
       rubocop = ::RuboCop::CLI.new
 
-      filename = document.file || 'ruby_script'
+      filename =
+        if document.file
+          "#{document.file}.rb"
+        else
+          'ruby_script.rb'
+        end
 
       with_ruby_from_stdin(ruby) do
         extract_lints_from_offenses(lint_file(rubocop, filename), source_map)
