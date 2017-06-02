@@ -41,18 +41,23 @@ module HamlLint
     def visit_script(node)
       # Plain text nodes with interpolation are converted to script nodes, so we
       # need to ignore them here.
-      return unless document.source_lines[node.line - 1].lstrip.start_with?('=')
-      record_lint(node, MESSAGE_FORMAT % '=') if missing_space?(node)
+      line = document.source_lines[node.line - 1].lstrip
+      return unless line.start_with?('=', '&=', '!=')
+      text = if line.start_with?('=')
+               node.script
+             else
+               line[/=(.*)/, 1]
+             end
+      record_lint(node, MESSAGE_FORMAT % line[/[&!]?=/]) if missing_space?(text)
     end
 
     def visit_silent_script(node)
-      record_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node)
+      record_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node.script)
     end
 
     private
 
-    def missing_space?(node)
-      text = node.script
+    def missing_space?(text)
       !ALLOWED_SEPARATORS.include?(text[0]) if text
     end
   end
