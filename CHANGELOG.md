@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 0.26.0
+
 * Add support for RuboCop 0.49.0+
 * Require RuboCop 0.49.0+ due to breaking upstream change
 * Condense generated `.haml-lint_todo.yml` file by using `enabled: false`
