@@ -8,6 +8,7 @@
 * Require RuboCop 0.49.0+ due to breaking upstream change
 * Condense generated `.haml-lint_todo.yml` file by using `enabled: false`
   for linters with lints in more than 15 files
+* Fix `UnnecessaryInterpolation` linter for two-character variables
 
 ## 0.25.1
 
