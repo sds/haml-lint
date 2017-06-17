@@ -6,6 +6,16 @@ module HamlLint
   class Linter::RuboCop < Linter
     include LinterRegistry
 
+    # Maps the ::RuboCop::Cop::Severity levels to our own levels.
+    SEVERITY_MAP = {
+      error: :error,
+      fatal: :error,
+
+      convention: :warning,
+      refactor: :warning,
+      warning: :warning,
+    }.freeze
+
     def visit_root(_node)
       extractor = HamlLint::RubyExtractor.new
       extracted_source = extractor.extract(document)
@@ -58,8 +68,19 @@ module HamlLint
 
       offenses.reject { |offense| Array(config['ignored_cops']).include?(offense.cop_name) }
               .each do |offense|
-        record_lint(dummy_node.new(source_map[offense.line]), offense.message)
+        record_lint(dummy_node.new(source_map[offense.line]), offense.message,
+                    offense.severity.name)
       end
+    end
+
+    # Record a lint for reporting back to the user.
+    #
+    # @param node [#line] node to extract the line number from
+    # @param message [String] error/warning to display to the user
+    # @param severity [Symbol] RuboCop severity level for the offense
+    def record_lint(node, message, severity)
+      @lints << HamlLint::Lint.new(self, @document.file, node.line, message,
+                                   SEVERITY_MAP.fetch(severity, :warning))
     end
 
     # Returns flags that will be passed to RuboCop CLI.

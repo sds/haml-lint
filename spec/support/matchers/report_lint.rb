@@ -3,14 +3,15 @@ RSpec::Matchers.define :report_lint do |options|
   count = options[:count]
   expected_line = options[:line]
   expected_message = options[:message]
+  expected_severity = options[:severity]
 
   match do |linter|
-    has_lints?(linter, expected_line, count, expected_message)
+    has_lints?(linter, expected_line, count, expected_message, expected_severity)
   end
 
   failure_message do |linter|
     'expected that a lint would be reported' +
-      extended_expectations(expected_line, expected_message) +
+      extended_expectations(expected_line, expected_message, expected_severity) +
       case linter.lints.count
       when 0
         ''
@@ -20,6 +21,7 @@ RSpec::Matchers.define :report_lint do |options|
         if expected_line
           messages << 'was' unless expected_message
           messages << "on line #{linter.lints.first.line}"
+          messages << "with severity '#{linter.lints.first.severity}'" if expected_severity
         end
         messages.join ' '
       else
@@ -33,17 +35,18 @@ RSpec::Matchers.define :report_lint do |options|
   end
 
   description do
-    'report a lint' + extended_expectations(expected_line, expected_message)
+    'report a lint' + extended_expectations(expected_line, expected_message, expected_severity)
   end
 
-  def extended_expectations(expected_line, expected_message)
+  def extended_expectations(expected_line, expected_message, expected_severity)
     (expected_line ? " on line #{expected_line}" : '') +
-      (expected_message ? " with message '#{expected_message}'" : '')
+      (expected_message ? " with message '#{expected_message}'" : '') +
+      (expected_severity ? " with severity '#{expected_severity}'" : '')
   end
 
-  def has_lints?(linter, expected_line, count, expected_message)
+  def has_lints?(linter, expected_line, count, expected_message, expected_severity)
     if expected_line
-      has_expected_line_lints?(linter, expected_line, count, expected_message)
+      has_expected_line_lints?(linter, expected_line, count, expected_message, expected_severity)
     elsif count
       linter.lints.count == count
     elsif expected_message
@@ -53,11 +56,13 @@ RSpec::Matchers.define :report_lint do |options|
     end
   end
 
-  def has_expected_line_lints?(linter, expected_line, count, expected_message)
+  def has_expected_line_lints?(linter, expected_line, count, expected_message, expected_severity)
     if count
       multiple_lints_match_line?(linter, expected_line, count)
     elsif expected_message
       lint_on_line_matches_message?(linter, expected_line, expected_message)
+    elsif expected_severity
+      lint_on_line_matches_severity?(linter, expected_line, expected_severity)
     else
       lint_lines(linter).include?(expected_line)
     end
@@ -70,6 +75,10 @@ RSpec::Matchers.define :report_lint do |options|
 
   def lint_on_line_matches_message?(linter, expected_line, expected_message)
     linter.lints.any? { |lint| lint.line == expected_line && lint.message == expected_message }
+  end
+
+  def lint_on_line_matches_severity?(linter, expected_line, expected_severity)
+    linter.lints.any? { |lint| lint.line == expected_line && lint.severity == expected_severity }
   end
 
   def lint_messages_match?(linter, expected_message)
