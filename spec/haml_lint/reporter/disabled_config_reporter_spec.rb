@@ -6,7 +6,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
   let(:io)       { StringIO.new }
   let(:output)   { io.string }
   let(:logger)   { HamlLint::Logger.new(io) }
-  let(:report)   { HamlLint::Report.new(lints, files.uniq, reporter: reporter) }
+  let(:report)   { HamlLint::Report.new(lints: lints, files: files.uniq, reporter: reporter) }
   let(:reporter) { described_class.new(logger) }
 
   around do |example|

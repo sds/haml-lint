@@ -5,11 +5,11 @@ describe HamlLint::Reporter::DefaultReporter do
   let(:io) { StringIO.new }
   let(:output) { io.string }
   let(:logger) { HamlLint::Logger.new(io) }
-  let(:report) { HamlLint::Report.new(lints, filenames, reporter: reporter) }
+  let(:report) { HamlLint::Report.new(lints: lints, files: filenames, reporter: reporter) }
   let(:reporter) { described_class.new(logger) }
 
   describe '#added_lint' do
-    subject { lints.each { |lint| reporter.added_lint(lint) } }
+    subject { lints.each { |lint| reporter.added_lint(lint, report) } }
 
     context 'when there are no lints' do
       let(:lints) { [] }

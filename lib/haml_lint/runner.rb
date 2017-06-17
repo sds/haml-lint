@@ -127,7 +127,7 @@ module HamlLint
     # @option options :reporter [HamlLint::Reporter] the reporter to report with
     # @return [HamlLint::Report]
     def report(options)
-      report = HamlLint::Report.new(reporter: options[:reporter])
+      report = HamlLint::Report.new(reporter: options[:reporter], fail_level: options[:fail_level])
       report.start(@files)
       process_files(report)
       report
