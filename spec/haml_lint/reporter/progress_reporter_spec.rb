@@ -5,7 +5,7 @@ RSpec.describe HamlLint::Reporter::ProgressReporter do
   let(:io)       { StringIO.new }
   let(:output)   { io.string }
   let(:logger)   { HamlLint::Logger.new(io) }
-  let(:report)   { HamlLint::Report.new(lints, files, reporter: reporter) }
+  let(:report)   { HamlLint::Report.new(lints: lints, files: files, reporter: reporter) }
   let(:reporter) { described_class.new(logger) }
 
   describe '#finished_file' do

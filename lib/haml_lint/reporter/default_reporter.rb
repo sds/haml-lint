@@ -6,8 +6,8 @@ module HamlLint
   class Reporter::DefaultReporter < Reporter
     include Reporter::Utils
 
-    def added_lint(lint)
-      print_lint(lint)
+    def added_lint(lint, report)
+      print_lint(lint) if lint.severity >= report.fail_level
     end
 
     def display_report(report)

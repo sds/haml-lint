@@ -7,7 +7,10 @@ RSpec.describe HamlLint::Report do
   let(:logger) { HamlLint::Logger.new(StringIO.new) }
   let(:reporter) { HamlLint::Reporter::DefaultReporter.new(logger) }
 
-  subject(:report) { described_class.new(lints, filenames, fail_level, reporter: reporter) }
+  subject(:report) do
+    described_class.new(lints: lints, files: filenames,
+                        fail_level: fail_level, reporter: reporter)
+  end
 
   describe '#failed?' do
     subject { report.failed? }

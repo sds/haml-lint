@@ -5,8 +5,9 @@ module HamlLint
       # A hook that is called for each lint as it is detected.
       #
       # @param _lint [HamlLint::Lint] the lint added to the report
+      # @param _report [HamlLint::Report] the report that contains the lint
       # @return [void]
-      def added_lint(_lint); end
+      def added_lint(_lint, _report); end
 
       # A hook that is called for each file as it is finished processing.
       #
