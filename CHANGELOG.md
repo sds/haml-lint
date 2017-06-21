@@ -9,6 +9,7 @@
 * Condense generated `.haml-lint_todo.yml` file by using `enabled: false`
   for linters with lints in more than 15 files
 * Fix `UnnecessaryInterpolation` linter for two-character variables
+* Add `ViewLength` linter for checking whether a view has too many lines in it.
 
 ## 0.25.1
 
