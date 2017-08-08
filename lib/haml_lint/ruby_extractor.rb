@@ -173,7 +173,7 @@ module HamlLint
 
       indent = (' ' * 2 * indent_level)
 
-      @source_lines << indentation_code(code, indent)
+      @source_lines << indent_code(code, indent)
 
       original_line =
         node_or_line.respond_to?(:line) ? node_or_line.line : node_or_line
@@ -187,7 +187,7 @@ module HamlLint
       end
     end
 
-    def indentation_code(code, indent)
+    def indent_code(code, indent)
       codes = code.split("\n")
       codes.map { |c| indent + c }.join("\n")
     end
