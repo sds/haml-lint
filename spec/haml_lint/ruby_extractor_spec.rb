@@ -313,6 +313,27 @@ describe HamlLint::RubyExtractor do
 
         its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 1 } }
       end
+
+      context 'with nested' do
+        let(:haml) { <<-HAML }
+          =some_code do
+            -#
+              This is a HAML
+              comment spanning
+              multiple lines
+        HAML
+
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+          some_code do
+            #
+            # This is a HAML
+            # comment spanning
+            # multiple lines
+          end
+        RUBY
+
+        its(:source_map) { should == { 1 => 1, 2 => 2, 3 => 2, 4 => 2, 5 => 2, 6 => 1 } }
+      end
     end
 
     context 'with a block statement' do

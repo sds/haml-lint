@@ -173,7 +173,7 @@ module HamlLint
 
       indent = (' ' * 2 * indent_level)
 
-      @source_lines << indent + code
+      @source_lines << indentation_code(code, indent)
 
       original_line =
         node_or_line.respond_to?(:line) ? node_or_line.line : node_or_line
@@ -185,6 +185,11 @@ module HamlLint
         @line_count += 1
         @source_map[@line_count] = original_line
       end
+    end
+
+    def indentation_code(code, indent)
+      codes = code.split("\n")
+      codes.map { |c| indent + c }.join("\n")
     end
 
     def anonymous_block?(text)
