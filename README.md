@@ -31,7 +31,7 @@ your [SCM hooks](https://github.com/brigade/overcommit).
 
 ## Requirements
 
- * Ruby 2.0.0+
+ * Ruby 2.1.0+
  * HAML 4.0+
 
 ## Installation
