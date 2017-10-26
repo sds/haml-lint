@@ -8,6 +8,8 @@
 * Update default RuboCop exclusions to handle new `Layout/ElseAlignment`,
   `Layout/EndOfLine`, `Metrics/BlockNesting`, and `Naming/FileName` cops which were
   moved to new namespaces. `Style/FinalNewline` was removed.
+* Require RuboCop 0.50.0 or newer
+* Drop support for Ruby 2.0 since RuboCop dropped support (Ruby 2.1+ is still supported)
 
 ## 0.26.0
 
