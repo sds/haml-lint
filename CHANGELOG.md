@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.27.0
 
 * Respect severity levels of RuboCop cops in reported lints
 * Fix `--fail-level` and `--fail-fast` to work when specified together
