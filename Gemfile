@@ -9,7 +9,7 @@ gem 'rspec-its', '~> 1.0'
 gem 'appraisal'
 
 # Run all pre-commit hooks via Overcommit during CI runs
-gem 'overcommit', '0.39.1'
+gem 'overcommit', '0.41.0'
 
 # Pin tool versions (which are executed by Overcommit) for Travis builds
 gem 'rubocop', '0.51.0'

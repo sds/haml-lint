@@ -5,7 +5,7 @@ source "https://rubygems.org"
 gem "rspec", "~> 3.0"
 gem "rspec-its", "~> 1.0"
 gem "appraisal"
-gem "overcommit", "0.39.1"
+gem "overcommit", "0.41.0"
 gem "rubocop", "0.51.0"
 gem "coveralls", require: false
 gem "haml", "~> 4"
