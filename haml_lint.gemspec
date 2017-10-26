@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.files            = Dir['config/**.yml'] +
                        Dir['lib/**/*.rb']
 
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.1.0'
 
   s.add_dependency 'haml', '>= 4.0', '< 5.1'
   s.add_dependency 'rainbow'
