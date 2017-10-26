@@ -18,9 +18,6 @@ Documentation:
 DotPosition:
   EnforcedStyle: leading
 
-Encoding:
-  EnforcedStyle: when_needed
-
 FormatString:
   Enabled: false
 
@@ -42,6 +39,10 @@ Lambda:
 
 LineLength:
   Max: 100
+
+Lint/InterpolationCheck:
+  Exclude:
+    - 'spec/**/*'
 
 MethodLength:
   Max: 20
