@@ -2,6 +2,13 @@
 
 ## master (unreleased)
 
+* Respect severity levels of RuboCop cops in reported lints
+* Fix `--fail-level` and `--fail-fast` to work when specified together
+* Fix erroneous `Layout/CommentIndentation` cop warnings for HAML multiline comments
+* Update default RuboCop exclusions to handle new `Layout/ElseAlignment`,
+  `Layout/EndOfLine`, `Metrics/BlockNesting`, and `Naming/FileName` cops which were
+  moved to new namespaces. `Style/FinalNewline` was removed.
+
 ## 0.26.0
 
 * Add support for RuboCop 0.49.0+
