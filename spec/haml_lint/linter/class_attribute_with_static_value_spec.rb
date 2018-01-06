@@ -68,4 +68,10 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
 
     it { should_not report_lint }
   end
+
+  context 'when tag attributes are malformed' do
+    let(:haml) { %(%input{{type: "radio"}, "a" == "b" ? { checked: "checked" } : {}}) }
+
+    it { should_not report_lint }
+  end
 end
