@@ -43,7 +43,9 @@ module HamlLint
     end
 
     def static_class_attribute_value?(pair)
-      key, value = pair.children
+      return false if (children = pair.children).empty?
+
+      key, value = children
 
       STATIC_TYPES.include?(key.type) &&
         key.children.first.to_sym == :class &&
