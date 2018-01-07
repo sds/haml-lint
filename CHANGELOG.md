@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Fix `ClassAttributeWithStaticValue` to gracefully handle certain malformed
+  attributes
+
 ## 0.27.0
 
 * Respect severity levels of RuboCop cops in reported lints
