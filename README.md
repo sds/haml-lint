@@ -175,6 +175,38 @@ rational basis, we think that the opinions themselves are less important than
 the fact that `haml-lint` provides us with an automated and low-cost means of
 enforcing consistency.
 
+### Custom Linters
+
+Add the following to your configuration file:
+
+```yaml
+require:
+  - './relative/path/to/my_first_linter.rb'
+  - 'absolute/path/to/my_second_linter.rb'
+```
+
+The files that are referenced by this config should have the following structure:
+
+```ruby
+module HamlLint
+  # MyFirstLinter is the name of the linter in this example, but it can be anything
+  class Linter::MyFirstLinter < Linter
+    include LinterRegistry
+
+    def visit_tag
+      return unless node.tag_name == 'div'
+      record_lint(node, "You're not allowed divs!")
+    end
+  end
+end
+```
+
+For more information on the different types on HAML node, please look through
+the HAML parser code: https://github.com/haml/haml/blob/master/lib/haml/parser.rb
+
+Keep in mind that by default your linter will be disabled by default. So you
+will need to enable it in your configuration file to have it run.
+
 ## Disabling Linters within Source Code
 
 One or more individual linters can be disabled locally in a file by adding

@@ -76,7 +76,7 @@ module HamlLint
           hash['inherits_from'].concat(Array(hash.delete('inherit_from')))
         end
 
-        HamlLint::Configuration.new(hash)
+        HamlLint::Configuration.new(hash, file)
       end
 
       # Returns a list of possible configuration files given the context of the

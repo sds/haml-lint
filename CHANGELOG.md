@@ -4,6 +4,7 @@
 
 * Fix `ClassAttributeWithStaticValue` to gracefully handle certain malformed
   attributes
+* Add ability to include custom linters
 
 ## 0.27.0
 
