@@ -12,8 +12,10 @@ module HamlLint
     # Creates a configuration from the given options hash.
     #
     # @param options [Hash]
-    def initialize(options)
+    def initialize(options, file = nil)
       @hash = options
+      @config_dir = file ? File.dirname(file) : nil
+      resolve_requires
       validate
     end
 
@@ -71,6 +73,19 @@ module HamlLint
           smart_merge(old, new)
         else
           new
+        end
+      end
+    end
+
+    # Requires any extra linters / files specified in the configuration.
+    # String starting with a . are treated as relative paths
+    def resolve_requires
+      relative_require_dir = @config_dir || Dir.pwd
+      Array(@hash['require']).each do |r|
+        if r.start_with?('.')
+          require File.join(relative_require_dir, r)
+        else
+          require r
         end
       end
     end
