@@ -1,4 +1,4 @@
-$LOAD_PATH << File.expand_path('../lib', __FILE__)
+$LOAD_PATH << File.expand_path('lib', __dir__)
 require 'haml_lint/constants'
 require 'haml_lint/version'
 
@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.summary          = 'HAML lint tool'
   s.description      = 'Configurable tool for writing clean and consistent HAML'
   s.authors          = ['Brigade Engineering', 'Shane da Silva']
-  s.email            = ['eng@brigade.com', 'shane.dasilva@brigade.com']
+  s.email            = ['eng@brigade.com', 'shane@dasilva.io']
   s.homepage         = HamlLint::REPO_URL
 
   s.require_paths    = ['lib']
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.files            = Dir['config/**.yml'] +
                        Dir['lib/**/*.rb']
 
-  s.required_ruby_version = '>= 2.1.0'
+  s.required_ruby_version = '>= 2.2.0'
 
   s.add_dependency 'haml', '>= 4.0', '< 5.1'
   s.add_dependency 'rainbow'

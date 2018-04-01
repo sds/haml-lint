@@ -26,7 +26,7 @@ module HamlLint
 
       # Loads the built-in default configuration.
       def default_configuration
-        @default_config ||= load_from_file(DEFAULT_CONFIG_PATH)
+        @default_configuration ||= load_from_file(DEFAULT_CONFIG_PATH)
       end
 
       # Loads a configuration, ensuring it extends the default configuration.

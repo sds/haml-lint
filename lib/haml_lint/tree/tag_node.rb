@@ -1,7 +1,6 @@
 module HamlLint::Tree
   # Represents a tag node in a HAML document.
-  # rubocop:disable ClassLength
-  class TagNode < Node
+  class TagNode < Node # rubocop:disable ClassLength
     # Computed set of attribute hashes code.
     #
     # This is a combination of all dynamically calculated attributes from the
@@ -97,7 +96,7 @@ module HamlLint::Tree
     #
     # @return [Hash]
     def attributes_source
-      @attr_source ||=
+      @attributes_source ||=
         begin
           _explicit_tag, static_attrs, rest =
             source_code.scan(/\A\s*(%[-:\w]+)?([-:\w\.\#]*)(.*)/m)[0]
@@ -217,11 +216,9 @@ module HamlLint::Tree
     # Whether this node had a `>` after it signifying that outer whitespace
     # should be removed.
     #
-    # rubocop:disable Style/DoubleNegation
-    #
     # @return [true,false]
     def remove_outer_whitespace?
-      !!@value[:nuke_outer_whitespace]
+      !!@value[:nuke_outer_whitespace] # rubocop:disable Style/DoubleNegation
     end
 
     # Returns the script source that will be evaluated to produce this tag's

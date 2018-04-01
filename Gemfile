@@ -12,6 +12,6 @@ gem 'appraisal'
 gem 'overcommit', '0.44.0'
 
 # Pin tool versions (which are executed by Overcommit) for Travis builds
-gem 'rubocop', '0.51.0'
+gem 'rubocop', '0.54.0'
 
 gem 'coveralls', require: false

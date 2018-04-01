@@ -21,8 +21,8 @@ module HamlLint
     def run(args)
       options = HamlLint::Options.new.parse(args)
       act_on_options(options)
-    rescue StandardError => ex
-      handle_exception(ex)
+    rescue StandardError => exception
+      handle_exception(exception)
     end
 
     private
@@ -62,23 +62,23 @@ module HamlLint
 
     # Outputs a message and returns an appropriate error code for the specified
     # exception.
-    def handle_exception(ex)
-      case ex
+    def handle_exception(exception)
+      case exception
       when HamlLint::Exceptions::ConfigurationError
-        log.error ex.message
+        log.error exception.message
         Sysexits::EX_CONFIG
       when HamlLint::Exceptions::InvalidCLIOption
-        log.error ex.message
+        log.error exception.message
         log.log "Run `#{APP_NAME}` --help for usage documentation"
         Sysexits::EX_USAGE
       when HamlLint::Exceptions::InvalidFilePath
-        log.error ex.message
+        log.error exception.message
         Sysexits::EX_NOINPUT
       when HamlLint::Exceptions::NoLintersError
-        log.error ex.message
+        log.error exception.message
         Sysexits::EX_NOINPUT
       else
-        print_unexpected_exception(ex)
+        print_unexpected_exception(exception)
         Sysexits::EX_SOFTWARE
       end
     end
@@ -148,9 +148,9 @@ module HamlLint
 
     # Outputs the backtrace of an exception with instructions on how to report
     # the issue.
-    def print_unexpected_exception(ex) # rubocop:disable Metrics/AbcSize
-      log.bold_error ex.message
-      log.error ex.backtrace.join("\n")
+    def print_unexpected_exception(exception) # rubocop:disable Metrics/AbcSize
+      log.bold_error exception.message
+      log.error exception.backtrace.join("\n")
       log.warning 'Report this bug at ', false
       log.info HamlLint::BUG_REPORT_URL
       log.newline
