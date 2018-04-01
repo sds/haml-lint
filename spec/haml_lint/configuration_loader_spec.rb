@@ -45,7 +45,7 @@ describe HamlLint::ConfigurationLoader do
 
     before do
       # Ensure cache is cleared
-      described_class.instance_variable_set(:@default_config, nil)
+      described_class.instance_variable_set(:@default_configuration, nil)
     end
 
     it 'loads the default config file' do
