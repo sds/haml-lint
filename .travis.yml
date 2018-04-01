@@ -7,8 +7,9 @@ cache: bundler
 rvm:
   - 2.1
   - 2.2
-  - 2.3.5
-  - 2.4.2
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
 
 gemfile:
   - gemfiles/haml4.gemfile
