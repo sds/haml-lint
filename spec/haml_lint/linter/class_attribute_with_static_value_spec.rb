@@ -74,4 +74,15 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
 
     it { should_not report_lint }
   end
+
+  context 'when tag has both HTML-style and hash-style attributes' do
+    let(:haml) { <<-HAML }
+      - MyStruct = Struct.new(:href)
+      - @title = 'Hello'
+      - @link = MyStruct.new('blahblah')
+      %a(title=@title){:href => @link.href} Stuff
+    HAML
+
+    it { should_not report_lint }
+  end
 end

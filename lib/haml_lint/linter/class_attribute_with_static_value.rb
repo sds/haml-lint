@@ -29,9 +29,13 @@ module HamlLint
 
     private
 
+    def surrounded_by_braces?(code)
+      code.start_with?('{') && code.end_with?('}')
+    end
+
     def contains_class_attribute?(attributes_sources)
       attributes_sources.each do |code|
-        ast_root = parse_ruby(code.start_with?('{') ? code : "{#{code}}")
+        ast_root = parse_ruby(surrounded_by_braces?(code) ? code : "{#{code}}")
         next unless ast_root # RuboCop linter will report syntax errors
 
         ast_root.children.each do |pair|
