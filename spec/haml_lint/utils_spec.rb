@@ -2,35 +2,60 @@ require 'spec_helper'
 require 'securerandom'
 
 describe HamlLint::Utils do
-  describe 'any_glob_matches?' do
-    let(:file) { 'match-file.txt' }
+  shared_examples('any_glob_matches? tests') do |path_type, file|
     subject { described_class.any_glob_matches?(globs, file) }
 
-    context 'when a single matching glob is given' do
-      let(:globs) { 'match-*.txt' }
+    context "with a #{path_type} path" do
+      context 'when a single matching glob is given' do
+        let(:globs) { 'match-*.txt' }
 
-      it { should == true }
-    end
+        it { should == true }
+      end
 
-    context 'when a single non-matching glob is given' do
-      let(:globs) { 'other-*.txt' }
-
-      it { should == false }
-    end
-
-    context 'when a list of globs is given' do
-      context 'and none of them match' do
-        let(:globs) { ['who.txt', 'nope*.txt', 'nomatch-*.txt'] }
+      context 'when a single non-matching glob is given' do
+        let(:globs) { 'other-*.txt' }
 
         it { should == false }
       end
 
-      context 'and one of them match' do
-        let(:globs) { ['who.txt', 'nope*.txt', 'match-*.txt'] }
+      context 'when a single matching relative path is given' do
+        let(:globs) { 'match-file.txt' }
 
         it { should == true }
       end
+
+      context 'when a single matching absolute path is given' do
+        let(:globs) { File.expand_path('match-file.txt', Dir.pwd) }
+
+        it { should == true }
+      end
+
+      context 'when a single non-matching path is given' do
+        let(:globs) { 'match-file.txt' }
+
+        it { should == true }
+      end
+
+      context 'when a list of globs is given' do
+        context 'and none of them match' do
+          let(:globs) { ['who.txt', 'nope*.txt', 'nomatch-*.txt'] }
+
+          it { should == false }
+        end
+
+        context 'and one of them match' do
+          let(:globs) { ['who.txt', 'nope*.txt', 'match-*.txt'] }
+
+          it { should == true }
+        end
+      end
     end
+  end
+
+  describe 'any_glob_matches?' do
+    include_examples 'any_glob_matches? tests', 'relative', 'match-file.txt'
+    include_examples 'any_glob_matches? tests', 'absolute',
+                     File.expand_path('match-file.txt', Dir.pwd)
   end
 
   describe '.extract_interpolated_values' do

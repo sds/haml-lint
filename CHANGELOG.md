@@ -6,6 +6,7 @@
   attributes
 * Add ability to include custom linters
 * Drop support for Ruby 2.1
+* Fix passing absolute filenames ignoring relative path excludes config
 
 ## 0.27.0
 

@@ -1,3 +1,5 @@
+require 'pathname'
+
 module HamlLint
   # A miscellaneous set of utility functions.
   module Utils
@@ -13,10 +15,31 @@ module HamlLint
     # @param file [String]
     # @return [Boolean]
     def any_glob_matches?(globs_or_glob, file)
-      Array(globs_or_glob).any? do |glob|
-        ::File.fnmatch?(glob, file,
-                        ::File::FNM_PATHNAME | # Wildcards don't match path separators
-                        ::File::FNM_DOTMATCH)  # `*` wildcard matches dotfiles
+      get_abs_and_rel_path(file).any? do |path|
+        Array(globs_or_glob).any? do |glob|
+          ::File.fnmatch?(glob, path,
+                          ::File::FNM_PATHNAME | # Wildcards don't match path separators
+                          ::File::FNM_DOTMATCH)  # `*` wildcard matches dotfiles
+        end
+      end
+    end
+
+    # Returns an array of two items, the first being the absolute path, the second
+    # the relative path.
+    #
+    # The relative path is relative to the current working dir. The path passed can
+    # be either relative or absolute.
+    #
+    # @param path [String] Path to get absolute and relative path of
+    # @return [Array<String>] Absolute and relative path
+    def get_abs_and_rel_path(path)
+      original_path = Pathname.new(path)
+      root_dir_path = Pathname.new(File.expand_path(Dir.pwd))
+
+      if original_path.absolute?
+        [path, original_path.relative_path_from(root_dir_path)]
+      else
+        [root_dir_path + original_path, path]
       end
     end
 
