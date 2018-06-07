@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.28.0
 
 * Fix `ClassAttributeWithStaticValue` to gracefully handle certain malformed
   attributes
