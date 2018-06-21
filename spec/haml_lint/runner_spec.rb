@@ -61,33 +61,6 @@ describe HamlLint::Runner do
           subject
         end
       end
-
-      context 'when there is a Haml parsing error in a file' do
-        let(:files) { %w[inconsistent_indentation.haml] }
-
-        include_context 'isolated environment'
-
-        before do
-          # The runner needs to actually look for files to lint
-          runner.should_receive(:collect_lints).and_call_original
-          haml = "%div\n  %span Hello, world\n\t%span Goodnight, moon"
-
-          `echo "#{haml}" > inconsistent_indentation.haml`
-        end
-
-        it 'adds a syntax lint to the output' do
-          subject.lints.size.should == 1
-
-          lint = subject.lints.first
-          lint.line.should == 2
-          lint.filename.should == 'inconsistent_indentation.haml'
-          lint.message.should match(/^Inconsistent indentation/)
-          lint.severity.should == :error
-
-          linter = lint.linter
-          linter.name.should == 'Syntax'
-        end
-      end
     end
 
     context 'integration tests' do
