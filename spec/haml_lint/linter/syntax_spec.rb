@@ -27,14 +27,14 @@ describe HamlLint::Linter::Syntax do
       end
     end
 
-    # context 'when there are invalid hash attributes' do
-    #   let(:haml) { '%tag{ a: "A" b: "B" }' }
-    #
-    #   it { should report_syntax_lint }
-    #   it { should report_on_line 2 }
-    #   it { should report_message /unexpected token/ }
-    #   it { should report_severity :error }
-    # end
+    context 'when there are invalid hash attributes' do
+      let(:haml) { '%tag{ a: "A" b: "B" }' }
+
+      it { should report_syntax_lint }
+      it { should report_on_line 2 }
+      it { should report_message /unexpected token/ }
+      it { should report_severity :error }
+    end
 
     context 'when there is an indentation syntax error' do
       let(:haml) { "%div\n  %span Hello, world\n\t%span Goodnight, moon" }
