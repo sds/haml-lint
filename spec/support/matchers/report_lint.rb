@@ -30,8 +30,20 @@ RSpec::Matchers.define :report_lint do |options|
       end
   end
 
-  failure_message_when_negated do |_linter|
-    'expected that a lint would not be reported'
+  failure_message_when_negated do |linter|
+    message = ['expected that a lint would not be reported, but reported ']
+
+    message <<
+      case linter.lints.count
+      when 1 then "1 lint:\n"
+      else "#{linter.lints.count} lints:\n"
+      end
+
+    linter.lints.each do |lint|
+      message << "  - Line #{lint.line}: #{lint.message}"
+    end
+
+    message.join
   end
 
   description do
