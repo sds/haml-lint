@@ -131,6 +131,7 @@ module HamlLint
     def parse_args
       cli_args = config ? ['--config', config] : []
       cli_args.concat(['--fail-level', fail_level]) if fail_level
+      cli_args
     end
   end
 end

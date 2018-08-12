@@ -4,7 +4,14 @@ require 'tempfile'
 
 describe HamlLint::RakeTask do
   before(:all) do
+    config =
+      Tempfile.new(%w[my-haml-lint.yml]).tap do |f|
+        f.write("linters:\n  MultilinePipe:\n    enabled: false\n  RuboCop:\n    enabled: false")
+        f.close
+      end
+
     HamlLint::RakeTask.new do |t|
+      t.config = config.path
       t.fail_level = 'warning'
       t.quiet = true
     end
@@ -37,6 +44,14 @@ describe HamlLint::RakeTask do
 
     it 'raises an error' do
       expect { run_task }.to raise_error RuntimeError
+    end
+  end
+
+  context 'with a config file that disables a linter' do
+    let(:haml) { "%p{ |\n     'data-lint' => 'Will be raised without config' } |\n" }
+
+    it 'executes without error' do
+      expect { run_task }.not_to raise_error
     end
   end
 end
