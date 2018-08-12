@@ -1,7 +1,4 @@
 PreCommit:
-  BundleCheck:
-    enabled: true
-
   ExecutePermissions:
     enabled: true
     exclude:
