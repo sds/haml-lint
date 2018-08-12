@@ -47,4 +47,19 @@ describe HamlLint::Linter::LineLength do
 
     it { should report_lint line: 6 }
   end
+
+  context 'when there is a directive on the line before a multiline pipe' do
+    let(:haml) do
+      <<-HAML
+        -# haml-lint:disable LineLength
+        %p{ |
+          'data-test' => link_to 'Foobar', i_need_to_make_this_line_longer_path, class: 'button alert' } |
+        -# haml-lint:enable LineLength
+        %p Another really long line that should report a lint for line length because it is no longer disabled
+      HAML
+    end
+
+    it { should_not report_lint line: 3 }
+    it { should report_lint line: 5 }
+  end
 end

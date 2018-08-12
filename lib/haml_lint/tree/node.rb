@@ -102,7 +102,10 @@ module HamlLint::Tree
     def line_numbers
       return (line..line) unless @value && text
 
-      (line..line + lines.count)
+      end_line = line + lines.count
+      end_line = nontrivial_end_line if line == end_line
+
+      (line..end_line)
     end
 
     # The previous node to be traversed in the tree.
@@ -151,6 +154,19 @@ module HamlLint::Tree
     end
 
     private
+
+    # Discovers the end line of the node when there are no lines.
+    #
+    # @return [Integer] the end line of the node
+    def nontrivial_end_line
+      if (last_child = children.last)
+        last_child.line_numbers.end - 1
+      elsif successor
+        successor.line_numbers.begin - 1
+      else
+        @document.source_lines.count
+      end
+    end
 
     # The siblings of this node within the tree.
     #

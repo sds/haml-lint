@@ -151,6 +151,74 @@ describe HamlLint::Tree::Node do
     it { should == '#<HamlLint::Tree::RootNode>' }
   end
 
+  describe '#line_numbers' do
+    subject { document.tree.children.first.line_numbers }
+
+    context 'for a node with a body' do
+      let(:haml) do
+        <<-HAML
+          %p
+            This is the body of the paragraph tag
+            and it goes over multiple lines.
+        HAML
+      end
+
+      it { should == (1..3) }
+
+      context 'with a successor' do
+        let(:haml) do
+          <<-HAML
+            %p
+              This is the body of the paragraph tag
+              and it goes over multiple lines.
+            %p This is a successor
+          HAML
+        end
+
+        it { should == (1..3) }
+      end
+    end
+
+    context 'for a multiline node' do
+      let(:haml) do
+        <<-HAML
+          %p{ |
+            'data-test' => 'This is a multiline node' } |
+        HAML
+      end
+
+      it { should == (1..2) }
+
+      context 'with a successor' do
+        let(:haml) do
+          <<-HAML
+            %p{ |
+              'data-test' => 'This is a multiline node' } |
+            %p This is a successor
+          HAML
+        end
+
+        it { should == (1..2) }
+      end
+    end
+
+    context 'for a single-line node without a successor' do
+      let(:haml) do
+        <<-HAML
+          %p This is a single-line node
+        HAML
+      end
+
+      it { should == (1..1) }
+    end
+
+    context 'for a node with a successor and no body' do
+      let(:haml) { '%p' }
+
+      it { should == (1..1) }
+    end
+  end
+
   describe '#predecessor' do
     subject { document.tree.find { |node| node.type == :haml_comment }.predecessor }
 
