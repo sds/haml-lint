@@ -323,6 +323,10 @@ If you use `atom`, you can install the [linter-haml](https://atom.io/packages/li
 
 If you use `TextMate 2`, you can install the [Haml-Lint.tmbundle](https://github.com/jjuliano/Haml-Lint.tmbundle) bundle.
 
+### Visual Studio Code
+
+If you use `Visual Studio Code`, you can install the [Haml Lint](https://marketplace.visualstudio.com/items?itemName=aki77.haml-lint) extension
+
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
