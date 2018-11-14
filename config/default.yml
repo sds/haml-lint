@@ -91,6 +91,7 @@ linters:
       - Lint/BlockAlignment
       - Lint/EndAlignment
       - Lint/Void
+      - Layout/AlignHash
       - Layout/AlignParameters
       - Layout/ElseAlignment
       - Layout/EndOfLine
