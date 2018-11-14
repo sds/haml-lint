@@ -20,4 +20,10 @@ RSpec.describe HamlLint::Linter::ViewLength do
 
     it { should report_lint line: 0 }
   end
+
+  context 'over the line limit with linter disabled' do
+    let(:haml) { "-# haml-lint:disable ViewLength\n#{"a\n" * 150}" }
+
+    it { should_not report_lint }
+  end
 end
