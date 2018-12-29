@@ -35,9 +35,18 @@ module HamlLint
     # @return [String]
     attr_accessor :name
 
-    # Configuration file to use.
+    # Set the configuration file or path.
+    #
+    # @param config [String,File]
+    def config=(config)
+      @config = config.is_a?(String) ? File.open(config, 'r') : config
+    end
+
+    # Return the configuration file path.
     # @return [String]
-    attr_accessor :config
+    def config
+      @config.path
+    end
 
     # List of files to lint (can contain shell globs).
     #

@@ -11,7 +11,7 @@ describe HamlLint::RakeTask do
       end
 
     HamlLint::RakeTask.new do |t|
-      t.config = config.path
+      t.config = config
       t.fail_level = 'warning'
       t.quiet = true
     end
