@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter::SpaceBeforeScript do
   include_context 'linter'
 

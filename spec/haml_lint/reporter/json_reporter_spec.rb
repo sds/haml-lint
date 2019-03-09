@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Reporter::JsonReporter do
   describe '#display_report' do
     let(:io) { StringIO.new }

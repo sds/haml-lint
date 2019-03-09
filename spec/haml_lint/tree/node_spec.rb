@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Tree::Node do
   let(:options) do
     {

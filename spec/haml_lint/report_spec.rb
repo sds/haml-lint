@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Report do
   let(:fail_level) { :warning }
   let(:filenames) { ['some-filename.haml'] }

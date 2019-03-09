@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Adapter do
   describe '.detect_class' do
     subject { described_class.detect_class }

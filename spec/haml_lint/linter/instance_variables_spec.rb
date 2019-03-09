@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Linter::InstanceVariables do
   include_context 'linter'
 

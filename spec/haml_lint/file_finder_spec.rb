@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::FileFinder do
   let(:config) { double }
   let(:excluded_patterns) { [] }

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Tree::HamlCommentNode do
   let(:options) do
     {

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Reporter::DefaultReporter do
   let(:filenames) { %w[some-filename.haml] }
   let(:io) { StringIO.new }

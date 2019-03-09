@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Logger do
   let(:io)     { StringIO.new }
   let(:logger) { described_class.new(io) }

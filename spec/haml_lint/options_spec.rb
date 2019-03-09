@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'haml_lint/options'
 
 describe HamlLint::Options do

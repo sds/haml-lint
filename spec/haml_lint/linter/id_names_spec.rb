@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Linter::IdNames do
   include_context 'linter'
 

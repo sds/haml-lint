@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::LinterSelector do
   let(:options) { {} }
   let(:config) { HamlLint::ConfigurationLoader.load_hash(config_hash) }

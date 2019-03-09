@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Reporter do
   let(:reporter) { HamlLint::Reporter.new(double) }
 

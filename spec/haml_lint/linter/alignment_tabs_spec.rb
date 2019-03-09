@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Linter::AlignmentTabs do
   include_context 'linter'
 

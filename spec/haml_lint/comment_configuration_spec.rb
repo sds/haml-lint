@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::CommentConfiguration do
   subject(:config) { described_class.new(node) }
 

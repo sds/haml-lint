@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Linter::InlineStyles do
   include_context 'linter'
 

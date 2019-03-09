@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
   let(:config)   { File.read('.haml-lint_todo.yml') }
   let(:files)    { ['some-filename.haml'] }

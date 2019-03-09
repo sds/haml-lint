@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::HamlVisitor do
   describe '#visit' do
     let(:options) do
