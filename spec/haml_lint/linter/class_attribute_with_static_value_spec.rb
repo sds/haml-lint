@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter::ClassAttributeWithStaticValue do
   include_context 'linter'
 

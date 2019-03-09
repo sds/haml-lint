@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter::MultilinePipe do
   include_context 'linter'
 

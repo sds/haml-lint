@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Configuration do
   let(:config) { HamlLint::ConfigurationLoader.default_configuration }
 

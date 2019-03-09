@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::RubyParser do
   describe '#parse' do
     subject { super().parse(source) }

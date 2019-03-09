@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Directive do
   subject(:directive) { described_class.new }
 

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::RubyExtractor do
   let(:extractor) { described_class.new }
 

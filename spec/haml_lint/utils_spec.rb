@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'securerandom'
 
 describe HamlLint::Utils do

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter do
   let(:linter_class) do
     Class.new(described_class) do

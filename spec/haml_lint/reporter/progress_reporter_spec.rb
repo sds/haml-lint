@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe HamlLint::Reporter::ProgressReporter do
   let(:files)    { ['some-filename.haml'] }
   let(:io)       { StringIO.new }

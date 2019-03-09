@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter::ConsecutiveSilentScripts do
   include_context 'linter'
 

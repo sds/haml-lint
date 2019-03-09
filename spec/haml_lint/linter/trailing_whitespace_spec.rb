@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe HamlLint::Linter::TrailingWhitespace do
   include_context 'linter'
 
