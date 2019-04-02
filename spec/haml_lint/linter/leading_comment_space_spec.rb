@@ -34,4 +34,14 @@ describe HamlLint::Linter::LeadingCommentSpace do
 
     it { should_not report_lint }
   end
+
+  context 'when a comment has a banner line' do
+    let(:haml) { <<-HAML }
+      -######################
+      -# Important section! #
+      -######################
+    HAML
+
+    it { should_not report_lint }
+  end
 end
