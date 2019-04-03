@@ -37,6 +37,11 @@ module HamlLint
         @options[:auto_gen_config] = true
       end
 
+      parser.on('--auto-gen-exclude-limit limit', Integer,
+                'Number of failures to allow in the TODO list before the entire rule is excluded') do |limit| # rubocop:disable Metrics/LineLength
+        @options[:auto_gen_exclude_limit] = limit
+      end
+
       parser.on('-i', '--include-linter linter,...', Array,
                 'Specify which linters you want to run') do |linters|
         @options[:included_linters] = linters

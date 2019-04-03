@@ -92,7 +92,7 @@ module HamlLint
     # @return [HamlLint::Reporter]
     def reporter_from_options(options)
       if options[:auto_gen_config]
-        HamlLint::Reporter::DisabledConfigReporter.new(log)
+        HamlLint::Reporter::DisabledConfigReporter.new(log, limit: options[:auto_gen_exclude_limit] || 15) # rubocop:disable Metrics/LineLength
       else
         options.fetch(:reporter, HamlLint::Reporter::DefaultReporter).new(log)
       end
