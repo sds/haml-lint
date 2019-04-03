@@ -23,10 +23,11 @@ module HamlLint
     # Create the reporter that will display the report and write the config.
     #
     # @param _log [HamlLint::Logger]
-    def initialize(_log)
-      super
+    def initialize(log, limit: 15)
+      super(log)
       @linters_with_lints = Hash.new { |hash, key| hash[key] = [] }
       @linters_lint_count = Hash.new(0)
+      @exclude_limit = limit
     end
 
     # A hash of linters with the files that have that type of lint.
@@ -40,6 +41,11 @@ module HamlLint
     # @return [Hash<String, Array<String>>] a Hash with linter name keys and file
     #   name list values
     attr_reader :linters_with_lints
+
+    # Number of offenses to allow before simply disabling the linter
+    #
+    # @return [Integer] file exclude limit
+    attr_reader :exclude_limit
 
     # Prints the standard progress reporter output and writes the new config file.
     #
@@ -97,7 +103,7 @@ module HamlLint
         output << "  #{linter}:"
         # disable the linter when there are many files with offenses.
         # exclude the affected files otherwise.
-        if files.count > 15
+        if files.count > exclude_limit
           output << '    enabled: false'
         else
           output << '    exclude:'

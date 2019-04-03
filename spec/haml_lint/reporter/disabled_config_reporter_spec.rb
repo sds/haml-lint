@@ -111,6 +111,28 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
             '    enabled: false'
           ].join("\n")
       end
+
+      context 'when auto-gen-exclude-limit is specified' do
+        let(:reporter) { described_class.new(logger, limit: 1) }
+
+        it 'excludes linters whose offense-count is greater than the limit' do
+          subject
+          config.should ==
+            [
+              described_class::HEADING,
+              '',
+              'linters:',
+              '',
+              '  # Offense count: 3',
+              '  SomeLinter:',
+              '    enabled: false',
+              '',
+              '  # Offense count: 16',
+              '  OtherLinter:',
+              '    enabled: false'
+            ].join("\n")
+        end
+      end
     end
   end
 
