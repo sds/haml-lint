@@ -59,12 +59,10 @@ module HamlLint
     def load_applicable_config(options)
       if options[:auto_gen_config]
         HamlLint::ConfigurationLoader.default_configuration
-      elsif options[:config_file]
-        HamlLint::ConfigurationLoader.load_file(options[:config_file])
       elsif options[:config]
         options[:config]
       else
-        HamlLint::ConfigurationLoader.load_applicable_config
+        HamlLint::ConfigurationLoader.load_applicable_config(options[:config_file])
       end
     end
 
