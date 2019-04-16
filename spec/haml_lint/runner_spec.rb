@@ -35,9 +35,24 @@ describe HamlLint::Runner do
         it 'loads that specified configuration file' do
           config.stub(:for_linter).and_return('enabled' => true)
 
-          HamlLint::ConfigurationLoader.should_receive(:load_file)
+          HamlLint::ConfigurationLoader.should_receive(:load_applicable_config)
                                        .with('some-config.yml')
                                        .and_return(config)
+          subject
+        end
+      end
+
+      context 'when :auto_gen_config option is specified' do
+        let(:options) { base_options.merge(auto_gen_config: true) }
+        let(:config) { double('config') }
+
+        it 'loads that specified configuration file' do
+          config.stub(:for_linter).and_return('enabled' => true)
+
+          HamlLint::ConfigurationLoader.should_receive(:load_applicable_config)
+                                       .with(nil, exclude_files: [
+                                               HamlLint::ConfigurationLoader::AUTO_GENERATED_FILE
+                                             ]).and_return(config)
           subject
         end
       end
