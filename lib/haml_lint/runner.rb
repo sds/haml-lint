@@ -57,10 +57,13 @@ module HamlLint
     # @param options [Hash]
     # @return [HamlLint::Configuration]
     def load_applicable_config(options)
-      if options[:auto_gen_config]
-        HamlLint::ConfigurationLoader.default_configuration
-      elsif options[:config]
+      if options[:config]
         options[:config]
+      elsif options[:auto_gen_config]
+        HamlLint::ConfigurationLoader.load_applicable_config(
+          options[:config_file],
+          exclude_files: [HamlLint::ConfigurationLoader::AUTO_GENERATED_FILE]
+        )
       else
         HamlLint::ConfigurationLoader.load_applicable_config(options[:config_file])
       end

@@ -28,7 +28,7 @@ describe HamlLint::ConfigurationLoader do
 
       it 'loads the file' do
         described_class.should_receive(:load_file)
-                       .with(File.expand_path('.haml-lint.yml'))
+                       .with(File.expand_path('.haml-lint.yml'), {})
         subject
       end
 
@@ -192,6 +192,13 @@ describe HamlLint::ConfigurationLoader do
 
             subject.should ==
               described_class.default_configuration.merge(custom_config)
+          end
+        end
+
+        context 'when the inherited file is excluded' do
+          subject { described_class.load_file(file_name, exclude_files: [other_config]) }
+          it 'ignores the inherited file' do
+            subject['linters']['Indentation']['enabled'].should == true
           end
         end
 

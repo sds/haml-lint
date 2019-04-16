@@ -13,10 +13,15 @@ module HamlLint
     class << self
       # Load configuration file given the current working directory the
       # application is running within.
-      def load_applicable_config(config_file = nil)
+      # @param config_file [String] optional path to the config file to load
+      # @param options [Hash]
+      # @option options :exclude_files [Array<String>] files that should not
+      #   be loaded even if they're requested via inherits_from
+      # @return [HamlLint::Configuration]
+      def load_applicable_config(config_file = nil, options = {})
         config_file ||= default_path_to_config
         if config_file
-          load_file(config_file)
+          load_file(config_file, options)
         else
           default_configuration
         end
@@ -37,13 +42,18 @@ module HamlLint
       # Loads a configuration, ensuring it extends the default configuration.
       #
       # @param file [String]
-      # @param loaded_files [Array<String>] any previously loaded files in an
-      #   inheritance chain
+      # @param context [Hash]
+      # @option context :loaded_files [Array<String>] any previously loaded
+      #   files in an inheritance chain
+      # @option context :exclude_files [Array<String>] files that should not
+      #   be loaded even if they're requested via inherits_from
       # @return [HamlLint::Configuration]
-      def load_file(file, loaded_files = [])
+      def load_file(file, context = {})
+        context[:loaded_files] ||= []
+        context[:exclude_files] ||= []
         config = load_from_file(file)
 
-        [default_configuration, resolve_inheritance(config, loaded_files), config]
+        [default_configuration, resolve_inheritance(config, context), config]
           .reduce { |acc, elem| acc.merge(elem) }
       rescue Psych::SyntaxError, Errno::ENOENT => error
         raise HamlLint::Exceptions::ConfigurationError,
@@ -102,12 +112,13 @@ module HamlLint
       # @param loaded_files [Array<String>] previously loaded files in the
       #   inheritance chain
       # @return [HamlLint::Configuration, nil]
-      def resolve(file, loaded_files)
+      def resolve(file, context)
         return unless File.exist?(file)
-        return if loaded_files.include?(file)
+        return if context[:loaded_files].include?(file)
+        return if context[:exclude_files].include?(file)
 
-        loaded_files << file
-        load_file(file, loaded_files)
+        context[:loaded_files] << file
+        load_file(file, context)
       end
 
       # Resolves the chain of `inherits_from` directives in a configuration.
@@ -116,9 +127,9 @@ module HamlLint
       # @param loaded_files [Array<String>] any previously loaded files in an
       #   inheritance chain
       # @return [HamlLint::Configuration]
-      def resolve_inheritance(config, loaded_files)
+      def resolve_inheritance(config, context)
         Array(config['inherits_from'])
-          .map { |config_file| resolve(config_file, loaded_files) }
+          .map { |config_file| resolve(config_file, context) }
           .compact
           .reduce { |acc, elem| acc.merge(elem) } || config
       end
