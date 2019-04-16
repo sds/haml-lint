@@ -13,15 +13,20 @@ module HamlLint
     class << self
       # Load configuration file given the current working directory the
       # application is running within.
-      def load_applicable_config
-        directory = File.expand_path(Dir.pwd)
-        config_file = possible_config_files(directory).find(&:file?)
-
+      def load_applicable_config(config_file = nil)
+        config_file ||= default_path_to_config
         if config_file
-          load_file(config_file.to_path)
+          load_file(config_file)
         else
           default_configuration
         end
+      end
+
+      # Path to the default config file, if it exists
+      def default_path_to_config
+        directory = File.expand_path(Dir.pwd)
+        config_file = possible_config_files(directory).find(&:file?)
+        config_file ? config_file.to_path : nil
       end
 
       # Loads the built-in default configuration.
