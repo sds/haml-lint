@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 RSpec.describe HamlLint::Tree::RootNode do
   describe '#node_for_line' do
     let(:document) { HamlLint::Document.new(haml, config: {}) }

@@ -26,10 +26,8 @@ module HamlLint
       @options[:files] = args.empty? ? ['.'] : args
 
       @options
-    rescue OptionParser::InvalidOption => ex
-      raise Exceptions::InvalidCLIOption,
-            ex.message,
-            ex.backtrace
+    rescue OptionParser::InvalidOption => e
+      raise Exceptions::InvalidCLIOption, e.message, e.backtrace
     end
 
     private

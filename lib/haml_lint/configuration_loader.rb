@@ -55,10 +55,10 @@ module HamlLint
 
         [default_configuration, resolve_inheritance(config, context), config]
           .reduce { |acc, elem| acc.merge(elem) }
-      rescue Psych::SyntaxError, Errno::ENOENT => error
+      rescue Psych::SyntaxError, Errno::ENOENT => e
         raise HamlLint::Exceptions::ConfigurationError,
-              "Unable to load configuration from '#{file}': #{error}",
-              error.backtrace
+              "Unable to load configuration from '#{file}': #{e}",
+              e.backtrace
       end
 
       # Creates a configuration from the specified hash, ensuring it extends the

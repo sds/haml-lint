@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint/adapter'
 
 module HamlLint
@@ -44,8 +46,8 @@ module HamlLint
       @source_lines = @source.split(/\r\n|\r|\n/)
 
       @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
-    rescue Haml::Error => ex
-      error = HamlLint::Exceptions::ParseError.new(ex.message, ex.line)
+    rescue Haml::Error => e
+      error = HamlLint::Exceptions::ParseError.new(e.message, e.line)
       raise error
     end
 

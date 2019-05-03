@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 describe HamlLint::Document do
   let(:config) { double }
 
@@ -82,8 +84,8 @@ describe HamlLint::Document do
       it 'includes the line number in the exception' do
         begin
           subject
-        rescue HamlLint::Exceptions::ParseError => ex
-          ex.line.should == 2
+        rescue HamlLint::Exceptions::ParseError => e
+          e.line.should == 2
         end
       end
     end

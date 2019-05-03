@@ -20,7 +20,7 @@ module HamlLint
 
     STATIC_TYPES = %i[str sym].freeze
 
-    VALID_CLASS_REGEX = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/
+    VALID_CLASS_REGEX = /^-?[_a-zA-Z]+[_a-zA-Z0-9-]*$/.freeze
 
     def visit_tag(node)
       return unless contains_class_attribute?(node.dynamic_attributes_sources)

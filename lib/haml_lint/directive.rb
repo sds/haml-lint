@@ -3,7 +3,7 @@
 module HamlLint
   # Handles linter configuration transformation via Haml comments.
   class Directive
-    LINTER_REGEXP = /(?:[A-Z]\w+)/
+    LINTER_REGEXP = /(?:[A-Z]\w+)/.freeze
 
     DIRECTIVE_REGEXP = /
       # "haml-lint:" with optional spacing
@@ -14,7 +14,7 @@ module HamlLint
 
       # "all" or a comma-separated list (with optional spaces) of linters
       (?<linters>all | (?:#{LINTER_REGEXP}\s*,\s*)* #{LINTER_REGEXP})
-    /x
+    /x.freeze
 
     # Constructs a directive from source code as a given line.
     #

@@ -23,8 +23,8 @@ module HamlLint
     def run(args)
       options = HamlLint::Options.new.parse(args)
       act_on_options(options)
-    rescue StandardError => exception
-      handle_exception(exception)
+    rescue StandardError => e
+      handle_exception(e)
     end
 
     private

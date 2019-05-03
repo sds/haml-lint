@@ -124,7 +124,7 @@ module HamlLint
       visit_script(node, &block)
     end
 
-    def visit_filter(node) # rubocop:disable Metrics/AbcSize
+    def visit_filter(node)
       if node.filter_type == 'ruby'
         node.text.split("\n").each_with_index do |line, index|
           add_line(line, node.line + index + 1, false)

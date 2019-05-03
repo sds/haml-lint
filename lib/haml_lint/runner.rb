@@ -80,9 +80,9 @@ module HamlLint
     def collect_lints(file, linter_selector, config)
       begin
         document = HamlLint::Document.new(File.read(file), file: file, config: config)
-      rescue HamlLint::Exceptions::ParseError => ex
+      rescue HamlLint::Exceptions::ParseError => e
         return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), file,
-                                   ex.line, ex.to_s, :error)]
+                                   e.line, e.to_s, :error)]
       end
 
       linter_selector.linters_for_file(file).map do |linter|

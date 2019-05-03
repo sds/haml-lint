@@ -31,7 +31,7 @@ module HamlLint
 
     private
 
-    MULTILINE_PIPE_REGEX = /\s+\|\s*$/
+    MULTILINE_PIPE_REGEX = /\s+\|\s*$/.freeze
 
     def line_text_for_node(node)
       document.source_lines[node.line - 1]

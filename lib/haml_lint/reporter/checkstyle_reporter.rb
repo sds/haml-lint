@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module HamlLint
   # Outputs report as an XML checkstyle document.
   class Reporter::CheckstyleReporter < Reporter

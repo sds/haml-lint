@@ -93,6 +93,12 @@ SingleLineBlockParams:
 SpecialGlobalVars:
   Enabled: false
 
+Layout/AlignHash:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
 Layout/MultilineOperationIndentation:
   Enabled: false
 

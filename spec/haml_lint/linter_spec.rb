@@ -1,3 +1,4 @@
+# frozen_string_literal: false
 
 describe HamlLint::Linter do
   let(:linter_class) do
