@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.30.0
 
 * Drop support for HAML 4.1 beta
 * Fix broken Rake task regression introduced in 0.28.0
