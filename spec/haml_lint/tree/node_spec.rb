@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Tree::Node do
   let(:options) do
     {

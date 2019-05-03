@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for comments that don't have a leading space.
   class Linter::LeadingCommentSpace < Linter

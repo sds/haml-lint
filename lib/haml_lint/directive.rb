@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Handles linter configuration transformation via Haml comments.
   class Directive

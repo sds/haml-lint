@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HamlLint::Severity do
   let(:name) { nil }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HamlLint::Directive do
   subject(:directive) { described_class.new }
 

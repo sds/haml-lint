@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Chooses the appropriate linters to run given the specified configuration.
   class LinterSelector

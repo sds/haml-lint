@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Logger do
   let(:io)     { StringIO.new }
   let(:logger) { described_class.new(io) }

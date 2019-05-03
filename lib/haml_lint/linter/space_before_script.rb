@@ -5,7 +5,7 @@ module HamlLint
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
-    MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'.freeze
+    MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'
 
     ALLOWED_SEPARATORS = [' ', '#'].freeze
 

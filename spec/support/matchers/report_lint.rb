@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec::Matchers.define :report_lint do |options|
   options ||= {}
   count = options[:count]

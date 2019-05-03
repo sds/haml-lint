@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint::Tree
   # A null object version of a node that can be used as a safe default.
   class NullNode < Node

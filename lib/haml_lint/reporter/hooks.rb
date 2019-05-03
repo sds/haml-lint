@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   class Reporter
     # A collection of hook methods for incremental processing.

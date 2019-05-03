@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for unnecessary uses of string interpolation.
   #

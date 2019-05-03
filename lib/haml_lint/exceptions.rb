@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Collection of exceptions that can be raised by the HAML Lint application.
 module HamlLint::Exceptions
   # Raised when a {Configuration} could not be loaded from a file.

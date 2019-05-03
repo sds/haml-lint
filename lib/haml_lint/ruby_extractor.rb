@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Utility class for extracting Ruby script from a HAML file that can then be
   # linted with a Ruby linter (i.e. is "legal" Ruby). The goal is to turn this:

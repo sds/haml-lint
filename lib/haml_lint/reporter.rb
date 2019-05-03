@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint/reporter/hooks'
 
 module HamlLint

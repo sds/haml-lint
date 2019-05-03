@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint::Tree
   # Represents a tag node in a HAML document.
   class TagNode < Node # rubocop:disable ClassLength

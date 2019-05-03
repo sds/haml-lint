@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for spaces inside the braces of hash attributes
   # (e.g. `%tag{ lang: en }` vs `%tag{lang: en}`).

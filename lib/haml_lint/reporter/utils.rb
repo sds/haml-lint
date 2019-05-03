@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   class Reporter
     # Formatting helpers for printing the default report format.

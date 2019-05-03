@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint'
 require 'haml_lint/options'
 

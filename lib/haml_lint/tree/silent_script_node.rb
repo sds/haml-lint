@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint::Tree
   # Represents a HAML silent script node (`- some_expression`) which executes
   # code without producing output.

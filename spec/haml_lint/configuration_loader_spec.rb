@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::ConfigurationLoader do
   describe '.load_applicable_config' do
     subject { described_class.load_applicable_config }

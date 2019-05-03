@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::FileFinder do
   let(:config) { double }
   let(:excluded_patterns) { [] }

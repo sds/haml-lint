@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
   let(:config)   { File.read('.haml-lint_todo.yml') }
   let(:files)    { ['some-filename.haml'] }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Need to load haml before we can reference some Haml modules in our code
 require 'haml'
 

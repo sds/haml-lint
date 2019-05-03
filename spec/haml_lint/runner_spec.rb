@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Runner do
   let(:base_options) { { reporter: reporter } }
   let(:options) { base_options }

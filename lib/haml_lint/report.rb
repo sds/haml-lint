@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Contains information about all lints detected during a scan.
   class Report

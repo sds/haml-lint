@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint/adapter/haml_4'
 require 'haml_lint/adapter/haml_5'
 require 'haml_lint/exceptions'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for missing `alt` attributes on `img` tags.
   class Linter::AltText < Linter

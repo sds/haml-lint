@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HamlLint::Linter::InstanceVariables do
   include_context 'linter'
 

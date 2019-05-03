@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::LinterRegistry do
   context 'when including the LinterRegistry module' do
     it 'adds the linter to the set of registered linters' do

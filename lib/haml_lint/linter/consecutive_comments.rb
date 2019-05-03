@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for multiple lines of code comments that can be condensed.
   class Linter::ConsecutiveComments < Linter

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks the character used for indentation.
   class Linter::Indentation < Linter

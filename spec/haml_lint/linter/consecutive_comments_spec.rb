@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Linter::ConsecutiveComments do
   include_context 'linter'
 

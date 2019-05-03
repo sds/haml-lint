@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Outputs report as a Ruby Hash for easy use by other tools.
   class Reporter::HashReporter < Reporter

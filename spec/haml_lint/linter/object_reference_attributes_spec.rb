@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Linter::ObjectReferenceAttributes do
   include_context 'linter'
 

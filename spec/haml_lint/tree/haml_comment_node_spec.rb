@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Tree::HamlCommentNode do
   let(:options) do
     {

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Reporter::DefaultReporter do
   let(:filenames) { %w[some-filename.haml] }
   let(:io) { StringIO.new }

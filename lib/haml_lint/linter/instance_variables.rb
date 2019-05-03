@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for the presence of instance variables
   class Linter::InstanceVariables < Linter

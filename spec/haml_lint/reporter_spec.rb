@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Reporter do
   let(:reporter) { HamlLint::Reporter.new(double) }
 

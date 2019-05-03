@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Linter::RuboCop do
   it 'exhaustively maps RuboCop severity levels to HamlLint severity levels' do
     ::RuboCop::Cop::Severity::NAMES.each do |name|

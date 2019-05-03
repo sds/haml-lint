@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::RubyParser do
   describe '#parse' do
     subject { super().parse(source) }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for unnecessary uses of the `%div` prefix where a class name or ID
   # already implies a div.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Configuration do
   let(:config) { HamlLint::ConfigurationLoader.default_configuration }
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint::Tree
   # Represents a filter node which contains arbitrary code.
   class FilterNode < Node

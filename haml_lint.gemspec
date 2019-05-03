@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $LOAD_PATH << File.expand_path('lib', __dir__)
 require 'haml_lint/constants'
 require 'haml_lint/version'
@@ -19,7 +21,7 @@ Gem::Specification.new do |s|
   s.files            = Dir['config/**.yml'] +
                        Dir['lib/**/*.rb']
 
-  s.required_ruby_version = '>= 2.2.0'
+  s.required_ruby_version = '>= 2.4.0'
 
   s.add_dependency 'haml', '>= 4.0', '< 5.1'
   s.add_dependency 'rainbow'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::RubyExtractor do
   let(:extractor) { described_class.new }
 

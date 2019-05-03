@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for tag names with uppercase letters.
   class Linter::TagName < Linter

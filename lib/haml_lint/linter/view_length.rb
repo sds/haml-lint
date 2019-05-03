@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Detects overly long views.
   class Linter::ViewLength < Linter
     include LinterRegistry
 
-    MSG = 'View template is too long [%d/%d]'.freeze
+    MSG = 'View template is too long [%d/%d]'
 
     DummyNode = Struct.new(:line)
 

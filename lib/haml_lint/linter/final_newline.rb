@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for final newlines at the end of a file.
   class Linter::FinalNewline < Linter

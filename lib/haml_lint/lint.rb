@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Contains information about a problem or issue with a HAML document.
   class Lint

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Stores runtime configuration for the application.
   #

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Responsible for transforming {Haml::Parser::ParseNode} objects into
   # corresponding {HamlLint::Tree::Node} objects.

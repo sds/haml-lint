@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks that classes are listed before IDs in tags.
   class Linter::ClassesBeforeIds < Linter
@@ -9,7 +11,7 @@ module HamlLint
       '#' => :id,
     }.freeze
 
-    MSG = '%s should be listed before %s (%s should precede %s)'.freeze
+    MSG = '%s should be listed before %s (%s should precede %s)'
 
     def visit_tag(node)
       # Convert ".class#id" into [.class, #id] (preserving order)

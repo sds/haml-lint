@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::HamlVisitor do
   describe '#visit' do
     let(:options) do

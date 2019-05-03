@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for `id` attributes in specific cases on tags.
   class Linter::IdNames < Linter

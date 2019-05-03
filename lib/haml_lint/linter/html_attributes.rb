@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for the setting of attributes via HTML shorthand syntax on elements
   # (e.g. `%tag(lang=en)`).

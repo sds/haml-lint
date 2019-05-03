@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks scripts spread over multiple lines.
   class Linter::MultilineScript < Linter

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Encapsulates all communication to an output source.
   class Logger

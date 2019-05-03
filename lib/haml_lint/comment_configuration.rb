@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Determines what linters are enabled or disabled via comments.
   class CommentConfiguration

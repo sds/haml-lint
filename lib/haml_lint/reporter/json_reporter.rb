@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint/reporter/hash_reporter'
 
 module HamlLint

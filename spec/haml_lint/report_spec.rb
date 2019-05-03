@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe HamlLint::Report do
   let(:fail_level) { :warning }
   let(:filenames) { ['some-filename.haml'] }

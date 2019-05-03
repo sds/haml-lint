@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubocop'
 require 'rubocop/ast/builder'
 require 'parser/current'

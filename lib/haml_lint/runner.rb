@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Responsible for running the applicable linters against the desired files.
   class Runner

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for uses of the object reference syntax for assigning the class and
   # ID attributes for an element (e.g. `%div[@user]`).

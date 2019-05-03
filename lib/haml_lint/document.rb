@@ -1,12 +1,10 @@
-# frozen_string_literal: true
-
 require 'haml_lint/adapter'
 
 module HamlLint
   # Represents a parsed Haml document and its associated metadata.
   class Document
     # File name given to source code parsed from just a string.
-    STRING_SOURCE = '(string)'.freeze
+    STRING_SOURCE = '(string)'
 
     # @return [HamlLint::Configuration] Configuration used to parse template
     attr_reader :config

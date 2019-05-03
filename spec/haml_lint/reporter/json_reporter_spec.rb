@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe HamlLint::Reporter::JsonReporter do
   describe '#display_report' do
     let(:io) { StringIO.new }

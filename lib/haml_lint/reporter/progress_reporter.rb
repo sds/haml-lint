@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rainbow'
 require 'haml_lint/reporter/utils'
 
@@ -7,7 +9,7 @@ module HamlLint
   class Reporter::ProgressReporter < Reporter
     include Reporter::Utils
 
-    DOT = '.'.freeze
+    DOT = '.'
 
     def display_report(report)
       lints = report.lints

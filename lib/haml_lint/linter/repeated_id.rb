@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Detects repeated instances of an element ID in a file
   class Linter::RepeatedId < Linter
     include LinterRegistry
 
-    MESSAGE_FORMAT = %{Do not repeat id "#%s" on the page}.freeze
+    MESSAGE_FORMAT = %{Do not repeat id "#%s" on the page}
 
     def visit_root(_node)
       @id_map = Hash.new { |hash, key| hash[key] = [] }

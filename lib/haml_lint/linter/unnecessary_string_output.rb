@@ -11,7 +11,7 @@ module HamlLint
   class Linter::UnnecessaryStringOutput < Linter
     include LinterRegistry
 
-    MESSAGE = '`= "..."` should be rewritten as `...`'.freeze
+    MESSAGE = '`= "..."` should be rewritten as `...`'
 
     def visit_tag(node)
       if tag_has_inline_script?(node) && inline_content_is_string?(node)

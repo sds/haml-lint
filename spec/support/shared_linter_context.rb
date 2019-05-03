@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Makes writing tests for linters a lot DRYer by taking any currently `haml`
 # variable defined via `let` and normalizing it and running the linter against
 # it, allowing specs to simply specify whether a lint was reported.

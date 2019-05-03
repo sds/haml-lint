@@ -10,7 +10,7 @@ module HamlLint
     # @api private
     DummyNode = Struct.new(:line)
 
-    MSG = 'Line is too long. [%d/%d]'.freeze
+    MSG = 'Line is too long. [%d/%d]'
 
     def visit_root(root)
       max_length = config['max']

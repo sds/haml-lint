@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Provides an interface which when included allows a class to visit nodes in
   # the parse tree of a HAML document.

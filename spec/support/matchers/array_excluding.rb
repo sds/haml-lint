@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Define matcher which determines if an array does NOT include any of a list of
 # items.
 #

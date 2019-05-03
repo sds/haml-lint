@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Base implementation for all lint checks.
   #

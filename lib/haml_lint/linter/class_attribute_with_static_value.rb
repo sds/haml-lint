@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HamlLint
   # Checks for class attributes defined in tag attribute hash with static
   # values.

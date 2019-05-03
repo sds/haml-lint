@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'haml_lint/comment_configuration'
 
 module HamlLint::Tree
@@ -127,7 +129,7 @@ module HamlLint::Tree
       next_sibling = siblings.next(self)
       return next_sibling if next_sibling
 
-      parent.successor if parent
+      parent&.successor
     end
 
     # Returns the next node that appears after this node in the document.
