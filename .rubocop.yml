@@ -1,4 +1,6 @@
 AllCops:
+  Exclude:
+    - 'gemfiles/**'
   TargetRubyVersion: 2.4
 
 AmbiguousRegexpLiteral:
