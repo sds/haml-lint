@@ -1,5 +1,15 @@
 # HAML-Lint Changelog
 
+## 0.29.0
+
+* Fix `--auto-gen-config` to allow running with an existing configuration file
+* Fix `config` option for the Rake task to not be ignored
+* Fix the span of multiline nodes to be more precise
+* Ignore `Layout/AlignHash` cops by default
+* Drop support for Ruby 2.3 or older
+* Allow `ViewLength` linter to be disabled inline
+* Allow comment banners in `LeadingCommentSpace` linter
+
 ## 0.28.0
 
 * Fix `ClassAttributeWithStaticValue` to gracefully handle certain malformed
