@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Drop support for HAML 4.1 beta
+
 ## 0.29.0
 
 * Fix `--auto-gen-config` to allow running with an existing configuration file

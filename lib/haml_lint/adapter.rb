@@ -19,7 +19,6 @@ module HamlLint
       version = haml_version
       case version
       when '~> 4.0' then HamlLint::Adapter::Haml4
-      when '~> 4.1' then HamlLint::Adapter::Haml4
       when '~> 5.0' then HamlLint::Adapter::Haml5
       else fail HamlLint::Exceptions::UnknownHamlVersion, "Cannot handle Haml version: #{version}"
       end
