@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'rspec', '~> 3.0'
+gem 'rspec', '~> 3.8'
 gem 'rspec-its', '~> 1.0'
 
 # For testing against multiple versions of Haml
