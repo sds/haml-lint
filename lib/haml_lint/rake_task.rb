@@ -47,7 +47,7 @@ module HamlLint
     # Return the configuration file path.
     # @return [String]
     def config
-      @config.path
+      @config&.path
     end
 
     # List of files to lint (can contain shell globs).
