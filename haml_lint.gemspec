@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.license          = 'MIT'
   s.summary          = 'HAML lint tool'
   s.description      = 'Configurable tool for writing clean and consistent HAML'
-  s.authors          = ['Brigade Engineering', 'Shane da Silva']
-  s.email            = ['eng@brigade.com', 'shane@dasilva.io']
+  s.authors          = ['Shane da Silva']
+  s.email            = ['shane@dasilva.io']
   s.homepage         = HamlLint::REPO_URL
 
   s.require_paths    = ['lib']

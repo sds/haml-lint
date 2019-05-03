@@ -1,11 +1,10 @@
 # HAML-Lint
 
 [![Gem Version](https://badge.fury.io/rb/haml_lint.svg)](http://badge.fury.io/rb/haml_lint)
-[![Build Status](https://travis-ci.org/brigade/haml-lint.svg?branch=master)](https://travis-ci.org/brigade/haml-lint)
-[![Code Climate](https://codeclimate.com/github/brigade/haml-lint.svg)](https://codeclimate.com/github/brigade/haml-lint)
-[![Coverage Status](https://coveralls.io/repos/brigade/haml-lint/badge.svg)](https://coveralls.io/r/brigade/haml-lint)
-[![Dependency Status](https://gemnasium.com/brigade/haml-lint.svg)](https://gemnasium.com/brigade/haml-lint)
-[![Inline docs](http://inch-ci.org/github/brigade/haml-lint.svg?branch=master)](http://inch-ci.org/github/brigade/haml-lint)
+[![Build Status](https://travis-ci.org/sds/haml-lint.svg?branch=master)](https://travis-ci.org/sds/haml-lint)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b1f81df6b0922ff5bcdd/maintainability)](https://codeclimate.com/github/sds/haml-lint/maintainability)
+[![Coverage Status](https://coveralls.io/repos/sds/haml-lint/badge.svg)](https://coveralls.io/r/sds/haml-lint)
+[![Inline docs](http://inch-ci.org/github/sds/haml-lint.svg?branch=master)](http://inch-ci.org/github/sds/haml-lint)
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. In addition to HAML-specific style and lint checks, it
@@ -13,7 +12,7 @@ integrates with [RuboCop](https://github.com/bbatsov/rubocop) to bring its
 powerful static analysis tools to your HAML documents.
 
 You can run `haml-lint` manually from the command line, or integrate it into
-your [SCM hooks](https://github.com/brigade/overcommit).
+your [SCM hooks](https://github.com/sds/overcommit).
 
 * [Requirements](#requirements)
 * [Installation](#installation)
@@ -336,7 +335,7 @@ If you use `Visual Studio Code`, you can install the [Haml Lint](https://marketp
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
-Git hook manager, [overcommit](https://github.com/brigade/overcommit).
+Git hook manager, [overcommit](https://github.com/sds/overcommit).
 
 ## Rake Integration
 
@@ -380,7 +379,7 @@ attribute.
 
 [Code documentation] is generated with [YARD] and hosted by [RubyDoc.info].
 
-[Code documentation]: http://rdoc.info/github/brigade/haml-lint/master/frames
+[Code documentation]: http://rdoc.info/github/sds/haml-lint/master/frames
 [YARD]: http://yardoc.org/
 [RubyDoc.info]: http://rdoc.info/
 
@@ -403,9 +402,7 @@ appraisal bundle exec rspec
 ## Community
 
 All major discussion surrounding HAML-Lint happens on the
-[GitHub issues page](https://github.com/brigade/haml-lint/issues).
-
-You can also follow [@haml_lint on Twitter](https://twitter.com/haml_lint).
+[GitHub issues page](https://github.com/sds/haml-lint/issues).
 
 ## Changelog
 
