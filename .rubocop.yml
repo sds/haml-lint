@@ -22,6 +22,7 @@ CollectionMethods:
 Documentation:
   Exclude:
     - 'spec/**/*'
+    - 'lib/haml_lint/spec/**/*.rb'
 
 DotPosition:
   EnforcedStyle: leading
@@ -51,6 +52,7 @@ LineLength:
 Lint/InterpolationCheck:
   Exclude:
     - 'spec/**/*'
+    - 'lib/haml_lint/spec/**/*.rb'
 
 Lint/NestedPercentLiteral:
   Exclude:
@@ -65,6 +67,12 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
+    - 'lib/haml_lint/spec/**/*.rb'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'lib/haml_lint/spec/**/*.rb'
 
 # Prefer curly braces except for %i/%w/%W, since those return arrays.
 PercentLiteralDelimiters:

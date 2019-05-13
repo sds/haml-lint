@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
-module IndentNormalizer
-  # Strips off excess leading indentation from each line so we can use Heredocs
-  # for writing code without having the leading indentation count.
-  def normalize_indent(code)
-    leading_indent = code[/^(\s*)/, 1]
-    code.lstrip.gsub(/\n#{leading_indent}/, "\n")
+module HamlLint
+  module Spec
+    # Strips off excess leading indentation from each line so we can use Heredocs
+    # for writing code without having the leading indentation count.
+    module IndentNormalizer
+      def normalize_indent(code)
+        leading_indent = code[/^(\s*)/, 1]
+        code.lstrip.gsub(/\n#{leading_indent}/, "\n")
+      end
+    end
   end
 end
 
 RSpec.configure do |_config|
-  include IndentNormalizer
+  include HamlLint::Spec::IndentNormalizer
 end
