@@ -15,6 +15,7 @@ require 'rainbow'
 Rainbow.enabled = false
 
 require 'haml_lint'
+require 'haml_lint/spec'
 require 'rspec/its'
 
 Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
