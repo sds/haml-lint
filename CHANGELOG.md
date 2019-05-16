@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## 0.31.0
+
+* Allow HAML Lint spec helpers to be loaded with `require` in other projects
+
 ## 0.30.0
 
 * Drop support for HAML 4.1 beta
