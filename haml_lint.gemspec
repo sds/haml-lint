@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.4.0'
 
-  s.add_dependency 'haml', '>= 4.0', '< 5.1'
+  s.add_dependency 'haml', '>= 4.0', '< 5.2'
   s.add_dependency 'rainbow'
   s.add_dependency 'rake', '>= 10', '< 13'
   s.add_dependency 'rubocop', '>= 0.50.0'
