@@ -8,6 +8,6 @@ gem "appraisal"
 gem "overcommit", "0.48.0"
 gem "rubocop", "0.68.1"
 gem "coveralls", require: false
-gem "haml", "~> 5.0.0"
+gem "haml", "~> 5.1.0"
 
 gemspec path: "../"

@@ -5,5 +5,5 @@ appraise 'haml4' do
 end
 
 appraise 'haml5' do
-  gem 'haml', '~> 5.0.0'
+  gem 'haml', '~> 5.1.0'
 end
