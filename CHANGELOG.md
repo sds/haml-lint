@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## Unreleased
+
+* [#305](https://github.com/sds/haml-lint/pull/305) - Support haml 5.1
+
 ## 0.31.0
 
 * Allow HAML Lint spec helpers to be loaded with `require` in other projects
