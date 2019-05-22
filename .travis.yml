@@ -9,7 +9,8 @@ rvm:
 
 gemfile:
   - gemfiles/haml4.gemfile
-  - gemfiles/haml5.gemfile
+  - gemfiles/haml5.0.gemfile
+  - gemfiles/haml5.1.gemfile
 
 before_install:
   - gem update --system
