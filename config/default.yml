@@ -93,6 +93,7 @@ linters:
       - Lint/Void
       - Layout/AlignHash
       - Layout/AlignParameters
+      - Layout/CaseIndentation
       - Layout/ElseAlignment
       - Layout/EndOfLine
       - Layout/IndentationWidth
