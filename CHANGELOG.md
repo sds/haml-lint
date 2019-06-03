@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## Unreleased
+## 0.32.0
 
 * [#305](https://github.com/sds/haml-lint/pull/305) - Support HAML 5.1
 * [#309](https://github.com/sds/haml-lint/pull/309) - Ignore `Layout/CaseIndentation` RuboCop cop by default
