@@ -71,22 +71,24 @@ filename and line number.
 
 ### Command Line Flags
 
-Command Line Flag         | Description
---------------------------|----------------------------------------------------
-`-c`/`--config`           | Specify which configuration file to use
-`-e`/`--exclude`          | Exclude one or more files from being linted
-`-i`/`--include-linter`   | Specify which linters you specifically want to run
-`-x`/`--exclude-linter`   | Specify which linters you _don't_ want to run
-`-r`/`--reporter`         | Specify which reporter you want to use to generate the output
-`--fail-fast`             | Specify whether to fail after the first file with lint
-`--fail-level`            | Specify the minimum severity (warning or error) for which the lint should fail
-`--[no-]color`            | Whether to output in color
-`--[no-]summary`          | Whether to output a summary in the default reporter
-`--show-linters`          | Show all registered linters
-`--show-reporters`        | Display available reporters
-`-h`/`--help`             | Show command line flag documentation
-`-v`/`--version`          | Show `haml-lint` version
-`-V`/`--verbose-version`  | Show `haml-lint`, `haml`, and `ruby` version information
+Command Line Flag          | Description
+---------------------------|----------------------------------------------------
+`--auto-gen-config`        | Generate a configuration file acting as a TODO list
+`--auto-gen-exclude-limit` | Number of failures to allow in the TODO list before the entire rule is excluded
+`-c`/`--config`            | Specify which configuration file to use
+`-e`/`--exclude`           | Exclude one or more files from being linted
+`-i`/`--include-linter`    | Specify which linters you specifically want to run
+`-x`/`--exclude-linter`    | Specify which linters you _don't_ want to run
+`-r`/`--reporter`          | Specify which reporter you want to use to generate the output
+`--fail-fast`              | Specify whether to fail after the first file with lint
+`--fail-level`             | Specify the minimum severity (warning or error) for which the lint should fail
+`--[no-]color`             | Whether to output in color
+`--[no-]summary`           | Whether to output a summary in the default reporter
+`--show-linters`           | Show all registered linters
+`--show-reporters`         | Display available reporters
+`-h`/`--help`              | Show command line flag documentation
+`-v`/`--version`           | Show `haml-lint` version
+`-V`/`--verbose-version`   | Show `haml-lint`, `haml`, and `ruby` version information
 
 ## Configuration
 
