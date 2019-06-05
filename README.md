@@ -295,9 +295,9 @@ as exclusions. You can then add `inherits_from: .haml-lint_todo.yml` to your
 you call `haml-lint`.
 
 By default, any rules with more than 15 violations will be disabled in the todo-file.
-You can increase this limit with the `exclude-limit` option:
+You can increase this limit with the `auto-gen-exclude-limit` option:
 
-    haml-lint --auto-gen-config --exclude-limit 100
+    haml-lint --auto-gen-config --auto-gen-exclude-limit 100
 
 
 ## Editor Integration
