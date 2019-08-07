@@ -62,4 +62,17 @@ describe HamlLint::Linter::LineLength do
     it { should_not report_lint line: 3 }
     it { should report_lint line: 5 }
   end
+
+  context 'when there is a directive on the line before a long line' do
+    let(:haml) do
+      <<-HAML
+        #test
+          -# haml-lint:disable LineLength
+          %table.responsive.table.table-sm.table-striped.table-bordered.w-100#excluded-requests-datatable{ data: 'excluded_requests_remote_url(@staging_workflow.id)' }
+          %br
+      HAML
+    end
+
+    it { should_not report_lint }
+  end
 end
