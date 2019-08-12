@@ -163,7 +163,7 @@ describe HamlLint::Tree::Node do
         HAML
       end
 
-      it { should == (1..3) }
+      it { should == (1..1) }
 
       context 'with a successor' do
         let(:haml) do
@@ -175,7 +175,7 @@ describe HamlLint::Tree::Node do
           HAML
         end
 
-        it { should == (1..3) }
+        it { should == (1..1) }
       end
     end
 

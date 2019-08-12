@@ -105,7 +105,7 @@ module HamlLint::Tree
       return (line..line) unless @value && text
 
       end_line = line + lines.count
-      end_line = nontrivial_end_line if line == end_line
+      end_line = nontrivial_end_line if line == end_line && children.empty?
 
       (line..end_line)
     end
@@ -161,9 +161,7 @@ module HamlLint::Tree
     #
     # @return [Integer] the end line of the node
     def nontrivial_end_line
-      if (last_child = children.last)
-        last_child.line_numbers.end - 1
-      elsif successor
+      if successor
         successor.line_numbers.begin - 1
       else
         @document.source_lines.count
