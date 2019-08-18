@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* [#312](https://github.com/sds/haml-lint/pull/312) - Fix handling of `haml-lint:disable` directives in some cases
+
 ## 0.32.0
 
 * [#305](https://github.com/sds/haml-lint/pull/305) - Support HAML 5.1
