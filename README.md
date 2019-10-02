@@ -341,7 +341,8 @@ Git hook manager, [overcommit](https://github.com/sds/overcommit).
 
 ## Rake Integration
 
-To execute `haml-lint` via a [Rake](https://github.com/ruby/rake) task, add the
+To execute `haml-lint` via a [Rake](https://github.com/ruby/rake) task, make
+sure you have `rake` included in your gem path (e.g. via `Gemfile`) add the
 following to your `Rakefile`:
 
 ```ruby

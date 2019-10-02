@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'rake' # For testing the Rake integration
 gem 'rspec', '~> 3.8'
 gem 'rspec-its', '~> 1.0'
 
