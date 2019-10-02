@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Remove explicit dependency on Rake, making it optional as it's only need for
+  the Rake integration
+
 ## 0.33.0
 
 * [#312](https://github.com/sds/haml-lint/pull/312) - Fix handling of `haml-lint:disable` directives in some cases
