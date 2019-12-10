@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-## master (unreleased)
+## 0.34.1
 
 * Update ignored cops to support cop renames introduced by RuboCop 0.77.0
 
