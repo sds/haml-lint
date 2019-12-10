@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+## master (unreleased)
+
+* Update ignored cops to support cop renames introduced by RuboCop 0.77.0
+
 ## 0.34.0
 
 * [#313](https://github.com/sds/haml-lint/pull/313) Remove explicit dependency on Rake, making it optional as it's only need for the Rake integration
