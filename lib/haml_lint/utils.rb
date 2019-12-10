@@ -66,7 +66,7 @@ module HamlLint
         dumped_interpolated_str = Haml::Util.balance(scan, '{', '}', 1)[0][0...-1]
 
         # Hacky way to turn a dumped string back into a regular string
-        yield [eval('"' + dumped_interpolated_str + '"'), line] # rubocop:disable Eval
+        yield [eval('"' + dumped_interpolated_str + '"'), line] # rubocop:disable Security/Eval
       end
     end
 

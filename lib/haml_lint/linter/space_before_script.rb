@@ -9,7 +9,7 @@ module HamlLint
 
     ALLOWED_SEPARATORS = [' ', '#'].freeze
 
-    def visit_tag(node) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/LineLength, Metrics/PerceivedComplexity
+    def visit_tag(node) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       # If this tag has inline script
       return unless node.contains_script?
 

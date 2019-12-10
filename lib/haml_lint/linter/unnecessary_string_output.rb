@@ -35,7 +35,7 @@ module HamlLint
       return unless tree = parse_ruby(script_node.script)
       %i[str dstr].include?(tree.type) &&
         !starts_with_reserved_character?(tree.children.first)
-    rescue ::Parser::SyntaxError # rubocop:disable Lint/HandleExceptions
+    rescue ::Parser::SyntaxError # rubocop:disable Lint/SuppressedException
       # Gracefully ignore syntax errors, as that's managed by a different linter
     end
 

@@ -3,50 +3,50 @@ AllCops:
     - 'gemfiles/**'
   TargetRubyVersion: 2.4
 
-AmbiguousRegexpLiteral:
+Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
-AssignmentInCondition:
+Lint/AssignmentInCondition:
   Enabled: false
 
 Bundler/OrderedGems:
   Enabled: false
 
 # Enforcing this results in a lot of unnecessary indentation.
-ClassAndModuleChildren:
+Style/ClassAndModuleChildren:
   Enabled: false
 
-CollectionMethods:
+Style/CollectionMethods:
   Enabled: false
 
-Documentation:
+Style/Documentation:
   Exclude:
     - 'spec/**/*'
     - 'lib/haml_lint/spec/**/*.rb'
 
-DotPosition:
+Layout/DotPosition:
   EnforcedStyle: leading
 
-FormatString:
+Style/FormatString:
   Enabled: false
 
-FileName:
+Naming/FileName:
   Exclude:
     - 'bin/haml-lint'
     - 'Gemfile'
     - 'Rakefile'
     - '*.gemspec'
 
-GuardClause:
+Style/GuardClause:
   Enabled: false
 
-IfUnlessModifier:
+Style/IfUnlessModifier:
   Enabled: false
 
-Lambda:
+Style/Lambda:
   Enabled: false
 
-LineLength:
+Metrics/LineLength:
   Max: 100
 
 Lint/InterpolationCheck:
@@ -58,7 +58,7 @@ Lint/NestedPercentLiteral:
   Exclude:
     - lib/haml_lint/linter/multiline_script.rb
 
-MethodLength:
+Metrics/MethodLength:
   Max: 20
 
 Metrics/AbcSize:
@@ -75,7 +75,7 @@ Metrics/ModuleLength:
     - 'lib/haml_lint/spec/**/*.rb'
 
 # Prefer curly braces except for %i/%w/%W, since those return arrays.
-PercentLiteralDelimiters:
+Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     '%': '{}'
     '%i': '[]'
@@ -89,21 +89,21 @@ PercentLiteralDelimiters:
 
 # Renaming `has_something?` to `something?` obfuscates whether it is a "is-a" or
 # a "has-a" relationship.
-PredicateName:
+Naming/PredicateName:
   Enabled: false
 
-SignalException:
+Style/SignalException:
   Enabled: false
 
 # Forcing a particular name (e.g. |a, e|) for inject methods prevents you from
 # choosing intention-revealing names.
-SingleLineBlockParams:
+Style/SingleLineBlockParams:
   Enabled: false
 
-SpecialGlobalVars:
+Style/SpecialGlobalVars:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
 Layout/EmptyLineAfterGuardClause:
@@ -127,5 +127,5 @@ Style/TrailingCommaInHashLiteral:
 Style/TrivialAccessors:
   Enabled: false
 
-Void:
+Lint/Void:
   Enabled: false

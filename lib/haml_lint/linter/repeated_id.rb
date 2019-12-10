@@ -17,7 +17,7 @@ module HamlLint
 
       nodes = (id_map[id] << node)
       case nodes.size
-      when 1 then return
+      when 1 then nil
       when 2 then add_lints_for_first_duplications(nodes)
       else add_lint(node, id)
       end
