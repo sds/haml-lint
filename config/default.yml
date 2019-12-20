@@ -105,6 +105,7 @@ linters:
       - Metrics/BlockLength
       - Metrics/BlockNesting
       - Metrics/LineLength
+      - Layout/LineLength # rename of Metrics/LineLength
       - Naming/FileName
       - Style/FrozenStringLiteralComment
       - Style/IfUnlessModifier
