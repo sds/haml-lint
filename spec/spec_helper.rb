@@ -18,7 +18,7 @@ require 'haml_lint'
 require 'haml_lint/spec'
 require 'rspec/its'
 
-Dir[File.dirname(__FILE__) + '/support/**/*.rb'].each { |f| require f }
+Dir[File.dirname(__FILE__) + '/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.include DirectorySpecHelpers
