@@ -98,6 +98,7 @@ linters:
       - Layout/EndOfLine
       - Layout/HashAlignment
       - Layout/IndentationWidth
+      - Layout/LineLength # renamed from Metrics/LineLength in rubocop 0.79.0
       - Layout/ParameterAlignment
       - Layout/TrailingBlankLines # renamed to Layout/TrailingEmptyLines in rubocop 0.77
       - Layout/TrailingEmptyLines
