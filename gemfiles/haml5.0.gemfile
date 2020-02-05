@@ -2,11 +2,12 @@
 
 source "https://rubygems.org"
 
+gem "rake"
 gem "rspec", "~> 3.8"
 gem "rspec-its", "~> 1.0"
 gem "appraisal"
-gem "overcommit", "0.48.0"
-gem "rubocop", "0.68.1"
+gem "overcommit", "0.52.1"
+gem "rubocop", "0.79.0"
 gem "coveralls", require: false
 gem "haml", "~> 5.0.0"
 

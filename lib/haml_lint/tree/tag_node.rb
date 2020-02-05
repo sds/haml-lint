@@ -2,7 +2,7 @@
 
 module HamlLint::Tree
   # Represents a tag node in a HAML document.
-  class TagNode < Node # rubocop:disable ClassLength
+  class TagNode < Node # rubocop:disable Metrics/ClassLength
     # Computed set of attribute hashes code.
     #
     # This is a combination of all dynamically calculated attributes from the
