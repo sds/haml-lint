@@ -38,7 +38,7 @@ module HamlLint
       end
 
       parser.on('--auto-gen-exclude-limit limit', Integer,
-                'Number of failures to allow in the TODO list before the entire rule is excluded') do |limit| # rubocop:disable Metrics/LineLength
+                'Number of failures to allow in the TODO list before the entire rule is excluded') do |limit| # rubocop:disable Layout/LineLength
         @options[:auto_gen_exclude_limit] = limit
       end
 
