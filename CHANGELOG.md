@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-### master (unreleased)
+### 0.35.0
 
 * [#318](https://github.com/sds/haml-lint/pull/318) Fail HAML-Lint run when RuboCop exits unsuccessfully
 * [#320](https://github.com/sds/haml-lint/pull/320) Add support for Ruby 2.7
