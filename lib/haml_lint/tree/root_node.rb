@@ -17,7 +17,9 @@ module HamlLint::Tree
     # @param line [Integer] the line number of the node
     # @return [HamlLint::Node]
     def node_for_line(line)
-      find(-> { HamlLint::Tree::NullNode.new }) { |node| node.line_numbers.cover?(line) }
+      find(-> { HamlLint::Tree::NullNode.new }) do |node|
+        node.line_numbers.cover?(line) && node != self
+      end
     end
   end
 end
