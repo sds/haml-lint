@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### master (unreleased)
+
+* [#318](https://github.com/sds/haml-lint/pull/318) Fail HAML-Lint run when RuboCop exits unsuccessfully
+* [#320](https://github.com/sds/haml-lint/pull/320) Add support for Ruby 2.7
+
 ### 0.34.2
 
 * Update ignored cops to support cop renames introduced by RuboCop 0.79.0
