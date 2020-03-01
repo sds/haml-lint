@@ -56,7 +56,12 @@ module HamlLint
     # @param file [String]
     # @return [Array<RuboCop::Cop::Offense>]
     def lint_file(rubocop, file)
-      rubocop.run(rubocop_flags << file)
+      status = rubocop.run(rubocop_flags << file)
+      unless [::RuboCop::CLI::STATUS_SUCCESS, ::RuboCop::CLI::STATUS_OFFENSES].include?(status)
+        raise HamlLint::Exceptions::ConfigurationError,
+              "RuboCop exited unsuccessfully with status #{status}." \
+              ' Check the stack trace to see if there was a misconfiguration.'
+      end
       OffenseCollector.offenses
     end
 

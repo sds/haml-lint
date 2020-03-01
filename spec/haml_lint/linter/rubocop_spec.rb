@@ -13,6 +13,7 @@ describe HamlLint::Linter::RuboCop do
     # Need this block before including linter context so that stubbing occurs
     # before linter is run
     before do
+      rubocop_cli.stub(:run).and_return(::RuboCop::CLI::STATUS_SUCCESS)
       ::RuboCop::CLI.stub(:new).and_return(rubocop_cli)
       HamlLint::OffenseCollector.stub(:offenses)
                                 .and_return([offence].compact)
@@ -99,6 +100,49 @@ describe HamlLint::Linter::RuboCop do
       end
 
       it { should report_lint line: 2, severity: :warning }
+    end
+  end
+
+  describe '#lint_file' do
+    subject { described_class.new(config).send(:lint_file, rubocop_cli, 'some_file.rb') }
+
+    let(:config) { spy('config') }
+    let(:rubocop_cli) { spy('rubocop_cli') }
+
+    before do
+      ::RuboCop::CLI.stub(:new).and_return(rubocop_cli)
+      rubocop_cli.stub(:run).and_return(rubocop_cli_status)
+      HamlLint::OffenseCollector.stub(:offenses).and_return([])
+    end
+
+    context 'when RuboCop exits with a success status' do
+      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_SUCCESS }
+
+      it { should eq [] }
+    end
+
+    context 'when RuboCop exits with an offense status' do
+      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_OFFENSES }
+
+      it { should eq [] }
+    end
+
+    context 'when RuboCop exits with an error status' do
+      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_ERROR }
+
+      it {
+        expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
+                                          /RuboCop exited unsuccessfully with status 2/)
+      }
+    end
+
+    context 'when RuboCop exits with an unexpected status' do
+      let(:rubocop_cli_status) { 123 }
+
+      it {
+        expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
+                                          /RuboCop exited unsuccessfully with status 123/)
+      }
     end
   end
 end
