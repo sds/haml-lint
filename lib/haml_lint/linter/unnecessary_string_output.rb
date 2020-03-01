@@ -43,7 +43,7 @@ module HamlLint
     # given special treatment, thus making enclosing it in a string necessary.
     def starts_with_reserved_character?(stringish)
       string = stringish.respond_to?(:children) ? stringish.children.first : stringish
-      string =~ %r{\A\s*[/#-=%~]}
+      string =~ %r{\A\s*[/#-=%~]} if string.is_a?(String)
     end
   end
 end
