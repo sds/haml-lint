@@ -131,7 +131,7 @@
 ## 0.20.0
 
 * Update minimum RuboCop version to 0.47.0+ due to [breaking change in
-  RuboCop AST interface](https://github.com/bbatsov/rubocop/commit/48f1637eb36)
+  RuboCop AST interface](https://github.com/rubocop-hq/rubocop/commit/48f1637eb36)
 
 ## 0.19.0
 
@@ -405,6 +405,6 @@
 
 * New lint `SpaceBeforeScript` ensures that Ruby code in HAML indicated with the
   `-` and `=` characters always has one space separating them from code
-* New lint `RubyScript` integrates with [Rubocop](https://github.com/bbatsov/rubocop)
+* New lint `RubyScript` integrates with [Rubocop](https://github.com/rubocop-hq/rubocop)
   to report lints supported by that tool (respecting any existing `.rubocop.yml`
   configuration)

@@ -8,7 +8,7 @@
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. In addition to HAML-specific style and lint checks, it
-integrates with [RuboCop](https://github.com/bbatsov/rubocop) to bring its
+integrates with [RuboCop](https://github.com/rubocop-hq/rubocop) to bring its
 powerful static analysis tools to your HAML documents.
 
 You can run `haml-lint` manually from the command line, or integrate it into
