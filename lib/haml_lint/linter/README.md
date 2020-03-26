@@ -550,7 +550,7 @@ Option         | Description
 ---------------|--------------------------------------------
 `ignored_cops` | Array of RuboCop cops to ignore.
 
-This linter integrates with [RuboCop](https://github.com/bbatsov/rubocop)
+This linter integrates with [RuboCop](https://github.com/rubocop-hq/rubocop)
 (a static code analyzer and style enforcer) to check the actual Ruby code in
 your templates. It will respect any RuboCop-specific configuration you have
 set in `.rubocop.yml` files, but will explicitly ignore some checks that
