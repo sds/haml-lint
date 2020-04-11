@@ -81,6 +81,14 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with a parallel option' do
+      let(:args) { %w[--parallel] }
+
+      it 'sets the parallel option' do
+        subject[:parallel].should == true
+      end
+    end
+
     context 'fail fast' do
       let(:args) { %w[--fail-fast] }
 

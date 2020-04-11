@@ -51,6 +51,10 @@ module HamlLint
                 "Specify which linters you don't want to run") do |linters|
         @options[:excluded_linters] = linters
       end
+
+      parser.on('-p', '--parallel', 'Run linters in parallel using available CPUs') do
+        @options[:parallel] = true
+      end
     end
 
     def add_report_options(parser)

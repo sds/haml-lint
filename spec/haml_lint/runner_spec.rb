@@ -77,6 +77,15 @@ describe HamlLint::Runner do
         end
       end
 
+      context 'when :parallel option is specified' do
+        let(:options) { base_options.merge(files: files, parallel: true) }
+
+        it 'warms up the cache in parallel' do
+          runner.should_receive(:warm_cache).and_call_original
+          subject
+        end
+      end
+
       context 'when there is a Haml parsing error in a file' do
         let(:files) { %w[inconsistent_indentation.haml] }
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'parallel'
+
 module HamlLint
   # Responsible for running the applicable linters against the desired files.
   class Runner
@@ -21,6 +23,7 @@ module HamlLint
       @files = extract_applicable_files(config, options)
       @linter_selector = HamlLint::LinterSelector.new(config, options)
       @fail_fast = options.fetch(:fail_fast, false)
+      @cache = {}
 
       report(options)
     end
@@ -121,7 +124,7 @@ module HamlLint
     # @param report [HamlLint::Report]
     # @return [void]
     def process_file(file, report)
-      lints = collect_lints(file, linter_selector, config)
+      lints = @cache[file] || collect_lints(file, linter_selector, config)
       lints.each { |lint| report.add_lint(lint) }
       report.finish_file(file, lints)
     end
@@ -134,8 +137,20 @@ module HamlLint
     def report(options)
       report = HamlLint::Report.new(reporter: options[:reporter], fail_level: options[:fail_level])
       report.start(@files)
+      warm_cache if options[:parallel]
       process_files(report)
       report
+    end
+
+    # Cache the result of processing lints in parallel.
+    #
+    # @return [void]
+    def warm_cache
+      results = Parallel.map(files) do |file|
+        lints = collect_lints(file, linter_selector, config)
+        [file, lints]
+      end
+      @cache = results.to_h
     end
   end
 end
