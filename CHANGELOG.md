@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### 0.36.0
+
+* [#322](https://github.com/sds/haml-lint/pull/322) Add support for `--parallel` flag to run linters in parallel
+* [#326](https://github.com/sds/haml-lint/pull/326) Relax `haml` gem version constraint to allow 5.2.x
+
 ### 0.35.0
 
 * [#318](https://github.com/sds/haml-lint/pull/318) Fail HAML-Lint run when RuboCop exits unsuccessfully
