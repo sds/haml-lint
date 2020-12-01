@@ -36,7 +36,7 @@ module HamlLint
     # @param source_map [Hash] map of Ruby code line numbers to original line
     #   numbers in the template
     def find_lints(ruby, source_map)
-      rubocop = ::RuboCop::CLI.new
+      @shared_rubocop ||= ::RuboCop::CLI.new
 
       filename =
         if document.file
@@ -46,7 +46,7 @@ module HamlLint
         end
 
       with_ruby_from_stdin(ruby) do
-        extract_lints_from_offenses(lint_file(rubocop, filename), source_map)
+        extract_lints_from_offenses(lint_file(@shared_rubocop, filename), source_map)
       end
     end
 
