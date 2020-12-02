@@ -29,6 +29,14 @@ module HamlLint
 
     private
 
+    # A single CLI instance is shared between files to avoid RuboCop
+    # having to repeatedly reload .rubocop.yml.
+    def self.rubocop_cli
+      # The ivar is stored on the class singleton rather than the Linter instance
+      # because it can't be Marshal.dump'd (as used by Parallel.map)
+      @rubocop_cli ||= ::RuboCop::CLI.new
+    end
+
     # Executes RuboCop against the given Ruby code and records the offenses as
     # lints.
     #
@@ -36,8 +44,6 @@ module HamlLint
     # @param source_map [Hash] map of Ruby code line numbers to original line
     #   numbers in the template
     def find_lints(ruby, source_map)
-      @shared_rubocop ||= ::RuboCop::CLI.new
-
       filename =
         if document.file
           "#{document.file}.rb"
@@ -46,7 +52,7 @@ module HamlLint
         end
 
       with_ruby_from_stdin(ruby) do
-        extract_lints_from_offenses(lint_file(@shared_rubocop, filename), source_map)
+        extract_lints_from_offenses(lint_file(self.class.rubocop_cli, filename), source_map)
       end
     end
 
