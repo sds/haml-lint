@@ -53,7 +53,7 @@ describe HamlLint::Linter::LineLength do
       <<-HAML
         -# haml-lint:disable LineLength
         %p{ |
-          'data-test' => link_to 'Foobar', i_need_to_make_this_line_longer_path, class: 'button alert' } |
+          'data-test' => link_to('Foobar', i_need_to_make_this_line_longer_path, class: 'button alert') } |
         -# haml-lint:enable LineLength
         %p Another really long line that should report a lint for line length because it is no longer disabled
       HAML
