@@ -102,6 +102,7 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
         '<%- end -%>',
         '',
         '= form.form_group :class => "form-actions" do',
+        '  = form.hidden_tag @ivar',
         '  = form.submit :class => "btn btn-primary"'
       ].join("\n")
     end
@@ -110,6 +111,11 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
       expect { subject }.not_to raise_error
     end
 
-    it { should report_lint line: 1, message: 'unterminated string meets end of file' }
+    # With ruby 2.7 & v3 of the Parser gem, we can now skip past the 'invalid' ERB syntax
+    if RUBY_VERSION < '2.7'
+      it { should report_lint line: 1, message: 'unterminated string meets end of file' }
+    else
+      it { should report_lint line: 6, message: 'Avoid using instance variables in partials views' }
+    end
   end
 end
