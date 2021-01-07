@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.37.0
+
+* [#329](https://github.com/sds/haml-lint/pull/329) Improve performance by reusing `RuboCop::CLI` instance
+
 ### 0.36.0
 
 * [#322](https://github.com/sds/haml-lint/pull/322) Add support for `--parallel` flag to run linters in parallel
