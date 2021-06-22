@@ -93,6 +93,7 @@ linters:
       - Lint/Void
       - Layout/AlignHash # renamed to Layout/HashAlignment in rubocop 0.77
       - Layout/AlignParameters # renamed to Layout/ParameterAlignment in rubocop 0.77
+      - Layout/ArgumentAlignment
       - Layout/CaseIndentation
       - Layout/ElseAlignment
       - Layout/EndOfLine

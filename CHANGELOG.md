@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### master (unreleased)
+
+* Add `Layout/ArgumentAlignment` to list of RuboCop cops ignored by default
+
 ### 0.37.0
 
 * [#329](https://github.com/sds/haml-lint/pull/329) Improve performance by reusing `RuboCop::CLI` instance
