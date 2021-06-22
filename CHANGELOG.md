@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-### master (unreleased)
+### 0.37.1
 
 * Add `Layout/ArgumentAlignment` to list of RuboCop cops ignored by default
 
