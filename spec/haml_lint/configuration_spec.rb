@@ -76,4 +76,34 @@ describe HamlLint::Configuration do
       end
     end
   end
+
+  describe '#merge' do
+    let(:config) { described_class.new(old_hash) }
+    subject { config.merge(described_class.new(new_hash)) }
+
+    context 'when exclude is not explicitly declared on child configuration' do
+      let(:old_hash) do
+        {
+          'linters' => {
+            'SomeLinter' => {
+              'exclude' => ['**/*.ignore.haml'],
+            },
+          },
+        }
+      end
+      let(:new_hash) do
+        {
+          'linters' => {
+            'SomeLinter' => {
+              'enabled' => true,
+            },
+          },
+        }
+      end
+
+      it 'uses inherited exclude' do
+        subject['linters']['SomeLinter']['exclude'].should == ['**/*.ignore.haml']
+      end
+    end
+  end
 end

@@ -64,7 +64,7 @@ module HamlLint
     def run_linter_on_file?(config, linter, file)
       linter_config = config.for_linter(linter)
 
-      if linter_config['include'].any? &&
+      if linter_config['include'] &&
          !HamlLint::Utils.any_glob_matches?(linter_config['include'], file)
         return false
       end
