@@ -97,7 +97,7 @@ module HamlLint
     def validate
       ensure_exclude_option_array_exists
       ensure_linter_section_exists
-      ensure_linter_include_exclude_arrays_exist
+      ensure_linter_include_exclude_arrays_valid
       ensure_linter_severity_valid
     end
 
@@ -113,11 +113,11 @@ module HamlLint
 
     # Ensure `include` and `exclude` options for linters are arrays
     # (since users can specify a single string glob pattern for convenience)
-    def ensure_linter_include_exclude_arrays_exist
+    def ensure_linter_include_exclude_arrays_valid
       @hash['linters'].each_key do |linter_name|
         %w[include exclude].each do |option|
           linter_config = @hash['linters'][linter_name]
-          linter_config[option] = Array(linter_config[option])
+          linter_config[option] = Array(linter_config[option]) if linter_config[option]
         end
       end
     end
