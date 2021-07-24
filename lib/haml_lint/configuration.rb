@@ -73,6 +73,8 @@ module HamlLint
         case old
         when Hash
           smart_merge(old, new)
+        when Array
+          old | new
         else
           new
         end

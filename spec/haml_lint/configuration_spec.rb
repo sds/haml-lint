@@ -81,7 +81,7 @@ describe HamlLint::Configuration do
     let(:config) { described_class.new(old_hash) }
     subject { config.merge(described_class.new(new_hash)) }
 
-    context 'when exclude is not explicitly declared on child configuration' do
+    context 'when `exclude` is not explicitly declared on child configuration' do
       let(:old_hash) do
         {
           'linters' => {
@@ -101,8 +101,34 @@ describe HamlLint::Configuration do
         }
       end
 
-      it 'uses parent exclude' do
+      it 'uses parent `exclude`' do
         subject['linters']['SomeLinter']['exclude'].should == ['**/*.ignore.haml']
+      end
+    end
+
+    context 'when `include` is declared on both parent and child configuration' do
+      let(:old_hash) do
+        {
+          'linters' => {
+            'SomeLinter' => {
+              'enabled' => true,
+              'include' => ['some-filename.haml'],
+            },
+          },
+        }
+      end
+      let(:new_hash) do
+        {
+          'linters' => {
+            'SomeLinter' => {
+              'include' => ['other-filename.haml'],
+            },
+          },
+        }
+      end
+
+      it 'uses both parent and child `include`' do
+        subject['linters']['SomeLinter']['include'].should == ['some-filename.haml', 'other-filename.haml']
       end
     end
   end
