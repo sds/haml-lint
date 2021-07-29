@@ -54,6 +54,28 @@ RSpec.describe HamlLint::Reporter::OffensecountReporter do
         first_line.should start_with('2 ')
         second_line.should start_with('1 ')
       end
+
+      context 'when the linter is RuboCop' do
+        let(:linter) { [double(name: 'RuboCop', message: descriptions[0])] }
+        let(:filenames) { %w[some-filename.haml] }
+        let(:lines) { %w[502] }
+        let(:descriptions) { ['Offense: Description of lint'] }
+        let(:severities) { %i[warning] }
+
+        let(:lints) do
+          filenames.each_with_index.map do |filename, index|
+            HamlLint::Lint.new(linter[index],
+                               filename,
+                               lines[index],
+                               descriptions[index],
+                               severities[index])
+          end
+        end
+        it 'prints the name of each linter' do
+          subject
+          output.should match 'RuboCop: Offense'
+        end
+      end
     end
   end
 end
