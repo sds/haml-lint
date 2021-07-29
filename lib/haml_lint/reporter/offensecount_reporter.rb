@@ -9,7 +9,7 @@ module HamlLint
       total_count = lints.count
       return if total_count.zero?
 
-      lints.group_by {|l| l.linter.name }
+      lints.group_by {|l| lint_type_group(l) }
            .map { |linter, lints_for_this_linter| [linter, lints_for_this_linter.size] }.to_h
            .sort_by { |_linter, lint_count| -lint_count }
            .each do |linter, lint_count|
@@ -18,6 +18,16 @@ module HamlLint
 
       log.log '--'
       log.log "#{total_count}  Total"
+    end
+
+    private
+
+    def lint_type_group(lint)
+      "#{lint.linter.name}#{offense_type(lint)}"
+    end
+
+    def offense_type(lint)
+      ": #{lint.message.to_s.split(':')[0]}" if lint.linter.name == 'RuboCop'
     end
   end
 end
