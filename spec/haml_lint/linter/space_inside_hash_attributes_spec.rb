@@ -106,4 +106,108 @@ describe HamlLint::Linter::SpaceInsideHashAttributes do
       it { should report_lint }
     end
   end
+
+  context 'when a tag contains multi-line attributes' do
+    context 'with the first and last attributes on the same line as the brace and both separated by a space' do
+      let(:haml) do
+        <<~HAML
+          .container
+            %tag{ lang: 'en',
+              near: true,
+              last: 'one' }
+        HAML
+      end
+
+      context 'default config (space)' do
+        it { should_not report_lint }
+      end
+
+      context 'with no_space config' do
+        let(:config) { super().merge('style' => 'no_space') }
+        it { should report_lint }
+      end
+    end
+
+    context 'with the first and last attribute on the same line as the brace without a leading space' do
+      let(:haml) do
+        <<~HAML
+          .container
+            %tag{lang: 'en',
+              near: true,
+              last: 'one' }
+        HAML
+      end
+
+      context 'default config (space)' do
+        it { should report_lint }
+      end
+
+      context 'with no_space config' do
+        let(:config) { super().merge('style' => 'no_space') }
+        it { should report_lint }
+      end
+    end
+
+    context 'with the first and last attribute on the same line as the brace without a trailing space' do
+      let(:haml) do
+        <<~HAML
+          .container
+            %tag{ lang: 'en',
+              near: true,
+              last: 'one'}
+        HAML
+      end
+
+      context 'default config (space)' do
+        it { should report_lint }
+      end
+
+      context 'with no_space config' do
+        let(:config) { super().merge('style' => 'no_space') }
+        it { should report_lint }
+      end
+    end
+
+    context 'with the first and last attribute on the same line as the brace without being separated by a space' do
+      let(:haml) do
+        <<~HAML
+          .container
+            %tag{lang: 'en',
+              near: true,
+              last: 'one'}
+        HAML
+      end
+
+      context 'default config (space)' do
+        it { should report_lint }
+      end
+
+      context 'with no_space config' do
+        let(:config) { super().merge('style' => 'no_space') }
+        it { should_not report_lint }
+      end
+    end
+
+    context 'with the first and last attribute on a separate lines from the brace' do
+      let(:haml) do
+        <<~HAML
+          .container
+            %tag{
+              lang: 'en',
+              near: true,
+              last: 'one'
+            }
+        HAML
+      end
+
+      context 'default config (space)' do
+        it { should_not report_lint }
+      end
+
+      context 'with no_space config' do
+        let(:config) { super().merge('style' => 'no_space') }
+        it { should_not report_lint }
+      end
+    end
+  end
 end
