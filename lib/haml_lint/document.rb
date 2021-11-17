@@ -26,6 +26,11 @@ module HamlLint
     # @return [Boolean] true if the source was changed (by autocorrect)
     attr_reader :source_was_changed
 
+    # @return [String] the indentation used in the file
+    attr_reader :indentation
+
+    attr_reader :unescape_interpolation_to_original_cache
+
     # Parses the specified Haml code into a {Document}.
     #
     # @param source [String] Haml code to parse
@@ -87,8 +92,12 @@ module HamlLint
       # the -1 is to keep the empty strings at the end of the array when the source
       # ended with multiple new-lines
       @source_lines = @source.split(/\r\n|\r|\n/, -1)
-
-      @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
+      adapter = HamlLint::Adapter.detect_class.new(@source)
+      parsed_tree = adapter.parse
+      @indentation = adapter.send(:parser).instance_variable_get(:@indentation)
+      @tree = process_tree(parsed_tree)
+      @unescape_interpolation_to_original_cache =
+        Haml::Util.unescape_interpolation_to_original_cache_take_and_wipe
     rescue Haml::Error => e
       location = if e.line
                    "#{@file}:#{e.line}"

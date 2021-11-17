@@ -160,6 +160,10 @@ module HamlLint::Tree
       @value[:text].to_s
     end
 
+    def keyword
+      @value[:keyword]
+    end
+
     private
 
     # Discovers the end line of the node when there are no lines.

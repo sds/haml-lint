@@ -39,6 +39,9 @@ module HamlLint
       if options[:debug]
         ENV['HAML_LINT_DEBUG'] = 'true'
       end
+      if options[:internal_debug]
+        ENV['HAML_LINT_INTERNAL_DEBUG'] = 'true'
+      end
       if options[:help]
         print_help(options)
         Sysexits::EX_OK

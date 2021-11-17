@@ -44,7 +44,8 @@ describe HamlLint::Linter::RuboCop do
       let(:severity) { double('Severity', name: :warning) }
 
       let(:offence) do
-        double('offence', line: line, message: message, cop_name: cop_name, severity: severity)
+        double('offence', line: line, message: message, cop_name: cop_name,
+               severity: severity, status: :uncorrected)
       end
 
       it 'uses the source map to transform line numbers' do
@@ -52,7 +53,7 @@ describe HamlLint::Linter::RuboCop do
       end
 
       context 'and the offence is from an ignored cop' do
-        let(:cop_name) { 'Layout/LineLength' }
+        let(:config) { super().merge('ignored_cops' => ['Lint/SomeCopName']) }
         it { should_not report_lint }
       end
     end
@@ -66,13 +67,6 @@ describe HamlLint::Linter::RuboCop do
 
   context 'user rubocop config testing' do
     include_context 'linter'
-
-    after(:each) do
-      # The config gets set on a global rubocop_cli instance
-      # When following tests run, they keep the last config that was set by this,
-      # leading to spooky action at a distance
-      HamlLint::Linter::RuboCop.instance_variable_set(:@rubocop_cli, nil)
-    end
 
     # The offense is a Lint/UselessAssignment
     let(:haml) { <<~HAML }
@@ -211,8 +205,8 @@ describe HamlLint::Linter::RuboCop do
     end
   end
 
-  describe '#lint_file' do
-    subject { described_class.new(config).send(:lint_file, rubocop_cli, 'some_file.rb') }
+  describe '#run_rubocop' do
+    subject { described_class.new(config).send(:run_rubocop, rubocop_cli, 'foo', 'some_file.rb') }
 
     let(:config) { spy('config') }
     let(:rubocop_cli) { spy('rubocop_cli') }
@@ -226,13 +220,13 @@ describe HamlLint::Linter::RuboCop do
     context 'when RuboCop exits with a success status' do
       let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_SUCCESS }
 
-      it { should eq [] }
+      it { should eq [[], nil] }
     end
 
     context 'when RuboCop exits with an offense status' do
       let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_OFFENSES }
 
-      it { should eq [] }
+      it { should eq [[], nil] }
     end
 
     context 'when RuboCop exits with an error status' do

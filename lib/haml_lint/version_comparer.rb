@@ -17,5 +17,9 @@ module HamlLint
     def self.for_rubocop
       new(RuboCop::Version::STRING)
     end
+
+    def self.for_haml
+      new(Haml::VERSION)
+    end
   end
 end

@@ -122,8 +122,14 @@ module HamlLint
         @options[:show_reporters] = true
       end
 
-      parser.on('-d', '--debug', 'Add debug information to messages') do
+      parser.on('-d', '--debug', 'Add some debug information to messages') do
         @options[:debug] = true
+      end
+
+      parser.on('--internal-debug', 'Add lots of (internal) debug information.' \
+                " Also affects some lint's line numbers to skip sourcemap") do
+        @options[:debug] = true
+        @options[:internal_debug] = true
       end
 
       parser.on_tail('-h', '--help', 'Display help documentation') do

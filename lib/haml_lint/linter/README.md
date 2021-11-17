@@ -552,10 +552,7 @@ Option         | Description
 
 This linter integrates with [RuboCop](https://github.com/rubocop-hq/rubocop)
 (a static code analyzer and style enforcer) to check the actual Ruby code in
-your templates. It will respect any RuboCop-specific configuration you have
-set in `.rubocop.yml` files, but will explicitly ignore some checks that
-don't make sense in the context of HAML documents (like
-`Style/BlockAlignment`).
+your templates.
 
 ```haml
 -# example.haml
@@ -570,15 +567,27 @@ don't make sense in the context of HAML documents (like
 example.haml:3 [W] Useless assignment to variable - unused_variable
 ```
 
-You can customize which RuboCop warnings you want to ignore by modifying
-the `ignored_cops` option (see [`config/default.yml`](/config/default.yml)
-for the full list of ignored cops).
+This linter will respect any RuboCop-specific configuration you have
+set in your `.rubocop.yml` files, but will overwrite some configuration that
+are required to format Ruby code similarly to HAML code.
+
+Here are the [forced configurations](/config/forced_rubocop_config.yml).
+
+You can reference to HAML files for things such as "Exclude" configuration in
+your `.rubocop.yml` files just as you would for a Ruby file. So you can do
+`Exclude: [foo.haml]`.
+
+The simplest way of doing configurations for HAML would be to have a distinct
+.rubocop.yml in your `view` directory.
+
+Alternatively, you can ignored some Cop only for HamlLint using the `ignored_cop`
+option to the RuboCop linter (in your `.haml-lint.yml` configuration).
 
 You can also explicitly set which RuboCop configuration to use via the
 `HAML_LINT_RUBOCOP_CONF` environment variable. This is intended to be used
 by external tools which run the linter on files in temporary directories
 separate from the directory where the HAML template originally resided (and
-thus where the normal `.rubocop.yml` would be picked up).
+thus where the normal `.rubocop.yml` would be ignored picked up).
 
 ### Displaying Cop Names
 

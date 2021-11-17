@@ -5,6 +5,9 @@ module HamlLint::Exceptions
   # Raised when a {Configuration} could not be loaded from a file.
   class ConfigurationError < StandardError; end
 
+  # Raised when linter's autocorrection cause an infinite loop
+  class InfiniteLoopError < StandardError; end
+
   # Raised when invalid/incompatible command line options are provided.
   class InvalidCLIOption < StandardError; end
 

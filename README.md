@@ -11,12 +11,15 @@ clean and readable. In addition to HAML-specific style and lint checks, it
 integrates with [RuboCop](https://github.com/rubocop-hq/rubocop) to bring its
 powerful static analysis tools to your HAML documents.
 
+Experimental auto-correct features are also available.
+
 You can run `haml-lint` manually from the command line, or integrate it into
 your [SCM hooks](https://github.com/sds/overcommit).
 
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Usage](#usage)
+* [Autocorrection](#autocorrection)
 * [Configuration](#configuration)
 * [Linters](#linters)
 * [Editor Integration](#editor-integration)
@@ -75,11 +78,15 @@ Command Line Flag          | Description
 ---------------------------|----------------------------------------------------
 `--auto-gen-config`        | Generate a configuration file acting as a TODO list
 `--auto-gen-exclude-limit` | Number of failures to allow in the TODO list before the entire rule is excluded
+`--auto-gen-exclude-limit` | Number of failures to allow in the TODO list before the entire rule is excluded
 `-c`/`--config`            | Specify which configuration file to use
 `-e`/`--exclude`           | Exclude one or more files from being linted
 `-i`/`--include-linter`    | Specify which linters you specifically want to run
 `-x`/`--exclude-linter`    | Specify which linters you _don't_ want to run
 `-r`/`--reporter`          | Specify which reporter you want to use to generate the output
+`-a`/`--auto-correct`      | Enables auto-correct for safe to auto-correct lints
+`-A`/`--auto-correct-all`  | Enables auto-correct for unsafe and safe to auto-correct lints
+`--auto-correct-only`      | Only run auto-correct (in safe mode by default), uncorrectable linters are not run
 `-p`/`--parallel`          | Run linters in parallel using available CPUs
 `--fail-fast`              | Specify whether to fail after the first file with lint
 `--fail-level`             | Specify the minimum severity (warning or error) for which the lint should fail
@@ -90,6 +97,14 @@ Command Line Flag          | Description
 `-h`/`--help`              | Show command line flag documentation
 `-v`/`--version`           | Show `haml-lint` version
 `-V`/`--verbose-version`   | Show `haml-lint`, `haml`, and `ruby` version information
+
+## Autocorrection
+
+`haml-lint` can automatically correct some of the errors that it detects. This includes
+running RuboCop on the Ruby parts of your HAML templates.
+
+* Run `haml-lint -a` to only do safe corrections (as defined by RuboCop)
+* Run `haml-lint -A` to also do unsafe corrections (as defined by RuboCop)
 
 ## Configuration
 
@@ -399,6 +414,12 @@ the root directory of the repository:
 ```bash
 appraisal bundle install
 appraisal bundle exec rspec
+```
+
+To run the test suite faster (about 4x), you can skip the RuboCop invocations for testing
+auto-correct with this command:
+```bash
+STUB_RUBOCOP=true appraisal bundle exec rspec
 ```
 
 [Appraisal]: https://github.com/thoughtbot/appraisal

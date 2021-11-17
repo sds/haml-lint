@@ -66,7 +66,7 @@ module HamlLint
       end
 
       Haml::Util.handle_interpolation(dumped_text) do |scan|
-        line = (newline_positions.find_index { |marker| scan.pos <= marker } ||
+        line = (newline_positions.find_index { |marker| scan.charpos <= marker } ||
                 newline_positions.size) + 1
 
         escape_count = (scan[2].size - 1) / 2
@@ -76,6 +76,41 @@ module HamlLint
 
         # Hacky way to turn a dumped string back into a regular string
         yield [eval('"' + dumped_interpolated_str + '"'), line] # rubocop:disable Security/Eval
+      end
+    end
+
+    def handle_interpolation_with_indexes(text)
+      newline_indexes = extract_substring_positions(text, "\n")
+
+      handle_interpolation_with_newline(text) do |scan|
+        line_index = newline_indexes.find_index { |index| scan.charpos <= index }
+        line_index ||= newline_indexes.size
+
+        line_start_char_index = if line_index == 0
+                                  0
+                                else
+                                  newline_indexes[line_index - 1]
+                                end
+
+        char_index = scan.charpos - line_start_char_index
+
+        yield scan, line_index, char_index
+      end
+    end
+
+    if Gem::Version.new(Haml::VERSION) >= Gem::Version.new('5')
+      # Same as Haml::Util.handle_interpolation, but enables multiline mode on the regex
+      def handle_interpolation_with_newline(str)
+        scan = StringScanner.new(str)
+        yield scan while scan.scan(/(.*?)(\\*)#([{@$])/m)
+        scan.rest
+      end
+    else
+      # Same as Haml::Util.handle_interpolation, but enables multiline mode on the regex
+      def handle_interpolation_with_newline(str)
+        scan = StringScanner.new(str)
+        yield scan while scan.scan(/(.*?)(\\*)\#\{/m)
+        scan.rest
       end
     end
 
@@ -90,7 +125,7 @@ module HamlLint
     def extract_substring_positions(text, substr)
       positions = []
       scanner = StringScanner.new(text)
-      positions << scanner.pos while scanner.scan(/(.*?)#{substr}/)
+      positions << scanner.charpos while scanner.scan(/(.*?)#{substr}/)
       positions
     end
 
@@ -175,6 +210,71 @@ module HamlLint
       yield
     ensure
       old_env.each { |var, value| ENV[var.to_s] = value }
+    end
+
+    def indent(string, nb_indent)
+      if nb_indent < 0
+        string.gsub(/^ {1,#{-nb_indent}}/, '')
+      else
+        string.gsub(/^/, ' ' * nb_indent)
+      end
+    end
+
+    def map_subset!(array, range, &block)
+      subset = array[range]
+      return if subset.nil? || subset.empty?
+
+      array[range] = subset.map(&block)
+    end
+
+    def map_after_first!(array, &block)
+      map_subset!(array, 1..-1, &block)
+    end
+
+    # Returns true if line is only whitespace.
+    # Note, this is not like blank? is rails. For nil, this returns false.
+    def is_blank_line?(line)
+      line && line.index(/\S/).nil?
+    end
+
+    def check_error_when_compiling_haml(haml_string)
+      begin
+        ruby_code = ::HamlLint::Adapter.detect_class.new(haml_string).precompile
+      rescue StandardError => e
+        return e
+      end
+      eval("BEGIN {return nil}; #{ruby_code}", binding, __FILE__, __LINE__) # rubocop:disable Security/Eval
+      # The eval will return nil
+    rescue ::SyntaxError
+      $!
+    end
+
+    # Overrides the global stdin, stdout and stderr while within the block, to
+    # push a string in stdin, and capture both stdout and stderr which are returned.
+    #
+    # @param stdin_str [String] the string to push in as stdin
+    # @param _block [Block] the block to perform with the overridden std streams
+    # @return [String, String]
+    def with_captured_streams(stdin_str, &_block)
+      original_stdin = $stdin
+      # The dup is needed so that stdin_data isn't altered (encoding-wise at least)
+      $stdin = StringIO.new(stdin_str.dup)
+      begin
+        original_stdout = $stdout
+        $stdout = StringIO.new
+        begin
+          original_stderr = $stderr
+          $stderr = StringIO.new
+          yield
+          [$stdout.string, $stderr.string]
+        ensure
+          $stderr = original_stderr
+        end
+      ensure
+        $stdout = original_stdout
+      end
+    ensure
+      $stdin = original_stdin
     end
   end
 end
