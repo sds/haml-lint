@@ -54,10 +54,11 @@ module HamlLint
 
     # Record a lint for reporting back to the user.
     #
-    # @param node [#line] node to extract the line number from
+    # @param node_or_line [#line] line number or node to extract the line number from
     # @param message [String] error/warning to display to the user
-    def record_lint(node, message)
-      @lints << HamlLint::Lint.new(self, @document.file, node.line, message,
+    def record_lint(node_or_line, message)
+      line = node_or_line.is_a?(Integer) ? node_or_line : node_or_line.line
+      @lints << HamlLint::Lint.new(self, @document.file, line, message,
                                    config.fetch('severity', :warning).to_sym)
     end
 

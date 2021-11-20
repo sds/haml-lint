@@ -101,11 +101,16 @@ module HamlLint::Tree
     #
     # @api public
     # @return [Range]
-    def line_numbers
+    def line_numbers # rubocop:disable Metrics/AbcSize
       return (line..line) unless @value && text
 
-      end_line = line + lines.count
-      end_line = nontrivial_end_line if line == end_line && children.empty?
+      end_line = if !lines.empty?
+                   line + lines.count - 1
+                 elsif children.empty?
+                   nontrivial_end_line
+                 else
+                   line
+                 end
 
       (line..end_line)
     end
@@ -164,7 +169,7 @@ module HamlLint::Tree
       if successor
         successor.line_numbers.begin - 1
       else
-        @document.source_lines.count
+        @document.last_non_empty_line
       end
     end
 
