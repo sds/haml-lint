@@ -594,7 +594,7 @@ AllCops:
 
 Prefer HAML's built-in comment over ad hoc comments in Ruby code.
 
-**Bad: Space after `#` means comment is actually treated as Ruby code**
+**Bad: Space before `#` means comment is actually treated as Ruby code**
 ```haml
 - # A Ruby comment
 ```
