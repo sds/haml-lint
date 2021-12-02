@@ -105,7 +105,7 @@ describe HamlLint::Runner do
           lint = subject.lints.first
           lint.line.should == 2
           lint.filename.should == 'inconsistent_indentation.haml'
-          lint.message.should match(/^Inconsistent indentation/)
+          lint.message.should match(/Inconsistent indentation/)
           lint.severity.should == :error
 
           linter = lint.linter
