@@ -80,6 +80,26 @@ describe HamlLint::Utils do
       end
     end
 
+    context 'with interpolation after an escaped newline line' do
+      let(:text) { 'Some \\n #{interpolation} here' }
+
+      it 'yields once' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(['interpolation', 1])
+      end
+    end
+
+    context 'with interpolation after an escaped newline line in an interpolation' do
+      let(:text) { 'Some #{inter\\npolatio\\\\n} here #{interpolation2}' }
+
+      it 'yields once' do
+        expect do |block|
+          described_class.extract_interpolated_values(text, &block)
+        end.to yield_successive_args(['inter\\npolatio\\\\n', 1], ['interpolation2', 1])
+      end
+    end
+
     context 'with multiple interpolations on a single line' do
       let(:text) { 'Some #{interpolation} will #{go} here' }
 

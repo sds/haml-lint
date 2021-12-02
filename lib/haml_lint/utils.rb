@@ -54,7 +54,16 @@ module HamlLint
     # @yieldparam line [Integer] line number code appears on in text
     def extract_interpolated_values(text)
       dumped_text = text.dump
-      newline_positions = extract_substring_positions(dumped_text, '\\\n')
+
+      # Basically, match pairs of '\' and '\ followed by the letter 'n'
+      quoted_regex_s = "(#{Regexp.quote('\\\\')}|#{Regexp.quote('\\n')})"
+      newline_positions = extract_substring_positions(dumped_text, quoted_regex_s)
+
+      # Filter the matches to only keep those ending in 'n'.
+      # This way, escaped \n will not be considered
+      newline_positions.select! do |pos|
+        dumped_text[pos - 1] == 'n'
+      end
 
       Haml::Util.handle_interpolation(dumped_text) do |scan|
         line = (newline_positions.find_index { |marker| scan.pos <= marker } ||
