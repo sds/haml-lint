@@ -36,7 +36,9 @@ module HamlLint
     # @return [Integer] exit status code
     def act_on_options(options)
       configure_logger(options)
-
+      if options[:debug]
+        ENV['HAML_LINT_DEBUG'] = 'true'
+      end
       if options[:help]
         print_help(options)
         Sysexits::EX_OK

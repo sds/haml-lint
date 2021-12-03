@@ -108,6 +108,10 @@ module HamlLint
         @options[:show_reporters] = true
       end
 
+      parser.on('-d', '--debug', 'Add debug information to messages') do
+        @options[:debug] = true
+      end
+
       parser.on_tail('-h', '--help', 'Display help documentation') do
         @options[:help] = parser.help
       end

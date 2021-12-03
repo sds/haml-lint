@@ -17,6 +17,11 @@ SimpleCov.start do
   end
 end
 
+# We want "true" by default, but if specified to false (useful for CI), then stay false
+if ENV['HAML_LINT_DEBUG'] != 'false'
+  ENV['HAML_LINT_DEBUG'] = 'true'
+end
+
 # Disable colors in tests because we don't normally want to test it
 require 'rainbow'
 Rainbow.enabled = false

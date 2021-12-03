@@ -57,7 +57,17 @@ module HamlLint
 
       @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
     rescue Haml::Error => e
-      error = HamlLint::Exceptions::ParseError.new("#{@file}: #{e.message}", e.line)
+      location = if e.line
+                   "#{@file}:#{e.line}"
+                 else
+                   @file
+                 end
+      msg = if ENV['HAML_LINT_DEBUG'] == 'true'
+              "#{location} (DEBUG: source follows) - #{e.message}\n#{source}\n------"
+            else
+              "#{location} - #{e.message}"
+            end
+      error = HamlLint::Exceptions::ParseError.new(msg, e.line)
       raise error
     end
 

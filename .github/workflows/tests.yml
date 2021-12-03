@@ -41,7 +41,8 @@ jobs:
           bundler-cache: true
 
       - name: Run tests
-        run: bundle exec rspec
+        # We prefer to run without debug to catch errors in the "not debug" code
+        run: HAML_LINT_DEBUG=false bundle exec rspec
 
       - name: Code coverage reporting
         uses: coverallsapp/github-action@v2
