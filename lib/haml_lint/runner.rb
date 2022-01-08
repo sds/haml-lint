@@ -24,6 +24,8 @@ module HamlLint
       @linter_selector = HamlLint::LinterSelector.new(config, options)
       @fail_fast = options.fetch(:fail_fast, false)
       @cache = {}
+      @autocorrect = options[:autocorrect]
+      @autocorrect_only = options[:autocorrect_only]
 
       report(options)
     end
@@ -88,9 +90,39 @@ module HamlLint
                                    e.line, e.to_s, :error)]
       end
 
-      linter_selector.linters_for_file(file).map do |linter|
-        linter.run(document)
-      end.flatten
+      linters = linter_selector.linters_for_file(file)
+      lint_arrays = []
+
+      if @autocorrect
+        lint_arrays << autocorrect_document(document, linters)
+      end
+
+      unless @autocorrect_only
+        lint_arrays << linters.map do |linter|
+          linter.run(document)
+        end
+      end
+      lint_arrays.flatten
+    end
+
+    # Out of the provided linters, runs those that support autocorrect
+    # against the specified document.
+    # Updates the document and returns the lints that were corrected.
+    #
+    # @param document [HamlLint::Document]
+    # @param linter_selector [HamlLint::LinterSelector]
+    # @return [Array<HamlLint::Lint>]
+    def autocorrect_document(document, linters)
+      lint_arrays = []
+
+      autocorrecting_linters = linters.select { |l| l.supports_autocorrect? }
+      lint_arrays << autocorrecting_linters.map do |linter|
+        linter.run(document, autocorrect: @autocorrect)
+      end
+
+      document.write_to_disk!
+
+      lint_arrays
     end
 
     # Returns the list of files that should be linted given the specified

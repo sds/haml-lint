@@ -87,11 +87,13 @@ RSpec.describe HamlLint::Reporter::ProgressReporter do
         let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
         let(:output_without_summary) { output.split("\n").reject(&:empty?)[0..-2].join("\n") }
         let(:severities)   { [:warning] * 2 }
+        let(:correcteds)   { [false, false] }
         let(:summary)      { output.split("\n")[-2..-1].join("\n") }
 
         let(:lints) do
           files.each_with_index.map do |file, index|
-            HamlLint::Lint.new(linter, file, lines[index], descriptions[index], severities[index])
+            HamlLint::Lint.new(linter, file, lines[index], descriptions[index],
+                               severities[index], corrected: correcteds[index])
           end
         end
 
@@ -108,6 +110,15 @@ RSpec.describe HamlLint::Reporter::ProgressReporter do
         it 'prints the summary' do
           subject
           summary.should == "\n2 files inspected, 2 lints detected"
+        end
+
+        context 'with an auto-corrected lint' do
+          let(:correcteds) { [false, true] }
+
+          it 'prints the summary' do
+            subject
+            summary.should == "\n2 files inspected, 2 lints detected, 1 lint corrected"
+          end
         end
       end
     end

@@ -14,6 +14,8 @@ module HamlLint
           }
         end
 
+        let(:autocorrect) { nil }
+
         let(:config) { options[:config].for_linter(described_class) }
 
         let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
@@ -25,7 +27,7 @@ module HamlLint
 
         before do
           next unless run_method_to_use
-          subject.send(run_method_to_use, document)
+          subject.send(run_method_to_use, document, autocorrect: autocorrect)
         end
       end
     end

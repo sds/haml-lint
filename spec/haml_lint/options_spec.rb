@@ -89,6 +89,74 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with an auto-correct option' do
+      let(:args) { %w[--auto-correct] }
+
+      it 'sets the autocorrect option to safe' do
+        subject[:autocorrect].should == :safe
+      end
+    end
+
+    context 'with a -a option' do
+      let(:args) { %w[-a] }
+
+      it 'sets the autocorrect option to safe' do
+        subject[:autocorrect].should == :safe
+      end
+    end
+
+    context 'with an auto-correct-all option' do
+      let(:args) { %w[--auto-correct-all] }
+
+      it 'sets the autocorrect option to all' do
+        subject[:autocorrect].should == :all
+      end
+    end
+
+    context 'with a -A option' do
+      let(:args) { %w[--auto-correct-all] }
+
+      it 'sets the autocorrect option to all' do
+        subject[:autocorrect].should == :all
+      end
+    end
+
+    context 'with a --auto-correct-only' do
+      let(:args) { %w[--auto-correct-only] }
+
+      it 'sets the autocorrect option to safe' do
+        subject[:autocorrect].should == :safe
+      end
+
+      it 'sets the autocorrect_only option to true' do
+        subject[:autocorrect_only].should == true
+      end
+    end
+
+    context 'with a --auto-correct-all --auto-correct-only' do
+      let(:args) { %w[--auto-correct-all  --auto-correct-only] }
+
+      it 'sets the autocorrect option to safe' do
+        subject[:autocorrect].should == :all
+      end
+
+      it 'sets the autocorrect_only option to true' do
+        subject[:autocorrect_only].should == true
+      end
+    end
+
+    context 'with a --auto-correct-only --auto-correct-all' do
+      let(:args) { %w[--auto-correct-only --auto-correct-all] }
+
+      it 'sets the autocorrect option to safe' do
+        subject[:autocorrect].should == :all
+      end
+
+      it 'sets the autocorrect_only option to true' do
+        subject[:autocorrect_only].should == true
+      end
+    end
+
     context 'fail fast' do
       let(:args) { %w[--fail-fast] }
 

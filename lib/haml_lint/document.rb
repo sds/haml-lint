@@ -23,6 +23,9 @@ module HamlLint
     # @return [Array<String>] original source code as an array of lines
     attr_reader :source_lines
 
+    # @return [Boolean] true if the source was changed (by autocorrect)
+    attr_reader :source_was_changed
+
     # Parses the specified Haml code into a {Document}.
     #
     # @param source [String] Haml code to parse
@@ -32,7 +35,7 @@ module HamlLint
     def initialize(source, options)
       @config = options[:config]
       @file = options.fetch(:file, STRING_SOURCE)
-
+      @source_was_changed = false
       process_source(source)
     end
 
@@ -42,6 +45,36 @@ module HamlLint
     def last_non_empty_line
       index = source_lines.rindex { |l| !l.empty? }
       (index || 0) + 1
+    end
+
+    # Reparses the new source and remember that the document was changed
+    # Used when auto-correct does changes to the file. If the source hasn't changed,
+    # then the document will not be marked as changed.
+    #
+    # If the new_source fails to parse, automatically reparses the previous source
+    # to bring the document back to how it should be before re-raising the parse exception
+    #
+    # @param source [String] Haml code to parse
+    def change_source(new_source)
+      return if new_source == @source
+      old_source = @source
+      begin
+        process_source(new_source)
+        @source_was_changed = true
+      rescue HamlLint::Exceptions::ParseError
+        # Reprocess the previous_source so that other linters can work on this document
+        # object from a clean slate
+        process_source(old_source)
+        raise
+      end
+      nil
+    end
+
+    def write_to_disk!
+      return unless @source_was_changed
+      return if file == STRING_SOURCE
+      File.write(file, source)
+      @source_was_changed = false
     end
 
     private

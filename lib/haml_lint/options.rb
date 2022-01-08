@@ -4,7 +4,7 @@ require 'optparse'
 
 module HamlLint
   # Handles option parsing for the command line application.
-  class Options
+  class Options # rubocop:disable Metrics/ClassLength
     # Parses command line options into an options hash.
     #
     # @param args [Array<String>] arguments passed via the command line
@@ -32,7 +32,7 @@ module HamlLint
 
     private
 
-    def add_linter_options(parser)
+    def add_linter_options(parser) # rubocop:disable Metrics/MethodLength
       parser.on('--auto-gen-config', 'Generate a configuration file acting as a TODO list') do
         @options[:auto_gen_config] = true
       end
@@ -54,6 +54,20 @@ module HamlLint
 
       parser.on('-p', '--parallel', 'Run linters in parallel using available CPUs') do
         @options[:parallel] = true
+      end
+
+      parser.on('-a', '--auto-correct', 'Auto-correct offenses (only when it’s safe)') do
+        @options[:autocorrect] = :safe
+      end
+
+      parser.on('-A', '--auto-correct-all', 'Auto-correct offenses (safe and unsafe)') do
+        @options[:autocorrect] = :all
+      end
+
+      parser.on('--auto-correct-only', "Only do auto-correct, don't lint. " \
+          'Also activates safe auto-correct if no auto-correct is selected') do
+        @options[:autocorrect_only] = true
+        @options[:autocorrect] ||= :safe
       end
     end
 

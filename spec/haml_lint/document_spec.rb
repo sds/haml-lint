@@ -114,4 +114,28 @@ describe HamlLint::Document do
       end
     end
   end
+
+  describe '#change_source' do
+    let(:source) { <<~HAML }
+      %head
+        %title My title
+    HAML
+
+    let(:options) { { config: config } }
+
+    subject { described_class.new(source, options) }
+
+    it 'sets source_was_changed to true when source is different' do
+      subject.change_source(<<~HAML)
+        %tag
+          This all is different
+      HAML
+      subject.source_was_changed.should be true
+    end
+
+    it "doesn't set source_was_changed to true when source is different" do
+      subject.change_source(source)
+      subject.source_was_changed.should be false
+    end
+  end
 end
