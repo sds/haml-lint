@@ -2,6 +2,7 @@
 
 require 'pathname'
 require 'yaml'
+require 'erb'
 
 module HamlLint
   # Manages configuration file loading.
@@ -86,12 +87,10 @@ module HamlLint
       # @param file [String]
       # @return [HamlLint::Configuration]
       def load_from_file(file)
-        hash =
-          if yaml = YAML.load_file(file)
-            yaml.to_hash
-          else
-            {}
-          end
+        content = File.read(file)
+
+        processed_content = HamlLint::Utils.process_erb(content)
+        hash = (YAML.safe_load(processed_content) || {}).to_hash
 
         if hash.key?('inherit_from')
           hash['inherits_from'] ||= []
@@ -157,7 +156,7 @@ module HamlLint
       #
       # @param gem_name [String] name of the gem
       # @param relative_config_path [String] path of the file to resolve, relative to the gem root
-      # @return [Stringg]
+      # @return [String]
       def gem_config_path(gem_name, relative_config_path)
         if defined?(Bundler)
           gem = Bundler.load.specs[gem_name].first

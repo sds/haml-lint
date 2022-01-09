@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Add ERB pre-processing for configuration files
+
 ### 0.45.0
 
 * Add support for referencing configuration files relative to the home directory
