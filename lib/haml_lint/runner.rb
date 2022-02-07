@@ -115,7 +115,7 @@ module HamlLint
     def autocorrect_document(document, linters)
       lint_arrays = []
 
-      autocorrecting_linters = linters.select { |l| l.supports_autocorrect? }
+      autocorrecting_linters = linters.select(&:supports_autocorrect?)
       lint_arrays << autocorrecting_linters.map do |linter|
         linter.run(document, autocorrect: @autocorrect)
       end

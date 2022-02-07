@@ -1,0 +1,179 @@
+
+!!! Added empty newlines within scripts are inserted in the final Haml
+- foo.each do |bar|
+  - next if bar
+  = execute
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar $$2
+  HL.out = execute $$3
+end
+haml_lint_marker_6
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar
+
+  HL.out = execute
+end
+haml_lint_marker_6
+---
+- foo.each do |bar|
+  - next if bar
+
+  = execute
+
+
+!!! Added empty newlines between script and tag are inserted in the final Haml
+- foo.each do |bar|
+  - next if bar
+  %tag
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar $$2
+  haml_lint_marker_4
+  haml_lint_tag_5 $$3
+end
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar
+
+  haml_lint_marker_4
+  haml_lint_tag_5
+end
+---
+- foo.each do |bar|
+  - next if bar
+
+  %tag
+
+
+!!! Empty newlines between scripts are extracted to ruby
+^ foo(:bar =>  123)
+
+^ abc(:hello =>  42)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123)
+                     $$2
+^^abc(:hello =>  42) $$3
+haml_lint_marker_5
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+
+^^abc(hello: 42)
+haml_lint_marker_5
+---
+^ foo(bar: 123)
+
+^ abc(hello: 42)
+
+
+!!! Empty newlines between script and tag are extracted to ruby
+^ foo(:bar =>  123)
+
+%tag
+---
+haml_lint_marker_1
+^^foo(:bar =>  123)
+                     $$2
+haml_lint_marker_4
+haml_lint_tag_5 $$3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+
+haml_lint_marker_4
+haml_lint_tag_5
+---
+^ foo(bar: 123)
+
+%tag
+
+
+!!! Empty nested newlines between scripts are extracted to ruby and remain
+- foo.each do |bar|
+  - next if bar
+
+  = execute
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar $$2
+  $$3
+  HL.out = execute $$4
+end
+haml_lint_marker_7
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar
+
+  HL.out = execute
+end
+haml_lint_marker_7
+---
+- foo.each do |bar|
+  - next if bar
+
+  = execute
+
+
+!!! Empty nested newlines between script and tag are extracted to ruby and remain
+- foo.each do |bar|
+  - next if bar
+
+  %tag
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar $$2
+  $$3
+  haml_lint_marker_5
+  haml_lint_tag_6 $$4
+end
+---
+haml_lint_marker_1
+foo.each do |bar|
+  next if bar
+
+  haml_lint_marker_5
+  haml_lint_tag_6
+end
+---
+- foo.each do |bar|
+  - next if bar
+
+  %tag
+
+
+!!! with a blank line where indent is removed
+- deeper do
+  ^ foo(:bar =>  123)
+
+^ abc(:hello =>  42)
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(:bar =>  123) $$2
+end
+                     $$3
+^^abc(:hello =>  42) $$4
+haml_lint_marker_7
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(bar: 123)
+end
+
+^^abc(hello: 42)
+haml_lint_marker_7
+---
+- deeper do
+  ^ foo(bar: 123)
+
+^ abc(hello: 42)

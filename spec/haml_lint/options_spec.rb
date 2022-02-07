@@ -134,7 +134,7 @@ describe HamlLint::Options do
     end
 
     context 'with a --auto-correct-all --auto-correct-only' do
-      let(:args) { %w[--auto-correct-all  --auto-correct-only] }
+      let(:args) { %w[--auto-correct-all --auto-correct-only] }
 
       it 'sets the autocorrect option to safe' do
         subject[:autocorrect].should == :all

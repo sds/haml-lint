@@ -21,6 +21,7 @@ end
 if ENV['HAML_LINT_DEBUG'] != 'false'
   ENV['HAML_LINT_DEBUG'] = 'true'
 end
+ENV['HAML_LINT_TESTING'] = 'true'
 
 # Disable colors in tests because we don't normally want to test it
 require 'rainbow'
@@ -34,6 +35,7 @@ Dir[File.dirname(__FILE__) + '/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.include DirectorySpecHelpers
+  config.extend ExamplesParsingHelpers
 
   config.expect_with :rspec do |c|
     c.syntax = %i[expect should]

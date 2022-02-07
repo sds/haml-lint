@@ -1,0 +1,106 @@
+!# Since tags use an `if` when we nest stuff under them, we must make sure
+!# that RuboCop doesn't merge them, which would make it problematic for
+!# then transferring corrections
+
+!!! A tag nesting a plain doesn't get merged by RuboCop  {% rubocop_version >= '1.5' %}
+%tag
+  Lorem Ipsum
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_plain_3 $$2
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_plain_3
+end
+---
+%tag
+  Lorem Ipsum
+
+
+!!! Multiple nesting tags dont get merged by rubocop {% rubocop_version >= '1.5' %}
+%tag
+  %tag
+    = something
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+    haml_lint_tag_4
+    haml_lint_marker_5 $$3
+    HL.out = something
+    haml_lint_marker_7
+  end
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+    haml_lint_tag_4
+    haml_lint_marker_5
+    HL.out = something
+    haml_lint_marker_7
+  end
+end
+---
+%tag
+  %tag
+    = something
+
+
+!!! A nesting tag doesn't get merged by RuboCop with a nested `if` script {% rubocop_version >= '1.5' %}
+%tag
+  - if something
+    Lorem Ipsum
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3 $$2
+  if something
+    haml_lint_marker_5
+    haml_lint_plain_6 $$3
+  end
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  if something
+    haml_lint_marker_5
+    haml_lint_plain_6
+  end
+end
+---
+%tag
+  - if something
+    Lorem Ipsum
+
+
+!!! A `if` script nesting a nesting tag doesn't get merged by RuboCop  {% rubocop_version >= '1.5' %}
+- if something
+  %tag
+    Lorem Ipsum
+---
+haml_lint_marker_1
+if something
+  haml_lint_marker_3
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+    haml_lint_tag_5
+    haml_lint_plain_6 $$3
+  end
+end
+---
+haml_lint_marker_1
+if something
+  haml_lint_marker_3
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+    haml_lint_tag_5
+    haml_lint_plain_6
+  end
+end
+---
+- if something
+  %tag
+    Lorem Ipsum

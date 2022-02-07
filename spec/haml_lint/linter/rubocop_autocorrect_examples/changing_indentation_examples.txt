@@ -1,0 +1,592 @@
+!# Rubocop may sometimes change the indentation, such as when "ifs" are merged together.
+!# Couldn't find a cop that does such a transformation in older RuboCops, so this is/was
+!# tested against a newer one to make sure those behavior can happen.
+
+!!! Removes indentation of a plain {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    Lorem Ipsum
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_plain_5 $$3
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_plain_5
+end
+---
+- if a && b
+  Lorem Ipsum
+
+
+!!! Removes indentation of a plain with interpolation that has no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    Lorem #{foo(bar: 123)} Ipsum
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_interpolation_5 $$3
+    haml_lint_marker_6
+    HL.out = foo(bar: 123)
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_interpolation_5
+  haml_lint_marker_6
+  HL.out = foo(bar: 123)
+  haml_lint_marker_8
+end
+---
+- if a && b
+  Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! Removes indentation of a plain with interpolation that has fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_interpolation_5 $$3
+    haml_lint_marker_6
+    HL.out = foo(:bar =>  123)
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_interpolation_5
+  haml_lint_marker_6
+  HL.out = foo(bar: 123)
+  haml_lint_marker_8
+end
+---
+- if a && b
+  Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! Removes indentation of a non-ruby filter {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    :filter
+      Lorem Ipsum
+      Dolor Sit Amet
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_filter_5 $$3
+  end $$5
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_filter_5
+end
+---
+- if a && b
+  :filter
+    Lorem Ipsum
+    Dolor Sit Amet
+
+
+!!! Removes indentation of a non-ruby filter with interpolation that has no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    :filter
+      Lorem Ipsum
+      Dolor #{foo(bar: 123)} Sit Amet
+      Consectetur Adipiscing
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_marker_5 $$3
+    HL.out = <<~HAML_LINT_FILTER
+      Lorem Ipsum $$4
+      Dolor #{foo(bar: 123)} Sit Amet $$5
+      Consectetur Adipiscing $$6
+    HAML_LINT_FILTER
+    haml_lint_marker_11
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_marker_5
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+    Consectetur Adipiscing
+  HAML_LINT_FILTER
+  haml_lint_marker_11
+end
+---
+- if a && b
+  :filter
+    Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+    Consectetur Adipiscing
+
+
+!!! Removes indentation of a non-ruby filter with interpolation that has fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    :filter
+      Lorem Ipsum
+      Dolor #{foo(:bar =>  123)} Sit Amet
+      Consectetur Adipiscing
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_marker_5 $$3
+    HL.out = <<~HAML_LINT_FILTER
+      Lorem Ipsum $$4
+      Dolor #{foo(:bar =>  123)} Sit Amet $$5
+      Consectetur Adipiscing $$6
+    HAML_LINT_FILTER
+    haml_lint_marker_11
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_marker_5
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+    Consectetur Adipiscing
+  HAML_LINT_FILTER
+  haml_lint_marker_11
+end
+---
+- if a && b
+  :filter
+    Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+    Consectetur Adipiscing
+
+
+!!! Removes indentation of a ruby filter that has no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    :ruby
+      foo(bar: 123)
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_marker_5 $$4
+    foo(bar: 123)
+    haml_lint_marker_7
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_marker_5
+  foo(bar: 123)
+  haml_lint_marker_7
+end
+---
+- if a && b
+  :ruby
+    foo(bar: 123)
+
+
+!!! Removes indentation of a ruby filter that has fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    :ruby
+      foo(:bar =>  123)
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_marker_5 $$4
+    foo(:bar =>  123)
+    haml_lint_marker_7
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_marker_5
+  foo(bar: 123)
+  haml_lint_marker_7
+end
+---
+- if a && b
+  :ruby
+    foo(bar: 123)
+
+
+!!! Removes indentation of a tag with attributes that have no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag{bar: 123, abc: '42'}
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_marker_6
+    WWWW(bar: 123, abc: '42')
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_marker_6
+  WWWW(bar: 123, abc: '42')
+  haml_lint_marker_8
+end
+---
+- if a && b
+  %tag{bar: 123, abc: '42'}
+
+
+!!! Removes indentation of a tag with attributes that have fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag{:bar =>  123, abc:  '42'}
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_marker_6
+    WWWW(:bar =>  123, abc:  '42')
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_marker_6
+  WWWW(bar: 123, abc: '42')
+  haml_lint_marker_8
+end
+---
+- if a && b
+  %tag{bar: 123, abc: '42'}
+
+
+!!! Removes indentation of a tag with attributes that have no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag{bar: 123, abc: '42'}
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_marker_6
+    WWWW(bar: 123, abc: '42')
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_marker_6
+  WWWW(bar: 123, abc: '42')
+  haml_lint_marker_8
+end
+---
+- if a && b
+  %tag{bar: 123, abc: '42'}
+
+
+!!! Removes indentation of a tag {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+end
+---
+- if a && b
+  %tag
+
+
+!!! Removes indentation of a tag's script that has fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag= foo(:bar =>  123, abc:  '42')
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_marker_6
+    HL.out = foo(:bar =>  123, abc:  '42')
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_marker_6
+  HL.out = foo(bar: 123, abc: '42')
+  haml_lint_marker_8
+end
+---
+- if a && b
+  %tag= foo(bar: 123, abc: '42')
+
+
+!!! Removes indentation of a tag's script that has no fixes {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    %tag= foo(bar: 123, abc: '42')
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_marker_6
+    HL.out = foo(bar: 123, abc: '42')
+    haml_lint_marker_8
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_marker_6
+  HL.out = foo(bar: 123, abc: '42')
+  haml_lint_marker_8
+end
+---
+- if a && b
+  %tag= foo(bar: 123, abc: '42')
+
+
+!!! Multiple indentation removals of a plain {% rubocop_version >= '1.5' %}
+- if a
+  - if b
+    Lorem Ipsum
+    - if c
+      - if d
+        Dolor Sit Amet
+---
+haml_lint_marker_1
+if a
+  if b $$2
+    haml_lint_marker_4
+    haml_lint_plain_5 $$3
+    haml_lint_marker_6 $$4
+    if c
+      if d $$5
+        haml_lint_marker_9
+        haml_lint_plain_10 $$6
+      end
+    end
+  end
+end
+---
+haml_lint_marker_1
+if a && b
+  haml_lint_marker_4
+  haml_lint_plain_5
+  haml_lint_marker_6
+  if c && d
+    haml_lint_marker_9
+    haml_lint_plain_10
+  end
+end
+---
+- if a && b
+  Lorem Ipsum
+  - if c && d
+    Dolor Sit Amet
+
+
+!!! Removes indentation of a tag when the last script's indentation didn't change {% rubocop_version >= '1.5' %}
+!# What's special is that we want to change the indentation of what follows the script,
+!# but the last line of script didn't change indentation.
+!# Needs to have 2 nested instructions for RuboCop to decide to apply this cop
+- bar.each do
+  - if abc
+    Lorem Ipsum
+    Dolor Sit Amet
+---
+haml_lint_marker_1
+bar.each do
+  if abc $$2
+    haml_lint_marker_4
+    haml_lint_plain_5 $$3
+    haml_lint_plain_6 $$4
+  end
+end
+---
+haml_lint_marker_1
+bar.each do
+  next unless abc
+
+  haml_lint_marker_4
+  haml_lint_plain_5
+  haml_lint_plain_6
+end
+---
+- bar.each do
+  - next unless abc
+
+  Lorem Ipsum
+  Dolor Sit Amet
+
+
+!!! Removes indentation of a tag when the last script's indentation didn't change {% rubocop_version >= '1.5' %}
+!# What's special is that we want to change the indentation of what follows the script,
+!# but the last line of script didn't change indentation.
+!# Needs to have 2 nested instructions for RuboCop to decide to apply this cop
+- bar.each do
+  - if abc
+    %tag
+    %tag
+---
+haml_lint_marker_1
+bar.each do
+  if abc $$2
+    haml_lint_marker_4
+    haml_lint_tag_5 $$3
+    haml_lint_tag_6 $$4
+  end
+end
+---
+haml_lint_marker_1
+bar.each do
+  next unless abc
+
+  haml_lint_marker_4
+  haml_lint_tag_5
+  haml_lint_tag_6
+end
+---
+- bar.each do
+  - next unless abc
+
+  %tag
+  %tag
+
+
+!!! Removes 2 indentation levels from tag less indented than script's last line {% rubocop_version >= '1.5' %}
+- if abc
+  - if bcd
+    - if cde
+      - foo(:bar =>  123) do
+        %tag
+      %tag
+---
+haml_lint_marker_1
+if abc
+  if bcd $$2
+    if cde $$3
+      foo(:bar =>  123) do $$4
+        haml_lint_marker_6
+        haml_lint_tag_7 $$5
+      end
+      haml_lint_tag_9 $$6
+    end
+  end
+end
+---
+haml_lint_marker_1
+if abc && bcd && cde
+  foo(bar: 123) do
+    haml_lint_marker_6
+    haml_lint_tag_7
+  end
+  haml_lint_tag_9
+end
+---
+- if abc && bcd && cde
+  - foo(bar: 123) do
+    %tag
+  %tag
+
+!!! Handles a case that HAML precompiles into invalid code
+!# See comments on Layout/CaseIndentation in forced_rubocop_config.yml for details
+!# HAML generates invalid HAML for this in 5.2, 6.0, 6.1 (and maybe before too). It places 2 `end`
+- case 1
+  - when 1
+  - when 2
+    foo
+---
+haml_lint_marker_1
+case 1
+  when 1 $$2
+  when 2 $$3
+    haml_lint_marker_5
+    haml_lint_plain_6 $$4
+end
+---
+haml_lint_marker_1
+case 1
+when 1
+when 2
+  haml_lint_marker_5
+  haml_lint_plain_6
+end
+---
+!# No problem if the `when` are not indented!
+- case 1
+- when 1
+- when 2
+  foo

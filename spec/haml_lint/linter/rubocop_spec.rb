@@ -73,14 +73,14 @@ describe HamlLint::Linter::RuboCop do
       - abc = 123
     HAML
 
-    it "base case has an offense" do
+    it 'base case has an offense' do
       should report_lint line: 1, severity: :error, message: /UselessAssignment/
     end
 
     context 'when the HAML_LINT_RUBOCOP_CONF environment variable specifies an empty config' do
       around do |example|
         config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
-          f.write("# Nothing special")
+          f.write('# Nothing special')
           f.close
         end
 
@@ -89,7 +89,7 @@ describe HamlLint::Linter::RuboCop do
         end
       end
 
-      it "has still has an offense" do
+      it 'has still has an offense' do
         should report_lint line: 1, severity: :error, message: /UselessAssignment/
       end
     end
@@ -134,13 +134,13 @@ describe HamlLint::Linter::RuboCop do
       let(:config) do
         # need to be an instance variable to avoid the TempFile cleaning up too soon
         @config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
-          f.write("# Nothing special")
+          f.write('# Nothing special')
           f.close
         end
         super().merge('config_file' => @config_file.path)
       end
 
-      it "has still has an offense" do
+      it 'has still has an offense' do
         should report_lint line: 1, severity: :error, message: /UselessAssignment/
       end
     end
@@ -177,6 +177,38 @@ describe HamlLint::Linter::RuboCop do
         should_not report_lint
       end
     end
+
+    context 'respect the .rubocop.yml matching the file location' do
+      # Don't auto-run because we need to do some setup first
+      let(:run_method_to_use) { nil }
+      let(:options) { super().merge(file: "#{@tmpdir}/foo.haml") }
+
+      def run_with_config(config)
+        Dir.mktmpdir do |tmpdir|
+          @tmpdir = tmpdir
+          File.open("#{@tmpdir}/.rubocop.yml", 'w') do |f|
+            f.write(config)
+            f.close
+          end
+          subject.run_or_raise(document, autocorrect: autocorrect)
+        end
+      end
+
+      it 'has a lint on config not affecting that file' do
+        run_with_config("Lint/UselessAssignment:\n  Exclude: [foo2.haml]\n")
+        should report_lint line: 1, severity: :error, message: /UselessAssignment/
+      end
+
+      it 'if the cop is disabled, then no lint expected' do
+        run_with_config("Lint/UselessAssignment:\n  Enabled: false\n")
+        should_not report_lint
+      end
+
+      it 'if the file is excluded from the cop, then no lint expected' do
+        run_with_config("Lint/UselessAssignment:\n  Exclude: [foo.haml]\n")
+        should_not report_lint
+      end
+    end
   end
 
   context 'specific testing' do
@@ -202,6 +234,104 @@ describe HamlLint::Linter::RuboCop do
       end
 
       it { should report_lint line: 2, severity: :warning }
+
+      it { should report_lint line: 2, corrected: false }
+    end
+
+    context 'indentation detection edge cases' do
+      let(:run_method_to_use) { nil }
+
+      context 'A comment ending in `do` must not expect indentation' do
+        let(:haml) do
+          [
+            '- #hello world do',
+            'content',
+          ].join("\n")
+        end
+
+        it do
+          expect do
+            subject.run_or_raise(document)
+          end.not_to raise_error
+        end
+      end
+
+      context 'Raise if content following a block keyword is not indented' do
+        let(:haml) do
+          [
+            '- if hello',
+            'content',
+          ].join("\n")
+        end
+
+        it do
+          expect do
+            subject.run_or_raise(document)
+          end.to raise_error(/should be followed by indentation/)
+        end
+      end
+    end
+  end
+
+  context 'autocorrect testing' do
+    context 'autocorrect false' do
+      include_context 'linter'
+      let(:autocorrect) { false }
+
+      context 'lint says when it was not corrected' do
+        let(:haml) { <<~HAML }
+          = foo(:bar  =>   42)
+        HAML
+
+        it { should report_lint line: 1, corrected: false }
+
+        it { should_not report_lint line: 1, corrected: true }
+      end
+    end
+
+    context 'autocorrect all' do
+      include_context 'linter'
+      let(:autocorrect) { :all }
+
+      context 'lint says when it was corrected' do
+        let(:haml) { <<~HAML }
+          = foo(:bar  =>   42)
+        HAML
+
+        it { should report_lint line: 1, corrected: true }
+
+        it { should_not report_lint line: 1, corrected: false }
+      end
+    end
+
+    context 'autocorrect safe' do
+      include_context 'linter'
+      let(:autocorrect) { :safe }
+
+      # Need to check for an exception, so must call `run` manually
+      let(:run_method_to_use) { nil }
+
+      let(:haml) { <<~HAML }
+        = foo(:bar  =>   42)
+      HAML
+
+      before do
+        subject.run_or_raise(document, autocorrect: autocorrect)
+      end
+
+      context 'lint says when it was corrected' do
+        let(:haml) { <<~HAML }
+          = foo(:bar  =>   42)
+        HAML
+
+        it nil do
+          should report_lint line: 1, corrected: true
+        end
+
+        it nil do
+          should_not report_lint line: 1, corrected: false
+        end
+      end
     end
   end
 
@@ -244,6 +374,20 @@ describe HamlLint::Linter::RuboCop do
       it {
         expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
                                           /RuboCop exited unsuccessfully with status 123/)
+      }
+    end
+
+    context 'when RuboCop has an infinite loop' do
+      before do
+        HamlLint::Utils.stub(:with_captured_streams).and_return(['',
+                                                                 'Infinite loop detected in foo.rb and caused by ...'])
+      end
+
+      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_ERROR }
+
+      it {
+        expect { subject }.to raise_error(HamlLint::Exceptions::InfiniteLoopError,
+                                          /Infinite loop/)
       }
     end
   end
