@@ -62,7 +62,7 @@ module HamlLint
       parser.on('-r', '--reporter reporter', String,
                 'Specify which reporter you want to use to generate the output. One of:',
                 *reporters.map { |name| "  - #{name}" }) do |reporter|
-                  @options[:reporter] = load_reporter_class(reporter.split('-').map(&:capitalize).join)
+        @options[:reporter] = load_reporter_class(reporter.split('-').map(&:capitalize).join)
       end
 
       parser.on('--fail-fast', 'Fail after the first file with lint at or above the fail level') do
