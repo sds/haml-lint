@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-if ENV['TRAVIS']
-  # When running in Travis, report coverage stats to Coveralls.
+if ENV['CI']
+  # When running in CI, report coverage stats to Coveralls.
   require 'coveralls'
   Coveralls.wear!
 else

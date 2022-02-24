@@ -47,7 +47,7 @@ Style/Lambda:
   Enabled: false
 
 Layout/LineLength:
-  Max: 100
+  Max: 120
 
 Lint/InterpolationCheck:
   Exclude:

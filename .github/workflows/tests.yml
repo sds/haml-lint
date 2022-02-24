@@ -1,0 +1,38 @@
+name: Tests
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  rspec:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+        ruby-version:
+          - '2.6'
+          - '2.7'
+          - '3.0'
+        gemfile:
+          - haml4
+          - haml5.0
+          - haml5.1
+          - haml5.2
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+          bundler-cache: true
+
+      - name: Run tests
+        run: bundle exec rspec
