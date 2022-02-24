@@ -27,8 +27,6 @@ module HamlLint
       find_lints(extracted_source.source, extracted_source.source_map)
     end
 
-    private
-
     # A single CLI instance is shared between files to avoid RuboCop
     # having to repeatedly reload .rubocop.yml.
     def self.rubocop_cli
@@ -36,6 +34,8 @@ module HamlLint
       # because it can't be Marshal.dump'd (as used by Parallel.map)
       @rubocop_cli ||= ::RuboCop::CLI.new
     end
+
+    private
 
     # Executes RuboCop against the given Ruby code and records the offenses as
     # lints.

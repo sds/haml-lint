@@ -14,7 +14,7 @@ gem 'appraisal'
 # Run all pre-commit hooks via Overcommit during CI runs
 gem 'overcommit', '0.58.0'
 
-# Pin tool versions (which are executed by Overcommit) for Travis builds
+# Pin tool versions (which are executed by Overcommit) for CI builds
 gem 'rubocop', '0.79.0'
 
 gem 'coveralls', require: false
