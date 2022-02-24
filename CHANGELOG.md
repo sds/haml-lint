@@ -1,5 +1,11 @@
 # HAML-Lint Changelog
 
+### 0.38.0
+
+* Fix config merging behavior so new empty array (the default) does not overwrite old array
+* Fix `SpaceInsideHashAttribute` to allow attributes across multiple lines
+* Add `OffenseCountReporter` (use by specifying `--reporter offense-count`)
+
 ### 0.37.1
 
 * Add `Layout/ArgumentAlignment` to list of RuboCop cops ignored by default
