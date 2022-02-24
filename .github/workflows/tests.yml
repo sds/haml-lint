@@ -8,13 +8,12 @@ on:
 jobs:
   rspec:
     timeout-minutes: 10
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}-latest
 
     strategy:
       matrix:
         os:
-          - windows-latest
-          - ubuntu-latest
+          - ubuntu
         ruby-version:
           - '2.6'
           - '2.7'
@@ -36,3 +35,21 @@ jobs:
 
       - name: Run tests
         run: bundle exec rspec
+
+      - name: Code coverage reporting
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ matrix.test_number }}-${{ matrix.os }}-${{ matrix.ruby-version }}-${{ matrix.gemfile }}
+          parallel: true
+
+  finish:
+    needs: rspec
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Finalize code coverage report
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
