@@ -32,7 +32,13 @@ module HamlLint
     #
     # @return [String]
     def self.cli_name
-      name.split('::').last.sub(/Reporter$/, '').downcase
+      name
+        .split('::')
+        .last
+        .sub(/Reporter$/, '')
+        .gsub(/([A-Z]+)([A-Z][a-z])/, '\1-\2')
+        .gsub(/([a-z\d])([A-Z])/, '\1-\2')
+        .downcase
     end
 
     # Creates the reporter that will display the given report.

@@ -52,7 +52,7 @@ module HamlLint
     #   the text.
     # @yieldparam interpolated_code [String] code that was interpolated
     # @yieldparam line [Integer] line number code appears on in text
-    def extract_interpolated_values(text) # rubocop:disable Metrics/AbcSize
+    def extract_interpolated_values(text)
       dumped_text = text.dump
       newline_positions = extract_substring_positions(dumped_text, '\\\n')
 
