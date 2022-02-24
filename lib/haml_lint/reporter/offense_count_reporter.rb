@@ -3,7 +3,7 @@
 module HamlLint
   # Outputs the a list of lints with a count of how many of each were found.
   # Ordered by descending count
-  class Reporter::OffensecountReporter < Reporter
+  class Reporter::OffenseCountReporter < Reporter
     def display_report(report)
       lints = report.lints
       total_count = lints.count

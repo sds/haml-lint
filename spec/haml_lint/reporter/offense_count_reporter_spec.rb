@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe HamlLint::Reporter::OffensecountReporter do
+RSpec.describe HamlLint::Reporter::OffenseCountReporter do
   let(:files) { ['some-filename.haml'] }
   let(:io) { StringIO.new }
   let(:output) { io.string }
