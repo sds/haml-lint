@@ -12,8 +12,6 @@ jobs:
 
     strategy:
       matrix:
-        os:
-          - ubuntu
         ruby-version:
           - '2.6'
           - '2.7'
@@ -23,6 +21,8 @@ jobs:
           - haml5.0
           - haml5.1
           - haml5.2
+        os:
+          - ubuntu
 
     steps:
       - uses: actions/checkout@v2
@@ -40,7 +40,7 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.github_token }}
-          flag-name: run-${{ matrix.test_number }}-${{ matrix.os }}-${{ matrix.ruby-version }}-${{ matrix.gemfile }}
+          flag-name: ruby${{ matrix.ruby-version }}-${{ matrix.gemfile }}-${{ matrix.os }}
           parallel: true
 
   finish:
