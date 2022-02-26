@@ -25,6 +25,9 @@ jobs:
         os:
           - ubuntu
 
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
+
     steps:
       - uses: actions/checkout@v2
 
