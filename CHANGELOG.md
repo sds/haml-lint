@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.39.0
+
+* Revert change to `SpaceInsideHashAttribute` since it was not compatible across all HAML versions
+
 ### 0.38.0
 
 * Fix config merging behavior so new empty array (the default) does not overwrite old array
