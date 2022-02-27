@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.40.0
+
+* Fix `SpaceInsideHashAttribute` to allow attributes across multiple lines on HAML 5.2.
+
 ### 0.39.0
 
 * Revert change to `SpaceInsideHashAttribute` since it was not compatible across all HAML versions
