@@ -9,15 +9,15 @@ module HamlLint
     STYLE = {
       'no_space' => {
         start_regex: /\A\{[^ ]/,
-        end_regex: /[^ ]\}\z/,
+        end_regex: /(?:^\s*\}|[^ ]\})\z/,
         start_message: 'Hash attribute should start with no space after the opening brace',
-        end_message: 'Hash attribute should end with no space before the closing brace'
+        end_message: 'Hash attribute should end with no space before the closing brace or be on its own line'
       },
       'space' => {
-        start_regex: /\A\{ [^ ]/,
-        end_regex: /[^ ] \}\z/,
+        start_regex: /\A\{(?: [^ ]|$)/,
+        end_regex: /(?:^\s*\}|[^ ] \})\z/,
         start_message: 'Hash attribute should start with one space after the opening brace',
-        end_message: 'Hash attribute should end with one space before the closing brace'
+        end_message: 'Hash attribute should end with one space before the closing brace or be on its own line'
       }
     }.freeze
 
