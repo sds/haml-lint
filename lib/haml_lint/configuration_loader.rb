@@ -80,7 +80,7 @@ module HamlLint
       # @return [HamlLint::Configuration]
       def load_from_file(file)
         hash =
-          if yaml = YAML.load_file(file)
+          if yaml = YAML.unsafe_load_file(file)
             yaml.to_hash
           else
             {}
