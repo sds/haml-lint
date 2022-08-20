@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.40.1
+
+* Fix `InstanceVariables` check in multiline blocks
+
 ### 0.40.0
 
 * Fix `SpaceInsideHashAttribute` to allow attributes across multiple lines on HAML 5.2.
