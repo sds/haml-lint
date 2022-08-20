@@ -9,7 +9,13 @@ module HamlLint::Tree
     #
     # @return [ParsedRuby] syntax tree in the form returned by Parser gem
     def parsed_script
-      HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(script))
+      statement =
+        if children.empty?
+          script
+        else
+          "#{script}#{@value[:keyword] == 'case' ? ';when 0;end' : ';end'}"
+        end
+      HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(statement))
     end
 
     # Returns the source for the script following the `-` marker.
