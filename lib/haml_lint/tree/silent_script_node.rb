@@ -17,7 +17,11 @@ module HamlLint::Tree
         when 'rescue', 'ensure'
           'begin;' + script + ';end'
         else
-          children.empty? ? script : script + (keyword == 'case' ? ';when 0;end' : ';end')
+          if children.empty?
+            script
+          else
+            "#{script}#{keyword == 'case' ? ';when 0;end' : ';end'}"
+          end
         end
       HamlLint::ParsedRuby.new(HamlLint::RubyParser.new.parse(statement))
     end
