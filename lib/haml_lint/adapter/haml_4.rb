@@ -30,7 +30,7 @@ module HamlLint
       # @raise [Haml::Error]
       def_delegator :parser, :parse
 
-      def self.error_class
+      def self.error_classes
         Haml::Error
       end
 

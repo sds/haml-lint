@@ -28,15 +28,15 @@ module HamlLint
       # @raise [Haml::HamlError]
       def parse
         parse_node = parser.call(source)
-        if parse_node.is_a?(self.class.error_class)
+        if self.class.error_classes.find { |error_class| parse_node.is_a?(error_class) }
           raise parse_node
         else
           parse_node
         end
       end
 
-      def self.error_class
-        Haml::HamlError
+      def self.error_classes
+        [Haml::Error, Haml::HamlError]
       end
 
       private

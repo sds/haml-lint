@@ -30,7 +30,7 @@ module HamlLint
         parser.call(source)
       end
 
-      def self.error_class
+      def self.error_classes
         Haml::Error
       end
 

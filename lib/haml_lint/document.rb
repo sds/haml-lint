@@ -47,7 +47,7 @@ module HamlLint
 
       adapter = HamlLint::Adapter.detect_class
       @tree = process_tree(adapter.new(@source).parse)
-    rescue adapter.error_class => e
+    rescue *(adapter.error_classes) => e
       error = HamlLint::Exceptions::ParseError.new(e.message, e.line)
       raise error
     end
