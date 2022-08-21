@@ -4,16 +4,16 @@ module HamlLint
   class Adapter
     # Adapts the Haml::Parser from Haml 5 for use in HamlLint
     # :reek:UncommunicativeModuleName
-    class Haml5 < Adapter
+    class Haml6 < Adapter
       # Parses the specified Haml code into an abstract syntax tree
       #
       # @example
-      #   HamlLint::Adapter::Haml5.new('%div')
+      #   HamlLint::Adapter::Haml6.new('%div')
       #
       # @api public
       # @param source [String] Haml code to parse
-      # @param options [Haml::Options]
-      def initialize(source, options = Haml::Options.new)
+      # @param options [private Haml::Parser::ParserOptions]
+      def initialize(source, options = {})
         @source = source
         @parser = Haml::Parser.new(options)
       end
@@ -21,17 +21,22 @@ module HamlLint
       # Parses the source code into an abstract syntax tree
       #
       # @example
-      #   HamlLint::Adapter::Haml5.new('%div').parse
+      #   HamlLint::Adapter::Haml6.new('%div').parse
       #
       # @api public
       # @return [Haml::Parser::ParseNode]
-      # @raise [Haml::Error]
+      # @raise [Haml::HamlError]
       def parse
-        parser.call(source)
+        parse_node = parser.call(source)
+        if parse_node.is_a?(self.class.error_class)
+          raise parse_node
+        else
+          parse_node
+        end
       end
 
       def self.error_class
-        Haml::Error
+        Haml::HamlError
       end
 
       private

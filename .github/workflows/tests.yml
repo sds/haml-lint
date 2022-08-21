@@ -13,15 +13,16 @@ jobs:
     strategy:
       matrix:
         ruby-version:
-          - '2.6'
-          - '2.7'
-          - '3.0'
-          - '3.1'
+          - "2.6"
+          - "2.7"
+          - "3.0"
+          - "3.1"
         gemfile:
           - haml4
           - haml5.0
           - haml5.1
           - haml5.2
+          - haml6.0
         os:
           - ubuntu
 

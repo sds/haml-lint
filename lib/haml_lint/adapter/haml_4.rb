@@ -30,6 +30,10 @@ module HamlLint
       # @raise [Haml::Error]
       def_delegator :parser, :parse
 
+      def self.error_class
+        Haml::Error
+      end
+
       private
 
       # The Haml parser to adapt for HamlLint

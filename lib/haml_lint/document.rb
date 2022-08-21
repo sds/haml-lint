@@ -45,8 +45,9 @@ module HamlLint
       @source = strip_frontmatter(source)
       @source_lines = @source.split(/\r\n|\r|\n/)
 
-      @tree = process_tree(HamlLint::Adapter.detect_class.new(@source).parse)
-    rescue Haml::Error => e
+      adapter = HamlLint::Adapter.detect_class
+      @tree = process_tree(adapter.new(@source).parse)
+    rescue adapter.error_class => e
       error = HamlLint::Exceptions::ParseError.new(e.message, e.line)
       raise error
     end
