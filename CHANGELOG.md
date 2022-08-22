@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### master (unreleased)
+
+* Add support for HAML 6 beta
+
 ### 0.40.1
 
 * Fix `InstanceVariables` check in multiline blocks
