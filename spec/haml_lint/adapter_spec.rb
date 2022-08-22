@@ -16,6 +16,24 @@ RSpec.describe HamlLint::Adapter do
       it { should == HamlLint::Adapter::Haml5 }
     end
 
+    context 'on Haml 5' do
+      before { stub_const('Haml::VERSION', '5.0.0') }
+
+      it { should == HamlLint::Adapter::Haml5 }
+    end
+
+    context 'on Haml 6' do
+      before { stub_const('Haml::VERSION', '6.0.0.beta.2') }
+
+      it { should == HamlLint::Adapter::Haml6 }
+    end
+
+    context 'on Haml 6' do
+      before { stub_const('Haml::VERSION', '6.0.0') }
+
+      it { should == HamlLint::Adapter::Haml6 }
+    end
+
     context 'on unknown version of Haml' do
       before { stub_const('Haml::VERSION', '3.0.0') }
 

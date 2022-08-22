@@ -2,6 +2,7 @@
 
 require 'haml_lint/adapter/haml_4'
 require 'haml_lint/adapter/haml_5'
+require 'haml_lint/adapter/haml_6'
 require 'haml_lint/exceptions'
 
 module HamlLint
@@ -20,6 +21,7 @@ module HamlLint
       case version
       when '~> 4.0' then HamlLint::Adapter::Haml4
       when '~> 5.0', '~> 5.1', '~> 5.2' then HamlLint::Adapter::Haml5
+      when '~> 6.0', '~> 6.0.a' then HamlLint::Adapter::Haml6
       else fail HamlLint::Exceptions::UnknownHamlVersion, "Cannot handle Haml version: #{version}"
       end
     end
