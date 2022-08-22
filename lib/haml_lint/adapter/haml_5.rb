@@ -30,10 +30,6 @@ module HamlLint
         parser.call(source)
       end
 
-      def self.error_classes
-        Haml::Error
-      end
-
       private
 
       # The Haml parser to adapt for HamlLint
