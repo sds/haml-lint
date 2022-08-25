@@ -97,6 +97,7 @@ linters:
       - Layout/CaseIndentation
       - Layout/ElseAlignment
       - Layout/EndOfLine
+      - Layout/FirstHashElementIndentation
       - Layout/HashAlignment
       - Layout/IndentationWidth
       - Layout/LineLength # renamed from Metrics/LineLength in rubocop 0.79.0
