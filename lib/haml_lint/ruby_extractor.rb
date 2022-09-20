@@ -69,12 +69,12 @@ module HamlLint
       # variable" lints)
       additional_attributes.each do |attributes_code|
         # Normalize by removing excess whitespace to avoid format lints
-        attributes_code = attributes_code.gsub(/\s*\n\s*/, ' ').strip
+        attributes_code = attributes_code.gsub(/\s*\n\s*/, "\n").strip
 
         # Attributes can either be a method call or a literal hash, so wrap it
         # in a method call itself in order to avoid having to differentiate the
         # two.
-        add_line("{}.merge(#{attributes_code.strip})", node)
+        add_line("{}.merge(#{attributes_code})", node)
       end
 
       check_tag_static_hash_source(node)
@@ -94,6 +94,7 @@ module HamlLint
 
     def visit_script(node)
       code = node.text
+
       add_line(code.strip, node)
 
       start_block = anonymous_block?(code) || start_block_keyword?(code)

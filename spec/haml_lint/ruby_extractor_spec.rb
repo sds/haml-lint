@@ -224,12 +224,51 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        {}.merge(one: 1, two: 2, 'three' => 3)
+        {}.merge(one: 1,
+        two: 2,
+        'three' => 3)
         _haml_lint_puts_0 # tag
         _haml_lint_puts_1 # tag/
       RUBY
 
-      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1 } }
+      its(:source_map) { should == { 1 => 1, 2 => 1, 3 => 1, 4 => 1, 5 => 1 } }
+    end
+
+    # Multiline attributes were introduced in 5.2.1
+    if Haml::VERSION >= '5.2.1'
+      context 'with a tag with hash attributes containing a hash with newlines' do
+        let(:haml) { <<-HAML }
+          %tag{class: some_method({
+            one: 1,
+            two: 2
+          })}
+        HAML
+
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+          {}.merge(class: some_method({
+          one: 1,
+          two: 2
+          }))
+          _haml_lint_puts_0 # tag
+          _haml_lint_puts_1 # tag/
+        RUBY
+      end
+
+      context 'with a tag with hash attributes containing a method call with newlines' do
+        let(:haml) { <<-HAML }
+          %tag{class: some_method(
+            1, 2, 3
+          )}
+        HAML
+
+        its(:source) { should == normalize_indent(<<-RUBY).rstrip }
+          {}.merge(class: some_method(
+          1, 2, 3
+          ))
+          _haml_lint_puts_0 # tag
+          _haml_lint_puts_1 # tag/
+        RUBY
+      end
     end
 
     context 'with a tag with 1.8-style hash attributes of string key/values' do
