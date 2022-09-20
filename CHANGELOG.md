@@ -1,8 +1,9 @@
 # HAML-Lint Changelog
 
-### master (unreleased)
+### 0.41.0
 
 * Add support for HAML 6 beta
+* Fix Ruby extractor to keep newlines in certain cases
 
 ### 0.40.1
 
