@@ -100,8 +100,9 @@ module HamlLint
     #
     # @return [Array<String>]
     def rubocop_flags
+      config_file = ENV['HAML_LINT_RUBOCOP_CONF'] || config['config_file']
       flags = %w[--format HamlLint::OffenseCollector]
-      flags += ['--config', ENV['HAML_LINT_RUBOCOP_CONF']] if ENV['HAML_LINT_RUBOCOP_CONF']
+      flags += ['--config', config_file] if config_file
       flags += ['--stdin']
       flags
     end
