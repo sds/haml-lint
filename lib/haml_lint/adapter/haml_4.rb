@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'forwardable'
+
 module HamlLint
   class Adapter
     # Adapts the Haml::Parser from Haml 4 for use in HamlLint
