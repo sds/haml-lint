@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### 0.42.0
+
+* Add support for setting RuboCop configuration in `haml-lint.yml`
+* Fix issue where `forwardable` gem requirement not loaded
+
 ### 0.41.0
 
 * Add support for HAML 6 beta
