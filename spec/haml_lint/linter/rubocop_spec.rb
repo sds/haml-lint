@@ -70,6 +70,15 @@ describe HamlLint::Linter::RuboCop do
       end
     end
 
+    context 'with config_file config' do
+      let(:config) { { 'config_file' => '.haml-cop.yml' } }
+
+      it 'specifies the --config flag' do
+        expect(rubocop_cli)
+          .to have_received(:run).with(array_including('--config', '.haml-cop.yml'))
+      end
+    end
+
     context 'when running inspecting a file containing CRLF line endings (#GH-167)' do
       let(:haml) { "- if signed_in?(viewer)\r\n%span Stuff" }
 
