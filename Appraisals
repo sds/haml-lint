@@ -22,3 +22,7 @@ end
 appraise 'haml6.0' do
   gem 'haml', '~> 6.0.0.beta.2'
 end
+
+appraise 'haml6.1' do
+  gem 'haml', '~> 6.1'
+end
