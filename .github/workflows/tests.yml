@@ -23,6 +23,7 @@ jobs:
           - haml5.1
           - haml5.2
           - haml6.0
+          - haml6.1
         os:
           - ubuntu
 
