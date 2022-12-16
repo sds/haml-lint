@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.43.0
+
+* Add support for HAML 6.1
+
 ### 0.42.0
 
 * Add support for setting RuboCop configuration in `haml-lint.yml`
