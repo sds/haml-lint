@@ -129,7 +129,7 @@ module HamlLint
       # @return [HamlLint::Configuration]
       def resolve_inheritance(config, context)
         Array(config['inherits_from'])
-          .map { |config_file| resolve(config_file, context) }
+          .map { |config_file| resolve(File.expand_path(config_file), context) }
           .compact
           .reduce { |acc, elem| acc.merge(elem) } || config
       end
