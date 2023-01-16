@@ -274,6 +274,8 @@ describe HamlLint::ConfigurationLoader do
               '  AltText:',
               '    enabled: false',
               '  Indentation:',
+              '    enabled: false',
+              '  ImplicitDiv:',
               '    enabled: false'
             ].join("\n")
           end
@@ -298,7 +300,8 @@ describe HamlLint::ConfigurationLoader do
               'skip_frontmatter' => true,
               'linters' => {
                 'AltText' => { 'enabled' => true },
-                'Indentation' => { 'enabled' => true }
+                'Indentation' => { 'enabled' => true },
+                'ImplicitDiv' => { 'enabled' => false }
               }
             )
 

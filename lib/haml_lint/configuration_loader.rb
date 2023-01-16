@@ -53,8 +53,13 @@ module HamlLint
         context[:exclude_files] ||= []
         config = load_from_file(file)
 
-        [default_configuration, resolve_inheritance(config, context), config]
-          .reduce { |acc, elem| acc.merge(elem) }
+        configs = if context[:loaded_files].any?
+                    [resolve_inheritance(config, context), config]
+                  else
+                    [default_configuration, resolve_inheritance(config, context), config]
+                  end
+
+        configs.reduce { |acc, elem| acc.merge(elem) }
       rescue Psych::SyntaxError, Errno::ENOENT => e
         raise HamlLint::Exceptions::ConfigurationError,
               "Unable to load configuration from '#{file}': #{e}",
