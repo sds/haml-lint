@@ -96,6 +96,18 @@ module HamlLint
           hash['inherits_from'].concat(Array(hash.delete('inherit_from')))
         end
 
+        if hash.key?('inherit_gem')
+          hash['inherits_from'] ||= []
+
+          gems = hash.delete('inherit_gem')
+          (gems || {}).each_pair.reverse_each do |gem_name, config_path|
+            Array(config_path).reverse_each do |path|
+              # Put gem configuration first so local configuration overrides it.
+              hash['inherits_from'].unshift gem_config_path(gem_name, path)
+            end
+          end
+        end
+
         HamlLint::Configuration.new(hash, file)
       end
 
@@ -137,6 +149,24 @@ module HamlLint
           .map { |config_file| resolve(config_file, context) }
           .compact
           .reduce { |acc, elem| acc.merge(elem) } || config
+      end
+
+      # Resolves the config file path relative to a gem
+      #
+      # @param gem_name [String] name of the gem
+      # @param relative_config_path [String] path of the file to resolve, relative to the gem root
+      # @return [Stringg]
+      def gem_config_path(gem_name, relative_config_path)
+        if defined?(Bundler)
+          gem = Bundler.load.specs[gem_name].first
+          gem_path = gem.full_gem_path if gem
+        end
+
+        gem_path ||= Gem::Specification.find_by_name(gem_name).gem_dir
+
+        File.join(gem_path, relative_config_path)
+      rescue Gem::LoadError => e
+        raise Gem::LoadError, "Unable to find gem #{gem_name}; is the gem installed? #{e}"
       end
     end
   end
