@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.44.0
+
+* Add `inherit_gem` option to support loading configuration from gems
+
 ### 0.43.0
 
 * Add support for HAML 6.1
