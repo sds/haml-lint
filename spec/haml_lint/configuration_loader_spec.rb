@@ -274,6 +274,8 @@ describe HamlLint::ConfigurationLoader do
               '  AltText:',
               '    enabled: false',
               '  Indentation:',
+              '    enabled: false',
+              '  ImplicitDiv:',
               '    enabled: false'
             ].join("\n")
           end
@@ -298,13 +300,89 @@ describe HamlLint::ConfigurationLoader do
               'skip_frontmatter' => true,
               'linters' => {
                 'AltText' => { 'enabled' => true },
-                'Indentation' => { 'enabled' => true }
+                'Indentation' => { 'enabled' => true },
+                'ImplicitDiv' => { 'enabled' => false }
               }
             )
 
             subject.should ==
               described_class.default_configuration.merge(custom_config)
           end
+        end
+      end
+    end
+
+    context 'with an "inherit_gem" directive' do
+      before do
+        File.open(file_name, 'w') { |f| f.write(config_file) }
+      end
+
+      context 'for a missing gem' do
+        let(:config_file) { normalize_indent(<<-CONF) }
+          inherit_gem:
+            foobar: .haml-lint.yml
+        CONF
+
+        it 'raises an error' do
+          expect { subject }.to raise_error Gem::LoadError
+        end
+      end
+
+      context 'with a present gem' do
+        let(:config_file) { normalize_indent(<<-CONF) }
+          inherit_gem:
+            gem_one: .haml-lint.yml
+            gem_two: config/.default.yml
+        CONF
+
+        let(:gem_root) { File.expand_path('gems') }
+        let(:gem_one_config_path) { File.join(gem_root, 'gem_one', '.haml-lint.yml') }
+        let(:gem_two_config_path) { File.join(gem_root, 'gem_two', 'config', '.default.yml') }
+
+        before do
+          %w[gem_one gem_two].each do |gem_name|
+            mock_spec = double
+            mock_spec.stub(:gem_dir) { File.join(gem_root, gem_name) }
+            Gem::Specification.stub(:find_by_name).with(gem_name) { mock_spec }
+          end
+          Gem.stub(:path) { [gem_root] }
+
+          gem_one_config = <<~CONF
+            linters:
+              AlignmentTabs:
+                enabled: false
+              AltText:
+                enabled: true
+          CONF
+
+          gem_two_config = <<~CONF
+            linters:
+              AlignmentTabs:
+                enabled: true
+              ImplicitDiv:
+                enabled: false
+          CONF
+
+          # make folders for "gems"
+          FileUtils.mkdir_p(File.join(gem_root, 'gem_one'))
+          FileUtils.mkdir_p(File.join(gem_root, 'gem_two', 'config'))
+
+          # Create config files for "gems"
+          File.open(gem_one_config_path, 'w') { |f| f.write(gem_one_config) }
+          File.open(gem_two_config_path, 'w') { |f| f.write(gem_two_config) }
+        end
+
+        it 'should not raise an error' do
+          custom_config = HamlLint::Configuration.new(
+            'inherits_from' => [gem_one_config_path, gem_two_config_path],
+            'linters' => {
+              'AlignmentTabs' => { 'enabled' => true },
+              'AltText' => { 'enabled' => true },
+              'ImplicitDiv' => { 'enabled' => false }
+            }
+          )
+
+          subject.should == described_class.default_configuration.merge(custom_config)
         end
       end
     end
