@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.45.0
+
+* Add support for referencing configuration files relative to the home directory
+
 ### 0.44.0
 
 * Add `inherit_gem` option to support loading configuration from gems
