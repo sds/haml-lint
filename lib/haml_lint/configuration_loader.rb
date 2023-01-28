@@ -50,8 +50,10 @@ module HamlLint
       # @return [HamlLint::Configuration]
       def load_file(file, context = {})
         context[:loaded_files] ||= []
+        context[:loaded_files].map! { |config_file| File.expand_path(config_file) }
         context[:exclude_files] ||= []
-        config = load_from_file(file)
+        context[:exclude_files].map! { |config_file| File.expand_path(config_file) }
+        config = load_from_file(File.expand_path(file))
 
         configs = if context[:loaded_files].any?
                     [resolve_inheritance(config, context), config]
@@ -146,7 +148,7 @@ module HamlLint
       # @return [HamlLint::Configuration]
       def resolve_inheritance(config, context)
         Array(config['inherits_from'])
-          .map { |config_file| resolve(config_file, context) }
+          .map { |config_file| resolve(File.expand_path(config_file), context) }
           .compact
           .reduce { |acc, elem| acc.merge(elem) } || config
       end
