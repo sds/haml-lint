@@ -50,8 +50,10 @@ module HamlLint
       # @return [HamlLint::Configuration]
       def load_file(file, context = {})
         context[:loaded_files] ||= []
+        context[:loaded_files].map! { |config_file| File.expand_path(config_file) }
         context[:exclude_files] ||= []
-        config = load_from_file(file)
+        context[:exclude_files].map! { |config_file| File.expand_path(config_file) }
+        config = load_from_file(File.expand_path(file))
 
         [default_configuration, resolve_inheritance(config, context), config]
           .reduce { |acc, elem| acc.merge(elem) }
