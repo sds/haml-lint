@@ -31,7 +31,7 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Ruby ${{ matrix.ruby-version }}
         uses: ruby/setup-ruby@v1
@@ -43,7 +43,7 @@ jobs:
         run: bundle exec rspec
 
       - name: Code coverage reporting
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v1
         with:
           github-token: ${{ secrets.github_token }}
           flag-name: ruby${{ matrix.ruby-version }}-${{ matrix.gemfile }}-${{ matrix.os }}
@@ -55,7 +55,7 @@ jobs:
 
     steps:
       - name: Finalize code coverage report
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@v1
         with:
           github-token: ${{ secrets.github_token }}
           parallel-finished: true
