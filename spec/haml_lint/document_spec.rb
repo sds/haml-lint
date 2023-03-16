@@ -82,11 +82,9 @@ describe HamlLint::Document do
       end
 
       it 'includes the line number in the exception' do
-        begin
-          subject
-        rescue HamlLint::Exceptions::ParseError => e
-          e.line.should == 2
-        end
+        subject
+      rescue HamlLint::Exceptions::ParseError => e
+        e.line.should == 2
       end
     end
 
