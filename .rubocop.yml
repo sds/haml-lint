@@ -3,9 +3,6 @@ AllCops:
     - 'gemfiles/**'
   TargetRubyVersion: 2.6
 
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
 Lint/AssignmentInCondition:
   Enabled: false
 
