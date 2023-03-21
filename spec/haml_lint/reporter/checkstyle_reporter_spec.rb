@@ -14,8 +14,8 @@ describe HamlLint::Reporter::CheckstyleReporter do
     shared_examples_for 'output format specification' do
       it 'matches the output specification' do
         subject
-        output.should match /^<\?xml/
-        output.should match /<checkstyle/
+        output.should match(/^<\?xml/)
+        output.should match(/<checkstyle/)
       end
     end
 
@@ -25,7 +25,7 @@ describe HamlLint::Reporter::CheckstyleReporter do
 
       it 'list of files is empty' do
         subject
-        output.should_not match /<file/
+        output.should_not match(/<file/)
       end
 
       it_behaves_like 'output format specification'
@@ -52,31 +52,31 @@ describe HamlLint::Reporter::CheckstyleReporter do
 
         it 'has the description for each lint' do
           subject
-          output.should match /<error line="724" severity="error"/
+          output.should match(/<error line="724" severity="error"/)
           output.should match %r{message="Description of &quot;lint&quot; 2" \/>}
-          output.should match /<error line="502" severity="warning"/
+          output.should match(/<error line="502" severity="warning"/)
           output.should match %r{message="Description of lint 1" \/>}
         end
       end
 
       it 'contains a list of files with offenses' do
         subject
-        output.should match /<file name="some-filename.haml"/
-        output.should match /<file name="other-filename.haml"/
+        output.should match(/<file name="some-filename.haml"/)
+        output.should match(/<file name="other-filename.haml"/)
       end
 
       it 'contains a list of errors within the files' do
         subject
-        output.should match /<error line="724" severity="error"/
+        output.should match(/<error line="724" severity="error"/)
         output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
-        output.should match /<error line="502" severity="warning"/
-        output.should match /message="Description of lint 1"/
+        output.should match(/<error line="502" severity="warning"/)
+        output.should match(/message="Description of lint 1"/)
         output.should match %r{source="HamlLint::Linter::FinalNewline" \/>}
       end
 
       it 'escapes the quotes' do
         subject
-        output.should match /message="Description of &quot;lint&quot; 2"/
+        output.should match(/message="Description of &quot;lint&quot; 2"/)
       end
 
       it_behaves_like 'output format specification'
