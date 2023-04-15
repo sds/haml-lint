@@ -112,6 +112,9 @@ Layout/MultilineOperationIndentation:
 Style/NumericPredicate:
   Enabled: false
 
+Style/StringConcatenation:
+  Enabled: false
+
 Style/TrailingCommaInArguments:
   Enabled: false
 
