@@ -335,6 +335,10 @@ If you use `TextMate 2`, you can install the [Haml-Lint.tmbundle](https://github
 
 If you use `Visual Studio Code`, you can install the [Haml Lint](https://marketplace.visualstudio.com/items?itemName=aki77.haml-lint) extension
 
+### RubyMine
+
+If you use `RubyMine`, you can install the [HamlLint](https://plugins.jetbrains.com/plugin/21585-hamllint) plugin.
+
 ## Git Integration
 
 If you'd like to integrate `haml-lint` into your Git workflow, check out our
