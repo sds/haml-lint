@@ -261,6 +261,9 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
   end
 
   context 'when the partial is actually an ERB file that writes Haml' do
+    # Using :run to see the handling of the generated exception
+    let(:run_method_to_use) { :run }
+
     let(:options) do
       {
         config: HamlLint::ConfigurationLoader.default_configuration,

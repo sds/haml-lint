@@ -23,7 +23,7 @@ RSpec.describe HamlLint::Linter::RepeatedId do
     it 'should not report when run on two separate files' do
       second_document = HamlLint::Document.new(normalize_indent(haml), options)
 
-      subject.run(second_document)
+      subject.run_or_raise(second_document)
 
       subject.should_not report_lint
     end

@@ -25,10 +25,7 @@ module HamlLint
     #
     # @param document [HamlLint::Document]
     def run(document)
-      @document = document
-      @lints = []
-      visit(document.tree)
-      @lints
+      run_or_raise(document)
     rescue Parser::SyntaxError => e
       location = e.diagnostic.location
       @lints <<
@@ -39,6 +36,27 @@ module HamlLint
           e.to_s,
           :error
         )
+    rescue StandardError => e
+      msg = "Couldn't process the file for linting. ".dup
+
+      msg << "#{e.class.name}: #{e.message}"
+      if ENV['HAML_LINT_DEBUG'] == 'true'
+        msg << "(DEBUG: Backtrace follows)\n#{e.backtrace.join("\n")}\n------"
+      end
+
+      @lints << HamlLint::Lint.new(self, document.file, nil, msg, :error)
+      @lints
+    end
+
+    # Runs the linter against the given Haml document, raises if the file cannot be processed due to
+    # Syntax or HAML-Lint internal errors. (For testing purposes)
+    #
+    # @param document [HamlLint::Document]
+    def run_or_raise(document)
+      @document = document
+      @lints = []
+      visit(document.tree)
+      @lints
     end
 
     # Returns the simple name for this linter.

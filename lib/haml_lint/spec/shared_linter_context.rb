@@ -18,9 +18,15 @@ module HamlLint
 
         let(:document) { HamlLint::Document.new(normalize_indent(haml), options) }
 
+        # :run_or_raise, :run, or nil to not auto-call something
+        let(:run_method_to_use) { :run_or_raise }
+
         subject { described_class.new(config) }
 
-        before { subject.run(document) }
+        before do
+          next unless run_method_to_use
+          subject.send(run_method_to_use, document)
+        end
       end
     end
   end
