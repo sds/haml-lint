@@ -62,26 +62,125 @@ describe HamlLint::Linter::RuboCop do
 
       it { should_not report_lint }
     end
+  end
 
-    context 'when the HAML_LINT_RUBOCOP_CONF environment variable is specified' do
+  context 'user rubocop config testing' do
+    include_context 'linter'
+
+    after(:each) do
+      # The config gets set on a global rubocop_cli instance
+      # When following tests run, they keep the last config that was set by this,
+      # leading to spooky action at a distance
+      HamlLint::Linter::RuboCop.instance_variable_set(:@rubocop_cli, nil)
+    end
+
+    # The offense is a Lint/UselessAssignment
+    let(:haml) { <<~HAML }
+      - abc = 123
+    HAML
+
+    it "base case has an offense" do
+      should report_lint line: 1, severity: :error, message: /UselessAssignment/
+    end
+
+    context 'when the HAML_LINT_RUBOCOP_CONF environment variable specifies an empty config' do
       around do |example|
-        HamlLint::Utils.with_environment 'HAML_LINT_RUBOCOP_CONF' => 'some-rubocop.yml' do
+        config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write("# Nothing special")
+          f.close
+        end
+
+        HamlLint::Utils.with_environment 'HAML_LINT_RUBOCOP_CONF' => config_file.path do
           example.run
         end
       end
 
-      it 'specifies the --config flag' do
-        expect(rubocop_cli)
-          .to have_received(:run).with(array_including('--config', 'some-rubocop.yml'))
+      it "has still has an offense" do
+        should report_lint line: 1, severity: :error, message: /UselessAssignment/
       end
     end
 
-    context 'with config_file config' do
-      let(:config) { { 'config_file' => '.haml-cop.yml' } }
+    context 'when the HAML_LINT_RUBOCOP_CONF environment variable specifies a config that disable that cop' do
+      around do |example|
+        config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write("Lint/UselessAssignment:\n  Enabled: false\n")
+          f.close
+        end
 
-      it 'specifies the --config flag' do
-        expect(rubocop_cli)
-          .to have_received(:run).with(array_including('--config', '.haml-cop.yml'))
+        HamlLint::Utils.with_environment 'HAML_LINT_RUBOCOP_CONF' => config_file.path do
+          example.run
+        end
+      end
+
+      it "doesn't report the issue" do
+        should_not report_lint
+      end
+    end
+
+    context 'when the HAML_LINT_RUBOCOP_CONF environment variable specifies a relative config that disable that cop' do
+      around do |example|
+        tmp_dir = File.join(__dir__, '../../tmp')
+        FileUtils.mkdir_p(tmp_dir)
+        config_file = Tempfile.new(%w[my-rubo-cop.yml], tmp_dir).tap do |f|
+          f.write("Lint/UselessAssignment:\n  Enabled: false\n")
+          f.close
+        end
+        rel_config_path = Pathname.new(config_file.path).relative_path_from(File.expand_path('.')).to_s
+        HamlLint::Utils.with_environment 'HAML_LINT_RUBOCOP_CONF' => rel_config_path do
+          example.run
+        end
+      end
+
+      it "doesn't report the issue" do
+        should_not report_lint
+      end
+    end
+
+    context 'when the config_file specifies an empty config' do
+      let(:config) do
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        @config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write("# Nothing special")
+          f.close
+        end
+        super().merge('config_file' => @config_file.path)
+      end
+
+      it "has still has an offense" do
+        should report_lint line: 1, severity: :error, message: /UselessAssignment/
+      end
+    end
+
+    context 'when the config_file specifies a config that disable that cop' do
+      let(:config) do
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        @config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write("Lint/UselessAssignment:\n  Enabled: false\n")
+          f.close
+        end
+        super().merge('config_file' => @config_file.path)
+      end
+
+      it "doesn't report the issue" do
+        should_not report_lint
+      end
+    end
+
+    context 'when the config_file specifies a relative config that disable that cop' do
+      let(:config) do
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        tmp_dir = File.join(__dir__, '../../tmp')
+        FileUtils.mkdir_p(tmp_dir)
+        config_file = Tempfile.new(%w[my-rubo-cop.yml], tmp_dir).tap do |f|
+          f.write("Lint/UselessAssignment:\n  Enabled: false\n")
+          f.close
+        end
+        rel_config_path = Pathname.new(config_file.path).relative_path_from(File.expand_path('.')).to_s
+        super().merge('config_file' => rel_config_path)
+      end
+
+      it "doesn't report the issue" do
+        should_not report_lint
       end
     end
   end

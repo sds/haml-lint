@@ -101,9 +101,10 @@ module HamlLint
         end
 
         def lint_on_line_matches_message?(linter, expected_line, expected_message)
+          # Using === to support regex to match anywhere in the string
           linter
             .lints
-            .any? { |lint| lint.line == expected_line && lint.message == expected_message }
+            .any? { |lint| lint.line == expected_line && expected_message === lint.message } # rubocop:disable Style/CaseEquality
         end
 
         def lint_on_line_matches_severity?(linter, expected_line, expected_severity)
@@ -113,7 +114,8 @@ module HamlLint
         end
 
         def lint_messages_match?(linter, expected_message)
-          lint_messages(linter).all? { |message| message == expected_message }
+          # Using === to support regex to match anywhere in the string
+          lint_messages(linter).all? { |message| expected_message === message } # rubocop:disable Style/CaseEquality
         end
 
         def lint_lines(linter)
