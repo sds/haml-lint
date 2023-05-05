@@ -57,6 +57,12 @@ describe HamlLint::Linter::RuboCop do
       end
     end
 
+    context 'when running inspecting a file containing CRLF line endings (#GH-167)' do
+      let(:haml) { "- if signed_in?(viewer)\r\n  %span Stuff" }
+
+      it { should_not report_lint }
+    end
+
     context 'when the HAML_LINT_RUBOCOP_CONF environment variable is specified' do
       around do |example|
         HamlLint::Utils.with_environment 'HAML_LINT_RUBOCOP_CONF' => 'some-rubocop.yml' do
@@ -77,12 +83,6 @@ describe HamlLint::Linter::RuboCop do
         expect(rubocop_cli)
           .to have_received(:run).with(array_including('--config', '.haml-cop.yml'))
       end
-    end
-
-    context 'when running inspecting a file containing CRLF line endings (#GH-167)' do
-      let(:haml) { "- if signed_in?(viewer)\r\n  %span Stuff" }
-
-      it { should_not report_lint }
     end
   end
 
