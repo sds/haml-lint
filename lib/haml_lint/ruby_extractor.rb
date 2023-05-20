@@ -73,8 +73,9 @@ module HamlLint
 
         # Attributes can either be a method call or a literal hash, so wrap it
         # in a method call itself in order to avoid having to differentiate the
-        # two.
-        add_line("{}.merge(#{attributes_code})", node)
+        # two. Use the tag name for the method to differentiate different tag types
+        # for RuboCop and prevent erroneous warnings.
+        add_line("#{node.tag_name}(#{attributes_code})", node)
       end
 
       check_tag_static_hash_source(node)
