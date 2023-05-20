@@ -76,6 +76,9 @@ linters:
   MultilineScript:
     enabled: true
 
+  NoPlaceholders:
+    enabled: false
+
   ObjectReferenceAttributes:
     enabled: true
 
