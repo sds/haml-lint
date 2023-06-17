@@ -62,6 +62,8 @@ module HamlLint
     # @param source [String] Haml code to parse
     def change_source(new_source)
       return if new_source == @source
+      check_new_source_compatible(new_source)
+
       old_source = @source
       begin
         process_source(new_source)
@@ -77,8 +79,10 @@ module HamlLint
 
     def write_to_disk!
       return unless @source_was_changed
-      return if file == STRING_SOURCE
-      File.write(file, source)
+      if file == STRING_SOURCE
+        raise HamlLint::Exceptions::InvalidFilePath.new("Cannot write without :file option")
+      end
+      File.write(file, unstrip_frontmatter(source))
       @source_was_changed = false
     end
 
@@ -176,11 +180,27 @@ module HamlLint
         (---|\.\.\.)\s*$\n?/mx
 
       if config['skip_frontmatter'] && match = source.match(frontmatter)
-        newlines = match[0].count("\n")
-        source.sub!(frontmatter, "\n" * newlines)
+        @stripped_frontmatter = match[0]
+        @nb_newlines_for_frontmatter = match[0].count("\n")
+        source.sub!(frontmatter, "\n" * @nb_newlines_for_frontmatter)
       end
 
       source
+    end
+
+    def check_new_source_compatible(new_source)
+      if @stripped_frontmatter && !new_source.start_with?("\n" * @nb_newlines_for_frontmatter)
+        raise HamlLint::Exceptions::IncompatibleNewSource.new(
+          "Internal error: new_source doesn't start with enough newlines for the Front Matter that was stripped"
+        )
+      end
+    end
+
+    def unstrip_frontmatter(source)
+      return source unless @stripped_frontmatter
+      check_new_source_compatible(source)
+
+      source.sub("\n" * @nb_newlines_for_frontmatter, @stripped_frontmatter)
     end
   end
 end

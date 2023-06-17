@@ -137,5 +137,109 @@ describe HamlLint::Document do
       subject.change_source(source)
       subject.source_was_changed.should be false
     end
+
+    context 'when skip_frontmatter is specified in config' do
+      before do
+        config.stub(:[]).with('skip_frontmatter').and_return(true)
+      end
+
+      context 'and there is Front Matter' do
+        let(:source) { <<~HAML }
+          ---
+          foo: bar
+          ---
+          %head
+            %title My title
+        HAML
+
+        it "raises if the new source doesn't have enough leading newlines at the start" do
+          expect {
+            subject.change_source(<<~HAML)
+
+            %tag
+              This all is different
+            HAML
+          }.to raise_error(HamlLint::Exceptions::IncompatibleNewSource)
+        end
+
+        it "works if the new source has enough leading newlines at the start" do
+          subject.change_source(<<~HAML)
+
+
+
+            %tag
+              This all is different
+          HAML
+
+          subject.source_was_changed.should be true
+        end
+      end
+
+      context 'and there is no Front Matter' do
+        it "works if without any leading newlines" do
+          subject.change_source(<<~HAML)
+            %tag
+              This all is different
+          HAML
+
+          subject.source_was_changed.should be true
+        end
+      end
+    end
+  end
+
+  describe '#write_to_disk!' do
+    let(:source) { <<~HAML }
+      %head
+        %title My title
+    HAML
+
+    let(:tempfile) { Tempfile.new }
+
+    let(:options) { { config: config, file: tempfile.path } }
+
+    subject { described_class.new(source, options) }
+
+    context 'when skip_frontmatter is specified in config' do
+      before do
+        config.stub(:[]).with('skip_frontmatter').and_return(true)
+      end
+
+      context 'and there is Front Matter' do
+        let(:source) { <<~HAML }
+          ---
+          foo: bar
+          ---
+          %head
+            %title My title
+        HAML
+
+        it "keeps the Front Matter when changing" do
+          new_source = <<~HAML
+
+
+
+            %tag
+              This all is different
+          HAML
+
+          final_source = <<~HAML
+            ---
+            foo: bar
+            ---
+            %tag
+              This all is different
+          HAML
+          subject.change_source(new_source)
+          subject.write_to_disk!
+
+          expect(File.read(tempfile.path)).to eq(final_source)
+        end
+      end
+
+      context 'and there is no Front Matter' do
+
+      end
+    end
   end
 end

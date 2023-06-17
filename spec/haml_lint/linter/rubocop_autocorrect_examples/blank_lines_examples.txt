@@ -177,3 +177,23 @@ haml_lint_marker_7
   ^ foo(bar: 123)
 
 ^ abc(hello: 42)
+
+
+!!! Blank lines at the start are not removed (Important to handle frontmatter)
+
+
+
+- foo
+---
+haml_lint_marker_1 $$4
+foo
+haml_lint_marker_3
+---
+haml_lint_marker_1
+foo
+haml_lint_marker_3
+---
+
+
+
+- foo

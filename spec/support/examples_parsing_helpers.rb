@@ -23,7 +23,7 @@ module ExamplesParsingHelpers
       next unless title_command.start_with?('!!!')
 
       title = title_command.sub('!!!', '').lstrip
-      example_string = example_lines[1..-1].join.strip + "\n"
+      example_string = example_lines[1..-1].join.rstrip + "\n"
 
       # Completely remove lines with only a !# comment on them
       example_string = example_string.gsub(/^[ \t]*!#.*\n?/, '')

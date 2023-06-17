@@ -6,8 +6,8 @@ module HamlLint
     # for writing code without having the leading indentation count.
     module IndentNormalizer
       def normalize_indent(code)
-        leading_indent = code[/^(\s*)/, 1]
-        code.lstrip.gsub(/\n#{leading_indent}/, "\n")
+        leading_indent = code[/([ \t]*)/, 1]
+        code.gsub(/^#{leading_indent}/, "")
       end
     end
   end
