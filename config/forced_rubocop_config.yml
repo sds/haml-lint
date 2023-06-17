@@ -5,6 +5,18 @@
 #
 # So these configuration should not be overwritable by users.
 
+Layout/ArgumentAlignment:
+  # The alternative, with_fixed_indentation, breaks because we sometimes remove indentation when
+  # dealing with multi-line scripts. (Because a line starting with "=" adds a "HL.out = " to the
+  # intermediary Ruby source, which requires indentation, and the removal of the indentation)
+  EnforcedStyle: with_first_argument
+
+Layout/ArrayAlignment:
+  # The alternative, with_fixed_indentation, breaks because we sometimes remove indentation when
+  # dealing with multi-line scripts. (Because a line starting with "=" adds a "HL.out = " to the
+  # intermediary Ruby source, which requires indentation, and the removal of the indentation)
+  EnforcedStyle: with_first_element
+
 # In Haml, there are edge cases when `when` is indented, such as this one:
 # - case 1
 #   - when 1
@@ -32,6 +44,12 @@ Layout/EndAlignment:
 # We generate the ruby content, this is basically useless and should be a lint in HAML-Lint
 Layout/EndOfLine:
   Enabled: false
+
+Layout/ParameterAlignment:
+  # The alternative, with_fixed_indentation, breaks because we sometimes remove indentation when
+  # dealing with multi-line scripts. (Because a line starting with "=" adds a "HL.out = " to the
+  # intermediary Ruby source, which requires indentation, and the removal of the indentation)
+  EnforcedStyle: with_first_parameter
 
 # HamlLint generate lots of extra code which would make blocks much longer
 Metrics/BlockLength:
