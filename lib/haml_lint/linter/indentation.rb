@@ -7,8 +7,8 @@ module HamlLint
 
     # Allowed leading indentation for each character type.
     INDENT_REGEX = {
-      space: /^[ ]*(?!\t)/,
-      tab: /^\t*(?![ ])/,
+      space: /^ *(?!\t)/,
+      tab: /^\t*(?! )/,
     }.freeze
 
     LEADING_SPACES_REGEX = /^( +)(?! )/.freeze

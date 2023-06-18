@@ -84,11 +84,11 @@ RSpec.describe HamlLint::Reporter::ProgressReporter do
         let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
         let(:header)       { output.split("\n")[0..3].join("\n") }
         let(:linter)       { double(name: 'SomeLinter') }
-        let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
+        let(:offenses)     { output_without_summary.split("\n")[1..].join("\n") }
         let(:output_without_summary) { output.split("\n").reject(&:empty?)[0..-2].join("\n") }
         let(:severities)   { [:warning] * 2 }
         let(:correcteds)   { [false, false] }
-        let(:summary)      { output.split("\n")[-2..-1].join("\n") }
+        let(:summary)      { output.split("\n")[-2..].join("\n") }
 
         let(:lints) do
           files.each_with_index.map do |file, index|

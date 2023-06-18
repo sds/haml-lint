@@ -24,7 +24,7 @@ module HamlLint::RubyExtraction
         HamlLint::Utils.indent(line, indent_delta)
       end
 
-      haml_lines[(@haml_line_index + 1)..haml_end_line_index] = to_ruby_lines[1..-1]
+      haml_lines[(@haml_line_index + 1)..haml_end_line_index] = to_ruby_lines[1..]
     end
   end
 end

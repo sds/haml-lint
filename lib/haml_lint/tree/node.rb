@@ -101,7 +101,7 @@ module HamlLint::Tree
     #
     # @api public
     # @return [Range]
-    def line_numbers # rubocop:disable Metrics/AbcSize
+    def line_numbers
       return (line..line) unless @value && text
 
       end_line = if !lines.empty?
@@ -221,7 +221,7 @@ module HamlLint::Tree
       # @param node [HamlLint::Tree::Node]
       # @return [Array<HamlLint::Tree::Node>]
       def subsequents(node)
-        siblings[(position(node) + 1)..-1]
+        siblings[(position(node) + 1)..]
       end
 
       private

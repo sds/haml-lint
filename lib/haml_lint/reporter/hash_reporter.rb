@@ -14,7 +14,7 @@ module HamlLint
       lints = report.lints
       grouped = lints.group_by(&:filename)
 
-      report_hash = {
+      {
         metadata: metadata,
         files: grouped.map { |l| map_file(l) },
         summary: {
@@ -23,8 +23,6 @@ module HamlLint
           inspected_file_count: report.files.length,
         },
       }
-
-      report_hash
     end
 
     private

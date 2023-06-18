@@ -193,7 +193,7 @@ module HamlLint
 
     def insert_after_indentation(code, insert)
       index = code.index(/\S/)
-      "#{code[0...index]}#{insert}#{code[index..-1]}"
+      "#{code[0...index]}#{insert}#{code[index..]}"
     end
 
     # Calls a block of code with a modified set of environment variables,

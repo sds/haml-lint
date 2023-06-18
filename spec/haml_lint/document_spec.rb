@@ -153,16 +153,16 @@ describe HamlLint::Document do
         HAML
 
         it "raises if the new source doesn't have enough leading newlines at the start" do
-          expect {
+          expect do
             subject.change_source(<<~HAML)
 
-            %tag
-              This all is different
+              %tag
+                This all is different
             HAML
-          }.to raise_error(HamlLint::Exceptions::IncompatibleNewSource)
+          end.to raise_error(HamlLint::Exceptions::IncompatibleNewSource)
         end
 
-        it "works if the new source has enough leading newlines at the start" do
+        it 'works if the new source has enough leading newlines at the start' do
           subject.change_source(<<~HAML)
 
 
@@ -176,7 +176,7 @@ describe HamlLint::Document do
       end
 
       context 'and there is no Front Matter' do
-        it "works if without any leading newlines" do
+        it 'works if without any leading newlines' do
           subject.change_source(<<~HAML)
             %tag
               This all is different
@@ -214,7 +214,7 @@ describe HamlLint::Document do
             %title My title
         HAML
 
-        it "keeps the Front Matter when changing" do
+        it 'keeps the Front Matter when changing' do
           new_source = <<~HAML
 
 
@@ -238,7 +238,6 @@ describe HamlLint::Document do
       end
 
       context 'and there is no Front Matter' do
-
       end
     end
   end

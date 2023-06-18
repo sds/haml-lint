@@ -2,6 +2,7 @@ AllCops:
   Exclude:
     - 'gemfiles/**'
   TargetRubyVersion: 2.6
+  NewCops: disable
 
 Lint/AssignmentInCondition:
   Enabled: false

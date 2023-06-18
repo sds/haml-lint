@@ -2,7 +2,7 @@
 
 module HamlLint::Tree
   # Represents a tag node in a HAML document.
-  class TagNode < Node # rubocop:disable Metrics/ClassLength
+  class TagNode < Node
     # Computed set of attribute hashes code.
     #
     # This is a combination of all dynamically calculated attributes from the
@@ -49,9 +49,7 @@ module HamlLint::Tree
     #   dot removed
     def static_classes
       @static_classes ||=
-        begin
-          static_attributes_source.scan(/\.([-:\w]+)/)
-        end
+        static_attributes_source.scan(/\.([-:\w]+)/)
     end
 
     # List of ids statically defined for this tag.
@@ -63,9 +61,7 @@ module HamlLint::Tree
     #   removed
     def static_ids
       @static_ids ||=
-        begin
-          static_attributes_source.scan(/#([-:\w]+)/)
-        end
+        static_attributes_source.scan(/#([-:\w]+)/)
     end
 
     # Static element attributes defined after the tag name.
@@ -101,7 +97,7 @@ module HamlLint::Tree
       @attributes_source ||=
         begin
           _explicit_tag, static_attrs, rest =
-            source_code.scan(/\A\s*(%[-:\w]+)?([-:\w\.\#]*)(.*)/m)[0]
+            source_code.scan(/\A\s*(%[-:\w]+)?([-:\w.\#]*)(.*)/m)[0]
 
           attr_types = {
             '{' => [:hash, %w[{ }]],
@@ -220,7 +216,7 @@ module HamlLint::Tree
     #
     # @return [true,false]
     def remove_outer_whitespace?
-      !!@value[:nuke_outer_whitespace] # rubocop:disable Style/DoubleNegation
+      !!@value[:nuke_outer_whitespace]
     end
 
     # Returns the script source that will be evaluated to produce this tag's

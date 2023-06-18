@@ -7,7 +7,7 @@ module HamlLint
     module IndentNormalizer
       def normalize_indent(code)
         leading_indent = code[/([ \t]*)/, 1]
-        code.gsub(/^#{leading_indent}/, "")
+        code.gsub(/^#{leading_indent}/, '')
       end
     end
   end

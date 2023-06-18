@@ -32,7 +32,7 @@ module HamlLint
       def default_path_to_config
         directory = File.expand_path(Dir.pwd)
         config_file = possible_config_files(directory).find(&:file?)
-        config_file ? config_file.to_path : nil
+        config_file&.to_path
       end
 
       # Loads the built-in default configuration.

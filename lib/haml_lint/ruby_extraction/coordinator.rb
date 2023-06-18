@@ -64,7 +64,7 @@ module HamlLint::RubyExtraction
       return if @ruby_chunks.size < 2
 
       new_chunks = [@ruby_chunks.first]
-      @ruby_chunks[1..-1].each do |ruby_chunk|
+      @ruby_chunks[1..].each do |ruby_chunk|
         fused_chunk = new_chunks.last.fuse(ruby_chunk)
         if fused_chunk
           new_chunks[-1] = fused_chunk

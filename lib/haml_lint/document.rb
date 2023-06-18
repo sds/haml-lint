@@ -80,7 +80,7 @@ module HamlLint
     def write_to_disk!
       return unless @source_was_changed
       if file == STRING_SOURCE
-        raise HamlLint::Exceptions::InvalidFilePath.new("Cannot write without :file option")
+        raise HamlLint::Exceptions::InvalidFilePath, 'Cannot write without :file option'
       end
       File.write(file, unstrip_frontmatter(source))
       @source_was_changed = false
@@ -190,9 +190,8 @@ module HamlLint
 
     def check_new_source_compatible(new_source)
       if @stripped_frontmatter && !new_source.start_with?("\n" * @nb_newlines_for_frontmatter)
-        raise HamlLint::Exceptions::IncompatibleNewSource.new(
-          "Internal error: new_source doesn't start with enough newlines for the Front Matter that was stripped"
-        )
+        raise HamlLint::Exceptions::IncompatibleNewSource,
+              "Internal error: new_source doesn't start with enough newlines for the Front Matter that was stripped"
       end
     end
 

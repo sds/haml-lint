@@ -104,13 +104,13 @@ module HamlLint::RubyExtraction
           ''
         elsif line_starts_script?(to_ruby_lines, i)
           code_start = line.index(/\S/)
-          if line[code_start..-1].start_with?(coordinator.script_output_prefix)
+          if line[code_start..].start_with?(coordinator.script_output_prefix)
             line = line.sub(coordinator.script_output_prefix, '')
             continued_line_indent_delta = 2 - coordinator.script_output_prefix.size
-            "#{line[0...code_start]}= #{line[code_start..-1]}"
+            "#{line[0...code_start]}= #{line[code_start..]}"
           else
             continued_line_indent_delta = 2
-            "#{line[0...code_start]}- #{line[code_start..-1]}"
+            "#{line[0...code_start]}- #{line[code_start..]}"
           end
         else
           HamlLint::Utils.indent(line, continued_line_indent_delta)
