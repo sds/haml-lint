@@ -19,3 +19,5 @@ PreCommit:
 
   YamlSyntax:
     enabled: true
+    exclude:
+      - 'config/forced_rubocop_config.yml'

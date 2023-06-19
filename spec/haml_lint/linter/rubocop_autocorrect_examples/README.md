@@ -40,7 +40,7 @@ TODO
 
 ### RuboCop stubbing
 Use {% rubocop_version <= '1.13' %} in the name (besides the !!!) to indicate
-the required version of RuboCop for that example. 
+the required version of RuboCop for that example.
 
 If the current Rubocop doesn't meet the version, RuboCop will not be run.
 Instead, the code will consider that RuboCop returned the content of the
