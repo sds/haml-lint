@@ -79,7 +79,7 @@ module HamlLint::RubyExtraction
       [default_indent, previous_chunk&.end_marker_indent || previous_chunk&.start_marker_indent].compact.max
     end
 
-    def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines)
+    def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines) # rubocop:disable Metrics
       to_ruby_lines.reject! { |l| l.strip == 'end' }
 
       output_comment_prefix = ' ' + coordinator.script_output_prefix.rstrip

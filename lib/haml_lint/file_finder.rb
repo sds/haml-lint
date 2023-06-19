@@ -40,7 +40,7 @@ module HamlLint
     #
     # @param patterns [Array<String>]
     # @return [Array<String>]
-    def extract_files_from(patterns) # rubocop:disable Metrics/MethodLength
+    def extract_files_from(patterns) # rubocop:disable Metrics
       files = []
 
       patterns.each do |pattern|

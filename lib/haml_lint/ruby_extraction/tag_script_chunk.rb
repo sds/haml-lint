@@ -3,7 +3,7 @@
 module HamlLint::RubyExtraction
   # Chunk for handling outputting scripts after a tag, such as `%div= spam`
   class TagScriptChunk < BaseChunk
-    def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines)
+    def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines) # rubocop:disable Metrics/AbcSize
       # TODO: add checks that we have commas at the end of each line except the last one
 
       from_ruby_line = @ruby_lines.first

@@ -24,7 +24,7 @@ module HamlLint
   # The translation won't be perfect, and won't make any real sense, but the
   # relationship between variable declarations/uses and the flow control graph
   # will remain intact.
-  class RubyExtractor # rubocop:disable Metrics/ClassLength
+  class RubyExtractor
     include HamlVisitor
 
     # Stores the extracted source and a map of lines of generated source to the

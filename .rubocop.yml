@@ -47,10 +47,17 @@ Style/Lambda:
 Layout/LineLength:
   Max: 120
 
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+    - 'spec/**/*.rb'
+
 Lint/InterpolationCheck:
   Exclude:
     - 'spec/**/*'
     - 'lib/haml_lint/spec/**/*.rb'
+
+Lint/MissingSuper:
+  Enabled: false
 
 Lint/NestedPercentLiteral:
   Exclude:
@@ -66,6 +73,9 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
     - 'lib/haml_lint/spec/**/*.rb'
+
+Metrics/ClassLength:
+  Enabled: false
 
 Metrics/ModuleLength:
   Exclude:

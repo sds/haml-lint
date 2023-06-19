@@ -24,7 +24,7 @@ module HamlLint
     # Runs the linter against the given Haml document.
     #
     # @param document [HamlLint::Document]
-    def run(document, autocorrect: nil)
+    def run(document, autocorrect: nil) # rubocop:disable Metrics
       run_or_raise(document, autocorrect: autocorrect)
     rescue Parser::SyntaxError => e
       location = e.diagnostic.location
@@ -93,7 +93,7 @@ module HamlLint
     # they supports autocorrect.
     #
     # @params value [Boolean] The new value for supports_autocorrect
-    def self.supports_autocorrect(value)
+    private_class_method def self.supports_autocorrect(value)
       @supports_autocorrect = value
     end
 

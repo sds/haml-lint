@@ -7,7 +7,7 @@ require 'sysexits'
 
 module HamlLint
   # Command line application interface.
-  class CLI # rubocop:disable Metrics/ClassLength
+  class CLI
     # Create a CLI that outputs to the specified logger.
     #
     # @param logger [HamlLint::Logger]
@@ -34,7 +34,7 @@ module HamlLint
     # Given the provided options, execute the appropriate command.
     #
     # @return [Integer] exit status code
-    def act_on_options(options)
+    def act_on_options(options) # rubocop:disable Metrics
       configure_logger(options)
       if options[:debug]
         ENV['HAML_LINT_DEBUG'] = 'true'

@@ -4,7 +4,7 @@ require 'pathname'
 
 module HamlLint
   # A miscellaneous set of utility functions.
-  module Utils
+  module Utils # rubocop:disable Metrics/ModuleLength
     module_function
 
     # Returns whether a glob pattern (or any of a list of patterns) matches the
@@ -52,7 +52,7 @@ module HamlLint
     #   the text.
     # @yieldparam interpolated_code [String] code that was interpolated
     # @yieldparam line [Integer] line number code appears on in text
-    def extract_interpolated_values(text)
+    def extract_interpolated_values(text) # rubocop:disable Metrics/AbcSize
       dumped_text = text.dump
 
       # Basically, match pairs of '\' and '\ followed by the letter 'n'

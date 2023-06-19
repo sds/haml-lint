@@ -49,7 +49,7 @@ module HamlLint
       # @option context :exclude_files [Array<String>] files that should not
       #   be loaded even if they're requested via inherits_from
       # @return [HamlLint::Configuration]
-      def load_file(file, context = {})
+      def load_file(file, context = {}) # rubocop:disable Metrics
         context[:loaded_files] ||= []
         context[:loaded_files].map! { |config_file| File.expand_path(config_file) }
         context[:exclude_files] ||= []
@@ -86,7 +86,7 @@ module HamlLint
       #
       # @param file [String]
       # @return [HamlLint::Configuration]
-      def load_from_file(file)
+      def load_from_file(file) # rubocop:disable Metrics
         content = File.read(file)
 
         processed_content = HamlLint::Utils.process_erb(content)

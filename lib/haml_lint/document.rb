@@ -90,7 +90,7 @@ module HamlLint
 
     # @param source [String] Haml code to parse
     # @raise [HamlLint::Exceptions::ParseError] if there was a problem parsing
-    def process_source(source)
+    def process_source(source) # rubocop:disable Metrics/MethodLength
       @source = process_encoding(source)
       @source = strip_frontmatter(source)
       # the -1 is to keep the empty strings at the end of the array when the source

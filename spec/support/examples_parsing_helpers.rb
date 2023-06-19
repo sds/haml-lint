@@ -8,7 +8,7 @@ module ExamplesParsingHelpers
 
   # Extracts `Example` instances from a text file.
   # The format is described in spec/haml_lint/linter/rubocop_autocorrect_examples/README.md
-  def examples_from(path)
+  def examples_from(path) # rubocop:disable Metrics
     string = File.read(path)
     string = ERB.new(string).result
 

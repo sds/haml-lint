@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics
 module HamlLint::RubyExtraction
   # Extracts "chunks" of the haml file into instances of subclasses of HamlLint::RubyExtraction::BaseChunk.
   #
@@ -499,3 +500,5 @@ module HamlLint::RubyExtraction
     end
   end
 end
+
+# rubocop:enable Metrics

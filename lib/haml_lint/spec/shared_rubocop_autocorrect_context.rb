@@ -91,7 +91,7 @@ module HamlLint
         # 3) the corrected ruby
         # 4) the corrected haml
         # Each steps is delimited by a line with ---
-        def follows_steps
+        def follows_steps # rubocop:disable Metrics
           begin
             subject.run_or_raise(document, autocorrect: autocorrect)
           rescue StandardError => e

@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
+# Haml does heavy transformations to strings that contain interpolation without a way
+# of perfectly inverting that transformation.
+#
+# We need this monkey patch to have a way of recovering the original strings as they
+# are in the haml files, so that we can use them and then autocorrect them.
+#
+# The HamlLint::Document carries over a hash of interpolation to original string. The
+# below patches are there to extract said information from Haml's parsing.
 module Haml::Util
-  # Haml does heavy transformations to strings that contain interpolation without a way
-  # of perfectly inverting that transformation.
-  #
-  # We need this monkey patch to have a way of recovering the original strings as they
-  # are in the haml files, so that we can use them and then autocorrect them.
-  #
-  # The HamlLint::Document carries over a hash of interpolation to original string. The
-  # below patches are there to extract said information from Haml's parsing.
-
   # The cache for the current Thread (technically Fiber)
   def self.unescape_interpolation_to_original_cache
     Thread.current[:haml_lint_unescape_interpolation_to_original_cache] ||= {}

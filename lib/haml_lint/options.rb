@@ -4,7 +4,7 @@ require 'optparse'
 
 module HamlLint
   # Handles option parsing for the command line application.
-  class Options # rubocop:disable Metrics/ClassLength
+  class Options
     # Parses command line options into an options hash.
     #
     # @param args [Array<String>] arguments passed via the command line
@@ -113,7 +113,7 @@ module HamlLint
       end
     end
 
-    def add_info_options(parser)
+    def add_info_options(parser) # rubocop:disable Metrics/MethodLength
       parser.on('--show-linters', 'Display available linters') do
         @options[:show_linters] = true
       end

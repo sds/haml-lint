@@ -16,7 +16,7 @@ module HamlLint
   # to each type of Chunk.
   #
   # The work is spread across the classes in the HamlLint::RubyExtraction module.
-  class Linter::RuboCop < Linter # rubocop:disable Metrics/ClassLength
+  class Linter::RuboCop < Linter
     include LinterRegistry
 
     supports_autocorrect(true)
@@ -35,7 +35,7 @@ module HamlLint
     attr_accessor :last_extracted_source
     attr_accessor :last_new_ruby_source
 
-    def visit_root(_node) # rubocop:disable Metrics/AbcSize
+    def visit_root(_node) # rubocop:disable Metrics
       # Need to call the received block to avoid Linter automatically visiting children
       # Only important thing is that the argument is not ":children"
       yield :skip_children
@@ -90,6 +90,16 @@ module HamlLint
       end
     end
 
+    def self.cops_names_not_supporting_autocorrect
+      return @cops_names_not_supporting_autocorrect if @cops_names_not_supporting_autocorrect
+      return [] unless ::RuboCop::Cop::Registry.respond_to?(:all)
+
+      cops_without_autocorrect = ::RuboCop::Cop::Registry.all.reject(&:support_autocorrect?)
+      # This cop cannot be disabled
+      cops_without_autocorrect.delete(::RuboCop::Cop::Lint::Syntax)
+      @cops_names_not_supporting_autocorrect = cops_without_autocorrect.map { |cop| cop.badge.to_s }.freeze
+    end
+
     private
 
     # Extracted here so that tests can stub this to always return true
@@ -106,7 +116,8 @@ module HamlLint
         # so the lints will be recorded then.
         @lints = []
 
-        msg = "Corrections couldn't be transfered: #{e.message} - Consider linting the file without auto-correct and doing the changes manually."
+        msg = "Corrections couldn't be transfered: #{e.message} - Consider linting the file " \
+              'without auto-correct and doing the changes manually.'
         if ENV['HAML_LINT_DEBUG'] == 'true'
           msg = "#{msg} DEBUG: Rubocop corrected Ruby code follows:\n#{new_ruby_code}\n------"
         end
@@ -191,7 +202,7 @@ module HamlLint
     # @param ruby_code [String] The ruby code to run through RuboCop
     # @param path [String] the path to tell RuboCop we are running
     # @return [Array<RuboCop::Cop::Offense>, String]
-    def run_rubocop(rubocop_cli, ruby_code, path)
+    def run_rubocop(rubocop_cli, ruby_code, path) # rubocop:disable Metrics
       rubocop_status = nil
       stdout_str, stderr_str = HamlLint::Utils.with_captured_streams(ruby_code) do
         rubocop_cli.config_store.instance_variable_set(:@options_config, @rubocop_config)
@@ -243,7 +254,7 @@ module HamlLint
     #
     # @param offenses [Array<RuboCop::Cop::Offense>]
     # @param source_map [Hash]
-    def extract_lints_from_offenses(offenses, source_map)
+    def extract_lints_from_offenses(offenses, source_map) # rubocop:disable Metrics
       offenses.each do |offense|
         next if Array(config['ignored_cops']).include?(offense.cop_name)
         autocorrected = offense.status == :corrected
@@ -329,16 +340,6 @@ module HamlLint
 
       return [] if ignored_cops.empty?
       ['--except', ignored_cops.uniq.join(',')]
-    end
-
-    def self.cops_names_not_supporting_autocorrect
-      return @cops_names_not_supporting_autocorrect if @cops_names_not_supporting_autocorrect
-      return [] unless ::RuboCop::Cop::Registry.respond_to?(:all)
-
-      cops_without_autocorrect = ::RuboCop::Cop::Registry.all.reject(&:support_autocorrect?)
-      # This cop cannot be disabled
-      cops_without_autocorrect.delete(::RuboCop::Cop::Lint::Syntax)
-      @cops_names_not_supporting_autocorrect = cops_without_autocorrect.map { |cop| cop.badge.to_s }.freeze
     end
   end
 
