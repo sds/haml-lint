@@ -1,10 +1,13 @@
 # HAML-Lint Changelog
 
+## 0.46.0
+
 * Add ERB pre-processing for configuration files
 * Add experimental auto-correct using RuboCop feature
 * Replaced exising RuboCop Linter by a new one which should be more accurate,
   but may cause difference
 * Minimum RuboCop version is now 1.0
+* Add `NoPlaceholders` linter
 
 ### 0.45.0
 
