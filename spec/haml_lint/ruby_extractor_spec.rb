@@ -137,7 +137,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        {}.merge(one: 1, two: 2, 'three' => some_method)
+        tag(one: 1, two: 2, 'three' => some_method)
         _haml_lint_puts_0 # tag
         _haml_lint_puts_1 # tag/
       RUBY
@@ -165,7 +165,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY.rstrip) }
-        {}.merge(:type=>'checkbox', special: 'true')
+        tag(:type=>'checkbox', special: 'true')
         _haml_lint_puts_0 # tag
         _haml_lint_puts_1 # tag/
       RUBY
@@ -179,7 +179,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY.rstrip) }
-        {}.merge(tag_options_method)
+        tag(tag_options_method)
         _haml_lint_puts_0 # tag
         _haml_lint_puts_1 # tag/
       RUBY
@@ -193,7 +193,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        {}.merge({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})
+        tag({\"one\" => 1,\"two\" => 2,\"three\" => some_method,})
         _haml_lint_puts_0 # tag
         _haml_lint_puts_1 # tag/
       RUBY
@@ -207,7 +207,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        {}.merge(one: 1)
+        tag(one: 1)
         _haml_lint_puts_0 # tag
         script
         _haml_lint_puts_1 # tag/
@@ -224,7 +224,7 @@ describe HamlLint::RubyExtractor do
       HAML
 
       its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-        {}.merge(one: 1,
+        tag(one: 1,
         two: 2,
         'three' => 3)
         _haml_lint_puts_0 # tag
@@ -245,7 +245,7 @@ describe HamlLint::RubyExtractor do
         HAML
 
         its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-          {}.merge(class: some_method({
+          tag(class: some_method({
           one: 1,
           two: 2
           }))
@@ -262,7 +262,7 @@ describe HamlLint::RubyExtractor do
         HAML
 
         its(:source) { should == normalize_indent(<<-RUBY).rstrip }
-          {}.merge(class: some_method(
+          tag(class: some_method(
           1, 2, 3
           ))
           _haml_lint_puts_0 # tag
