@@ -21,6 +21,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [LineLength](#linelength)
 * [MultilinePipe](#multilinepipe)
 * [MultilineScript](#multilinescript)
+* [NoPlaceholders](#noplaceholders)
 * [ObjectReferenceAttributes](#objectreferenceattributes)
 * [RepeatedId](#repeatedid)
 * [RuboCop](#rubocop)
@@ -500,6 +501,24 @@ will compile and run:
 ```
 
 Thus it's best to stay away from writing code this way.
+
+## NoPlaceholders
+
+Don't use HTML placeholder attributes.
+
+**Bad**
+```haml
+%input{ placeholder: 'Placeholders arent very accessible' }
+```
+
+**Good**
+```haml
+#my-details Placeholders arent very accessible
+%input{ 'aria-describedby': 'my-details' }
+```
+
+Placeholder attributes are considered an
+[anti-pattern](https://www.smashingmagazine.com/2018/06/placeholder-attribute/).
 
 ## ObjectReferenceAttributes
 
