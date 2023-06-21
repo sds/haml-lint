@@ -32,7 +32,7 @@ module HamlLint
 
     private
 
-    def add_linter_options(parser)
+    def add_linter_options(parser) # rubocop:disable Metrics/MethodLength
       parser.on('--auto-gen-config', 'Generate a configuration file acting as a TODO list') do
         @options[:auto_gen_config] = true
       end
@@ -54,6 +54,20 @@ module HamlLint
 
       parser.on('-p', '--parallel', 'Run linters in parallel using available CPUs') do
         @options[:parallel] = true
+      end
+
+      parser.on('-a', '--auto-correct', 'Auto-correct offenses (only when it’s safe)') do
+        @options[:autocorrect] = :safe
+      end
+
+      parser.on('-A', '--auto-correct-all', 'Auto-correct offenses (safe and unsafe)') do
+        @options[:autocorrect] = :all
+      end
+
+      parser.on('--auto-correct-only', "Only do auto-correct, don't lint. " \
+          'Also activates safe auto-correct if no auto-correct is selected') do
+        @options[:autocorrect_only] = true
+        @options[:autocorrect] ||= :safe
       end
     end
 
@@ -99,13 +113,23 @@ module HamlLint
       end
     end
 
-    def add_info_options(parser)
+    def add_info_options(parser) # rubocop:disable Metrics/MethodLength
       parser.on('--show-linters', 'Display available linters') do
         @options[:show_linters] = true
       end
 
       parser.on('--show-reporters', 'Display available reporters') do
         @options[:show_reporters] = true
+      end
+
+      parser.on('-d', '--debug', 'Add some debug information to messages') do
+        @options[:debug] = true
+      end
+
+      parser.on('--internal-debug', 'Add lots of (internal) debug information.' \
+                " Also affects some lint's line numbers to skip sourcemap") do
+        @options[:debug] = true
+        @options[:internal_debug] = true
       end
 
       parser.on_tail('-h', '--help', 'Display help documentation') do

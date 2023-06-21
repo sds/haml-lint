@@ -30,6 +30,17 @@ module HamlLint
         parser.call(source)
       end
 
+      def precompile
+        # Haml uses the filters as part of precompilation... we don't care about those,
+        # but without this tweak, it would fail on filters that are not loaded.
+        real_defined = Haml::Filters.defined
+        Haml::Filters.instance_variable_set(:@defined, Hash.new { real_defined['plain'] })
+
+        ::Haml::Engine.new(source).precompiled
+      ensure
+        Haml::Filters.instance_variable_set(:@defined, real_defined)
+      end
+
       private
 
       # The Haml parser to adapt for HamlLint

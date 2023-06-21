@@ -30,7 +30,7 @@ module HamlLint
     #
     # @param output [String] the output to send
     # @param newline [true,false] whether to append a newline
-    def log(output, newline = true)
+    def log(output, newline = true) # rubocop:disable Style/OptionalBooleanParameter
       @out.print(output)
       @out.print("\n") if newline
     end
@@ -97,7 +97,7 @@ module HamlLint
 
     private
 
-    def color(code, output, newline = true)
+    def color(code, output, newline = true) # rubocop:disable Style/OptionalBooleanParameter
       log(color_enabled ? "\033[#{code}m#{output}\033[0m" : output, newline)
     end
   end

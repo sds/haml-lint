@@ -24,7 +24,7 @@ module HamlLint
   # The translation won't be perfect, and won't make any real sense, but the
   # relationship between variable declarations/uses and the flow control graph
   # will remain intact.
-  class RubyExtractor # rubocop:disable Metrics/ClassLength
+  class RubyExtractor
     include HamlVisitor
 
     # Stores the extracted source and a map of lines of generated source to the
@@ -128,7 +128,7 @@ module HamlLint
     def visit_filter(node)
       if node.filter_type == 'ruby'
         node.text.split("\n").each_with_index do |line, index|
-          add_line(line, node.line + index + 1, false)
+          add_line(line, node.line + index + 1, discard_blanks: false)
         end
       else
         add_dummy_puts(node, ":#{node.filter_type}")
@@ -161,17 +161,17 @@ module HamlLint
       @output_count += 1
     end
 
-    def add_line(code, node_or_line, discard_blanks = true)
+    def add_line(code, node_or_line, discard_blanks: true)
       return if code.empty? && discard_blanks
 
       indent_level = @indent_level
 
-      if node_or_line.respond_to?(:line)
+      if node_or_line.respond_to?(:line) && mid_block_keyword?(code)
         # Since mid-block keywords are children of the corresponding start block
         # keyword, we need to reduce their indentation level by 1. However, we
         # don't do this unless this is an actual tag node (a raw line number
         # means this came from a `:ruby` filter).
-        indent_level -= 1 if mid_block_keyword?(code)
+        indent_level -= 1
       end
 
       indent = (' ' * 2 * indent_level)
@@ -196,7 +196,7 @@ module HamlLint
     end
 
     def anonymous_block?(text)
-      text =~ /\bdo\s*(\|\s*[^\|]*\s*\|)?(\s*#.*)?\z/
+      text =~ /\bdo\s*(\|\s*[^|]*\s*\|)?(\s*#.*)?\z/
     end
 
     START_BLOCK_KEYWORDS = %w[if unless case begin for until while].freeze
@@ -212,8 +212,8 @@ module HamlLint
     LOOP_KEYWORDS = %w[for until while].freeze
     def block_keyword(text)
       # Need to handle 'for'/'while' since regex stolen from HAML parser doesn't
-      if keyword = text[/\A\s*([^\s]+)\s+/, 1]
-        return keyword if LOOP_KEYWORDS.include?(keyword)
+      if (keyword = text[/\A\s*([^\s]+)\s+/, 1]) && LOOP_KEYWORDS.include?(keyword)
+        return keyword
       end
 
       return unless keyword = text.scan(Haml::Parser::BLOCK_KEYWORD_REGEX)[0]

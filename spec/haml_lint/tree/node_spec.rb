@@ -139,7 +139,13 @@ describe HamlLint::Tree::Node do
                 c: 3 }
         HAML
 
-        it { should == "%tag{ a: 1,\n      b: 2,\n      c: 3 }" }
+        it { should == "%tag{ a: 1,\n      b: 2,\n      c: 3 }\n" }
+
+        context 'without a final newline' do
+          let(:haml) { super().rstrip }
+
+          it { should == "%tag{ a: 1,\n      b: 2,\n      c: 3 }" }
+        end
       end
     end
   end
@@ -188,6 +194,19 @@ describe HamlLint::Tree::Node do
       end
 
       it { should == (1..2) }
+
+      context 'with many trailing lines' do
+        let(:haml) do
+          <<-HAML
+          %p{ |
+            'data-test' => 'This is a multiline node' } |
+
+
+          HAML
+        end
+
+        it { should == (1..2) }
+      end
 
       context 'with a successor' do
         let(:haml) do

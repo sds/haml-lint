@@ -1,0 +1,315 @@
+!!! fixes attribute hash
+%tag{:bar =>  123}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123)
+haml_lint_marker_4
+---
+%tag{bar: 123}
+
+
+!!! fixes attribute hash that is considered dynamic
+!# I don't understand what is different here, but it goes through a different path in the code
+!# `node.dynamic_attributes_sources` returns nothing, but `node.dynamic_attributes_source[:hash]` has content.
+%tag{:bar =>  '123'}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  '123')
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: '123')
+haml_lint_marker_4
+---
+%tag{bar: '123'}
+
+
+!!! fixes multi-attributes hash
+%tag{:bar =>  123, 'string_key'  =>  code}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123, 'string_key'  =>  code)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar => 123, 'string_key' => code)
+haml_lint_marker_4
+---
+!# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
+%tag{:bar => 123, 'string_key' => code}
+
+
+!!! fixes multi-line hashrocket string hash
+%tag{'bar' =>  123,
+     'string_key'  =>  code}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW('bar' =>  123,
+     'string_key'  =>  code) $$2
+haml_lint_marker_5
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW('bar' => 123,
+     'string_key' => code)
+haml_lint_marker_5
+---
+!# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
+%tag{'bar' => 123,
+     'string_key' => code}
+
+
+!!! fixes a tag with colon-style attributes and classes and an id
+%tag.class_one.class_two#with_an_id{bar:  123, hello:'42'}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar:  123, hello:'42')
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar: 123, hello: '42')
+haml_lint_marker_4
+---
+%tag.class_one.class_two#with_an_id{bar: 123, hello: '42'}
+
+
+!!! fixes multi-attributes mixed-style hash
+%tag{:bar =>  123, hello:  42}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123, hello:  42)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123, hello: 42)
+haml_lint_marker_4
+---
+!# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
+%tag{bar: 123, hello: 42}
+
+
+!!! with multiple lines
+%tag{:bar =>  123,
+     :hello =>  42}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
+     :hello =>  42) $$2
+haml_lint_marker_5
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
+     hello: 42)
+haml_lint_marker_5
+---
+%tag{bar: 123,
+     hello: 42}
+
+!!! with multiple lines and extra indent
+%tag{:bar =>  123,
+        :hello =>  42}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
+        :hello =>  42) $$2
+haml_lint_marker_5
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
+     hello: 42)
+haml_lint_marker_5
+---
+%tag{bar: 123,
+     hello: 42}
+
+
+!!! with multiple lines and missing indent
+%tag-is-long{:bar =>  123,
+  :hello =>  42}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWW(:bar =>  123,
+  :hello =>  42) $$2
+haml_lint_marker_5
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWW(bar: 123,
+             hello: 42)
+haml_lint_marker_5
+---
+%tag-is-long{bar: 123,
+             hello: 42}
+
+
+!!! with multiple lines and less indented than the wrapping tag is
+%tag
+  %tag-is-long{:bar =>  123,
+ :hello =>  42}
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWWWWWWWWWW(:bar =>  123,
+ :hello =>  42) $$3
+  haml_lint_marker_7
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWWWWWWWWWW(bar: 123,
+               hello: 42)
+  haml_lint_marker_7
+end
+---
+%tag
+  %tag-is-long{bar: 123,
+               hello: 42}
+
+
+!!! fix attributes that were indented by a tag
+%tag
+  %tag{:bar =>  123, :hello =>  42}
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWW(:bar =>  123, :hello =>  42)
+  haml_lint_marker_6
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWW(bar: 123, hello: 42)
+  haml_lint_marker_6
+end
+---
+%tag
+  %tag{bar: 123, hello: 42}
+
+
+!!! fix attributes that were indented by ruby code
+- deeper do
+  %tag{:bar =>  123, :hello =>  42}
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  WWWW(:bar =>  123, :hello =>  42)
+  haml_lint_marker_7
+end
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4
+  haml_lint_marker_5
+  WWWW(bar: 123, hello: 42)
+  haml_lint_marker_7
+end
+---
+- deeper do
+  %tag{bar: 123, hello: 42}
+
+
+!!! ignores old style attribute hash
+%tag(bar  =  123)
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag(bar  =  123)
+
+
+!!! fixes attribute methods
+%tag{foo(bar  , :hello =>  42)}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(bar  , :hello =>  42))
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(bar, hello: 42))
+haml_lint_marker_4
+---
+%tag{foo(bar, hello: 42)}
+
+
+!!! fixes attribute method that was indented by a tag
+%tag
+  %tag{foo(bar  , :hello =>  42)}
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWW(foo(bar  , :hello =>  42))
+  haml_lint_marker_6
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWW(foo(bar, hello: 42))
+  haml_lint_marker_6
+end
+---
+%tag
+  %tag{foo(bar, hello: 42)}
+
+!!! fixes attribute method that was indented by ruby code
+- deeper do
+  %tag{foo(bar  , :hello =>  42)}
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  WWWW(foo(bar  , :hello =>  42))
+  haml_lint_marker_7
+end
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4
+  haml_lint_marker_5
+  WWWW(foo(bar, hello: 42))
+  haml_lint_marker_7
+end
+---
+- deeper do
+  %tag{foo(bar, hello: 42)}

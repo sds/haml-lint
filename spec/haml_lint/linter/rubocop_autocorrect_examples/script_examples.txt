@@ -1,0 +1,665 @@
+!!! fixes a single-line one
+^ foo(:bar =>  123)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+^ foo(bar: 123)
+
+
+!!! fixes a single-line one with missing leading space
+^foo(:bar =>  123)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+^ foo(bar: 123)
+
+
+!!! fixes a single-line one with extra leading space
+^  foo(:bar =>  123)
+---
+ haml_lint_marker_1
+ ^^foo(:bar =>  123)
+ haml_lint_marker_3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+^ foo(bar: 123)
+
+
+!!! fixes a single-line one with many extra leading spaces
+^    foo(:bar =>  123)
+---
+   haml_lint_marker_1
+   ^^foo(:bar =>  123)
+   haml_lint_marker_3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+^ foo(bar: 123)
+
+
+!!! fixes a single-line one that was indented by a tag
+%tag
+  ^ foo(:bar =>  123)
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3 $$2
+  ^^foo(:bar =>  123)
+  haml_lint_marker_5
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  ^^foo(bar: 123)
+  haml_lint_marker_5
+end
+---
+%tag
+  ^ foo(bar: 123)
+
+
+!!! fixes a single-line one that was indented by ruby code
+- deeper do
+  ^ foo(:bar =>  123)
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(:bar =>  123) $$2
+end
+haml_lint_marker_5
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(bar: 123)
+end
+haml_lint_marker_5
+---
+- deeper do
+  ^ foo(bar: 123)
+
+
+!!! leave a correct single-line as-is
+^ foo(bar: 123)
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+haml_lint_marker_3
+---
+^ foo(bar: 123)
+
+
+!!! multiple silent-scripts
+^ foo(:bar =>  123)
+^ abc(:hello =>  42)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123)
+^^abc(:hello =>  42) $$2
+haml_lint_marker_4
+---
+haml_lint_marker_1
+^^foo(bar: 123)
+^^abc(hello: 42)
+haml_lint_marker_4
+---
+^ foo(bar: 123)
+^ abc(hello: 42)
+
+
+!!! fixes a multi-line one
+^ foo(:bar =>  123,
+      :hello =>  42,
+      :spam => 66)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123,
+%%    :hello =>  42, $$2
+%%    :spam => 66) $$3
+haml_lint_marker_5
+---
+haml_lint_marker_1
+^^foo(bar: 123,
+%%    hello: 42,
+%%    spam: 66)
+haml_lint_marker_5
+---
+^ foo(bar: 123,
+      hello: 42,
+      spam: 66)
+
+
+!!! fixes a multi-line one with spaces after the line splitting comma
+!# Uses ERB to ensure there are spaces without IDE's erasing them.
+^ foo(:bar =>  123,<%= '  ' %>
+      :hello =>  42)
+---
+haml_lint_marker_1
+^^foo(:bar =>  123,<%= '  ' %>
+%%    :hello =>  42) $$2
+haml_lint_marker_4
+---
+haml_lint_marker_1
+^^foo(bar: 123,
+%%    hello: 42)
+haml_lint_marker_4
+---
+^ foo(bar: 123,
+      hello: 42)
+
+
+!!! fixes a multi-line one with extra indent
+- deeper do
+  ^ foo(something ,  hello ,
+                world  , :abc =>  42)
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(something ,  hello , $$2
+  %%            world  , :abc =>  42) $$3
+end
+haml_lint_marker_6
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(something, hello,
+  %%    world, abc: 42)
+end
+haml_lint_marker_6
+---
+- deeper do
+  ^ foo(something, hello,
+        world, abc: 42)
+
+
+!!! fixes a multi-line one with missing indent
+- deeper do
+  ^ foo(something ,  hello ,
+     world  , :abc =>  42)
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(something ,  hello , $$2
+  %% world  , :abc =>  42) $$3
+end
+haml_lint_marker_6
+---
+haml_lint_marker_1
+deeper do
+  ^^foo(something, hello,
+  %%    world, abc: 42)
+end
+haml_lint_marker_6
+---
+- deeper do
+  ^ foo(something, hello,
+        world, abc: 42)
+
+
+!!! fixes a multi-line one less indented than the script is
+- deeper do
+  - foo(something ,  hello ,
+ world  , :abc =>  42)
+---
+haml_lint_marker_1
+deeper do
+  foo(something ,  hello , $$2
+world  , :abc =>  42) $$3
+end
+haml_lint_marker_6
+---
+haml_lint_marker_1
+deeper do
+  foo(something, hello,
+      world, abc: 42)
+end
+haml_lint_marker_6
+---
+- deeper do
+  - foo(something, hello,
+        world, abc: 42)
+
+
+!!! fixes a multi-line script which corrects to more lines {% rubocop_version < '0' %}
+!# I didn't find a cop that did something similar other than IfUnlessModifier
+!# but we disable that cop because it has odd edge cases which cause problems.
+!# So this is a fake case, which we don't pass through rubocop (because of the
+!# rubocop_version < '0' requirement never being met, we always stub RuboCop)
+Lorem Ipsum
+^ foo(:bar =>  123) if spam(ok: 'more')
+%tag
+---
+haml_lint_plain_1
+haml_lint_marker_2 $$2
+^^foo(:bar =>  123) if spam(ok: 'more')
+haml_lint_marker_4
+haml_lint_tag_5 $$3
+---
+haml_lint_plain_1
+haml_lint_marker_2
+if spam(ok: 'more')
+  ^^foo(bar: 123)
+end
+haml_lint_marker_4
+haml_lint_tag_5
+---
+Lorem Ipsum
+- if spam(ok: 'more')
+  ^ foo(bar: 123)
+%tag
+
+!!! fixes multiple silent-scripts which can be merged into fewer {% rubocop_version >= '1.5' %}
+Lorem Ipsum
+- if a
+  - if b
+    ^ foo(:bar =>  123)
+%tag
+---
+haml_lint_plain_1
+haml_lint_marker_2 $$2
+if a
+  if b $$3
+    ^^foo(:bar =>  123) $$4
+  end
+end
+haml_lint_marker_8
+haml_lint_tag_9 $$5
+---
+haml_lint_plain_1
+haml_lint_marker_2
+if a && b
+  ^^foo(bar: 123)
+end
+haml_lint_marker_8
+haml_lint_tag_9
+---
+Lorem Ipsum
+- if a && b
+  ^ foo(bar: 123)
+%tag
+
+
+!!! doesn't fix multiple out-scripts which can be merged into one
+!# The multiple = signs can't be merged on a single line
+= if this_is_short
+  = this_is_short_too
+---
+haml_lint_marker_1
+HL.out = if this_is_short
+  haml_lint_marker_3
+  haml_lint_marker_4 $$2
+  HL.out = this_is_short_too
+end
+haml_lint_marker_7
+---
+haml_lint_marker_1
+HL.out = if this_is_short
+  haml_lint_marker_3
+  haml_lint_marker_4
+  HL.out = this_is_short_too
+end
+haml_lint_marker_7
+---
+= if this_is_short
+  = this_is_short_too
+
+
+!!! Doesn't move up the out script from the children to the parent if
+- if a
+  = abc
+- else
+  = bcd
+---
+haml_lint_marker_1
+if a
+  HL.out = abc $$2
+else $$3
+  HL.out = bcd $$4
+end
+haml_lint_marker_7
+---
+haml_lint_marker_1
+if a
+  HL.out = abc
+else
+  HL.out = bcd
+end
+haml_lint_marker_7
+---
+- if a
+  = abc
+- else
+  = bcd
+
+
+!!! Properly indents the markers around an else script
+- if something
+  Lorem Ipsum
+- else
+  Dolor Sit Amet
+---
+haml_lint_marker_1
+if something
+  haml_lint_marker_3
+  haml_lint_plain_4 $$2
+  haml_lint_marker_5 $$3
+else
+  haml_lint_marker_7
+  haml_lint_plain_8 $$4
+end
+---
+haml_lint_marker_1
+if something
+  haml_lint_marker_3
+  haml_lint_plain_4
+  haml_lint_marker_5
+else
+  haml_lint_marker_7
+  haml_lint_plain_8
+end
+---
+- if something
+  Lorem Ipsum
+- else
+  Dolor Sit Amet
+
+
+!!! Properly indents the markers around a when script
+- case something
+- when a
+  Lorem Ipsum
+- when b
+  Dolor Sit Amet
+---
+haml_lint_marker_1
+case something
+when a $$2
+  haml_lint_marker_4
+  haml_lint_plain_5 $$3
+  haml_lint_marker_6 $$4
+when b
+  haml_lint_marker_8
+  haml_lint_plain_9 $$5
+end
+---
+haml_lint_marker_1
+case something
+when a
+  haml_lint_marker_4
+  haml_lint_plain_5
+  haml_lint_marker_6
+when b
+  haml_lint_marker_8
+  haml_lint_plain_9
+end
+---
+- case something
+- when a
+  Lorem Ipsum
+- when b
+  Dolor Sit Amet
+
+
+!!! Handles an if elseif script
+- if foo(:bar =>  123)
+  - script_one
+- elsif condition_two
+  - script_two
+- else
+  - script_three
+---
+haml_lint_marker_1
+if foo(:bar =>  123)
+  script_one $$2
+elsif condition_two $$3
+  script_two $$4
+else $$5
+  script_three $$6
+end
+haml_lint_marker_9
+---
+haml_lint_marker_1
+if foo(bar: 123)
+  script_one
+elsif condition_two
+  script_two
+else
+  script_three
+end
+haml_lint_marker_9
+---
+- if foo(bar: 123)
+  - script_one
+- elsif condition_two
+  - script_two
+- else
+  - script_three
+
+
+!!! Handles an anonymous block with a trailing comment
+- list.each do |var, var2| # Some comment
+  = foo(:bar =>  123)
+---
+haml_lint_marker_1
+list.each do |var, var2| # Some comment
+  HL.out = foo(:bar =>  123) $$2
+end
+haml_lint_marker_5
+---
+haml_lint_marker_1
+list.each do |_var, _var2| # Some comment
+  HL.out = foo(bar: 123)
+end
+haml_lint_marker_5
+---
+- list.each do |_var, _var2| # Some comment
+  = foo(bar: 123)
+
+
+!!! Handles a for loop
+- for value in list # rubocop:disable Style/For
+  = foo(:bar =>  123)
+---
+haml_lint_marker_1
+for value in list # rubocop:disable Style/For
+  HL.out = foo(:bar =>  123) $$2
+end
+haml_lint_marker_5
+---
+haml_lint_marker_1
+for value in list # rubocop:disable Style/For
+  HL.out = foo(bar: 123)
+end
+haml_lint_marker_5
+---
+- for value in list # rubocop:disable Style/For
+  = foo(bar: 123)
+
+
+!!! Handles a while loop
+- while value<  10
+  = value
+  - value+=1
+---
+haml_lint_marker_1
+while value<  10
+  HL.out = value $$2
+  value+=1 $$3
+end
+haml_lint_marker_6
+---
+haml_lint_marker_1
+while value < 10
+  HL.out = value
+  value += 1
+end
+haml_lint_marker_6
+---
+- while value < 10
+  = value
+  - value += 1
+
+
+!!! multiline block using {} containing an if
+!# This is definetly weird... but it's valid Haml...
+- deeper {
+- if abc
+  - something
+- }
+---
+haml_lint_marker_1
+deeper {
+if abc $$2
+  something $$3
+end
+} $$4
+haml_lint_marker_7
+---
+haml_lint_marker_1
+deeper do
+  if abc
+    something
+  end
+end
+haml_lint_marker_7
+---
+- deeper do
+  - if abc
+    - something
+
+
+!!! multiline block using {} for lambda containing an if
+!# This is definetly weird... but it's valid Haml...
+- a = lambda {
+- if abc
+  - something
+- }
+---
+haml_lint_marker_1
+a = lambda {
+if abc $$2
+  something $$3
+end
+} $$4
+haml_lint_marker_7
+---
+haml_lint_marker_1
+a = lambda do
+  if abc
+    something
+  end
+end
+haml_lint_marker_7
+---
+- a = lambda do
+  - if abc
+    - something
+
+
+!!! multiline block using {} containing a tag
+!# This is definetly weird... but it's valid Haml...
+- deeper {
+%tag
+- }
+---
+haml_lint_marker_1
+deeper {
+haml_lint_marker_3
+haml_lint_tag_4 $$2
+haml_lint_marker_5 $$3
+}
+haml_lint_marker_7
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4
+  haml_lint_marker_5
+end
+haml_lint_marker_7
+---
+- deeper do
+  %tag
+
+
+!!! correctly indents marker when removing indent
+- deeper do
+  %tag
+    ^ foo(:bar =>  123)
+%tag
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+    haml_lint_tag_5
+    haml_lint_marker_6 $$3
+    ^^foo(:bar =>  123)
+    haml_lint_marker_8
+  end
+end
+haml_lint_tag_11 $$4
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+    haml_lint_tag_5
+    haml_lint_marker_6
+    ^^foo(bar: 123)
+    haml_lint_marker_8
+  end
+end
+haml_lint_tag_11
+---
+- deeper do
+  %tag
+    ^ foo(bar: 123)
+%tag
+
+
+!!! silent script removes empty comment
+- #
+---
+haml_lint_marker_1
+#
+haml_lint_marker_3
+---
+haml_lint_marker_1
+haml_lint_marker_3
+---
+
+
+!!! script keeps an empty comment
+= #
+---
+haml_lint_marker_1
+# HL.out =
+haml_lint_marker_3
+---
+haml_lint_marker_1
+# HL.out =
+haml_lint_marker_3
+---
+= #

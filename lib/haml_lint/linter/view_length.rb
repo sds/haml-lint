@@ -11,7 +11,7 @@ module HamlLint
 
     def visit_root(root)
       max = config['max']
-      line_count = document.source_lines.count
+      line_count = document.last_non_empty_line
       node = root.children.first
 
       if line_count > max && !node.disabled?(self)

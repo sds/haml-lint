@@ -11,7 +11,7 @@ module HamlLint
 
       return unless node.static_classes.any? || node.static_ids.any?
 
-      tag = node.source_code[/\s*([^\s={\(\[]+)/, 1]
+      tag = node.source_code[/\s*([^\s={(\[]+)/, 1]
       return unless tag.start_with?('%div')
 
       record_lint(node,

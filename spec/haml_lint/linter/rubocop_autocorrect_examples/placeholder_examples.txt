@@ -1,0 +1,34 @@
+
+!!! Has a placeholder for plain text with no interpolation
+Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+Lorem Ipsum
+
+!!! Has a placeholder for multiple lines of plain text with no interpolation
+Lorem Ipsum
+Dolor Sit Amet
+---
+haml_lint_plain_1
+haml_lint_plain_2 $$2
+---
+haml_lint_plain_1
+haml_lint_plain_2
+---
+Lorem Ipsum
+Dolor Sit Amet
+
+
+!!! Has a placeholder for filter with no interpolation
+:filter
+  Lorem Ipsum
+---
+haml_lint_filter_1
+---
+haml_lint_filter_1
+---
+:filter
+  Lorem Ipsum

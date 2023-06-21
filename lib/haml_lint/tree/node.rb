@@ -104,8 +104,13 @@ module HamlLint::Tree
     def line_numbers
       return (line..line) unless @value && text
 
-      end_line = line + lines.count
-      end_line = nontrivial_end_line if line == end_line && children.empty?
+      end_line = if !lines.empty?
+                   line + lines.count - 1
+                 elsif children.empty?
+                   nontrivial_end_line
+                 else
+                   line
+                 end
 
       (line..end_line)
     end
@@ -155,6 +160,10 @@ module HamlLint::Tree
       @value[:text].to_s
     end
 
+    def keyword
+      @value[:keyword]
+    end
+
     private
 
     # Discovers the end line of the node when there are no lines.
@@ -164,7 +173,7 @@ module HamlLint::Tree
       if successor
         successor.line_numbers.begin - 1
       else
-        @document.source_lines.count
+        @document.last_non_empty_line
       end
     end
 
@@ -212,7 +221,7 @@ module HamlLint::Tree
       # @param node [HamlLint::Tree::Node]
       # @return [Array<HamlLint::Tree::Node>]
       def subsequents(node)
-        siblings[(position(node) + 1)..-1]
+        siblings[(position(node) + 1)..]
       end
 
       private

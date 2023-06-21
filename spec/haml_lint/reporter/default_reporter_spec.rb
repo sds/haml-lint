@@ -130,17 +130,28 @@ describe HamlLint::Reporter::DefaultReporter do
       let(:lines)        { [502, 724] }
       let(:descriptions) { ['Description of lint 1', 'Description of lint 2'] }
       let(:severities)   { [:warning] * 2 }
+      let(:correcteds)   { [false, false] }
       let(:linter)       { double(name: 'SomeLinter') }
 
       let(:lints) do
         filenames.each_with_index.map do |filename, index|
-          HamlLint::Lint.new(linter, filename, lines[index], descriptions[index], severities[index])
+          HamlLint::Lint.new(linter, filename, lines[index], descriptions[index],
+                             severities[index], corrected: correcteds[index])
         end
       end
 
       it 'prints the summary' do
         subject
         output.should == "\n2 files inspected, 2 lints detected\n"
+      end
+
+      context 'with a corrected lint' do
+        let(:correcteds) { [false, true] }
+
+        it 'prints the summary' do
+          subject
+          output.should == "\n2 files inspected, 2 lints detected, 1 lint corrected\n"
+        end
       end
     end
   end

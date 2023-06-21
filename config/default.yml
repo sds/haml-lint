@@ -85,34 +85,9 @@ linters:
 
   RuboCop:
     enabled: true
-    # These cops are incredibly noisy when it comes to HAML templates, so we
-    # ignore them.
-    ignored_cops:
-      - Lint/BlockAlignment
-      - Lint/EndAlignment
-      - Lint/Void
-      - Layout/AlignHash # renamed to Layout/HashAlignment in rubocop 0.77
-      - Layout/AlignParameters # renamed to Layout/ParameterAlignment in rubocop 0.77
-      - Layout/ArgumentAlignment
-      - Layout/CaseIndentation
-      - Layout/ElseAlignment
-      - Layout/EndOfLine
-      - Layout/FirstHashElementIndentation
-      - Layout/HashAlignment
-      - Layout/IndentationWidth
-      - Layout/LineLength # renamed from Metrics/LineLength in rubocop 0.79.0
-      - Layout/ParameterAlignment
-      - Layout/TrailingBlankLines # renamed to Layout/TrailingEmptyLines in rubocop 0.77
-      - Layout/TrailingEmptyLines
-      - Layout/TrailingWhitespace
-      - Metrics/BlockLength
-      - Metrics/BlockNesting
-      - Metrics/LineLength
-      - Naming/FileName
-      - Style/FrozenStringLiteralComment
-      - Style/IfUnlessModifier
-      - Style/Next
-      - Style/WhileUntilModifier
+    # Users can ignore cops using this configuration instead of editing their rubocop configuration.
+    # Mostly there for backward compatibility.
+    ignored_cops: []
 
   RubyComments:
     enabled: true

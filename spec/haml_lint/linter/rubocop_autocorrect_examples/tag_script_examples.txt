@@ -1,0 +1,74 @@
+!!! fixes tag's script
+%tag= foo(:bar =>  123)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+%tag= foo(bar: 123)
+
+
+!!! fixes tag's script that was indented by a tag
+%tag
+  %tag= foo(:bar =>  123)
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_6
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_tag_3
+  haml_lint_marker_4
+  HL.out = foo(bar: 123)
+  haml_lint_marker_6
+end
+---
+%tag
+  %tag= foo(bar: 123)
+
+
+!!! fixes tag's script that was indented by ruby code
+- deeper do
+  %tag= foo(:bar =>  123)
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_7
+end
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_tag_4
+  haml_lint_marker_5
+  HL.out = foo(bar: 123)
+  haml_lint_marker_7
+end
+---
+- deeper do
+  %tag= foo(bar: 123)
+
+
+!!! ignores a commented tag's script
+%tag= #foo(:bar =>  123)
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag= #foo(:bar =>  123)

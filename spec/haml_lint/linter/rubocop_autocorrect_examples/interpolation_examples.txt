@@ -1,0 +1,802 @@
+!!! fixes plain's interpolation at start of line
+#{foo(:bar =>  123)} Lorem Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+#{foo(bar: 123)} Lorem Ipsum
+
+
+!!! fixes plain's interpolation in the middle of line
+Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes plain's interpolation at end of line
+Lorem Ipsum #{foo(:bar =>  123)}
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+Lorem Ipsum #{foo(bar: 123)}
+
+
+!!! fixes plain's interpolation that contains single-quotes
+Lorem #{foo(:bar =>  '123')} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  '123')
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: '123')
+haml_lint_marker_4
+---
+Lorem #{foo(bar: '123')} Ipsum
+
+
+!!! fixes plain's interpolation that contains double-quotes
+Lorem #{foo(:bar =>  "123")} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  "123")
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: '123')
+haml_lint_marker_4
+---
+Lorem #{foo(bar: '123')} Ipsum
+
+
+!!! fixes plain's interpolation placed before a non-interpolation copy
+#{foo(:bar =>  123)} Lorem foo(:bar =>  123) Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+#{foo(bar: 123)} Lorem foo(:bar =>  123) Ipsum
+
+
+!!! fixes plain's interpolation placed after a non-interpolation copy
+Lorem foo(:bar =>  123) Ipsum #{foo(:bar =>  123)}
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+Lorem foo(:bar =>  123) Ipsum #{foo(bar: 123)}
+
+
+!!! fixes identical plain interpolations twice on a line
+#{foo(:bar =>  123)} Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(:bar =>  123)
+haml_lint_marker_7
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(bar: 123)
+haml_lint_marker_7
+---
+#{foo(bar: 123)} Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes plain's interpolation and the white space around it
+Lorem #{ foo(:bar =>  '123') } Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out =  foo(:bar =>  '123')<%=' '%>
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: '123')
+haml_lint_marker_4
+---
+Lorem #{foo(bar: '123')} Ipsum
+
+
+!!! fixes plain's interpolation indented by a tag
+%tag
+  Lorem #{foo(:bar =>  123)} Ipsum
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_interpolation_3 $$2
+  haml_lint_marker_4
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_6
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_interpolation_3
+  haml_lint_marker_4
+  HL.out = foo(bar: 123)
+  haml_lint_marker_6
+end
+---
+%tag
+  Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes plain's interpolation indented by a script
+- deeper do
+  Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_interpolation_4 $$2
+  haml_lint_marker_5
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_7
+end
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_interpolation_4
+  haml_lint_marker_5
+  HL.out = foo(bar: 123)
+  haml_lint_marker_7
+end
+---
+- deeper do
+  Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! ignores a plain's interpolation prefixed by an escapes
+Lorem \#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+---
+haml_lint_interpolation_1
+---
+Lorem \#{foo(:bar =>  123)} Ipsum
+
+
+!!! Fixes a plain's interpolation prefixed by 2 escapes
+Lorem \\#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+Lorem \\#{foo(bar: 123)} Ipsum
+
+
+!!! ignores aa plain's interpolation prefixed by 3 escapes
+Lorem \\\#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+---
+haml_lint_interpolation_1
+---
+Lorem \\\#{foo(:bar =>  123)} Ipsum
+
+
+!!! fixes plain interpolations on two consecutive lines
+Lorem #{foo(:bar =>  123)} Ipsum
+Dolor #{abc(:hello =>  42)} Sit Amet
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+haml_lint_interpolation_5 $$2
+haml_lint_marker_6
+HL.out = abc(:hello =>  42)
+haml_lint_marker_8
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+haml_lint_interpolation_5
+haml_lint_marker_6
+HL.out = abc(hello: 42)
+haml_lint_marker_8
+---
+Lorem #{foo(bar: 123)} Ipsum
+Dolor #{abc(hello: 42)} Sit Amet
+
+
+!!! fixes plain's interpolations on two consecutive lines, with the first one ending in a comma
+Lorem #{foo(:bar =>  123)} Ipsum,
+Dolor #{abc(:hello =>  42)} Sit Amet
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+haml_lint_interpolation_5 $$2
+haml_lint_marker_6
+HL.out = abc(:hello =>  42)
+haml_lint_marker_8
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+haml_lint_interpolation_5
+haml_lint_marker_6
+HL.out = abc(hello: 42)
+haml_lint_marker_8
+---
+Lorem #{foo(bar: 123)} Ipsum,
+Dolor #{abc(hello: 42)} Sit Amet
+
+
+!!! fixes plain's interpolations in the middle of multiple lines
+Lorem Ipsum
+Dolor #{foo(:bar =>  123)} Sit Amet
+Consectetur Adipiscing
+---
+haml_lint_plain_1
+haml_lint_interpolation_2 $$2
+haml_lint_marker_3
+HL.out = foo(:bar =>  123)
+haml_lint_marker_5
+haml_lint_plain_6 $$3
+---
+haml_lint_plain_1
+haml_lint_interpolation_2
+haml_lint_marker_3
+HL.out = foo(bar: 123)
+haml_lint_marker_5
+haml_lint_plain_6
+---
+Lorem Ipsum
+Dolor #{foo(bar: 123)} Sit Amet
+Consectetur Adipiscing
+
+
+!!! fixes non-ruby filter's interpolation at start of line
+:filter
+  #{foo(:bar =>  123)} Lorem Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(:bar =>  123)} Lorem Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(bar: 123)} Lorem Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  #{foo(bar: 123)} Lorem Ipsum
+
+
+!!! fixes non-ruby filter's interpolation in the middle of line
+:filter
+  Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  123)} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: 123)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes non-ruby filter's interpolation at end of line
+:filter
+  Lorem Ipsum #{foo(:bar =>  123)}
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem Ipsum #{foo(:bar =>  123)} $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem Ipsum #{foo(bar: 123)}
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem Ipsum #{foo(bar: 123)}
+
+
+!!! fixes non-ruby filter's interpolation that contains single-quotes
+:filter
+  Lorem #{foo(:bar =>  '123')} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  '123')} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: '123')} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem #{foo(bar: '123')} Ipsum
+
+
+!!! fixes non-ruby filter's interpolation that contains double-quotes
+:filter
+  Lorem #{foo(:bar =>  "123")} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  "123")} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: '123')} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem #{foo(bar: '123')} Ipsum
+
+
+!!! fixes non-ruby filter's interpolation placed before a non-interpolation copy
+:filter
+  #{foo(:bar =>  123)} Lorem foo(:bar =>  123) Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(:bar =>  123)} Lorem foo(:bar =>  123) Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(bar: 123)} Lorem foo(:bar =>  123) Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  #{foo(bar: 123)} Lorem foo(:bar =>  123) Ipsum
+
+
+!!! fixes non-ruby filter's interpolation placed after a non-interpolation copy
+:filter
+  Lorem foo(:bar =>  123) Ipsum #{foo(:bar =>  123)}
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem foo(:bar =>  123) Ipsum #{foo(:bar =>  123)} $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem foo(:bar =>  123) Ipsum #{foo(bar: 123)}
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem foo(:bar =>  123) Ipsum #{foo(bar: 123)}
+
+
+!!! fixes identical non-ruby filter's interpolations twice on a line
+:filter
+  #{foo(:bar =>  123)} Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(:bar =>  123)} Lorem #{foo(:bar =>  123)} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  #{foo(bar: 123)} Lorem #{foo(bar: 123)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  #{foo(bar: 123)} Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes non-ruby filter's interpolation indented by a tag
+%tag
+  :filter
+    Lorem #{foo(:bar =>  123)} Ipsum
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3  $$2
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem #{foo(:bar =>  123)} Ipsum $$3
+  HAML_LINT_FILTER
+  haml_lint_marker_7
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem #{foo(bar: 123)} Ipsum
+  HAML_LINT_FILTER
+  haml_lint_marker_7
+end
+---
+%tag
+  :filter
+    Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! fixes non-ruby filter's interpolation indented by a script
+- deeper do
+  :filter
+    Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4 $$2
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem #{foo(:bar =>  123)} Ipsum $$3
+  HAML_LINT_FILTER
+  haml_lint_marker_8
+end
+---
+haml_lint_marker_1
+deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4
+  HL.out = <<~HAML_LINT_FILTER
+    Lorem #{foo(bar: 123)} Ipsum
+  HAML_LINT_FILTER
+  haml_lint_marker_8
+end
+---
+- deeper do
+  :filter
+    Lorem #{foo(bar: 123)} Ipsum
+
+
+!!! ignores a non-ruby filter's interpolation prefixed by an escapes
+:filter
+  Lorem \#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \#{foo(:bar =>  123)} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \#{foo(:bar =>  123)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem \#{foo(:bar =>  123)} Ipsum
+
+
+!!! Fixes a non-ruby filter's interpolation prefixed by 2 escapes
+:filter
+  Lorem \\#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \\#{foo(:bar =>  123)} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \\#{foo(bar: 123)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem \\#{foo(bar: 123)} Ipsum
+
+
+!!! ignores a non-ruby filter's interpolation prefixed by 3 escapes
+:filter
+  Lorem \\\#{foo(:bar =>  123)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \\\#{foo(:bar =>  123)} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem \\\#{foo(:bar =>  123)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem \\\#{foo(:bar =>  123)} Ipsum
+
+
+!!! fixes a non-ruby filter's multi-line interpolation where each line is a valid ruby line
+:filter
+  Lorem #{if a
+    foo(:bar =>  123)
+  end} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{if a $$2
+    foo(:bar =>  123) $$3
+  end} Ipsum  $$4
+HAML_LINT_FILTER
+haml_lint_marker_7
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{if a
+            foo(bar: 123)
+  end} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_7
+---
+:filter
+  Lorem #{if a
+            foo(bar: 123)
+  end} Ipsum
+
+
+!!! ignores a non-ruby filter's multi-line interpolation which is a single line that was split
+:filter
+  Lorem #{foo(:bar =>  123,
+                  :abc => 42)} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  123, $$2
+                  :abc => 42)} Ipsum $$3
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: 123,
+              abc: 42)} Ipsum
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+:filter
+  Lorem #{foo(bar: 123,
+              abc: 42)} Ipsum
+
+
+!!! ignores a non-ruby filter's interpolation that gets fixed to multi-line {% rubocop_version < '0' %}
+!# I didn't find a cop that did something similar other than IfUnlessModifier
+!# but we disable that cop because it has odd edge cases which cause problems.
+!# So this is a fake case, which we don't pass through rubocop (because of the
+!# rubocop_version < '0' requirement never being met, we always stub RuboCop)
+:filter
+  Lorem #{foo_but_also_very_very_very_very_very_very_very_very_very_very_very_very_long(:bar =>  123) if spam_very_very_very_long(ok: 'more')} Ipsum
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo_but_also_very_very_very_very_very_very_very_very_very_very_very_very_long(:bar =>  123) if spam_very_very_very_long(ok: 'more')} Ipsum $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{if spam_very_very_very_long(ok: 'more')
+            foo_but_also_very_very_very_very_very_very_very_very_very_very_very_very_long(bar: 123)
+  end} Ipsum !# A bit weird for that indentation, but we need Layout/EndAlignment: { EnforcedStyleAlignWith: start_of_line }
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Lorem #{if spam_very_very_very_long(ok: 'more')
+            foo_but_also_very_very_very_very_very_very_very_very_very_very_very_very_long(bar: 123)
+  end} Ipsum
+
+!!! fixes plain's interpolations in the middle of multiple lines
+Lorem Ipsum
+Dolor #{foo(:bar =>  123)} Sit Amet
+Consectetur Adipiscing
+---
+haml_lint_plain_1
+haml_lint_interpolation_2 $$2
+haml_lint_marker_3
+HL.out = foo(:bar =>  123)
+haml_lint_marker_5
+haml_lint_plain_6 $$3
+---
+haml_lint_plain_1
+haml_lint_interpolation_2
+haml_lint_marker_3
+HL.out = foo(bar: 123)
+haml_lint_marker_5
+haml_lint_plain_6
+---
+Lorem Ipsum
+Dolor #{foo(bar: 123)} Sit Amet
+Consectetur Adipiscing
+
+!!! fixes non-ruby filter's interpolations on two consecutive lines
+:filter
+  Lorem #{foo(:bar =>  123)} Ipsum
+  Dolor #{abc(:hello =>  42)} Sit Amet
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  123)} Ipsum $$2
+  Dolor #{abc(:hello =>  42)} Sit Amet $$3
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: 123)} Ipsum
+  Dolor #{abc(hello: 42)} Sit Amet
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+:filter
+  Lorem #{foo(bar: 123)} Ipsum
+  Dolor #{abc(hello: 42)} Sit Amet
+
+
+!!! fixes non-ruby filter's interpolations on two consecutive lines, with the first one ending in a comma
+:filter
+  Lorem #{foo(:bar =>  123)} Ipsum,
+  Dolor #{abc(:hello =>  42)} Sit Amet
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(:bar =>  123)} Ipsum, $$2
+  Dolor #{abc(:hello =>  42)} Sit Amet $$3
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem #{foo(bar: 123)} Ipsum,
+  Dolor #{abc(hello: 42)} Sit Amet
+HAML_LINT_FILTER
+haml_lint_marker_6
+---
+:filter
+  Lorem #{foo(bar: 123)} Ipsum,
+  Dolor #{abc(hello: 42)} Sit Amet
+
+
+!!! fixes non-ruby filter's interpolations in the middle of multiple lines that has some more indentation
+:filter
+  Lorem Ipsum
+    Dolor #{foo(:bar =>  123)} Sit Amet
+  Consectetur Adipiscing
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem Ipsum $$2
+    Dolor #{foo(:bar =>  123)} Sit Amet $$3
+  Consectetur Adipiscing $$4
+HAML_LINT_FILTER
+haml_lint_marker_7
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+  Consectetur Adipiscing
+HAML_LINT_FILTER
+haml_lint_marker_7
+---
+:filter
+  Lorem Ipsum
+    Dolor #{foo(bar: 123)} Sit Amet
+  Consectetur Adipiscing
+
+
+!!! fixes non-ruby filter's interpolations that has trailing space {% rubocop_version >= '1.1' %}
+:filter
+  Dolor #{foo(:bar =>  123)} Sit Amet<%= '  '%>
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Dolor #{foo(:bar =>  123)} Sit Amet<%= '  '%>$$$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Dolor #{foo(bar: 123)} Sit Amet#{'  '}
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Dolor #{foo(bar: 123)} Sit Amet#{'  '}
+
+
+!!! Fixes interpolation in a tag's text
+%tag #{foo(:bar =>  123)}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+%tag #{foo(bar: 123)}

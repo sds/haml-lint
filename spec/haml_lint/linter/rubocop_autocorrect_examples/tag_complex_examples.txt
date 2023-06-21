@@ -1,0 +1,231 @@
+!# Contains examples that mix the different parts of tags that are
+!# autocorrectable: attributes and script
+
+!!! Attributes and a script, where the script contains a replica of the attributes
+%tag{:bar =>  123}= foo(:bar =>  123)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123)
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(:bar =>  123)
+haml_lint_marker_7
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123)
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(bar: 123)
+haml_lint_marker_7
+---
+%tag{bar: 123}= foo(bar: 123)
+
+
+!!! Attributes and a script, where the attributes contains a replica of the script
+%tag{:bar =>  spam(:bing =>  512)}= spam(:bing =>  512)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  spam(:bing =>  512))
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = spam(:bing =>  512)
+haml_lint_marker_7
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: spam(bing: 512))
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = spam(bing: 512)
+haml_lint_marker_7
+---
+%tag{bar: spam(bing: 512)}= spam(bing: 512)
+
+
+!!! Attributes and a script, where the attributes and the script are identical
+%tag{foo(:bar =>  123)}= foo(:bar =>  123)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(:bar =>  123))
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(:bar =>  123)
+haml_lint_marker_7
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(bar: 123))
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(bar: 123)
+haml_lint_marker_7
+---
+%tag{foo(bar: 123)}= foo(bar: 123)
+
+
+!!! Multiline attributes and single line script
+%tag{:bar =>  123,
+     :hello =>  42}= spam(:bing =>  512)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
+     :hello =>  42) $$2
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(:bing =>  512)
+haml_lint_marker_8
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
+     hello: 42)
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(bing: 512)
+haml_lint_marker_8
+---
+%tag{bar: 123,
+     hello: 42}= spam(bing: 512)
+
+
+!!! Multiline attributes (containing the script on different line) and single line script
+%tag{:bar =>  spam(:bing =>  512),
+     :hello =>  42}= spam(:bing =>  512)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  spam(:bing =>  512),
+     :hello =>  42) $$2
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(:bing =>  512)
+haml_lint_marker_8
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: spam(bing: 512),
+     hello: 42)
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(bing: 512)
+haml_lint_marker_8
+---
+%tag{bar: spam(bing: 512),
+     hello: 42}= spam(bing: 512)
+
+
+!!! Multiline attributes (containing the script on same line) and single line script
+%tag{:bar =>  123,
+     :hello =>  spam(:bing =>  512)}= spam(:bing =>  512)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
+     :hello =>  spam(:bing =>  512)) $$2
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(:bing =>  512)
+haml_lint_marker_8
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
+     hello: spam(bing: 512))
+haml_lint_marker_5
+haml_lint_marker_6
+HL.out = spam(bing: 512)
+haml_lint_marker_8
+---
+%tag{bar: 123,
+     hello: spam(bing: 512)}= spam(bing: 512)
+
+
+!!! Multiline attributes nesting a script
+%tag{:bar =>  123,
+     :hello =>  42}
+  = spam(:bing =>  512)
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  WW(:bar =>  123,
+     :hello =>  42) $$2
+  haml_lint_marker_6
+  haml_lint_marker_7 $$3
+  HL.out = spam(:bing =>  512)
+  haml_lint_marker_9
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  WW(bar: 123,
+     hello: 42)
+  haml_lint_marker_6
+  haml_lint_marker_7
+  HL.out = spam(bing: 512)
+  haml_lint_marker_9
+end
+---
+%tag{bar: 123,
+     hello: 42}
+  = spam(bing: 512)
+
+
+!!! Short tag with multiline attributes nesting a plain
+%t{:bar =>  123,
+   :hello =>  42}
+  Lorem Ipsum
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  W(:bar =>  123,
+    :hello =>  42) $$2
+  haml_lint_marker_6
+  haml_lint_plain_7 $$3
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  W(bar: 123,
+    hello: 42)
+  haml_lint_marker_6
+  haml_lint_plain_7
+end
+---
+%t{bar: 123,
+   hello: 42}
+  Lorem Ipsum
+
+
+!!! Mix of tags and plain text
+%h1 Lorem Ipsum
+%p
+  Dolor Sit
+  %b Amet
+---
+haml_lint_tag_1
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+  haml_lint_tag_3
+  haml_lint_plain_4 $$3
+  haml_lint_tag_5 $$4
+end
+---
+haml_lint_tag_1
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_3
+  haml_lint_plain_4
+  haml_lint_tag_5
+end
+---
+%h1 Lorem Ipsum
+%p
+  Dolor Sit
+  %b Amet

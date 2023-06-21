@@ -18,7 +18,7 @@ describe HamlLint::Runner do
       let(:mock_linter) { double('linter', lints: [], name: 'Blah') }
 
       let(:options) do
-        base_options.merge(files: files, reporter: reporter)
+        base_options.merge(reporter: reporter)
       end
 
       before do
@@ -78,7 +78,7 @@ describe HamlLint::Runner do
       end
 
       context 'when :parallel option is specified' do
-        let(:options) { base_options.merge(files: files, parallel: true) }
+        let(:options) { base_options.merge(parallel: true) }
 
         it 'warms up the cache in parallel' do
           runner.should_receive(:warm_cache).and_call_original
@@ -105,7 +105,7 @@ describe HamlLint::Runner do
           lint = subject.lints.first
           lint.line.should == 2
           lint.filename.should == 'inconsistent_indentation.haml'
-          lint.message.should match(/^Inconsistent indentation/)
+          lint.message.should match(/Inconsistent indentation/)
           lint.severity.should == :error
 
           linter = lint.linter
@@ -117,7 +117,7 @@ describe HamlLint::Runner do
     context 'integration tests' do
       context 'when the fail-fast option is specified with fail-level' do
         let(:files) { %w[example.haml example2.haml] }
-        let(:options) { base_options.merge(fail_fast: fail_fast, fail_level: :error, files: files) }
+        let(:options) { base_options.merge(fail_fast: fail_fast, fail_level: :error) }
 
         include_context 'isolated environment'
 

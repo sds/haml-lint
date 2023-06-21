@@ -7,8 +7,8 @@ module HamlLint
 
     # Allowed leading indentation for each character type.
     INDENT_REGEX = {
-      space: /^[ ]*(?!\t)/,
-      tab: /^\t*(?![ ])/,
+      space: /^ *(?!\t)/,
+      tab: /^\t*(?! )/,
     }.freeze
 
     LEADING_SPACES_REGEX = /^( +)(?! )/.freeze
@@ -45,7 +45,7 @@ module HamlLint
       root.children.each do |top_node|
         # once we've found one line with leading space, there's no need to check any more lines
         # `haml` will check indenting_at_start, deeper_indenting, inconsistent_indentation
-        break if top_node.children.find do |node|
+        break if top_node.children.find do |node| # rubocop:disable Lint/UnreachableLoop
           line = node.source_code
           leading_space = LEADING_SPACES_REGEX.match(line)
 

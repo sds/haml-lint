@@ -1,0 +1,374 @@
+!!! fixes a single-line one
+:ruby
+  foo(:bar =>  123)
+---
+haml_lint_marker_1 $$2
+foo(:bar =>  123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+foo(bar: 123)
+haml_lint_marker_3
+---
+:ruby
+  foo(bar: 123)
+
+
+!!! leave a correct single-line as-is
+:ruby
+  foo(bar: 123)
+---
+haml_lint_marker_1 $$2
+foo(bar: 123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+foo(bar: 123)
+haml_lint_marker_3
+---
+:ruby
+  foo(bar: 123)
+
+
+!!!fixes a multi-line one
+:ruby
+  foo(:bar =>  123)
+  abc(:hello =>  42)
+---
+haml_lint_marker_1 $$2
+foo(:bar =>  123)
+abc(:hello =>  42) $$3
+haml_lint_marker_4
+---
+haml_lint_marker_1
+foo(bar: 123)
+abc(hello: 42)
+haml_lint_marker_4
+---
+:ruby
+  foo(bar: 123)
+  abc(hello: 42)
+
+
+!!! with blank lines
+:ruby
+
+  foo(:bar =>  123)
+
+  abc(:hello =>  42)
+
+  foo(:bar =>  123)
+
+---
+haml_lint_marker_1 $$2
+ $$2
+foo(:bar =>  123) $$3
+ $$4
+abc(:hello =>  42) $$5
+ $$6
+foo(:bar =>  123) $$7
+haml_lint_marker_8
+---
+haml_lint_marker_1
+
+foo(bar: 123)
+
+abc(hello: 42)
+
+foo(bar: 123)
+haml_lint_marker_8
+---
+:ruby
+
+  foo(bar: 123)
+
+  abc(hello: 42)
+
+  foo(bar: 123)
+
+!# This comment makes the above newline not be stripped
+
+
+!!! with indentation inside
+:ruby
+  if spam
+    foo(:bar =>  123)
+    abc(:hello =>  42)
+  end
+---
+haml_lint_marker_1 $$2
+if spam
+  foo(:bar =>  123) $$3
+  abc(:hello =>  42) $$4
+end $$5
+haml_lint_marker_6
+---
+haml_lint_marker_1
+if spam
+  foo(bar: 123)
+  abc(hello: 42)
+end
+haml_lint_marker_6
+---
+:ruby
+  if spam
+    foo(bar: 123)
+    abc(hello: 42)
+  end
+
+
+!!! removes extra indentation inside
+:ruby
+  if spam
+        foo(:bar =>  123)
+        abc(:hello =>  42)
+  end
+---
+haml_lint_marker_1 $$2
+if spam
+      foo(:bar =>  123) $$3
+      abc(:hello =>  42) $$4
+end $$5
+haml_lint_marker_6
+---
+haml_lint_marker_1
+if spam
+  foo(bar: 123)
+  abc(hello: 42)
+end
+haml_lint_marker_6
+---
+:ruby
+  if spam
+    foo(bar: 123)
+    abc(hello: 42)
+  end
+
+
+!!! adds missing indentation inside
+:ruby
+  if spam
+  foo(:bar =>  123)
+  abc(:hello =>  42)
+  end
+---
+haml_lint_marker_1 $$2
+if spam
+foo(:bar =>  123) $$3
+abc(:hello =>  42) $$4
+end $$5
+haml_lint_marker_6
+---
+haml_lint_marker_1
+if spam
+  foo(bar: 123)
+  abc(hello: 42)
+end
+haml_lint_marker_6
+---
+:ruby
+  if spam
+    foo(bar: 123)
+    abc(hello: 42)
+  end
+
+!!! fixes by adding empty lines
+:ruby
+  def a
+    x
+  end
+  def b
+    x
+  end
+---
+haml_lint_marker_1 $$2
+def a
+  x $$3
+end $$4
+def b $$5
+  x $$6
+end $$7
+haml_lint_marker_8
+---
+haml_lint_marker_1
+def a
+  x
+end
+
+def b
+  x
+end
+haml_lint_marker_8
+---
+:ruby
+  def a
+    x
+  end
+
+  def b
+    x
+  end
+
+
+!!! while moving empty lines
+:ruby
+  def a
+    x
+  end
+  def b
+    x
+  end
+
+  # The empty-line above can mess with the merging logic
+---
+haml_lint_marker_1 $$2
+def a
+  x $$3
+end $$4
+def b $$5
+  x $$6
+end $$7
+$$8
+# The empty-line above can mess with the merging logic $$9
+haml_lint_marker_10
+---
+haml_lint_marker_1
+def a
+  x
+end
+
+def b
+  x
+end
+
+# The empty-line above can mess with the merging logic
+haml_lint_marker_10
+---
+:ruby
+  def a
+    x
+  end
+
+  def b
+    x
+  end
+
+  # The empty-line above can mess with the merging logic
+
+
+!!! that was indented by a tag
+%tag
+  :ruby
+    foo(:bar =>  123)
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3 $$3
+  foo(:bar =>  123)
+  haml_lint_marker_5
+end
+---
+begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  haml_lint_tag_2
+  haml_lint_marker_3
+  foo(bar: 123)
+  haml_lint_marker_5
+end
+---
+%tag
+  :ruby
+    foo(bar: 123)
+
+
+!!! that was indented by ruby code
+^ deeper do
+  :ruby
+    foo(:bar =>  123)
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4 $$3
+  foo(:bar =>  123)
+  haml_lint_marker_6
+end
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4
+  foo(bar: 123)
+  haml_lint_marker_6
+end
+---
+^ deeper do
+  :ruby
+    foo(bar: 123)
+
+
+!!! that was indented by ruby code and contains indentation
+^ deeper do
+  :ruby
+    if condition
+      foo(:bar =>  123)
+    else
+      do_something_else
+    end
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4 $$3
+  if condition
+    foo(:bar =>  123) $$4
+  else $$5
+    do_something_else $$6
+  end $$7
+  haml_lint_marker_10
+end
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4
+  if condition
+    foo(bar: 123)
+  else
+    do_something_else
+  end
+  haml_lint_marker_10
+end
+---
+^ deeper do
+  :ruby
+    if condition
+      foo(bar: 123)
+    else
+      do_something_else
+    end
+
+
+!!! fixes indent of extra indented ruby filter content without changing the filter name's indent
+^ deeper do
+  :ruby
+      foo(:bar =>  123)
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4 $$3
+    foo(:bar =>  123)
+  haml_lint_marker_6
+end
+---
+haml_lint_marker_1
+^^deeper do
+  haml_lint_marker_3
+  haml_lint_marker_4
+  foo(bar: 123)
+  haml_lint_marker_6
+end
+---
+^ deeper do
+  :ruby
+    foo(bar: 123)

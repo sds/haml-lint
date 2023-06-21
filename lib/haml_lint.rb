@@ -21,7 +21,13 @@ require 'haml_lint/file_finder'
 require 'haml_lint/runner'
 require 'haml_lint/utils'
 require 'haml_lint/version'
+require 'haml_lint/version_comparer'
 require 'haml_lint/severity'
+
+# Lead all extensions to external source code
+Dir[File.expand_path('haml_lint/extensions/*.rb', File.dirname(__FILE__))].sort.each do |file|
+  require file
+end
 
 # Load all parse tree node classes
 require 'haml_lint/tree/node'
@@ -37,5 +43,11 @@ end
 
 # Load all reporters
 Dir[File.expand_path('haml_lint/reporter/*.rb', File.dirname(__FILE__))].sort.each do |file|
+  require file
+end
+
+# Load all the chunks for RubyExtraction
+require 'haml_lint/ruby_extraction/base_chunk'
+Dir[File.expand_path('haml_lint/ruby_extraction/*.rb', File.dirname(__FILE__))].sort.each do |file|
   require file
 end

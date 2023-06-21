@@ -26,6 +26,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml', '>= 4.0', '< 6.2'
   s.add_dependency 'parallel', '~> 1.10'
   s.add_dependency 'rainbow'
-  s.add_dependency 'rubocop', '>= 0.50.0'
+  s.add_dependency 'rubocop', '>= 1.0'
   s.add_dependency 'sysexits', '~> 1.1'
 end

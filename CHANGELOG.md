@@ -1,5 +1,11 @@
 # HAML-Lint Changelog
 
+* Add ERB pre-processing for configuration files
+* Add experimental auto-correct using RuboCop feature
+* Replaced exising RuboCop Linter by a new one which should be more accurate,
+  but may cause difference
+* Minimum RuboCop version is now 1.0
+
 ### 0.45.0
 
 * Add support for referencing configuration files relative to the home directory

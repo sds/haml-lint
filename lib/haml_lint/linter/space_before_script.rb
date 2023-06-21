@@ -9,7 +9,7 @@ module HamlLint
 
     ALLOWED_SEPARATORS = [' ', '#'].freeze
 
-    def visit_tag(node) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    def visit_tag(node) # rubocop:disable Metrics/CyclomaticComplexity
       # If this tag has inline script
       return unless node.contains_script?
 
@@ -18,15 +18,13 @@ module HamlLint
 
       tag_with_text = tag_with_inline_text(node)
 
-      unless index = tag_with_text.rindex(text)
-        # For tags with inline text that contain interpolation, the parser
-        # converts them to inline script by surrounding them in string quotes,
-        # e.g. `%p Hello #{name}` becomes `%p= "Hello #{name}"`, causing the
-        # above search to fail. Check for this case by removing added quotes.
-        unless (text_without_quotes = strip_surrounding_quotes(text)) &&
-               (index = tag_with_text.rindex(text_without_quotes))
-          return
-        end
+      # For tags with inline text that contain interpolation, the parser
+      # converts them to inline script by surrounding them in string quotes,
+      # e.g. `%p Hello #{name}` becomes `%p= "Hello #{name}"`, causing the
+      # above search to fail. Check for this case by removing added quotes.
+      if !(index = tag_with_text.rindex(text)) && !((text_without_quotes = strip_surrounding_quotes(text)) &&
+                     (index = tag_with_text.rindex(text_without_quotes)))
+        return
       end
 
       return if tag_with_text[index] == '#' # Ignore code comments

@@ -42,10 +42,10 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
       let(:descriptions) { Array.new(files.size) { |i| "Description of lint #{i + 1}" } }
       let(:header)       { output.split("\n")[0..3].join("\n") }
       let(:linters)      { [double(name: 'SomeLinter'), double(name: 'OtherLinter')] }
-      let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
+      let(:offenses)     { output_without_summary.split("\n")[1..].join("\n") }
       let(:output_without_summary) { output.split("\n").reject(&:empty?)[0..-2].join("\n") }
       let(:severities)   { [:warning] * files.length }
-      let(:summary)      { output.split("\n")[-4..-1].join("\n") }
+      let(:summary)      { output.split("\n")[-4..].join("\n") }
 
       let(:lints) do
         files.each_with_index.map do |file, index|
@@ -160,10 +160,10 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
       let(:descriptions) { Array.new(3) { |i| "Description of lint #{i + 1}" } }
       let(:header)       { output.split("\n")[0..3].join("\n") }
       let(:linter)       { double(name: 'SomeLinter') }
-      let(:offenses)     { output_without_summary.split("\n")[1..-1].join("\n") }
+      let(:offenses)     { output_without_summary.split("\n")[1..].join("\n") }
       let(:output_without_summary) { output.split("\n").reject(&:empty?)[0..-2].join("\n") }
       let(:severities)   { [:warning] * 3 }
-      let(:summary)      { output.split("\n")[-4..-1].join("\n") }
+      let(:summary)      { output.split("\n")[-4..].join("\n") }
 
       let(:lints) do
         lines.each_with_index.map do |line, index|

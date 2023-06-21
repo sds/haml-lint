@@ -1,0 +1,79 @@
+!# Some characters takes more than one bytes. Those can often be a cause
+!# of problems.
+!# Ex: StringScanner has both a `pos` and a `charpos`.
+!#     `pos` is byte oriented, so `str[scaner.pos]` gives the wrong result.
+!#     `charpos` is charoriented, so `str[scaner.charpos]` gives the right result.
+
+!!! Multibyte char before filter's interpolation doesn't mess it up
+:filter
+  ©#{foo(:bar =>  123)}
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  ©#{foo(:bar =>  123)} $$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  ©#{foo(bar: 123)}
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  ©#{foo(bar: 123)}
+
+
+!!! Multibyte char before plain's interpolation doesn't mess it up
+©#{foo(:bar =>  123)}
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+©#{foo(bar: 123)}
+
+
+!!! Multibyte char before tag's plain's interpolation doesn't mess it up
+!# Those plain pass by a different place
+%tag ©#{foo(:bar =>  123)}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+%tag ©#{foo(bar: 123)}
+
+
+!!! Multibyte char in tag attributes with tag script doesn't mess things up
+%tag{:abc => '©'}= foo(:bar =>  123)
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:abc => '©')
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(:bar =>  123)
+haml_lint_marker_7
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(abc: '©')
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(bar: 123)
+haml_lint_marker_7
+---
+%tag{abc: '©'}= foo(bar: 123)

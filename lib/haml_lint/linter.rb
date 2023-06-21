@@ -24,11 +24,8 @@ module HamlLint
     # Runs the linter against the given Haml document.
     #
     # @param document [HamlLint::Document]
-    def run(document)
-      @document = document
-      @lints = []
-      visit(document.tree)
-      @lints
+    def run(document, autocorrect: nil) # rubocop:disable Metrics
+      run_or_raise(document, autocorrect: autocorrect)
     rescue Parser::SyntaxError => e
       location = e.diagnostic.location
       @lints <<
@@ -39,6 +36,35 @@ module HamlLint
           e.to_s,
           :error
         )
+    rescue StandardError => e
+      msg = "Couldn't process the file".dup
+      if @autocorrect
+        # Those lints related to auto-correction were not saved, so don't display them
+        @lints = []
+        msg << " for autocorrect '#{@autocorrect}'. "
+      else
+        msg << ' for linting. '
+      end
+
+      msg << "#{e.class.name}: #{e.message}"
+      if ENV['HAML_LINT_DEBUG'] == 'true'
+        msg << "(DEBUG: Backtrace follows)\n#{e.backtrace.join("\n")}\n------"
+      end
+
+      @lints << HamlLint::Lint.new(self, document.file, nil, msg, :error)
+      @lints
+    end
+
+    # Runs the linter against the given Haml document, raises if the file cannot be processed due to
+    # Syntax or HAML-Lint internal errors. (For testing purposes)
+    #
+    # @param document [HamlLint::Document]
+    def run_or_raise(document, autocorrect: nil)
+      @document = document
+      @lints = []
+      @autocorrect = autocorrect
+      visit(document.tree)
+      @lints
     end
 
     # Returns the simple name for this linter.
@@ -48,17 +74,38 @@ module HamlLint
       self.class.name.to_s.split('::').last
     end
 
+    # Returns true if this linter supports autocorrect, false otherwise
+    #
+    # @return [Boolean]
+    def self.supports_autocorrect?
+      @supports_autocorrect || false
+    end
+
+    def supports_autocorrect?
+      self.class.supports_autocorrect?
+    end
+
     private
 
     attr_reader :config, :document
 
+    # Linters can call supports_autocorrect(true) in their top-level scope to indicate that
+    # they supports autocorrect.
+    #
+    # @params value [Boolean] The new value for supports_autocorrect
+    private_class_method def self.supports_autocorrect(value)
+      @supports_autocorrect = value
+    end
+
     # Record a lint for reporting back to the user.
     #
-    # @param node [#line] node to extract the line number from
+    # @param node_or_line [#line] line number or node to extract the line number from
     # @param message [String] error/warning to display to the user
-    def record_lint(node, message)
-      @lints << HamlLint::Lint.new(self, @document.file, node.line, message,
-                                   config.fetch('severity', :warning).to_sym)
+    def record_lint(node_or_line, message, corrected: false)
+      line = node_or_line.is_a?(Integer) ? node_or_line : node_or_line.line
+      @lints << HamlLint::Lint.new(self, @document.file, line, message,
+                                   config.fetch('severity', :warning).to_sym,
+                                   corrected: corrected)
     end
 
     # Parse Ruby code into an abstract syntax tree.

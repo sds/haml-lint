@@ -56,6 +56,10 @@ module HamlLint
       # @param lint [HamlLint::Lint] the lint to print
       # @return [void]
       def print_message(lint)
+        if lint.corrected
+          log.success('[Corrected] ', false)
+        end
+
         if lint.linter
           log.success("#{lint.linter.name}: ", false)
         end
@@ -70,10 +74,15 @@ module HamlLint
       def print_summary(report)
         return unless log.summary_enabled
 
+        log.log('')
         print_summary_files(report)
-        print_summary_lints(report)
 
-        log.log ' detected'
+        print_summary_lints(report, is_append: true)
+
+        log.log ' detected', false
+
+        print_summary_corrected_lints(report, is_append: true)
+        log.log ''
       end
 
       # Prints a summary of the number of files linted in a report.
@@ -81,14 +90,17 @@ module HamlLint
       # @param report [HamlLint::Report] the report to print
       # @return [void]
       def print_summary_files(report)
-        log.log "\n#{pluralize('file', count: report.files.count)} inspected, ", false
+        log.log "#{pluralize('file', count: report.files.count)} inspected", false
       end
 
       # Prints a summary of the number of lints found in a report.
       #
       # @param report [HamlLint::Report] the report to print
+      # @param is_append [Boolean] if this is appending to a line. Will preffix with ", ".
       # @return [void]
-      def print_summary_lints(report)
+      def print_summary_lints(report, is_append:)
+        log.log ', ', false if is_append
+
         lint_count = report.lints.size
         lint_message = pluralize('lint', count: lint_count)
 
@@ -97,6 +109,23 @@ module HamlLint
         else
           log.error lint_message, false
         end
+      end
+
+      # Prints a summary of the number of lints corrected in a report.
+      #
+      # @param report [HamlLint::Report] the report to print
+      # @param is_append [Boolean] if this is appending to a line. Will preffix with ", ".
+      # @return [void]
+      def print_summary_corrected_lints(report, is_append:)
+        lint_count = report.lints.count(&:corrected)
+        return if lint_count == 0
+
+        log.log ', ', false if is_append
+
+        lint_message = pluralize('lint', count: lint_count)
+
+        log.info lint_message, false
+        log.log ' corrected', false
       end
     end
   end

@@ -1,0 +1,60 @@
+!!! Empty HAML document
+---
+---
+---
+
+
+!!! Skips a file where indentation is not 2 spaces
+%tag
+ - foo(:bar =>  123)
+---
+---
+---
+%tag
+ - foo(:bar =>  123)
+
+
+!!! Keeps html comments as-is
+- foo(:bar =>  123)
+/ If changed for editable ||= true it would always be true if a false is passed
+- something
+---
+haml_lint_marker_1
+foo(:bar =>  123)
+haml_lint_marker_3
+haml_lint_comment_4 $$2
+haml_lint_marker_5 $$3
+something
+haml_lint_marker_7
+---
+haml_lint_marker_1
+foo(bar: 123)
+haml_lint_marker_3
+haml_lint_comment_4
+haml_lint_marker_5
+something
+haml_lint_marker_7
+---
+- foo(bar: 123)
+/ If changed for editable ||= true it would always be true if a false is passed
+- something
+
+
+!!! Handles a file containing haml_lint_ (triggers a different marker prefix)
+- foo(:bar =>  "haml_lint_")
+---
+SKIP
+---
+SKIP
+---
+- foo(bar: 'haml_lint_')
+
+
+!!! Handles a file containing HL.out (triggers a different script prefix)
+= foo(:bar =>  "HL.out = ")
+---
+SKIP
+---
+SKIP
+---
+= foo(bar: 'HL.out = ')
