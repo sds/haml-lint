@@ -33,7 +33,7 @@ SKIP
   hello: 123, |
   spam: 42 }
 
-!!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported)
+!!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported) {% haml_version >= '5.2' %}
 %span{ foo: "bar",
   spam: 'Text1    |
   and more' }
@@ -46,7 +46,7 @@ SKIP
   spam: 'Text1    |
   and more' }
 
-!!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported)
+!!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
 %span{ foo: "bar",
   spam:
    42}
@@ -59,7 +59,7 @@ SKIP
   spam:
    42}
 
-!!! Multiline tag attributes without marker is ignored (multiline without comma not supported)
+!!! Multiline tag attributes without marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
 %span{ foo:
   "bar"}
 ---

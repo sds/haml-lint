@@ -32,6 +32,19 @@ module HamlLint
           false
         end
 
+        let(:supported_haml?) do |example|
+          # Tries to match `{% haml_version >= '5' %}`, extracting the operator and the "number"
+          haml_version_regex = /\{%\s*haml_version\s*([^\w\s]+?)\s*['"]?(\d+(\.\d+)*)['"]?\s*%\}/
+          requirements = example.metadata[:full_description].scan(haml_version_regex)
+
+          # This can be used by the requirements in eval
+          haml_version = HamlLint::VersionComparer.for_haml
+
+          requirements.all? do |(operator, version)|
+            haml_version.send(operator, version)
+          end
+        end
+
         before do
           if stub_rubocop?
             skip if end_ruby.include?('SKIP')
@@ -92,6 +105,8 @@ module HamlLint
         # 4) the corrected haml
         # Each steps is delimited by a line with ---
         def follows_steps # rubocop:disable Metrics
+          skip unless supported_haml?
+
           begin
             subject.run_or_raise(document, autocorrect: autocorrect)
           rescue StandardError => e
