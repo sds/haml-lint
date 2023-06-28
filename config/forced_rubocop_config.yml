@@ -45,6 +45,21 @@ Layout/EndAlignment:
 Layout/EndOfLine:
   Enabled: false
 
+# Turning this cop on can turn
+# = content_tag(:span) do
+#   - foo
+#   - bar
+#
+# Into
+# - HL.out =
+#   - content_tag(:span) do
+#     - foo
+#     - bar
+#
+# Which is wrong... It would take too much analysis to detect and fix that situation.
+Layout/MultilineAssignmentLayout:
+  Enabled: false
+
 Layout/ParameterAlignment:
   # The alternative, with_fixed_indentation, breaks because we sometimes remove indentation when
   # dealing with multi-line scripts. (Because a line starting with "=" adds a "HL.out = " to the
