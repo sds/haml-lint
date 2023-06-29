@@ -16,5 +16,9 @@ module HamlLint::RubyExtraction
     end
 
     def transfer_correction(coordinator, all_corrected_ruby_lines, haml_lines); end
+
+    def skip_line_indexes_in_source_map
+      (0...@ruby_lines.size).to_a
+    end
   end
 end

@@ -58,18 +58,22 @@ haml_lint_marker_3
 %tag
   ^ foo(:bar =>  123)
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3 $$2
   ^^foo(:bar =>  123)
   haml_lint_marker_5
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   ^^foo(bar: 123)
   haml_lint_marker_5
+ensure
+  HL.noop
 end
 ---
 %tag
@@ -612,26 +616,30 @@ haml_lint_marker_7
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+  begin $$2
     haml_lint_tag_5
     haml_lint_marker_6 $$3
     ^^foo(:bar =>  123)
     haml_lint_marker_8
+  ensure
+    HL.noop
   end
 end
-haml_lint_tag_11 $$4
+haml_lint_tag_13 $$4
 ---
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  begin
     haml_lint_tag_5
     haml_lint_marker_6
     ^^foo(bar: 123)
     haml_lint_marker_8
+  ensure
+    HL.noop
   end
 end
-haml_lint_tag_11
+haml_lint_tag_13
 ---
 - deeper do
   %tag

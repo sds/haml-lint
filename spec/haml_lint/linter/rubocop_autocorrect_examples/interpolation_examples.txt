@@ -152,20 +152,24 @@ Lorem #{foo(bar: '123')} Ipsum
 %tag
   Lorem #{foo(:bar =>  123)} Ipsum
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_interpolation_3 $$2
   haml_lint_marker_4
   HL.out = foo(:bar =>  123)
   haml_lint_marker_6
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_interpolation_3
   haml_lint_marker_4
   HL.out = foo(bar: 123)
   haml_lint_marker_6
+ensure
+  HL.noop
 end
 ---
 %tag
@@ -475,22 +479,26 @@ haml_lint_marker_5
   :filter
     Lorem #{foo(:bar =>  123)} Ipsum
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3  $$2
   HL.out = <<~HAML_LINT_FILTER
     Lorem #{foo(:bar =>  123)} Ipsum $$3
   HAML_LINT_FILTER
   haml_lint_marker_7
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   HL.out = <<~HAML_LINT_FILTER
     Lorem #{foo(bar: 123)} Ipsum
   HAML_LINT_FILTER
   haml_lint_marker_7
+ensure
+  HL.noop
 end
 ---
 %tag

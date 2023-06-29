@@ -6,14 +6,18 @@
 %tag
   Lorem Ipsum
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_plain_3 $$2
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_plain_3
+ensure
+  HL.noop
 end
 ---
 %tag
@@ -25,24 +29,32 @@ end
   %tag
     = something
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+  begin $$2
     haml_lint_tag_4
     haml_lint_marker_5 $$3
     HL.out = something
     haml_lint_marker_7
+  ensure
+    HL.noop
   end
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  begin
     haml_lint_tag_4
     haml_lint_marker_5
     HL.out = something
     haml_lint_marker_7
+  ensure
+    HL.noop
   end
+ensure
+  HL.noop
 end
 ---
 %tag
@@ -55,22 +67,26 @@ end
   - if something
     Lorem Ipsum
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3 $$2
   if something
     haml_lint_marker_5
     haml_lint_plain_6 $$3
   end
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   if something
     haml_lint_marker_5
     haml_lint_plain_6
   end
+ensure
+  HL.noop
 end
 ---
 %tag
@@ -86,18 +102,22 @@ end
 haml_lint_marker_1
 if something
   haml_lint_marker_3
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+  begin $$2
     haml_lint_tag_5
     haml_lint_plain_6 $$3
+  ensure
+    HL.noop
   end
 end
 ---
 haml_lint_marker_1
 if something
   haml_lint_marker_3
-  begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+  begin
     haml_lint_tag_5
     haml_lint_plain_6
+  ensure
+    HL.noop
   end
 end
 ---
