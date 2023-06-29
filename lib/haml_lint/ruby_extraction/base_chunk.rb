@@ -78,7 +78,8 @@ module HamlLint::RubyExtraction
     end
 
     def haml_end_line_index
-      @haml_line_index + nb_haml_lines - 1
+      # the .max is needed to handle cases with 0 nb_haml_lines
+      [@haml_line_index + nb_haml_lines - 1, @haml_line_index].max
     end
 
     def nb_haml_lines

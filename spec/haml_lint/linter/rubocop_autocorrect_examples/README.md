@@ -67,7 +67,7 @@ Here is a complex example (only the first 2 steps):
      :hello =>  42}
   = spam(:bing =>  512)
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_placeholder
   haml_lint_marker_3
   WW(:bar =>  123,
@@ -76,5 +76,7 @@ begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
   haml_lint_marker_7 $$3
   HL.out = spam(:bing =>  512)
   haml_lint_marker_9
+ensure
+  HL.noop
 end
 ```

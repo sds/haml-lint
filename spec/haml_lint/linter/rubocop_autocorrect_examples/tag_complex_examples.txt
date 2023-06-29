@@ -150,7 +150,7 @@ haml_lint_marker_8
      :hello =>  42}
   = spam(:bing =>  512)
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   WW(:bar =>  123,
@@ -159,9 +159,11 @@ begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
   haml_lint_marker_7 $$3
   HL.out = spam(:bing =>  512)
   haml_lint_marker_9
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   WW(bar: 123,
@@ -170,6 +172,8 @@ begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
   haml_lint_marker_7
   HL.out = spam(bing: 512)
   haml_lint_marker_9
+ensure
+  HL.noop
 end
 ---
 %tag{bar: 123,
@@ -182,22 +186,26 @@ end
    :hello =>  42}
   Lorem Ipsum
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   W(:bar =>  123,
     :hello =>  42) $$2
   haml_lint_marker_6
   haml_lint_plain_7 $$3
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   W(bar: 123,
     hello: 42)
   haml_lint_marker_6
   haml_lint_plain_7
+ensure
+  HL.noop
 end
 ---
 %t{bar: 123,
@@ -212,17 +220,21 @@ end
   %b Amet
 ---
 haml_lint_tag_1
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective $$2
+begin $$2
   haml_lint_tag_3
   haml_lint_plain_4 $$3
   haml_lint_tag_5 $$4
+ensure
+  HL.noop
 end
 ---
 haml_lint_tag_1
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_3
   haml_lint_plain_4
   haml_lint_tag_5
+ensure
+  HL.noop
 end
 ---
 %h1 Lorem Ipsum

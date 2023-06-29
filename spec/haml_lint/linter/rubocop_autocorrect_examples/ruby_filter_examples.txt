@@ -261,18 +261,22 @@ haml_lint_marker_10
   :ruby
     foo(:bar =>  123)
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3 $$3
   foo(:bar =>  123)
   haml_lint_marker_5
+ensure
+  HL.noop
 end
 ---
-begin # rubocop:disable Style/RedundantBegin,Lint/RedundantCopDisableDirective
+begin
   haml_lint_tag_2
   haml_lint_marker_3
   foo(bar: 123)
   haml_lint_marker_5
+ensure
+  HL.noop
 end
 ---
 %tag
