@@ -425,6 +425,10 @@ module HamlLint::RubyExtraction
       regexp = Regexp.new(regexp_code)
 
       match = raw_haml.match(regexp)
+      # This can happen when pipes are used as marker for multiline parts, and when tag attributes change lines
+      # without ending by a comma. This is quite a can of worm and is probably not too frequent, so for now,
+      # these cases are not supported.
+      return if match.nil?
 
       raw_ruby = match[0]
       ruby_lines = raw_ruby.split("\n")

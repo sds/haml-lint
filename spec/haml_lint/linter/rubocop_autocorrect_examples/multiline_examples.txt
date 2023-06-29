@@ -1,0 +1,71 @@
+!!! Multiline tag attributes using comma only
+%span{ foo: 'bar',
+  spam: 42 }
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: 'bar',
+       spam: 42 }
+
+!!! Multiline tag attributes with comma and pipe on same line is ignored (pipe not supported)
+%span{ foo: 'bar', |
+  spam: 42 }
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: 'bar', |
+  spam: 42 }
+
+!!! Multiline tag attributes with comma then comma and pipe on same line is ignored (pipe not supported)
+%span{ foo: 'bar',
+  hello: 123, |
+  spam: 42 }
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: 'bar',
+  hello: 123, |
+  spam: 42 }
+
+!!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported) {% haml_version >= '5.2' %}
+%span{ foo: "bar",
+  spam: 'Text1    |
+  and more' }
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: "bar",
+  spam: 'Text1    |
+  and more' }
+
+!!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
+%span{ foo: "bar",
+  spam:
+   42}
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: "bar",
+  spam:
+   42}
+
+!!! Multiline tag attributes without marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
+%span{ foo:
+  "bar"}
+---
+SKIP
+---
+SKIP
+---
+%span{ foo:
+  "bar"}

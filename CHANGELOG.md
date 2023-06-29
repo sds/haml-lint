@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Bugfixes related to experimental auto-correct
+
 ## 0.46.0
 
 * Add ERB pre-processing for configuration files
