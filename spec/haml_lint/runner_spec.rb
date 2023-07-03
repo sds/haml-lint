@@ -84,6 +84,20 @@ describe HamlLint::Runner do
           runner.should_receive(:warm_cache).and_call_original
           subject
         end
+
+        context 'when errors are present' do
+          let(:files) { %w[example.haml] }
+          include_context 'isolated environment'
+
+          before do
+            `echo "%div{ class: 'foo' } hello" > example.haml`
+          end
+
+          it 'successfully reports those errors' do
+            runner.unstub(:collect_lints)
+            expect(subject.lints.first.message).to match(/Avoid defining `class` in attributes hash/)
+          end
+        end
       end
 
       context 'when there is a Haml parsing error in a file' do
