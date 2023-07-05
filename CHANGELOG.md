@@ -1,6 +1,9 @@
 # HAML-Lint Changelog
 
+# 0.47.0
+
 * Bugfixes related to experimental auto-correct
+* Fix `Marshal.dump` errors when using `--parallel` option
 
 ## 0.46.0
 
