@@ -9,18 +9,72 @@ SKIP
 %span{ foo: 'bar',
        spam: 42 }
 
-!!! Multiline tag attributes with comma and pipe on same line is ignored (pipe not supported)
-%span{ foo: 'bar', |
-  spam: 42 }
+!!! Multiline tag attributes using pipes only {% haml_version >= '5.2' %}
+!# Rubocop doesn't seem to do much here.. odd
+%span{ foo: |
+   "bar", spam:  42 } |
 ---
 SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar', |
-  spam: 42 }
+%span{ foo:
+   'bar', spam:  42 }
 
-!!! Multiline tag attributes with comma then comma and pipe on same line is ignored (pipe not supported)
+!!! Multiline tag attributes using pipes only {% haml_version < '5.2' %}
+!# Rubocop doesn't seem to do much here.. odd
+%span{ foo: |
+   "bar", spam:  42 } |
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: |
+   "bar", spam:  42 } |
+
+!!! Multiline tag attributes with comma and pipe on same line removes pipes if there is a change
+%span{ foo: 'bar', |
+  spam: 42 } |
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: 'bar',
+       spam: 42 }
+
+!!! Multiline tag attributes with comma and pipe on same line leaves pipes if there is no change
+%span{ foo: 'bar', |
+       spam: 42 } |
+---
+SKIP
+---
+SKIP
+---
+%span{ foo: 'bar', |
+       spam: 42 } |
+
+!!! Multiline tag attributes with comma and pipe on same line {% haml_version >= '5.2' %}
+!# Tag attributes has different rules and doesn't actually need pipes
+!# But for haml-lint, we put the pipes in the generated code for simplicity
+!# except when everything can be handled using commas
+%span{ foo:
+  "bar",
+  spam:
+   42 }
+---
+SKIP
+---
+SKIP
+---
+%span{ foo:
+  'bar',
+       spam:
+   42 }
+
+!!! Multiline tag attributes with commas and a random useless pipe
+!# the pipe does basically nothing here...
 %span{ foo: 'bar',
   hello: 123, |
   spam: 42 }
@@ -30,10 +84,10 @@ SKIP
 SKIP
 ---
 %span{ foo: 'bar',
-  hello: 123, |
-  spam: 42 }
+       hello: 123,
+       spam: 42 }
 
-!!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported) {% haml_version >= '5.2' %}
+!!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported) {% haml_version >= '5.2' %} asdf
 %span{ foo: "bar",
   spam: 'Text1    |
   and more' }
@@ -42,8 +96,8 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: "bar",
-  spam: 'Text1    |
+%span{ foo: 'bar',
+       spam: 'Text1
   and more' }
 
 !!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
@@ -55,11 +109,11 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: "bar",
-  spam:
+%span{ foo: 'bar',
+       spam:
    42}
 
-!!! Multiline tag attributes without marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
+!!! Multiline tag attributes without marker {% haml_version >= '5.2' %}
 %span{ foo:
   "bar"}
 ---
@@ -68,4 +122,63 @@ SKIP
 SKIP
 ---
 %span{ foo:
-  "bar"}
+  'bar'}
+
+
+!!! Multiline tag script using comma and pipe
+%tag= aa(foo: "bar", |
+  spam: 42) |
+---
+SKIP
+---
+SKIP
+---
+%tag= aa(foo: 'bar',
+         spam: 42)
+
+!!! Multiline tag script using comma
+%tag= aa(foo: "bar",
+  spam: 42)
+---
+SKIP
+---
+SKIP
+---
+%tag= aa(foo: 'bar',
+         spam: 42)
+
+!!! Multiline tag attributes with multiline if {% haml_version >= '5.2' %}
+%h1{style: (if foo?
+        "color: red;"
+      else
+        (bar ? 'color:#f28e02' : '')
+      end)}
+---
+SKIP
+---
+SKIP
+---
+%h1{style: (if foo?
+              'color: red;'
+            else
+              (bar ? 'color:#f28e02' : '')
+  end)}
+
+!!! Nested multiline tag with multiline if {% haml_version >= '5.2' %}
+%tag
+  %h1{style: (if foo?
+          "color: red;"
+        else
+          (bar ? 'color:#f28e02' : '')
+        end)}
+---
+SKIP
+---
+SKIP
+---
+%tag
+  %h1{style: (if foo?
+                'color: red;'
+              else
+                (bar ? 'color:#f28e02' : '')
+    end)}
