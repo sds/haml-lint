@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Fix `Marshal.dump` error when using `--parallel` option and `RepeatedId` Linter
+
 # 0.47.0
 
 * Bugfixes related to experimental auto-correct
