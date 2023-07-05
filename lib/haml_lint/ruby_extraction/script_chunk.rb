@@ -82,19 +82,6 @@ module HamlLint::RubyExtraction
     def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines) # rubocop:disable Metrics
       to_ruby_lines.reject! { |l| l.strip == 'end' }
 
-      output_comment_prefix = ' ' + coordinator.script_output_prefix.rstrip
-      to_ruby_lines.map! do |line|
-        if line.lstrip.start_with?('#' + output_comment_prefix)
-          line = line.dup
-          comment_index = line.index('#')
-          removal_start_index = comment_index + 1
-          removal_end_index = removal_start_index + output_comment_prefix.size
-          line[removal_start_index...removal_end_index] = ''
-          # It will be removed again below, but will know its suposed to be a =
-          line.insert(comment_index, coordinator.script_output_prefix)
-        end
-        line
-      end
 
       continued_line_indent_delta = 2
 

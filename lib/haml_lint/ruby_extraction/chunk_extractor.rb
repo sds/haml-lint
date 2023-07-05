@@ -71,8 +71,8 @@ module HamlLint::RubyExtraction
     # Visiting comments which are output to HTML. Lines looking like
     #   `  / This will be in the HTML source!`
     def visit_comment(node)
-      lines = raw_lines_of_interest(node.line - 1)
-      indent = lines.first.index(/\S/)
+      line = @original_haml_lines[node.line - 1]
+      indent = line.index(/\S/)
       @ruby_chunks << PlaceholderMarkerChunk.new(node, 'comment', indent: indent)
     end
 
@@ -95,9 +95,8 @@ module HamlLint::RubyExtraction
       raw_code = lines.join("\n")
 
       if lines[0][/\S/] == '#'
-        # a script that only constains a comment... needs special handling
-        comment_index = lines[0].index(/\S/)
-        lines[0].insert(comment_index + 1, " #{script_output_prefix.rstrip}")
+        # a "=" script that only contains a comment... No need for the "HL.out = " prefix,
+        # just treat it as comment which will turn into a "-" comment
       else
         lines[0] = HamlLint::Utils.insert_after_indentation(lines[0], script_output_prefix)
       end

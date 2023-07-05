@@ -663,11 +663,36 @@ haml_lint_marker_3
 = #
 ---
 haml_lint_marker_1
-# HL.out =
+#
 haml_lint_marker_3
 ---
 haml_lint_marker_1
-# HL.out =
 haml_lint_marker_3
 ---
-= #
+
+
+!!! silent keeps a comment
+- # hello
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+- # hello
+
+!!! script keeps an empty comment
+= # hello
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+- # hello
