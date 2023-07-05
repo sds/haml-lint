@@ -259,20 +259,28 @@ haml_lint_marker_1
 if a
   if b $$2
     haml_lint_marker_4
-    haml_lint_tag_5 $$3
-    haml_lint_marker_6
-    WWWW(bar: 123, abc: '42')
-    haml_lint_marker_8
+    begin $$3
+      haml_lint_tag_6
+      haml_lint_marker_7
+      WW(bar: 123, abc: '42')
+      haml_lint_marker_9
+    ensure
+      HL.noop
+    end
   end
 end
 ---
 haml_lint_marker_1
 if a && b
   haml_lint_marker_4
-  haml_lint_tag_5
-  haml_lint_marker_6
-  WWWW(bar: 123, abc: '42')
-  haml_lint_marker_8
+  begin
+    haml_lint_tag_6
+    haml_lint_marker_7
+    WW(bar: 123, abc: '42')
+    haml_lint_marker_9
+  ensure
+    HL.noop
+  end
 end
 ---
 - if a && b
@@ -288,20 +296,28 @@ haml_lint_marker_1
 if a
   if b $$2
     haml_lint_marker_4
-    haml_lint_tag_5 $$3
-    haml_lint_marker_6
-    WWWW(:bar =>  123, abc:  '42')
-    haml_lint_marker_8
+    begin $$3
+      haml_lint_tag_6
+      haml_lint_marker_7
+      WW(:bar =>  123, abc:  '42')
+      haml_lint_marker_9
+    ensure
+      HL.noop
+    end
   end
 end
 ---
 haml_lint_marker_1
 if a && b
   haml_lint_marker_4
-  haml_lint_tag_5
-  haml_lint_marker_6
-  WWWW(bar: 123, abc: '42')
-  haml_lint_marker_8
+  begin
+    haml_lint_tag_6
+    haml_lint_marker_7
+    WW(bar: 123, abc: '42')
+    haml_lint_marker_9
+  ensure
+    HL.noop
+  end
 end
 ---
 - if a && b
@@ -317,20 +333,28 @@ haml_lint_marker_1
 if a
   if b $$2
     haml_lint_marker_4
-    haml_lint_tag_5 $$3
-    haml_lint_marker_6
-    WWWW(bar: 123, abc: '42')
-    haml_lint_marker_8
+    begin $$3
+      haml_lint_tag_6
+      haml_lint_marker_7
+      WW(bar: 123, abc: '42')
+      haml_lint_marker_9
+    ensure
+      HL.noop
+    end
   end
 end
 ---
 haml_lint_marker_1
 if a && b
   haml_lint_marker_4
-  haml_lint_tag_5
-  haml_lint_marker_6
-  WWWW(bar: 123, abc: '42')
-  haml_lint_marker_8
+  begin
+    haml_lint_tag_6
+    haml_lint_marker_7
+    WW(bar: 123, abc: '42')
+    haml_lint_marker_9
+  ensure
+    HL.noop
+  end
 end
 ---
 - if a && b
@@ -369,20 +393,28 @@ haml_lint_marker_1
 if a
   if b $$2
     haml_lint_marker_4
-    haml_lint_tag_5 $$3
-    haml_lint_marker_6
-    HL.out = foo(:bar =>  123, abc:  '42')
-    haml_lint_marker_8
+    begin $$3
+      haml_lint_tag_6
+      haml_lint_marker_7
+      HL.out = foo(:bar =>  123, abc:  '42')
+      haml_lint_marker_9
+    ensure
+      HL.noop
+    end
   end
 end
 ---
 haml_lint_marker_1
 if a && b
   haml_lint_marker_4
-  haml_lint_tag_5
-  haml_lint_marker_6
-  HL.out = foo(bar: 123, abc: '42')
-  haml_lint_marker_8
+  begin
+    haml_lint_tag_6
+    haml_lint_marker_7
+    HL.out = foo(bar: 123, abc: '42')
+    haml_lint_marker_9
+  ensure
+    HL.noop
+  end
 end
 ---
 - if a && b
@@ -398,20 +430,28 @@ haml_lint_marker_1
 if a
   if b $$2
     haml_lint_marker_4
-    haml_lint_tag_5 $$3
-    haml_lint_marker_6
-    HL.out = foo(bar: 123, abc: '42')
-    haml_lint_marker_8
+    begin $$3
+      haml_lint_tag_6
+      haml_lint_marker_7
+      HL.out = foo(bar: 123, abc: '42')
+      haml_lint_marker_9
+    ensure
+      HL.noop
+    end
   end
 end
 ---
 haml_lint_marker_1
 if a && b
   haml_lint_marker_4
-  haml_lint_tag_5
-  haml_lint_marker_6
-  HL.out = foo(bar: 123, abc: '42')
-  haml_lint_marker_8
+  begin
+    haml_lint_tag_6
+    haml_lint_marker_7
+    HL.out = foo(bar: 123, abc: '42')
+    haml_lint_marker_9
+  ensure
+    HL.noop
+  end
 end
 ---
 - if a && b

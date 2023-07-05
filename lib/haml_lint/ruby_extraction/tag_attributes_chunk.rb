@@ -18,7 +18,7 @@ module HamlLint::RubyExtraction
       from_ruby = unwrap(@ruby_lines).join("\n")
 
       if to_ruby_lines.size > 1
-        min_indent = to_ruby_lines.first[/^\s*/] + '  '
+        min_indent = to_ruby_lines.first[/^\s*/]
         to_ruby_lines.each.with_index do |line, i|
           next if i == 0
           next if line.start_with?(min_indent)

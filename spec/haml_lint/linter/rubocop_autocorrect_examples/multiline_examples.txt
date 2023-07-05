@@ -164,6 +164,25 @@ SKIP
               (bar ? 'color:#f28e02' : '')
   end)}
 
+!!! Multiline tag attributes with multiline if and a child {% haml_version >= '5.2' %}
+%h1{style: (if foo?
+        "color: red;"
+      else
+        (bar ? 'color:#f28e02' : '')
+      end)}
+  abc
+---
+SKIP
+---
+SKIP
+---
+%h1{style: (if foo?
+              'color: red;'
+            else
+              (bar ? 'color:#f28e02' : '')
+  end)}
+  abc
+
 !!! Nested multiline tag with multiline if {% haml_version >= '5.2' %}
 %tag
   %h1{style: (if foo?
