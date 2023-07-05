@@ -52,11 +52,6 @@ module HamlLint
         return
       end
 
-      user_config_path = ENV['HAML_LINT_RUBOCOP_CONF'] || config['config_file']
-      user_config_path ||= self.class.rubocop_config_store.user_rubocop_config_path_for(document.file)
-      user_config_path = File.absolute_path(user_config_path)
-      @rubocop_config = self.class.rubocop_config_store.config_object_pointing_to(user_config_path)
-
       @last_extracted_source = nil
       @last_new_ruby_source = nil
 
@@ -101,6 +96,13 @@ module HamlLint
     end
 
     private
+
+    def rubocop_config_for(path)
+      user_config_path = ENV['HAML_LINT_RUBOCOP_CONF'] || config['config_file']
+      user_config_path ||= self.class.rubocop_config_store.user_rubocop_config_path_for(path)
+      user_config_path = File.absolute_path(user_config_path)
+      self.class.rubocop_config_store.config_object_pointing_to(user_config_path)
+    end
 
     # Extracted here so that tests can stub this to always return true
     def transfer_corrections?(initial_ruby_code, new_ruby_code)
@@ -205,7 +207,7 @@ module HamlLint
     def run_rubocop(rubocop_cli, ruby_code, path) # rubocop:disable Metrics
       rubocop_status = nil
       stdout_str, stderr_str = HamlLint::Utils.with_captured_streams(ruby_code) do
-        rubocop_cli.config_store.instance_variable_set(:@options_config, @rubocop_config)
+        rubocop_cli.config_store.instance_variable_set(:@options_config, rubocop_config_for(path))
         rubocop_status = rubocop_cli.run(rubocop_flags + ['--stdin', path])
       end
 
@@ -332,7 +334,7 @@ module HamlLint
     # anymore or don't exist yet.
     # This is not exhaustive, it's only for the cops that are in config/default.yml
     def ignored_cops_flags
-      ignored_cops = config['ignored_cops']
+      ignored_cops = config.fetch('ignored_cops', [])
 
       if @autocorrect
         ignored_cops += self.class.cops_names_not_supporting_autocorrect

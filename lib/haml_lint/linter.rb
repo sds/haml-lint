@@ -112,8 +112,11 @@ module HamlLint
     #
     # @return [AST::Node]
     def parse_ruby(source)
+      self.class.ruby_parser.parse(source)
+    end
+
+    def self.ruby_parser # rubocop:disable Lint/IneffectiveAccessModifier
       @ruby_parser ||= HamlLint::RubyParser.new
-      @ruby_parser.parse(source)
     end
 
     # Remove the surrounding double quotes from a string, ignoring any
