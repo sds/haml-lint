@@ -338,7 +338,7 @@ describe HamlLint::Linter::RuboCop do
   describe '#run_rubocop' do
     subject { described_class.new(config).send(:run_rubocop, rubocop_cli, 'foo', 'some_file.rb') }
 
-    let(:config) { spy('config') }
+    let(:config) { {} }
     let(:rubocop_cli) { spy('rubocop_cli') }
 
     before do

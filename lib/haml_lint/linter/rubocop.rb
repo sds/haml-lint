@@ -334,7 +334,7 @@ module HamlLint
     # anymore or don't exist yet.
     # This is not exhaustive, it's only for the cops that are in config/default.yml
     def ignored_cops_flags
-      ignored_cops = config['ignored_cops']
+      ignored_cops = config.fetch('ignored_cops', [])
 
       if @autocorrect
         ignored_cops += self.class.cops_names_not_supporting_autocorrect
