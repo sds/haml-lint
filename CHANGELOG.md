@@ -1,5 +1,8 @@
 # HAML-Lint Changelog
 
+# master (unreleased)
+
+* Fix `Marshal.dump` error when using `--parallel` option and `RepeatedId` Linter
 * Improved support for multiline code with RuboCop linting/auto-correction
 
 # 0.47.0
