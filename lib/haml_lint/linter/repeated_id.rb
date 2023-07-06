@@ -8,13 +8,14 @@ module HamlLint
     MESSAGE_FORMAT = %{Do not repeat id "#%s" on the page}
 
     def visit_root(_node)
-      @id_map = Hash.new { |hash, key| hash[key] = [] }
+      @id_map = {}
     end
 
     def visit_tag(node)
       id = node.tag_id
       return unless id && !id.empty?
 
+      id_map[id] ||= []
       nodes = (id_map[id] << node)
       case nodes.size
       when 1 then nil

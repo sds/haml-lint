@@ -54,4 +54,25 @@ describe HamlLint::Linter do
 
     it { should == 'SomeLinterName' }
   end
+
+  # Source from https://apidock.com/rails/Class/descendants
+  linter_classes = []
+  ObjectSpace.each_object(HamlLint::Linter.singleton_class) do |k|
+    next if k.singleton_class?
+    linter_classes.unshift k unless k == self
+  end
+  linter_classes.each do |linter_class|
+    describe "subclass #{linter_class.name}" do
+      # Needed for parallel mode, because lints are dumped and they refer to the linter
+      it 'instances can be Marshal.dump' do
+        document = HamlLint::Document.new('something', config: HamlLint::ConfigurationLoader.default_configuration)
+        expect do
+          linter = linter_class.new(config)
+          linter.run(document)
+
+          Marshal.dump(linter)
+        end.not_to raise_error
+      end
+    end
+  end
 end
