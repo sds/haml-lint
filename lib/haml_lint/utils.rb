@@ -276,5 +276,10 @@ module HamlLint
     ensure
       $stdin = original_stdin
     end
+
+    def regexp_for_parts(parts, join_regexp)
+      regexp_code = parts.map { |c| Regexp.quote(c) }.join(join_regexp)
+      Regexp.new(regexp_code)
+    end
   end
 end

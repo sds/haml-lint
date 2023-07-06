@@ -797,14 +797,22 @@ haml_lint_marker_5
 !!! Fixes interpolation in a tag's text
 %tag #{foo(:bar =>  123)}
 ---
-haml_lint_tag_1
-haml_lint_marker_2
-HL.out = foo(:bar =>  123)
-haml_lint_marker_4
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
 ---
-haml_lint_tag_1
-haml_lint_marker_2
-HL.out = foo(bar: 123)
-haml_lint_marker_4
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
 ---
 %tag #{foo(bar: 123)}

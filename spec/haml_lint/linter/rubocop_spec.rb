@@ -49,7 +49,7 @@ describe HamlLint::Linter::RuboCop do
       end
 
       it 'uses the source map to transform line numbers' do
-        subject.should report_lint line: 3
+        subject.should report_lint line: 2
       end
 
       context 'and the offence is from an ignored cop' do

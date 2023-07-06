@@ -160,7 +160,7 @@ haml_lint_marker_5
       :hello =>  42)
 ---
 haml_lint_marker_1
-^^foo(:bar =>  123,<%= '  ' %>
+^^foo(:bar =>  123,
 %%    :hello =>  42) $$2
 haml_lint_marker_4
 ---
@@ -663,11 +663,61 @@ haml_lint_marker_3
 = #
 ---
 haml_lint_marker_1
-# HL.out =
+#
 haml_lint_marker_3
 ---
 haml_lint_marker_1
-# HL.out =
 haml_lint_marker_3
 ---
-= #
+
+
+!!! silent keeps a comment
+- # hello
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+- # hello
+
+!!! script keeps an empty comment
+= # hello
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+haml_lint_marker_1
+# hello
+haml_lint_marker_3
+---
+- # hello
+
+!!! Multiline script using comma and pipe (pipes are not needed, so removed)
+^ aa(foo: "bar", |
+  spam: 42) |
+---
+SKIP
+---
+SKIP
+---
+^ aa(foo: 'bar',
+     spam: 42)
+
+!!! Multiline script using pipes
+^ aa(foo: |
+  "bar", |
+  spam: 42 |
+  ) |
+---
+SKIP
+---
+SKIP
+---
+^ aa(foo: |
+  'bar', |
+     spam: 42) |

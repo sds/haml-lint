@@ -51,7 +51,7 @@ describe HamlLint::Linter::RuboCop do
           abc
         ---
         haml_lint_marker_1
-        if a#{' '}
+        if a
           haml_lint_marker_3
           haml_lint_plain_4 $$2
         end
@@ -71,7 +71,7 @@ describe HamlLint::Linter::RuboCop do
           abc
         ---
         haml_lint_marker_1
-        [].each do#{' '}
+        [].each do
           haml_lint_marker_3
           haml_lint_plain_4 $$2
         end
@@ -92,7 +92,7 @@ describe HamlLint::Linter::RuboCop do
           = foo
         ---
         haml_lint_marker_1
-        [].each do |foo|#{' '}
+        [].each do |foo|
           HL.out = foo $$2
         end
         haml_lint_marker_5
