@@ -15,7 +15,6 @@ describe HamlLint::Runner do
 
     context 'general tests' do
       let(:files) { %w[file1.slim file2.slim] }
-      let(:mock_linter) { double('linter', lints: [], name: 'Blah') }
 
       let(:options) do
         base_options.merge(reporter: reporter)
@@ -90,12 +89,22 @@ describe HamlLint::Runner do
           include_context 'isolated environment'
 
           before do
-            `echo "%div{ class: 'foo' } hello" > example.haml`
+            `echo "%div{ class:    'foo' } hello" > example.haml`
           end
 
           it 'successfully reports those errors' do
             runner.unstub(:collect_lints)
             expect(subject.lints.first.message).to match(/Avoid defining `class` in attributes hash/)
+          end
+
+          context 'with autocorrect on' do
+            let(:options) { super().merge(autocorrect: :all) }
+
+            it 'successfully fixes those errors' do
+              runner.unstub(:collect_lints)
+              expect(subject.lints.detect(&:corrected).message).to match(/Unnecessary spacing detected./)
+              expect(File.read('example.haml')).to eq("%div{ class: 'foo' } hello\n")
+            end
           end
         end
       end
