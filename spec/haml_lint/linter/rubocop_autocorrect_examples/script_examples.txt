@@ -721,3 +721,105 @@ SKIP
 ^ aa(foo: |
   'bar', |
      spam: 42) |
+
+!!! fixes a single-line one started with !=
+!= foo(:bar =>  123)
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+haml_lint_marker_3
+---
+!= foo(bar: 123)
+
+!!! fixes a single-line one started with &=
+&= foo(:bar =>  123)
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+haml_lint_marker_3
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+haml_lint_marker_3
+---
+&= foo(bar: 123)
+
+!!! fixes two single-line ones started with !=
+!= foo(:bar =>  123)
+!= foo(:bar =>  "hi")
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+haml_lint_marker_3
+haml_lint_marker_4 $$2
+HL.out = foo(:bar =>  "hi")
+haml_lint_marker_6
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+haml_lint_marker_3
+haml_lint_marker_4
+HL.out = foo(bar: 'hi')
+haml_lint_marker_6
+---
+!= foo(bar: 123)
+!= foo(bar: 'hi')
+
+!!! fixes two single-line ones started with &=
+&= foo(:bar =>  123)
+&= foo(:bar =>  "hi")
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+haml_lint_marker_3
+haml_lint_marker_4 $$2
+HL.out = foo(:bar =>  "hi")
+haml_lint_marker_6
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+haml_lint_marker_3
+haml_lint_marker_4
+HL.out = foo(bar: 'hi')
+haml_lint_marker_6
+---
+&= foo(bar: 123)
+&= foo(bar: 'hi')
+
+!!! fixes two single-line ones with the first started with !=
+!= foo(:bar =>  123)
+= foo(:bar =>  "hi")
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+HL.out = foo(:bar =>  "hi") $$2
+haml_lint_marker_4
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+HL.out = foo(bar: 'hi')
+haml_lint_marker_4
+---
+!= foo(bar: 123)
+= foo(bar: 'hi')
+
+!!! fixes two single-line ones with the first started with &=
+&= foo(:bar =>  123)
+= foo(:bar =>  "hi")
+---
+haml_lint_marker_1
+HL.out = foo(:bar =>  123)
+HL.out = foo(:bar =>  "hi") $$2
+haml_lint_marker_4
+---
+haml_lint_marker_1
+HL.out = foo(bar: 123)
+HL.out = foo(bar: 'hi')
+haml_lint_marker_4
+---
+&= foo(bar: 123)
+= foo(bar: 'hi')

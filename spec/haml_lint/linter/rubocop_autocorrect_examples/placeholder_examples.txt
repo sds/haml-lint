@@ -32,3 +32,51 @@ haml_lint_filter_1
 ---
 :filter
   Lorem Ipsum
+
+!!! Has a placeholder for plain text with no interpolation started with !
+! Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+! Lorem Ipsum
+
+!!! Has a placeholder for plain text with no interpolation started with &
+& Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+& Lorem Ipsum
+
+!!! Has a placeholder for plain text with no interpolation started with ==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+== Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+== Lorem Ipsum
+
+!!! Has a placeholder for plain text with no interpolation started with !==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+!== Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+!== Lorem Ipsum
+
+!!! Has a placeholder for plain text with no interpolation started with &==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+&== Lorem Ipsum
+---
+haml_lint_plain_1
+---
+haml_lint_plain_1
+---
+&== Lorem Ipsum

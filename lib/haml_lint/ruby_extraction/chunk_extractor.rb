@@ -91,7 +91,13 @@ module HamlLint::RubyExtraction
     def visit_script(node, &block)
       raw_first_line = @original_haml_lines[node.line - 1]
 
-      if raw_first_line !~ /\A\s*[-=]/
+      # ==, !, !==, &, &== means interpolation (was needed before HAML 2.2... it's still supported)
+      # =, !=, &= mean actual ruby code is coming
+      # Anything else is interpolation
+      # The regex lists the case for Ruby Code. The 3 cases and making sure they are not followed by another = sign
+
+      match = raw_first_line.match(/\A\s*(=|!=|&=)(?!=)/)
+      unless match
         # The line doesn't start with a - or a =, this is actually a "plain"
         # that contains interpolation.
         indent = raw_first_line.index(/\S/)
@@ -100,12 +106,13 @@ module HamlLint::RubyExtraction
         return
       end
 
+      script_prefix = match[1]
       _first_line_offset, lines = extract_raw_ruby_lines(node.script, node.line - 1)
       # We want the actual indentation and prefix for the first line
       first_line = lines[0] = @original_haml_lines[node.line - 1].rstrip
       process_multiline!(first_line)
 
-      lines[0] = lines[0].sub(/(=[ \t]?)/, '')
+      lines[0] = lines[0].sub(/(#{script_prefix}[ \t]?)/, '')
       line_indentation = Regexp.last_match(1).size
 
       raw_code = lines.join("\n")
@@ -139,9 +146,16 @@ module HamlLint::RubyExtraction
         # By forcing this to start a chunk, there will be extra placeholders which
         # blocks rubocop from merging the lines.
         must_start_chunk = true
+      elsif script_prefix != '='
+        # In the few cases where &= and != are used to start the script,
+        # We need to remember and put it back in the final HAML. Fusing scripts together
+        # would make that basically impossible. Instead, a script has a "first_output_prefix"
+        # field for this specific case
+        must_start_chunk = true
       end
 
-      finish_visit_any_script(node, lines, raw_code: raw_code, must_start_chunk: must_start_chunk, &block)
+      finish_visit_any_script(node, lines, raw_code: raw_code, must_start_chunk: must_start_chunk,
+                              first_output_prefix: script_prefix, &block)
     end
 
     # Visit a script which doesn't output. Lines looking like `  - foo`
@@ -164,7 +178,7 @@ module HamlLint::RubyExtraction
     # Code common to both silent and outputting scripts
     #
     # raw_code is the code before we do transformations, such as adding the `HL.out = `
-    def finish_visit_any_script(node, lines, raw_code: nil, must_start_chunk: false)
+    def finish_visit_any_script(node, lines, raw_code: nil, must_start_chunk: false, first_output_prefix: '=')
       raw_code ||= lines.join("\n")
       start_nesting = self.class.start_nesting_after?(raw_code)
 
@@ -177,7 +191,8 @@ module HamlLint::RubyExtraction
       @ruby_chunks << ScriptChunk.new(node, lines,
                                       end_marker_indent: indent_after,
                                       must_start_chunk: must_start_chunk,
-                                      previous_chunk: @ruby_chunks.last)
+                                      previous_chunk: @ruby_chunks.last,
+                                      first_output_haml_prefix: first_output_prefix)
 
       yield
 
