@@ -1,0 +1,56 @@
+!!! a plain tag
+%tag hello world
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag hello world
+
+!!! Handles tag text starting with !
+%tag! hello world
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag! hello world
+
+!!! Handles tag text starting with &
+%tag& Lorem Ipsum
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag& Lorem Ipsum
+
+!!! Handles tag text starting with ==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag== hello world
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag== hello world
+
+!!! Handles tag text starting with !==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag!== hello world
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag!== hello world
+
+!!! Handles tag text starting with &==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag&== hello world
+---
+haml_lint_tag_1
+---
+haml_lint_tag_1
+---
+%tag&== hello world

@@ -8,6 +8,10 @@ module HamlLint::RubyExtraction
   class ScriptChunk < BaseChunk
     MID_BLOCK_KEYWORDS = %w[else elsif when rescue ensure].freeze
 
+    # @return [String] The prefix for the first outputting string of this script. (One of = != &=)
+    #   The outputting scripts after the first are always with =
+    attr_reader :first_output_haml_prefix
+
     # @return [Boolean] true if this ScriptChunk must be at the beginning of a chunk.
     #   This blocks this ScriptChunk from being fused to a ScriptChunk that is before it.
     #   Needed to handle some patterns of outputting script.
@@ -21,12 +25,13 @@ module HamlLint::RubyExtraction
     #   our starting marker must be indented.
     attr_reader :previous_chunk
 
-    def initialize(*args, previous_chunk:, must_start_chunk: false,
-                   skip_line_indexes_in_source_map: [], **kwargs)
+    def initialize(*args, previous_chunk:, must_start_chunk: false, # rubocop:disable Metrics/ParameterLists
+                   skip_line_indexes_in_source_map: [], first_output_haml_prefix: '=', **kwargs)
       super(*args, **kwargs)
       @must_start_chunk = must_start_chunk
       @skip_line_indexes_in_source_map = skip_line_indexes_in_source_map
       @previous_chunk = previous_chunk
+      @first_output_haml_prefix = first_output_haml_prefix
     end
 
     def fuse(following_chunk)
@@ -55,7 +60,8 @@ module HamlLint::RubyExtraction
                       haml_line_index: haml_line_index,
                       skip_line_indexes_in_source_map: source_map_skips,
                       end_marker_indent: following_chunk.end_marker_indent,
-                      previous_chunk: previous_chunk)
+                      previous_chunk: previous_chunk,
+                      first_output_haml_prefix: @first_output_haml_prefix)
     end
 
     def fuse_implicit_end(following_chunk)
@@ -72,7 +78,8 @@ module HamlLint::RubyExtraction
                       haml_line_index: haml_line_index,
                       skip_line_indexes_in_source_map: source_map_skips,
                       end_marker_indent: following_chunk.end_marker_indent,
-                      previous_chunk: previous_chunk)
+                      previous_chunk: previous_chunk,
+                      first_output_haml_prefix: @first_output_haml_prefix)
     end
 
     def start_marker_indent
@@ -82,15 +89,18 @@ module HamlLint::RubyExtraction
     end
 
     def transfer_correction_logic(coordinator, to_ruby_lines, haml_lines)
-      to_haml_lines = self.class.format_ruby_lines_to_haml_lines(to_ruby_lines,
-                                                                 script_output_prefix: coordinator.script_output_prefix)
+      to_haml_lines = self.class.format_ruby_lines_to_haml_lines(
+        to_ruby_lines,
+        script_output_ruby_prefix: coordinator.script_output_prefix,
+        first_output_haml_prefix: @first_output_haml_prefix
+      )
 
       haml_lines[@haml_line_index..haml_end_line_index] = to_haml_lines
     end
 
     ALLOW_EXPRESSION_AFTER_LINE_ENDING_WITH = %w[else begin ensure].freeze
 
-    def self.format_ruby_lines_to_haml_lines(to_ruby_lines, script_output_prefix:) # rubocop:disable Metrics
+    def self.format_ruby_lines_to_haml_lines(to_ruby_lines, script_output_ruby_prefix:, first_output_haml_prefix: '=') # rubocop:disable Metrics
       to_ruby_lines.reject! { |l| l.strip == 'end' }
       return [] if to_ruby_lines.empty?
 
@@ -100,7 +110,7 @@ module HamlLint::RubyExtraction
 
       cur_line_start_index = nil
       line_start_indexes_that_need_pipes = []
-
+      haml_output_prefix = first_output_haml_prefix
       to_haml_lines = to_ruby_lines.map.with_index do |line, i|
         if line !~ /\S/
           # whitespace or empty lines, we don't want any indentation
@@ -108,11 +118,13 @@ module HamlLint::RubyExtraction
         elsif statement_start_line_indexes.include?(i)
           cur_line_start_index = i
           code_start = line.index(/\S/)
-          if line[code_start..].start_with?(script_output_prefix)
-            line = line.sub(script_output_prefix, '')
+          if line[code_start..].start_with?(script_output_ruby_prefix)
+            line = line.sub(script_output_ruby_prefix, '')
             # The line may have been too indented because of the "HL.out = " prefix
-            continued_line_indent_delta = 2 - script_output_prefix.size
-            "#{line[0...code_start]}= #{line[code_start..]}"
+            continued_line_indent_delta = 2 - script_output_ruby_prefix.size
+            new_line = "#{line[0...code_start]}#{haml_output_prefix} #{line[code_start..]}"
+            haml_output_prefix = '='
+            new_line
           else
             continued_line_indent_delta = 2
             "#{line[0...code_start]}- #{line[code_start..]}"

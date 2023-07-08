@@ -100,3 +100,49 @@ haml_lint_tag_1
 haml_lint_tag_1
 ---
 %tag= #foo(:bar =>  123)
+
+!!! fixes tag's script started with !=
+%tag!= foo(:bar =>  123)
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag!= foo(bar: 123)
+
+!!! fixes tag's script started with &=
+%tag&= foo(:bar =>  123)
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag&= foo(bar: 123)

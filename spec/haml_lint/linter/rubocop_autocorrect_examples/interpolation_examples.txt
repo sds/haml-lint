@@ -816,3 +816,208 @@ ensure
 end
 ---
 %tag #{foo(bar: 123)}
+
+
+!!! Fixes interpolation with text around it in a tag's text
+%tag hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag hello #{foo(bar: 123)} world
+
+!!! fixes plain's interpolation in the middle of line that started with ==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+== Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+== Lorem #{foo(bar: 123)} Ipsum
+
+!!! Fixes interpolation with text around it in a tag's text that started with ==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag== hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag== hello #{foo(bar: 123)} world
+
+!!! fixes plain's interpolation in the middle of line that started with !
+! Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+! Lorem #{foo(bar: 123)} Ipsum
+
+!!! Fixes interpolation with text around it in a tag's text that started with !
+%tag! hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag! hello #{foo(bar: 123)} world
+
+!!! fixes plain's interpolation in the middle of line that started with &
+& Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+& Lorem #{foo(bar: 123)} Ipsum
+
+!!! Fixes interpolation with text around it in a tag's text that started with !==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag!== hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag!== hello #{foo(bar: 123)} world
+
+!!! Fixes interpolation with text around it in a tag's text that started with !==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag!== hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag!== hello #{foo(bar: 123)} world
+
+!!! fixes plain's interpolation in the middle of line that started with &==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+&== Lorem #{foo(:bar =>  123)} Ipsum
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
+---
+&== Lorem #{foo(bar: 123)} Ipsum
+
+!!! Fixes interpolation with text around it in a tag's text that started with &==
+!# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
+%tag&== hello #{foo(:bar =>  123)} world
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  haml_lint_marker_3
+  HL.out = foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+%tag&== hello #{foo(bar: 123)} world

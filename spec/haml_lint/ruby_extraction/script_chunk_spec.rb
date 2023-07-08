@@ -4,7 +4,7 @@ describe HamlLint::RubyExtraction::ScriptChunk do
   describe '.format_ruby_lines_to_haml_lines' do
     def do_test
       generated_haml = described_class.format_ruby_lines_to_haml_lines(ruby.split("\n"),
-                                                                       script_output_prefix: 'HL.out = ')
+                                                                       script_output_ruby_prefix: 'HL.out = ')
       expect(generated_haml.join("\n")).to eq(expected_haml.chop)
     end
 
