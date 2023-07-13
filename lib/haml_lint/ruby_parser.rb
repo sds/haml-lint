@@ -18,7 +18,7 @@ module HamlLint
       @parser = ::Parser::CurrentRuby.new(@builder)
     end
 
-    # Require the current parser version while suppressing the 
+    # Require the current parser version while suppressing the
     # compliancy warning for minor version differences.
     def require_parser
       prev = $VERBOSE
