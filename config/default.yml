@@ -105,6 +105,9 @@ linters:
   TagName:
     enabled: true
 
+  TrailingEmptyLines:
+    enabled: true
+
   TrailingWhitespace:
     enabled: true
 
