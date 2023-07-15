@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-# unreleased
+# 0.49.0
 
 * Add `TrailingEmptyLines` linter
 * Omit warning output for Ruby parser patch version discrepancies
