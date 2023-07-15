@@ -3,6 +3,7 @@
 # unreleased
 
 * Add `TrailingEmptyLines` linter
+* Omit warning output for Ruby parser patch version discrepancies
 
 # 0.48.0
 
