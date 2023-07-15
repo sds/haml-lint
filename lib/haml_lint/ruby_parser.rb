@@ -2,7 +2,6 @@
 
 require 'rubocop'
 require 'rubocop/ast/builder'
-require 'parser/current'
 
 module HamlLint
   # Parser for the Ruby language.
@@ -14,8 +13,19 @@ module HamlLint
   class RubyParser
     # Creates a reusable parser.
     def initialize
+      require_parser
       @builder = ::RuboCop::AST::Builder.new
       @parser = ::Parser::CurrentRuby.new(@builder)
+    end
+
+    # Require the current parser version while suppressing the
+    # compliancy warning for minor version differences.
+    def require_parser
+      prev = $VERBOSE
+      $VERBOSE = nil
+      require 'parser/current'
+    ensure
+      $VERBOSE = prev
     end
 
     # Parse the given Ruby source into an abstract syntax tree.
