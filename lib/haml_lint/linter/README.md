@@ -29,6 +29,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [SpaceBeforeScript](#spacebeforescript)
 * [SpaceInsideHashAttributes](#spaceinsidehashattributes)
 * [TagName](#tagname)
+* [TrailingEmptyLines](#trailingemptylines)
 * [TrailingWhitespace](#trailingwhitespace)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
 * [UnnecessaryStringOutput](#unnecessarystringoutput)
@@ -710,6 +711,10 @@ This is a _de facto_ standard in writing HAML documents as well as HTML in
 general, as it is easier to type and matches the convention of many developer
 tools. If you are writing HAML to output XML documents, however, it is a strict
 requirement.
+
+## TrailingEmptyLines
+
+HAML documents should not contain empty lines at the end of the file.
 
 ## TrailingWhitespace
 

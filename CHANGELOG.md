@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+# unreleased
+
+* Add `TrailingEmptyLines` linter
+
 # 0.48.0
 
 * Fix `Marshal.dump` error when using `--parallel` option and `RepeatedId` Linter
