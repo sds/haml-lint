@@ -102,7 +102,8 @@ module HamlLint::RubyExtraction
         # that contains interpolation.
         indent = raw_first_line.index(/\S/)
         @ruby_chunks << PlaceholderMarkerChunk.new(node, 'interpolation', indent: indent)
-        add_interpolation_chunks(node, raw_first_line, node.line - 1, indent: indent)
+        lines = extract_piped_plain_multilines(node.line - 1)
+        add_interpolation_chunks(node, lines.join("\n"), node.line - 1, indent: indent)
         return
       end
 
@@ -404,11 +405,14 @@ module HamlLint::RubyExtraction
         # because Haml::Util.balance does a strip...
         interpolated_code = code[char_index...scanner.charpos - 1]
 
-        interpolated_code = "#{' ' * indent}#{script_output_prefix}#{interpolated_code}"
-
         if interpolated_code.include?("\n")
           # We can't correct multiline interpolation.
           # Finding meaningful code to generate and then transfer back is pretty complex
+
+          # Since we can't fix it, strip around the code to reduce RuboCop lints that we won't be able to fix.
+          interpolated_code = interpolated_code.strip
+          interpolated_code = "#{' ' * indent}#{script_output_prefix}#{interpolated_code}"
+
           placeholder_code = interpolated_code.gsub(/\s*\n\s*/, ' ').rstrip
           unless parse_ruby(placeholder_code)
             placeholder_code = interpolated_code.gsub(/\s*\n\s*/, '; ').rstrip
@@ -416,6 +420,7 @@ module HamlLint::RubyExtraction
           @ruby_chunks << AdHocChunk.new(node, [placeholder_code],
                                          haml_line_index: haml_line_index + line_index)
         else
+          interpolated_code = "#{' ' * indent}#{script_output_prefix}#{interpolated_code}"
           @ruby_chunks << InterpolationChunk.new(node, [interpolated_code],
                                                  haml_line_index: haml_line_index + line_index,
                                                  start_char_index: start_char_index,
@@ -426,6 +431,15 @@ module HamlLint::RubyExtraction
 
     def process_multiline!(line)
       if HAML_PARSER_INSTANCE.send(:is_multiline?, line)
+        line.chop!.rstrip!
+        true
+      else
+        false
+      end
+    end
+
+    def process_plain_multiline!(line)
+      if line&.end_with?(' |')
         line.chop!.rstrip!
         true
       else
@@ -515,6 +529,25 @@ module HamlLint::RubyExtraction
       first_line_offset = match.begin(0)
 
       [first_line_offset, ruby_lines]
+    end
+
+    def extract_piped_plain_multilines(first_line_index)
+      lines = []
+
+      cur_line = @original_haml_lines[first_line_index].rstrip
+      cur_line_index = first_line_index
+
+      # The pipes must also be on the last line of the multi-line section
+      while cur_line && process_plain_multiline!(cur_line)
+        lines << cur_line
+        cur_line_index += 1
+        cur_line = @original_haml_lines[cur_line_index].rstrip
+      end
+
+      if lines.empty?
+        lines << cur_line
+      end
+      lines
     end
 
     # Tag attributes actually handle multiline differently than scripts.
