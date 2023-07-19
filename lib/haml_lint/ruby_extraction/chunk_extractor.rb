@@ -447,7 +447,7 @@ module HamlLint::RubyExtraction
 
     def process_plain_multiline!(line)
       if line&.end_with?(' |')
-        line.chop!.rstrip!
+        line[-2..] = ''
         true
       else
         false

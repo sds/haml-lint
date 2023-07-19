@@ -698,6 +698,20 @@ Lorem Ipsum
 Dolor #{foo(bar: 123)} Sit Amet
 Consectetur Adipiscing
 
+!!! doesn't fix plain's interpolations that is spread on multiple lines using pipes with many spaces before the pipes
+!# Basically impossible to correct this cleanly, but at least don't fail.
+Dolor #{foo(:bar =>        |
+  123)} Sit Amet           |
+---
+haml_lint_interpolation_1
+HL.out = foo(:bar => 123)
+---
+haml_lint_interpolation_1
+HL.out = foo(bar: 123)
+---
+Dolor #{foo(:bar =>        |
+  123)} Sit Amet           |
+
 !!! doesn't fix plain's interpolations that is spread on multiple lines using pipes
 !# Basically impossible to correct this cleanly, but at least don't fail.
 Dolor #{foo(:bar => |
@@ -890,6 +904,28 @@ end
 ---
 %tag Dolor #{foo(:bar => |
   123)} Sit Amet |
+
+!!! doesn't fix tag's interpolations that is spread on multiple lines using pipes, with many spaces before the pipes
+!# Basically impossible to correct this cleanly, but at least don't fail.
+%tag Dolor #{foo(:bar =>           |
+  123)} Sit Amet              |
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo(:bar => 123)
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo(bar: 123)
+ensure
+  HL.noop
+end
+---
+%tag Dolor #{foo(:bar =>           |
+  123)} Sit Amet              |
 
 !!! doesn't fix plain's interpolations that is spread on multiple lines using pipes, keeping a space between the parts
 !# Basically impossible to correct this cleanly, but at least don't fail.
