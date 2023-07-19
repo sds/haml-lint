@@ -869,6 +869,50 @@ end
 ---
 %tag hello #{foo(bar: 123)} world
 
+!!! doesn't fix tag's interpolations that is spread on multiple lines using pipes
+!# Basically impossible to correct this cleanly, but at least don't fail.
+%tag Dolor #{foo(:bar => |
+  123)} Sit Amet |
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo(:bar => 123)
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo(bar: 123)
+ensure
+  HL.noop
+end
+---
+%tag Dolor #{foo(:bar => |
+  123)} Sit Amet |
+
+!!! doesn't fix plain's interpolations that is spread on multiple lines using pipes, keeping a space between the parts
+!# Basically impossible to correct this cleanly, but at least don't fail.
+%tag Dolor #{foo |
+bar} Sit Amet |
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo bar
+ensure
+  HL.noop
+end
+---
+begin
+  haml_lint_tag_2
+  HL.out = foo bar
+ensure
+  HL.noop
+end
+---
+%tag Dolor #{foo |
+bar} Sit Amet |
+
 !!! fixes plain's interpolation in the middle of line that started with ==
 !# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
 == Lorem #{foo(:bar =>  123)} Ipsum

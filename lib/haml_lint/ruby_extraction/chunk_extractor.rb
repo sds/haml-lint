@@ -328,9 +328,16 @@ module HamlLint::RubyExtraction
         # ex: %tag hello #{world}
         # Sadly, the text with interpolation is escaped from the original, but this code
         # needs the original.
-        interpolation_original = @document.unescape_interpolation_to_original_cache[node.script]
 
+        interpolation_original = @document.unescape_interpolation_to_original_cache[node.script]
         line_start_index = @original_haml_lines[node.line - 1].rindex(interpolation_original)
+        if line_start_index.nil?
+          raw_lines = extract_piped_plain_multilines(node.line - 1)
+          equivalent_haml_code = "#{raw_lines.first} #{raw_lines[1..].map(&:lstrip).join(' ')}"
+          line_start_index = equivalent_haml_code.rindex(interpolation_original)
+
+          interpolation_original = raw_lines.join("\n")
+        end
         add_interpolation_chunks(node, interpolation_original, node.line - 1,
                                  line_start_index: line_start_index, indent: indent)
       else
