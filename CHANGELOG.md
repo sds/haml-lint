@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+# 0.49.1
+
+* Fix handling of multiline within interpolation to not crash for auto-correct
+
 # 0.49.0
 
 * Add `TrailingEmptyLines` linter
