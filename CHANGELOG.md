@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Fix handling of interpolation of plain when the plain is spread over multiple lines using pipes
+
 # 0.49.1
 
 * Fix handling of multiline within interpolation to not crash for auto-correct

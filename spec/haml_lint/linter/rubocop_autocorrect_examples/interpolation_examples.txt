@@ -698,6 +698,37 @@ Lorem Ipsum
 Dolor #{foo(bar: 123)} Sit Amet
 Consectetur Adipiscing
 
+!!! fixes plain interpolations on lines that use a pipe
+fn_call(#{foo( bar )}, |
+        #{2}, |
+        { a: #{ 3 } }); |
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo( bar )
+haml_lint_marker_4
+haml_lint_marker_5 $$2
+HL.out = 2
+haml_lint_marker_7
+haml_lint_marker_8 $$3
+HL.out =  3<%= " " %>
+haml_lint_marker_10
+---
+haml_lint_interpolation_1
+haml_lint_marker_2
+HL.out = foo(bar)
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = 2
+haml_lint_marker_7
+haml_lint_marker_8
+HL.out = 3
+haml_lint_marker_10
+---
+fn_call(#{foo(bar)}, |
+        #{2}, |
+        { a: #{3} }); |
+
 !!! doesn't fix plain's interpolations that is spread on multiple lines using pipes with many spaces before the pipes
 !# Basically impossible to correct this cleanly, but at least don't fail.
 Dolor #{foo(:bar =>        |
