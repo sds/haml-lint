@@ -1,28 +1,30 @@
 # HAML-Lint Changelog
 
+### 0.49.2
+
 * Fix handling of interpolation of plain when the plain is spread over multiple lines using pipes
 
-# 0.49.1
+### 0.49.1
 
 * Fix handling of multiline within interpolation to not crash for auto-correct
 
-# 0.49.0
+### 0.49.0
 
 * Add `TrailingEmptyLines` linter
 * Omit warning output for Ruby parser patch version discrepancies
 
-# 0.48.0
+### 0.48.0
 
 * Fix `Marshal.dump` error when using `--parallel` option and `RepeatedId` Linter
 * Improved support for multiline code with RuboCop linting/auto-correction
 * Fix handling of ==, !, &, !=, &=, !==, &==
 
-# 0.47.0
+### 0.47.0
 
 * Bugfixes related to experimental auto-correct with RuboCop
 * Fix `Marshal.dump` errors when using `--parallel` option
 
-## 0.46.0
+### 0.46.0
 
 * Add ERB pre-processing for configuration files
 * Add experimental auto-correct using RuboCop feature
@@ -93,33 +95,33 @@
 
 * Update ignored cops to support cop renames introduced by RuboCop 0.79.0
 
-## 0.34.1
+### 0.34.1
 
 * Update ignored cops to support cop renames introduced by RuboCop 0.77.0
 
-## 0.34.0
+### 0.34.0
 
 * [#313](https://github.com/sds/haml-lint/pull/313) Remove explicit dependency on Rake, making it optional as it's only need for the Rake integration
 
-## 0.33.0
+### 0.33.0
 
 * [#312](https://github.com/sds/haml-lint/pull/312) - Fix handling of `haml-lint:disable` directives in some cases
 
-## 0.32.0
+### 0.32.0
 
 * [#305](https://github.com/sds/haml-lint/pull/305) - Support HAML 5.1
 * [#309](https://github.com/sds/haml-lint/pull/309) - Ignore `Layout/CaseIndentation` RuboCop cop by default
 
-## 0.31.0
+### 0.31.0
 
 * Allow HAML Lint spec helpers to be loaded with `require` in other projects
 
-## 0.30.0
+### 0.30.0
 
 * Drop support for HAML 4.1 beta
 * Fix broken Rake task regression introduced in 0.28.0
 
-## 0.29.0
+### 0.29.0
 
 * Fix `--auto-gen-config` to allow running with an existing configuration file
 * Fix `config` option for the Rake task to not be ignored
@@ -129,7 +131,7 @@
 * Allow `ViewLength` linter to be disabled inline
 * Allow comment banners in `LeadingCommentSpace` linter
 
-## 0.28.0
+### 0.28.0
 
 * Fix `ClassAttributeWithStaticValue` to gracefully handle certain malformed
   attributes
@@ -137,7 +139,7 @@
 * Drop support for Ruby 2.1
 * Fix passing absolute filenames ignoring relative path excludes config
 
-## 0.27.0
+### 0.27.0
 
 * Respect severity levels of RuboCop cops in reported lints
 * Fix `--fail-level` and `--fail-fast` to work when specified together
@@ -148,7 +150,7 @@
 * Require RuboCop 0.50.0 or newer
 * Drop support for Ruby 2.0 since RuboCop dropped support (Ruby 2.1+ is still supported)
 
-## 0.26.0
+### 0.26.0
 
 * Add support for RuboCop 0.49.0+
 * Require RuboCop 0.49.0+ due to breaking upstream change
@@ -157,45 +159,45 @@
 * Fix `UnnecessaryInterpolation` linter for two-character variables
 * Add `ViewLength` linter for checking whether a view has too many lines in it.
 
-## 0.25.1
+### 0.25.1
 
 * Fix error on nodes with attributes assigned dynamically (#232)
 
-## 0.25.0
+### 0.25.0
 
 * Add `max_consecutive` option to `ConsecutiveComments` linter
 * Fix `TrailingWhitespace` linter to report correct line for multiline nodes
 * Add `InlineStyles` linter to check for use of the `style` attribute
 * Add support for Haml 5.0.0+
 
-## 0.24.0
+### 0.24.0
 
 * Add new Indentation linter
 * Add `--auto-gen-config` to generate a "todo-list" of offenses to fix
 * Add `inherits_from` to configuration to allow reusability
 * Prevent crashing when unexpected syntax is discovered
 
-## 0.23.2
+### 0.23.2
 
 * Handle different line endings in files
 * Report real line number with lint for LineLength
 
 * Ensure RepeatedId linter resets between files
 
-## 0.23.1
+### 0.23.1
 
 * Ensure RepeatedId linter resets between files
 
-## 0.23.0
+### 0.23.0
 
 * Fix issue with running haml-lint on empty files
 * Keep empty lines within Ruby filters
 
-## 0.22.1
+### 0.22.1
 
 * Include `json` amongst list produced by `--show-reporters`
 
-## 0.22.0
+### 0.22.0
 
 * Allow linters to be toggled with inline comments
 * Add new `progress` reporter
@@ -208,45 +210,45 @@
 * Add new `IdNames` linter, checking format of `#id-strings`
 * Add support for Haml 5
 
-## 0.21.0
+### 0.21.0
 
 * Stop using temp files for RuboCop (#172)
 
-## 0.20.0
+### 0.20.0
 
 * Update minimum RuboCop version to 0.47.0+ due to [breaking change in
   RuboCop AST interface](https://github.com/rubocop-hq/rubocop/commit/48f1637eb36)
 
-## 0.19.0
+### 0.19.0
 
 * Relax `rake` gem constraint to allow 12.x
 
-## 0.18.5
+### 0.18.5
 
 * Fix `SpaceBeforeScript` to not error on tags with inline scripts spanning
   multiple lines with indented vertical pipes
 * Disable `Style/EndOfLine` RuboCop cop by default
 
-## 0.18.4
+### 0.18.4
 
 * Fix `ClassesBeforeIds` output format to handle `id` EnforcedStyle option better
 * Add `report_lint` RSpec matcher to test lint message
 
-## 0.18.3
+### 0.18.3
 
 * Disable `Metrics/BlockLength` cop in `RuboCop` linter
 
-## 0.18.2
+### 0.18.2
 
 * Fix `Checkstyle` output format to handle lints with no associated linter
 * Ignore comments in `SpaceBeforeScript` linter
 
-## 0.18.1
+### 0.18.1
 
 * Fix handling of multiline HAML comments to not pass invalid Ruby code to
   RuboCop
 
-## 0.18.0
+### 0.18.0
 
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
 * Include linter name in JSON reporter output
@@ -254,27 +256,27 @@
 * Respect HAML comments as Ruby code comments so RuboCop cops can be
   disabled/enabled inline via comments
 
-## 0.17.1
+### 0.17.1
 
 * Fix `Checkstyle` output format to properly quote characters in messages
 
-## 0.17.0
+### 0.17.0
 
 * Add `Checkstyle` output format
 * Add `EmptyObjectReference` linter to report tags with empty object references
 
-## 0.16.2
+### 0.16.2
 
 * Fix `UnnecessaryStringOutput` to not erroneously warn on lines with equal
   signs in the middle of the line
 * Fix `skip_frontmatter` option to preserve line numbers
 
-## 0.16.1
+### 0.16.1
 
 * Fix `RuboCop` linter to ignore `ElseAlignment` and
   `FrozenStringLiteralComment` cops by default
 
-## 0.16.0
+### 0.16.0
 
 * Fix `MultilineScript` to not erroneously report `begin`/`rescue` blocks
 * Fix `ClassAttributeWithStaticValue` to not erroneously report `class`
@@ -284,11 +286,11 @@
 * Fix `RuboCop` linter to not erroneously report
   `Style/IdenticalConditionalBranches` warnings
 
-## 0.15.2
+### 0.15.2
 
 * Assume UTF-8 as the default encoding for all linted files
 
-## 0.15.1
+### 0.15.1
 
 * Fix `RuboCop` linter to properly parse files containing anonymous blocks with
   trailing comments
@@ -296,7 +298,7 @@
 * Fix `RuboCop` linter to not report erroneous `Style/Next` warnings for `if`
   statements in `do` blocks
 
-## 0.15.0
+### 0.15.0
 
 * Improve bug reporting instructions in error message
 * Add `Indentation` linter to enforce that spaces or tabs are used for
@@ -307,12 +309,12 @@
 * Add verbose version flag `-V/--verbose-version` to display `haml` and `ruby`
   version information in addition to output of `-v/--version` flag
 
-## 0.14.1
+### 0.14.1
 
 * Fix bug in `UnnecessaryStringOutput` where false positives would still be
   reported for literal strings with interpolation
 
-## 0.14.0
+### 0.14.0
 
 * Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
 * Fix false positives in `UnnecessaryStringOutput` for strings starting with
@@ -322,12 +324,12 @@
 * Fix `RuboCop` to report correct lines for cops reported on interpolated Ruby
   code in filters
 
-## 0.13.0
+### 0.13.0
 
 * Rename `haml-lint` gem to `haml_lint` to follow RubyGems [conventions for
   naming gems](http://guides.rubygems.org/name-your-gem/)
 
-## 0.12.0
+### 0.12.0
 
 * Fix non-visible line number on light-colored terminal backgrounds
 * Allow files without `.haml` extension to be linted when explicitly specified
@@ -342,7 +344,7 @@
 * Fix `UnnecessaryStringOutput` to not report warnings for strings with methods
   called on them
 
-## 0.11.0
+### 0.11.0
 
 * Fix `SpaceInsideHashAttributes` not reporting lints for implicit div tags
 * Fix `RuboCop` from incorrectly reporting `Style/AsciiComments` cops for
@@ -353,7 +355,7 @@
   [README](README.md/#rake-integration) for details)
 * Add `--[no-]color` flags allowing colored output to be explicitly set
 
-## 0.10.0
+### 0.10.0
 
 * Fix bug where hash attributes consisting only of strings/symbols written in
   hashrocket style were not being passed to RuboCop
@@ -365,7 +367,7 @@
 * Fix `LeadingCommentSpace` to not report lints on comments with multiple
   leading spaces
 
-## 0.9.0
+### 0.9.0
 
 * Fix bug in `LeadingCommentSpace` where empty comment lines would incorrectly
   report lints.
@@ -375,7 +377,7 @@
   reported for HAML code with `if`/`else` statements
 * Fix bug where RuboCop's `Style/SymbolProc` cop would incorrectly be reported
 
-## 0.8.0
+### 0.8.0
 
 * Fix bug in `ConsecutiveSilentScripts` where control statements with nested
   HAML would incorrectly be reported as silent scripts
@@ -389,7 +391,7 @@
 * Fix bug where `ObjectReferenceAttributes` would incorrectly report a bug for
   all tags when using `haml` 4.1.0.beta.1
 
-## 0.7.0
+### 0.7.0
 
 * New lint `UnnecessaryInterpolation` checks for interpolation in inline
   tag content that can be written more concisely as just the expression
@@ -422,14 +424,14 @@
 * New lint `ClassAttributeWithStaticValue` checks for assigning static values
   for class attributes in dynamic hashes
 
-## 0.6.1
+### 0.6.1
 
 * Add rake task integration
 * Fix broken `--help` switch
 * Silence `LineLength` RuboCop check
 * Upgrade Rubocop dependency to >= 0.25.0
 
-## 0.6.0
+### 0.6.0
 
 * Fix crash when reporting a lint from Rubocop that did not include a line
   number
@@ -442,25 +444,25 @@
   each line in a file is no greater than some maximum amount (80 by default)
 * Gracefully handle invalid file paths and return semantic error code
 
-## 0.5.2
+### 0.5.2
 
 * Use >= 0.23.0 for RuboCop dependency
 
-## 0.5.1
+### 0.5.1
 
 * Ignore the `Next` Rubocop cop
 * Fix crash when reporting a lint inside string interpolation in a filter
 
-## 0.5.0
+### 0.5.0
 
 * Ignore the `FileName` Rubocop cop
 * Fix loading correct .rubocop.yml config
 
-## 0.4.1
+### 0.4.1
 
 * Relax HAML dependency from `4.0.3` to `4.0`+
 
-## 0.4.0
+### 0.4.0
 
 * Upgrade `rubocop` dependency from `0.15.0` to `0.16.0`
 * Fix broken `--show-linters` flag
@@ -468,7 +470,7 @@
 * Fix bug where `SpaceBeforeScript` linter would incorrectly report lints when
   the same substring appeared on a line underneath a tag with inline script
 
-## 0.3.0
+### 0.3.0
 
 * Fix bug in `ScriptExtractor` where incorrect indentation would be generated
   for `:ruby` filters containing code with block keywords
@@ -476,7 +478,7 @@
   level for lint (`E` and `W`, respectively).
 * Upgrade `rubocop` dependency to `0.15.0`
 
-## 0.2.0
+### 0.2.0
 
 * New lint `ImplicitDiv` `%div`s which are unnecessary due to a class or ID
   specified on the tag
@@ -485,7 +487,7 @@
 * New lint `MultilinePipe` ensures the pipe `|` character is never used for
   wrapping lines
 
-## 0.1.0
+### 0.1.0
 
 * New lint `SpaceBeforeScript` ensures that Ruby code in HAML indicated with the
   `-` and `=` characters always has one space separating them from code
