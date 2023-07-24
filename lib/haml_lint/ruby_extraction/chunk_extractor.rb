@@ -394,7 +394,7 @@ module HamlLint::RubyExtraction
 
     # Adds chunks for the interpolation within the given code
     def add_interpolation_chunks(node, code, haml_line_index, indent:, line_start_index: 0)
-      HamlLint::Utils.handle_interpolation_with_indexes(code) do |scanner, line_index, char_index|
+      HamlLint::Utils.handle_interpolation_with_indexes(code) do |scanner, line_index, line_char_index|
         escapes = scanner[2].size
         next if escapes.odd?
         char = scanner[3] # '{', '@' or '$'
@@ -403,14 +403,16 @@ module HamlLint::RubyExtraction
           next
         end
 
-        start_char_index = char_index
-        start_char_index += line_start_index if line_index == 0
+        line_start_char_index = line_char_index
+        line_start_char_index += line_start_index if line_index == 0
+        code_start_char_index = scanner.charpos
 
-        Haml::Util.balance(scanner, '{', '}', 1)[0][0...-1]
+        # This moves the scanner
+        Haml::Util.balance(scanner, '{', '}', 1)
 
         # Need to manually get the code now that we have positions so that all whitespace is present,
         # because Haml::Util.balance does a strip...
-        interpolated_code = code[char_index...scanner.charpos - 1]
+        interpolated_code = code[code_start_char_index...scanner.charpos - 1]
 
         if interpolated_code.include?("\n")
           # We can't correct multiline interpolation.
@@ -430,7 +432,7 @@ module HamlLint::RubyExtraction
           interpolated_code = "#{' ' * indent}#{script_output_prefix}#{interpolated_code}"
           @ruby_chunks << InterpolationChunk.new(node, [interpolated_code],
                                                  haml_line_index: haml_line_index + line_index,
-                                                 start_char_index: start_char_index,
+                                                 start_char_index: line_start_char_index,
                                                  end_marker_indent: indent)
         end
       end
