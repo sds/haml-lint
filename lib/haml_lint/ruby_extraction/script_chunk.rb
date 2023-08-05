@@ -107,20 +107,22 @@ module HamlLint::RubyExtraction
       statement_start_line_indexes = find_statement_start_line_indexes(to_ruby_lines)
 
       continued_line_indent_delta = 2
+      continued_line_min_indent = 2
 
       cur_line_start_index = nil
       line_start_indexes_that_need_pipes = []
       haml_output_prefix = first_output_haml_prefix
-      to_haml_lines = to_ruby_lines.map.with_index do |line, i|
+      to_haml_lines = to_ruby_lines.map.with_index do |line, i| # rubocop:disable Metrics/BlockLength
         if line !~ /\S/
           # whitespace or empty lines, we don't want any indentation
           ''
         elsif statement_start_line_indexes.include?(i)
           cur_line_start_index = i
           code_start = line.index(/\S/)
+          continued_line_min_indent = code_start + 2
           if line[code_start..].start_with?(script_output_ruby_prefix)
             line = line.sub(script_output_ruby_prefix, '')
-            # The line may have been too indented because of the "HL.out = " prefix
+            # The next lines may have been too indented because of the "HL.out = " prefix
             continued_line_indent_delta = 2 - script_output_ruby_prefix.size
             new_line = "#{line[0...code_start]}#{haml_output_prefix} #{line[code_start..]}"
             haml_output_prefix = '='
@@ -134,7 +136,12 @@ module HamlLint::RubyExtraction
             line_start_indexes_that_need_pipes << cur_line_start_index
           end
 
-          HamlLint::Utils.indent(line, continued_line_indent_delta)
+          line = HamlLint::Utils.indent(line, continued_line_indent_delta)
+          cur_indent = line[/^ */].size
+          if cur_indent < continued_line_min_indent
+            line = HamlLint::Utils.indent(line, continued_line_min_indent - cur_indent)
+          end
+          line
         end
       end
 
