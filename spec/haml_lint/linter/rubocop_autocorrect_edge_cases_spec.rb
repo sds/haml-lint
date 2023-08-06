@@ -179,6 +179,96 @@ describe HamlLint::Linter::RuboCop do
       end
     end
 
-    # TO TEST: %tag #{expression}
+    context 'correct multiline brace layout of new_line with right indentation in silent script' do
+      let(:config) do
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        @config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write(<<~CONF)
+            Style/MultilineHashBraceLayout:
+              Enabled: true
+              EnforcedStyle: new_line
+
+            Style/TrailingCommaInHashLiteral:
+              EnforcedStyleForMultiline: consistent_comma
+          CONF
+          f.close
+        end
+        super().merge('config_file' => @config_file.path)
+      end
+
+      let(:start_haml) { <<~HAML }
+        %tag
+          - a = render 'something',
+                   locals: {foo: bar,
+                            spam: 'more',}
+      HAML
+
+      let(:end_haml) { <<~HAML }
+        %tag
+          - a = render 'something',
+                       locals: { foo: bar,
+                                 spam: 'more',
+            }
+      HAML
+
+      it do
+        subject.run_or_raise(document, autocorrect: autocorrect)
+
+        matcher = eq(end_haml)
+        document.source.should(
+          matcher,
+          -> { "Final HAML is different from expected. #{matcher.failure_message}\n#{format_lints}" }
+        )
+
+        haml_different = start_haml != end_haml
+        document.source_was_changed.should == haml_different
+      end
+    end
+
+    context 'correct multiline brace layout of new_line with right indentation in outputting script' do
+      let(:config) do
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        @config_file = Tempfile.new(%w[my-rubo-cop.yml]).tap do |f|
+          f.write(<<~CONF)
+            Style/MultilineHashBraceLayout:
+              Enabled: true
+              EnforcedStyle: new_line
+
+            Style/TrailingCommaInHashLiteral:
+              EnforcedStyleForMultiline: consistent_comma
+          CONF
+          f.close
+        end
+        super().merge('config_file' => @config_file.path)
+      end
+
+      let(:start_haml) { <<~HAML }
+        %tag
+          = render 'something',
+                   locals: {foo: bar,
+                            spam: 'more',}
+      HAML
+
+      let(:end_haml) { <<~HAML }
+        %tag
+          = render 'something',
+                   locals: { foo: bar,
+                             spam: 'more',
+            }
+      HAML
+
+      it do
+        subject.run_or_raise(document, autocorrect: autocorrect)
+
+        matcher = eq(end_haml)
+        document.source.should(
+          matcher,
+          -> { "Final HAML is different from expected. #{matcher.failure_message}\n#{format_lints}" }
+        )
+
+        haml_different = start_haml != end_haml
+        document.source_was_changed.should == haml_different
+      end
+    end
   end
 end

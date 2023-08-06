@@ -1,5 +1,8 @@
 # HAML-Lint Changelog
 
+* Fix some cases where part of multiline scripts could end up less indented than the
+  starting line of that script.
+
 ### 0.49.2
 
 * Fix handling of interpolation of plain when the plain is spread over multiple lines using pipes
