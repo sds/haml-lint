@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+### 0.49.3
+
 * Fix some cases where part of multiline scripts could end up less indented than the
   starting line of that script.
 
