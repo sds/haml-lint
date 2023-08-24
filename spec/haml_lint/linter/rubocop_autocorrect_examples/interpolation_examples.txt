@@ -1160,3 +1160,23 @@ ensure
 end
 ---
 %tag&== hello #{foo(bar: 123)} world
+
+
+!!! fixes non-ruby filter's interpolations that has unusual escape sequence gfds
+:filter
+  Dolor #{foo(:bar =>  123)} and a unusual escape \. that is acceptable in a filter
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Dolor #{foo(:bar =>  123)} and a unusual escape \. that is acceptable in a filter$$$2
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+haml_lint_marker_1
+HL.out = <<~HAML_LINT_FILTER
+  Dolor #{foo(bar: 123)} and a unusual escape \. that is acceptable in a filter
+HAML_LINT_FILTER
+haml_lint_marker_5
+---
+:filter
+  Dolor #{foo(bar: 123)} and a unusual escape \. that is acceptable in a filter

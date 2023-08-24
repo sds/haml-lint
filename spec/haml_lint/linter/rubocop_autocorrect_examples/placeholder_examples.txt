@@ -80,3 +80,15 @@ haml_lint_plain_1
 haml_lint_plain_1
 ---
 &== Lorem Ipsum
+
+
+!!! Has a placeholder for filter with no interpolation and a string escape
+:filter
+  Lorem Ipsum \. doesn't need the backslash
+---
+haml_lint_filter_1
+---
+haml_lint_filter_1
+---
+:filter
+  Lorem Ipsum \. doesn't need the backslash

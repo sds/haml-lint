@@ -122,6 +122,15 @@ Style/FrozenStringLiteralComment:
 Style/IfUnlessModifier:
   AutoCorrect: false
 
+<% if rubocop_version >= '1.37.0' %>
+# This new cop can trigger on the here-doc we use for filters that contain interpolation.
+# Ex:
+# :javascript
+#   hello #{world} \. bad escape
+Style/RedundantStringEscape:
+  Enabled: false
+<% end %>
+
 # In some case, this cop can cause a change in the spacing.
 # In HAML 5.2, going from (absurd example for clarity):
 #   = 'abc' rescue nil

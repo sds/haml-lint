@@ -1,2 +1,9 @@
 # Just an empty rubocop config so that examples are based on the default rubocop config
 # instead of this project's personal config
+
+# This new cop can trigger on the here-doc we use for filters that contain interpolation.
+# Activating it here, but it's also disabled in config/forced_rubocop_config.yml
+# Because this cop was added in '1.37.0', we can't enable it all the time for now, or tests will fail
+# So this is used to easily uncomment them when testing manually
+#Style/RedundantStringEscape:
+#  Enabled: true
