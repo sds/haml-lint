@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### 0.50.0
+
+* Update minimum Ruby version to 2.7+
+* Disable RuboCop's `Style/RedundantStringEscape` cop
+
 ### 0.49.3
 
 * Fix some cases where part of multiline scripts could end up less indented than the
