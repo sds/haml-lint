@@ -198,16 +198,16 @@ describe HamlLint::Linter::RuboCop do
 
       let(:start_haml) { <<~HAML }
         %tag
-          - a = render 'something',
+          - some_method 'something',
                    locals: {foo: bar,
                             spam: 'more',}
       HAML
 
       let(:end_haml) { <<~HAML }
         %tag
-          - a = render 'something',
-                       locals: { foo: bar,
-                                 spam: 'more',
+          - some_method 'something',
+                        locals: { foo: bar,
+                                  spam: 'more',
             }
       HAML
 
