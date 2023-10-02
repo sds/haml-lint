@@ -10,6 +10,6 @@ gem "overcommit", "0.60.0"
 gem "rubocop", "1.56.4"
 gem "simplecov", "~> 0.22.0"
 gem "simplecov-lcov", "~> 0.8.0"
-gem "haml", "~> 6.1.0"
+gem "haml", "~> 6.2.0"
 
 gemspec path: "../"
