@@ -483,22 +483,22 @@ haml_lint_marker_5
 
 !!! Handles a for loop
 - for value in list # rubocop:disable Style/For
-  = foo(:bar =>  123)
+  = foo(:bar =>  value)
 ---
 haml_lint_marker_1
 for value in list # rubocop:disable Style/For
-  HL.out = foo(:bar =>  123) $$2
+  HL.out = foo(:bar =>  value) $$2
 end
 haml_lint_marker_5
 ---
 haml_lint_marker_1
 for value in list # rubocop:disable Style/For
-  HL.out = foo(bar: 123)
+  HL.out = foo(bar: value)
 end
 haml_lint_marker_5
 ---
 - for value in list # rubocop:disable Style/For
-  = foo(bar: 123)
+  = foo(bar: value)
 
 
 !!! Handles a while loop
@@ -554,14 +554,14 @@ haml_lint_marker_7
 
 
 !!! multiline block using {} for lambda containing an if
-!# This is definetly weird... but it's valid Haml...
-- a = lambda {
+!# This is definitely weird... but it's valid Haml...
+- do_something {
 - if abc
   - something
 - }
 ---
 haml_lint_marker_1
-a = lambda {
+do_something {
 if abc $$2
   something $$3
 end
@@ -569,14 +569,14 @@ end
 haml_lint_marker_7
 ---
 haml_lint_marker_1
-a = lambda do
+do_something do
   if abc
     something
   end
 end
 haml_lint_marker_7
 ---
-- a = lambda do
+- do_something do
   - if abc
     - something
 
