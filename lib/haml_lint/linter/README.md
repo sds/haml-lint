@@ -281,7 +281,7 @@ preferred styles, `lisp_case` (default), `camel_case`, `pascal_case`, or
 #PascalCase
 ```
 
-**With `snake_case` style option: require ids in snake_case_format*
+**With `snake_case` style option: require ids in snake_case_format**
 ```haml
 #snake_case
 %div{ id: 'snake_case' }
