@@ -4,5 +4,4 @@
 require 'haml_lint'
 require 'haml_lint/cli'
 
-logger = HamlLint::Logger.new($stdout)
-exit HamlLint::CLI.new(logger).run(ARGV)
+exit HamlLint::CLI.new.run(ARGV)

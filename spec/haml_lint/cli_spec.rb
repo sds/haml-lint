@@ -38,6 +38,27 @@ describe HamlLint::CLI do
       end
     end
 
+    context 'when a logger is not passed' do
+      let(:logger) { nil }
+
+      it 'sets a default logger that writes to stdout' do
+        $stdout = StringIO.new
+        subject
+        expect(cli.send(:log).instance_variable_get(:'@out')).to eq($stdout)
+      end
+    end
+
+    context 'when passed the --stderr flag' do
+      let(:logger) { nil }
+      let(:args) { %w[--stderr] }
+
+      it 'sets a logger that writes to stderr' do
+        $stderr = StringIO.new
+        subject
+        expect(cli.send(:log).instance_variable_get(:'@out')).to eq($stderr)
+      end
+    end
+
     context 'when passed the --color flag' do
       let(:args) { ['--color'] }
 

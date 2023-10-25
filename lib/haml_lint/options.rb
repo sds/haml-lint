@@ -69,6 +69,10 @@ module HamlLint
         @options[:autocorrect_only] = true
         @options[:autocorrect] ||= :safe
       end
+
+      parser.on('--stderr', 'Write all output to stderr') do
+        @options[:stderr] = true
+      end
     end
 
     def add_report_options(parser)

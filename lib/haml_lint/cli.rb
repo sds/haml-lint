@@ -10,8 +10,8 @@ module HamlLint
   class CLI
     # Create a CLI that outputs to the specified logger.
     #
-    # @param logger [HamlLint::Logger]
-    def initialize(logger)
+    # @param logger [HamlLint::Logger, nil]
+    def initialize(logger = nil)
       @log = logger
     end
 
@@ -63,6 +63,7 @@ module HamlLint
     #
     # @return [void]
     def configure_logger(options)
+      @log ||= HamlLint::Logger.new(options[:stderr] ? $stderr : $stdout)
       log.color_enabled = options.fetch(:color, log.tty?)
       log.summary_enabled = options.fetch(:summary, true)
     end
