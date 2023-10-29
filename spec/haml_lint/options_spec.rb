@@ -157,6 +157,14 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with --stderr' do
+      let(:args) { %w[--stderr] }
+
+      it 'sets the stderr option to true' do
+        subject[:stderr].should == true
+      end
+    end
+
     context 'fail fast' do
       let(:args) { %w[--fail-fast] }
 

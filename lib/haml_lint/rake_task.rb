@@ -104,7 +104,7 @@ module HamlLint
     # @param task_args [Rake::TaskArguments]
     def run_cli(task_args)
       cli_args = parse_args
-      logger = quiet ? HamlLint::Logger.silent : HamlLint::Logger.new($stdout)
+      logger = quiet ? HamlLint::Logger.silent : nil
       result = HamlLint::CLI.new(logger).run(Array(cli_args) + files_to_lint(task_args))
 
       fail "#{HamlLint::APP_NAME} failed with exit code #{result}" unless result == 0
