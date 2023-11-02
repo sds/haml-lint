@@ -15,7 +15,7 @@ gem 'appraisal'
 gem 'overcommit', '0.60.0'
 
 # Pin tool versions (which are executed by Overcommit) for CI builds
-gem 'rubocop', '1.57.1'
+gem 'rubocop', '1.57.2'
 
 gem 'simplecov', '~> 0.22.0'
 gem 'simplecov-lcov', '~> 0.8.0'
