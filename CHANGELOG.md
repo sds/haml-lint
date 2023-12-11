@@ -1,8 +1,12 @@
 # HAML-Lint Changelog
 
+### main
+
+* Add Haml 6.3 compatibility
+
 ### 0.51.0
 
-* Allow HAML > 6.1
+* Allow Haml > 6.1
 
 ### 0.50.0
 
