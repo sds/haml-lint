@@ -46,7 +46,7 @@ module HamlLint
       # The Haml parser to adapt for HamlLint
       #
       # @api private
-      # @return [Haml::Parser] the Haml 4 parser
+      # @return [Haml::Parser] the Haml 5 parser
       attr_reader :parser
 
       # The Haml code to parse
