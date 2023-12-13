@@ -1,8 +1,10 @@
 # HAML-Lint Changelog
 
-### main
+### 0.52.0
 
 * Add Haml 6.3 compatibility
+* Add `--stderr` flag
+* Fix `node_for_line` helper to return last possible node when nothing matches
 
 ### 0.51.0
 
