@@ -75,4 +75,17 @@ describe HamlLint::Linter::LineLength do
 
     it { should_not report_lint }
   end
+
+  context 'when there is a directive before a long line that is a continued line' do
+    let(:haml) do
+      <<-HAML
+        -# haml-lint:disable LineLength
+        = link_to user,
+          class: some_unfortunately_very_extremely_definitely_over_90_characters_helper_method_with_even_more_characters
+        -# haml-lint:enable LineLength
+      HAML
+    end
+
+    it { should_not report_lint }
+  end
 end
