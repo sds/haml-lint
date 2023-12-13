@@ -2,7 +2,7 @@
 
 module HamlLint
   class Adapter
-    # Adapts the Haml::Parser from Haml 5 for use in HamlLint
+    # Adapts the Haml::Parser from Haml 6 for use in HamlLint
     # :reek:UncommunicativeModuleName
     class Haml6 < Adapter
       # Parses the specified Haml code into an abstract syntax tree
@@ -46,7 +46,7 @@ module HamlLint
       # The Haml parser to adapt for HamlLint
       #
       # @api private
-      # @return [Haml::Parser] the Haml 4 parser
+      # @return [Haml::Parser] the Haml 6 parser
       attr_reader :parser
 
       # The Haml code to parse
