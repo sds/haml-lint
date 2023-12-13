@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### main
+
+* Drop Haml 4 compatibility
+
 ### 0.52.0
 
 * Add Haml 6.3 compatibility
