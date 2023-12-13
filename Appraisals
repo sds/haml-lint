@@ -31,6 +31,10 @@ appraise 'haml6.2' do
   gem 'haml', '~> 6.2.0'
 end
 
+appraise 'haml6.3' do
+  gem 'haml', '~> 6.3.0'
+end
+
 appraise 'rubocop1.0' do
   gem 'rubocop', '~> 1.0.0'
 end
