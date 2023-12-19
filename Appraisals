@@ -3,10 +3,6 @@
 # After updating this file, run `bundle exec appraisal install` to update
 # dependency files.
 
-appraise 'haml4' do
-  gem 'haml', '~> 4'
-end
-
 appraise 'haml5.0' do
   gem 'haml', '~> 5.0.0'
 end
