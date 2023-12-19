@@ -462,22 +462,22 @@ haml_lint_marker_9
 
 
 !!! Handles an anonymous block with a trailing comment
-- list.each do |var, var2| # Some comment
+- list.each_key do |var| # Some comment
   = foo(:bar =>  123)
 ---
 haml_lint_marker_1
-list.each do |var, var2| # Some comment
+list.each_key do |var| # Some comment
   HL.out = foo(:bar =>  123) $$2
 end
 haml_lint_marker_5
 ---
 haml_lint_marker_1
-list.each do |_var, _var2| # Some comment
+list.each_key do |_var| # Some comment
   HL.out = foo(bar: 123)
 end
 haml_lint_marker_5
 ---
-- list.each do |_var, _var2| # Some comment
+- list.each_key do |_var| # Some comment
   = foo(bar: 123)
 
 
