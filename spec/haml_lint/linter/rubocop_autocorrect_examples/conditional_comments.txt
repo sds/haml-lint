@@ -1,0 +1,39 @@
+!!! Removes indentation of a conditional comment's content
+- if a
+  - if b
+    /[if mso]
+      %div
+---
+SKIP
+---
+SKIP
+---
+- if a && b
+  /[if mso]
+    %div
+
+
+!!! fixes a single-line script that is inside a conditional comment
+/[if mso]
+  ^ foo(:bar =>  123)
+---
+haml_lint_comment_1
+begin
+  haml_lint_marker_3 $$2
+  ^^foo(:bar =>  123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+haml_lint_comment_1
+begin
+  haml_lint_marker_3
+  ^^foo(bar: 123)
+  haml_lint_marker_5
+ensure
+  HL.noop
+end
+---
+/[if mso]
+  ^ foo(bar: 123)
