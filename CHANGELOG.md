@@ -1,8 +1,9 @@
 # HAML-Lint Changelog
 
-### main
+### 0.53.0
 
 * Drop Haml 4 compatibility
+* Add support for conditional comments in `RuboCop` linter
 
 ### 0.52.0
 
