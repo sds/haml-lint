@@ -6,5 +6,5 @@ module HamlLint
   APP_NAME = 'haml-lint'
 
   REPO_URL = 'https://github.com/sds/haml-lint'
-  BUG_REPORT_URL = "#{REPO_URL}/issues"
+  BUG_REPORT_URL = "#{REPO_URL}/issues".freeze
 end

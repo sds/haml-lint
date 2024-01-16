@@ -6,8 +6,8 @@ module HamlLint
     include LinterRegistry
 
     MSG = 'Placeholders attributes should not be used.'
-    HASH_REGEXP = /:?['"]?placeholder['"]?(?::| *=>)/.freeze
-    HTML_REGEXP = /placeholder=/.freeze
+    HASH_REGEXP = /:?['"]?placeholder['"]?(?::| *=>)/
+    HTML_REGEXP = /placeholder=/
 
     def visit_tag(node)
       return unless node.hash_attributes_source =~ HASH_REGEXP || node.html_attributes_source =~ HTML_REGEXP

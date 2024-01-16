@@ -11,7 +11,7 @@ module HamlLint
       tab: /^\t*(?! )/,
     }.freeze
 
-    LEADING_SPACES_REGEX = /^( +)(?! )/.freeze
+    LEADING_SPACES_REGEX = /^( +)(?! )/
 
     def visit_root(root)
       character = config['character'].to_sym

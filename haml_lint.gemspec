@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.files            = Dir['config/**.yml'] +
                        Dir['lib/**/*.rb']
 
-  s.required_ruby_version = '>= 2.7.0'
+  s.required_ruby_version = '>= 3.0'
 
   s.add_dependency 'haml', '>= 5.0'
   s.add_dependency 'parallel', '~> 1.10'

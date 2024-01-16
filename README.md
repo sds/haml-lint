@@ -33,8 +33,8 @@ your [SCM hooks](https://github.com/sds/overcommit).
 
 ## Requirements
 
- * Ruby 2.6+
- * HAML 4.0+
+ * Ruby 3+
+ * HAML 5.0+
 
 ## Installation
 
