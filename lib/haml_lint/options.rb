@@ -32,7 +32,7 @@ module HamlLint
 
     private
 
-    def add_linter_options(parser) # rubocop:disable Metrics/MethodLength
+    def add_linter_options(parser) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       parser.on('--auto-gen-config', 'Generate a configuration file acting as a TODO list') do
         @options[:auto_gen_config] = true
       end

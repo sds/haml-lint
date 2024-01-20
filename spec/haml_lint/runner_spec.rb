@@ -91,8 +91,6 @@ describe HamlLint::Runner do
         end
 
         context 'when errors are present' do
-
-
           it 'successfully reports those errors' do
             expect(subject.lints.first.message).to match(/Avoid defining `class` in attributes hash/)
           end
