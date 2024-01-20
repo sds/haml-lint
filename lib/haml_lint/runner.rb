@@ -27,6 +27,7 @@ module HamlLint
       @cache = {}
       @autocorrect = options[:autocorrect]
       @autocorrect_only = options[:autocorrect_only]
+      @autocorrect_stdout = options[:stdin] && options[:stderr]
 
       report(options)
     end
@@ -85,7 +86,9 @@ module HamlLint
     # @param config [HamlLint::Configuration]
     def collect_lints(source, linter_selector, config)
       begin
-        document = HamlLint::Document.new(source.contents, file: source.path, config: config)
+        document = HamlLint::Document.new source.contents, file: source.path,
+                                                           config: config,
+                                                           write_to_stdout: @autocorrect_stdout
       rescue HamlLint::Exceptions::ParseError => e
         return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), source.path,
                                    e.line, e.to_s, :error)]
@@ -133,12 +136,16 @@ module HamlLint
     # @param options [Hash]
     # @return [Array<HamlLint::Source>]
     def extract_applicable_sources(config, options)
-      included_patterns = options[:files]
-      excluded_patterns = config['exclude']
-      excluded_patterns += options.fetch(:excluded_files, [])
+      if options[:stdin]
+        [HamlLint::Source.new($stdin, options[:stdin])]
+      else
+        included_patterns = options[:files]
+        excluded_patterns = config['exclude']
+        excluded_patterns += options.fetch(:excluded_files, [])
 
-      HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns).map do |file_path|
-        HamlLint::Source.new File.new(file_path), file_path
+        HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns).map do |file_path|
+          HamlLint::Source.new File.new(file_path), file_path
+        end
       end
     end
 

@@ -14,6 +14,9 @@ module HamlLint
     # @return [String] Haml template file path
     attr_reader :file
 
+    # @return [true, false] Write source changes to stdout instead of disk
+    attr_reader :write_to_stdout
+
     # @return [HamlLint::Tree::Node] Root of the parse tree
     attr_reader :tree
 
@@ -40,6 +43,7 @@ module HamlLint
     def initialize(source, options)
       @config = options[:config]
       @file = options.fetch(:file, STRING_SOURCE)
+      @write_to_stdout = options[:write_to_stdout]
       @source_was_changed = false
       process_source(source)
     end
@@ -82,7 +86,11 @@ module HamlLint
       if file == STRING_SOURCE
         raise HamlLint::Exceptions::InvalidFilePath, 'Cannot write without :file option'
       end
-      File.write(file, unstrip_frontmatter(source))
+      if @write_to_stdout
+        $stdout << unstrip_frontmatter(source)
+      else
+        File.write(file, unstrip_frontmatter(source))
+      end
       @source_was_changed = false
     end
 

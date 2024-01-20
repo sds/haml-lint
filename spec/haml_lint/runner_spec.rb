@@ -167,5 +167,18 @@ describe HamlLint::Runner do
         end
       end
     end
+
+    context 'with the stdin option' do
+      let(:options) { base_options.merge(stdin: 'test.html.haml') }
+      let(:stdin) { +"= \"Single-quoted strings offense\".capitalize\n" }
+
+      before { $stdin.stub(:read).and_return(stdin) }
+
+      it 'lints input from stdin using the given file name' do
+        subject.lints.size.should == 1
+        subject.lints.first.filename.should == 'test.html.haml'
+        subject.lints.first.message.should match(/Prefer single-quoted strings/)
+      end
+    end
   end
 end
