@@ -70,7 +70,13 @@ module HamlLint
         @options[:autocorrect] ||= :safe
       end
 
-      parser.on('--stderr', 'Write all output to stderr') do
+      parser.on('-s', '--stdin FILE', 'Pipe source from STDIN, using FILE in ' \
+          'offense when combined with --auto-correct and --stdin.') do |file_path|
+        @options[:stdin] = file_path
+      end
+
+      parser.on('--stderr', 'Write all output to stderr except for the autocorrected source. ' \
+          'This is especially useful when combined with --auto-correct and --stdin') do
         @options[:stderr] = true
       end
     end

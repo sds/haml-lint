@@ -157,6 +157,22 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with -s' do
+      let(:args) { %w[-s path] }
+
+      it 'sets the stdin option to the given file path' do
+        subject[:stdin].should == 'path'
+      end
+    end
+
+    context 'with --stdin' do
+      let(:args) { %w[--stdin path] }
+
+      it 'sets the stdin option to the given file path' do
+        subject[:stdin].should == 'path'
+      end
+    end
+
     context 'with --stderr' do
       let(:args) { %w[--stderr] }
 
