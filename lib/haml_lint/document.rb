@@ -14,7 +14,7 @@ module HamlLint
     # @return [String] Haml template file path
     attr_reader :file
 
-    # @return [true, false] Write source changes to stdout instead of disk
+    # @return [Boolean] true if source changes (from autocorrect) should be written to stdout instead of disk
     attr_reader :write_to_stdout
 
     # @return [HamlLint::Tree::Node] Root of the parse tree
@@ -39,6 +39,7 @@ module HamlLint
     # @param source [String] Haml code to parse
     # @param options [Hash]
     # @option options :file [String] file name of document that was parsed
+    # @option options :write_to_stdout [Boolean] true if source changes should be written to stdout
     # @raise [Haml::Parser::Error] if there was a problem parsing the document
     def initialize(source, options)
       @config = options[:config]
