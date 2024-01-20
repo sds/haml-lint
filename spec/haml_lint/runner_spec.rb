@@ -178,5 +178,22 @@ describe HamlLint::Runner do
         subject.lints.first.message.should match(/Prefer single-quoted strings/)
       end
     end
+
+    context 'with the stdin option, stderr option and autocorrect option' do
+      let(:options) { base_options.merge(stdin: 'test.html.haml', stderr: true, autocorrect: :safe) }
+      let(:stdin) { +"= \"Single-quoted strings offense\".capitalize\n" }
+
+      before do
+        $stdin.stub(:read).and_return(stdin)
+        $stdout.stub(:write).and_return(nil)
+      end
+
+      it 'lints input from stdin using the given file name and writes autocorrect results to stdout' do
+        subject.lints.size.should == 1
+        subject.lints.first.filename.should == 'test.html.haml'
+        subject.lints.first.message.should match(/Prefer single-quoted strings/)
+        $stdout.should have_received(:write).with("= 'Single-quoted strings offense'.capitalize\n")
+      end
+    end
   end
 end
