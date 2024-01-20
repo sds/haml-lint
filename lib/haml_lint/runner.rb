@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'parallel'
+require_relative 'source'
 
 module HamlLint
   # Responsible for running the applicable linters against the desired files.
@@ -20,7 +21,7 @@ module HamlLint
     # @return [HamlLint::Report] a summary of all lints found
     def run(options = {})
       @config = load_applicable_config(options)
-      @files = extract_applicable_files(config, options)
+      @sources = extract_applicable_sources(config, options)
       @linter_selector = HamlLint::LinterSelector.new(config, options)
       @fail_fast = options.fetch(:fail_fast, false)
       @cache = {}
@@ -48,10 +49,10 @@ module HamlLint
     #   @return [true, false]
     alias fail_fast? fail_fast
 
-    # The list of files to lint during this run.
+    # The list of sources to lint during this run.
     #
-    # @return [Array<String>]
-    attr_reader :files
+    # @return [Array<HamlLint::Source>]
+    attr_reader :sources
 
     # The selector for which linters to run during this run.
     #
@@ -79,18 +80,18 @@ module HamlLint
     # Runs all provided linters using the specified config against the given
     # file.
     #
-    # @param file [String] path to file to lint
+    # @param source [HamlLint::Source] source to lint
     # @param linter_selector [HamlLint::LinterSelector]
     # @param config [HamlLint::Configuration]
-    def collect_lints(file, linter_selector, config)
+    def collect_lints(source, linter_selector, config)
       begin
-        document = HamlLint::Document.new(File.read(file), file: file, config: config)
+        document = HamlLint::Document.new(source.contents, file: source.path, config: config)
       rescue HamlLint::Exceptions::ParseError => e
-        return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), file,
+        return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), source.path,
                                    e.line, e.to_s, :error)]
       end
 
-      linters = linter_selector.linters_for_file(file)
+      linters = linter_selector.linters_for_file(source.path)
       lint_arrays = []
 
       if @autocorrect
@@ -125,40 +126,42 @@ module HamlLint
       lint_arrays
     end
 
-    # Returns the list of files that should be linted given the specified
+    # Returns the list of sources that should be linted given the specified
     # configuration and options.
     #
     # @param config [HamlLint::Configuration]
     # @param options [Hash]
-    # @return [Array<String>]
-    def extract_applicable_files(config, options)
+    # @return [Array<HamlLint::Source>]
+    def extract_applicable_sources(config, options)
       included_patterns = options[:files]
       excluded_patterns = config['exclude']
       excluded_patterns += options.fetch(:excluded_files, [])
 
-      HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns)
+      HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns).map do |file_path|
+        HamlLint::Source.new File.new(file_path), file_path
+      end
     end
 
-    # Process the files and add them to the given report.
+    # Process the sources and add them to the given report.
     #
     # @param report [HamlLint::Report]
     # @return [void]
-    def process_files(report)
-      files.each do |file|
-        process_file(file, report)
+    def process_sources(report)
+      sources.each do |source|
+        process_source(source, report)
         break if report.failed? && fail_fast?
       end
     end
 
     # Process a file and add it to the given report.
     #
-    # @param file [String] the name of the file to process
+    # @param source [HamlLint::Source] the source to process
     # @param report [HamlLint::Report]
     # @return [void]
-    def process_file(file, report)
-      lints = @cache[file] || collect_lints(file, linter_selector, config)
+    def process_source(source, report)
+      lints = @cache[source.path] || collect_lints(source, linter_selector, config)
       lints.each { |lint| report.add_lint(lint) }
-      report.finish_file(file, lints)
+      report.finish_file(source.path, lints)
     end
 
     # Generates a report based on the given options.
@@ -168,9 +171,9 @@ module HamlLint
     # @return [HamlLint::Report]
     def report(options)
       report = HamlLint::Report.new(reporter: options[:reporter], fail_level: options[:fail_level])
-      report.start(@files)
+      report.start(sources.map(&:path))
       warm_cache if options[:parallel]
-      process_files(report)
+      process_sources(report)
       report
     end
 
@@ -178,9 +181,9 @@ module HamlLint
     #
     # @return [void]
     def warm_cache
-      results = Parallel.map(files) do |file|
-        lints = collect_lints(file, linter_selector, config)
-        [file, lints]
+      results = Parallel.map(sources) do |source|
+        lints = collect_lints(source, linter_selector, config)
+        [source.path, lints]
       end
       @cache = results.to_h
     end

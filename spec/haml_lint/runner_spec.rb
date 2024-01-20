@@ -6,26 +6,23 @@ describe HamlLint::Runner do
   let(:reporter) { HamlLint::Reporter::HashReporter.new(StringIO.new) }
   let(:runner) { described_class.new }
 
-  before do
-    runner.stub(:extract_applicable_files).and_return(files)
-  end
-
   describe '#run' do
     subject { runner.run(options) }
 
     context 'general tests' do
-      let(:files) { %w[file1.slim file2.slim] }
+      let(:stubbed_sources) { %w[file1.slim file2.slim].map { |path| HamlLint::Source.new StringIO.new, path } }
 
       let(:options) do
         base_options.merge(reporter: reporter)
       end
 
       before do
+        runner.stub(:extract_applicable_sources).and_return(stubbed_sources)
         runner.stub(:collect_lints).and_return([])
       end
 
       it 'searches for lints in each file' do
-        runner.should_receive(:collect_lints).exactly(files.size).times
+        runner.should_receive(:collect_lints).exactly(stubbed_sources.size).times
         subject
       end
 
@@ -60,11 +57,12 @@ describe HamlLint::Runner do
 
       context 'when `exclude` global config option specifies a list of patterns' do
         let(:options) { base_options.merge(config: config, files: files) }
+        let(:files) { ['include-this-file.haml'] }
         let(:config) { HamlLint::Configuration.new(config_hash) }
         let(:config_hash) { { 'exclude' => 'exclude-this-file.slim' } }
 
         before do
-          runner.stub(:extract_applicable_files).and_call_original
+          runner.stub(:extract_applicable_sources).and_call_original
         end
 
         it 'passes the global exclude patterns to the FileFinder' do
@@ -77,7 +75,15 @@ describe HamlLint::Runner do
       end
 
       context 'when :parallel option is specified' do
-        let(:options) { base_options.merge(parallel: true) }
+        let(:options) { base_options.merge(parallel: true, files: %w[example.haml]) }
+
+        include_context 'isolated environment'
+
+        before do
+          runner.unstub(:extract_applicable_sources)
+          runner.unstub(:collect_lints)
+          `echo "%div{ class:    'foo' } hello" > example.haml`
+        end
 
         it 'warms up the cache in parallel' do
           runner.should_receive(:warm_cache).and_call_original
@@ -85,15 +91,9 @@ describe HamlLint::Runner do
         end
 
         context 'when errors are present' do
-          let(:files) { %w[example.haml] }
-          include_context 'isolated environment'
 
-          before do
-            `echo "%div{ class:    'foo' } hello" > example.haml`
-          end
 
           it 'successfully reports those errors' do
-            runner.unstub(:collect_lints)
             expect(subject.lints.first.message).to match(/Avoid defining `class` in attributes hash/)
           end
 
@@ -101,7 +101,6 @@ describe HamlLint::Runner do
             let(:options) { super().merge(autocorrect: :all) }
 
             it 'successfully fixes those errors' do
-              runner.unstub(:collect_lints)
               expect(subject.lints.detect(&:corrected).message).to match(/Unnecessary spacing detected./)
               expect(File.read('example.haml')).to eq("%div{ class: 'foo' } hello\n")
             end
@@ -110,13 +109,14 @@ describe HamlLint::Runner do
       end
 
       context 'when there is a Haml parsing error in a file' do
-        let(:files) { %w[inconsistent_indentation.haml] }
+        let(:options) { base_options.merge(parallel: true, files: %w[inconsistent_indentation.haml]) }
 
         include_context 'isolated environment'
 
         before do
           # The runner needs to actually look for files to lint
-          runner.should_receive(:collect_lints).and_call_original
+          runner.unstub(:extract_applicable_sources)
+          runner.unstub(:collect_lints)
           haml = "%div\n  %span Hello, world\n\t%span Goodnight, moon"
 
           `echo "#{haml}" > inconsistent_indentation.haml`
@@ -139,8 +139,9 @@ describe HamlLint::Runner do
 
     context 'integration tests' do
       context 'when the fail-fast option is specified with fail-level' do
-        let(:files) { %w[example.haml example2.haml] }
-        let(:options) { base_options.merge(fail_fast: fail_fast, fail_level: :error) }
+        let(:options) do
+          base_options.merge(fail_fast: fail_fast, fail_level: :error, files: %w[example.haml example2.haml])
+        end
 
         include_context 'isolated environment'
 
