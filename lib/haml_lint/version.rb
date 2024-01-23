@@ -2,5 +2,5 @@
 
 # Defines the gem version.
 module HamlLint
-  VERSION = '0.54.0'
+  VERSION = '0.55.0'
 end

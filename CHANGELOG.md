@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.55.0
+
+* Lazily open files to avoid file descriptor exhaustion
+
 ### 0.54.0
 
 * Drop support for Ruby 2.7, which reached [EoL](https://www.ruby-lang.org/en/downloads/branches/) in March 2023
