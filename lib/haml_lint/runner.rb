@@ -137,14 +137,14 @@ module HamlLint
     # @return [Array<HamlLint::Source>]
     def extract_applicable_sources(config, options)
       if options[:stdin]
-        [HamlLint::Source.new($stdin, options[:stdin])]
+        [HamlLint::Source.new(io: $stdin, path: options[:stdin])]
       else
         included_patterns = options[:files]
         excluded_patterns = config['exclude']
         excluded_patterns += options.fetch(:excluded_files, [])
 
         HamlLint::FileFinder.new(config).find(included_patterns, excluded_patterns).map do |file_path|
-          HamlLint::Source.new File.new(file_path), file_path
+          HamlLint::Source.new path: file_path
         end
       end
     end
