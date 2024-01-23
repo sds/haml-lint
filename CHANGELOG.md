@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### 0.54.0
+
+* Drop support for Ruby 2.7, which reached [EoL](https://www.ruby-lang.org/en/downloads/branches/) in March 2023
+* Add support for `--stdin`/`-s` flags for piping from standard input
+
 ### 0.53.0
 
 * Drop Haml 4 compatibility
