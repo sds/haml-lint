@@ -10,7 +10,9 @@ describe HamlLint::Runner do
     subject { runner.run(options) }
 
     context 'general tests' do
-      let(:stubbed_sources) { %w[file1.slim file2.slim].map { |path| HamlLint::Source.new StringIO.new, path } }
+      let(:stubbed_sources) do
+        %w[file1.slim file2.slim].map { |path| HamlLint::Source.new io: StringIO.new, path: path }
+      end
 
       let(:options) do
         base_options.merge(reporter: reporter)
