@@ -1,23 +1,15 @@
 !!! fixes tag's script
 %tag= foo(:bar =>  123)
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag= foo(bar: 123)
 
@@ -26,30 +18,22 @@ end
 %tag
   %tag= foo(:bar =>  123)
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin $$2
-    haml_lint_tag_4
-    haml_lint_marker_5
-    HL.out = foo(:bar =>  123)
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_6
 ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin
-    haml_lint_tag_4
-    haml_lint_marker_5
-    HL.out = foo(bar: 123)
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3
+  haml_lint_marker_4
+  HL.out = foo(bar: 123)
+  haml_lint_marker_6
 ensure
   HL.noop
 end
@@ -65,27 +49,19 @@ end
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin $$2
-    haml_lint_tag_5
-    haml_lint_marker_6
-    HL.out = foo(:bar =>  123)
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  HL.out = foo(:bar =>  123)
+  haml_lint_marker_7
 end
 ---
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin
-    haml_lint_tag_5
-    haml_lint_marker_6
-    HL.out = foo(bar: 123)
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4
+  haml_lint_marker_5
+  HL.out = foo(bar: 123)
+  haml_lint_marker_7
 end
 ---
 - deeper do
@@ -104,45 +80,29 @@ haml_lint_tag_1
 !!! fixes tag's script started with !=
 %tag!= foo(:bar =>  123)
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag!= foo(bar: 123)
 
 !!! fixes tag's script started with &=
 %tag&= foo(:bar =>  123)
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag&= foo(bar: 123)

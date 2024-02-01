@@ -277,8 +277,9 @@ module HamlLint
       $stdin = original_stdin
     end
 
-    def regexp_for_parts(parts, join_regexp)
+    def regexp_for_parts(parts, join_regexp, prefix: nil, suffix: nil)
       regexp_code = parts.map { |c| Regexp.quote(c) }.join(join_regexp)
+      regexp_code = "#{prefix}#{regexp_code}#{suffix}"
       Regexp.new(regexp_code)
     end
   end

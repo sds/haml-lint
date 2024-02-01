@@ -196,11 +196,11 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
             42#{' '}
           CODE
 
-          let(:expected_return) { [7, <<~RET.split("\n")] }
-            foo:
+          let(:expected_return) { [6, <<~RET.split("\n")] }
+            \ foo:
                 "bar",
                 spam:
-                42
+                42#{' '}
           RET
 
           it {

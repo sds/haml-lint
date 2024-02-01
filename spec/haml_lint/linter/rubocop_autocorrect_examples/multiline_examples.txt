@@ -6,8 +6,8 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar',
-       spam: 42 }
+%span{foo: 'bar',
+      spam: 42}
 
 !!! Multiline tag attributes using pipes only {% haml_version >= '5.2' %}
 !# Rubocop doesn't seem to do much here.. odd
@@ -18,8 +18,8 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo:
-   'bar', spam:  42 }
+%span{foo:
+   'bar', spam:  42}
 
 !!! Multiline tag attributes using pipes only {% haml_version < '5.2' %}
 !# Rubocop doesn't seem to do much here.. odd
@@ -41,8 +41,8 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar',
-       spam: 42 }
+%span{foo: 'bar',
+      spam: 42}
 
 !!! Multiline tag attributes with comma and pipe on same line leaves pipes if there is no change
 %span{ foo: 'bar', |
@@ -52,10 +52,10 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar', |
-       spam: 42 } |
+%span{foo: 'bar',
+      spam: 42}
 
-!!! Multiline tag attributes with comma and pipe on same line {% haml_version >= '5.2' %}
+!!! Multiline tag attributes with comma and pipe on same line {% haml_version >= '5.2' %} {% rubocop_version >= '1.30' %}
 !# Tag attributes has different rules and doesn't actually need pipes
 !# But for haml-lint, we put the pipes in the generated code for simplicity
 !# except when everything can be handled using commas
@@ -68,14 +68,14 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo:
+%span{foo:
   'bar',
-       spam:
-   42 }
+      spam:
+  42}
 
 !!! Multiline tag attributes with commas and a random useless pipe
 !# the pipe does basically nothing here...
-%span{ foo: 'bar',
+%span{foo: 'bar',
   hello: 123, |
   spam: 42 }
 ---
@@ -83,9 +83,9 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar',
-       hello: 123,
-       spam: 42 }
+%span{foo: 'bar',
+      hello: 123,
+      spam: 42}
 
 !!! Multiline tag attributes with comma then pipe within string is ignored (pipe not supported) {% haml_version >= '5.2' %} asdf
 %span{ foo: "bar",
@@ -96,22 +96,32 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo: 'bar',
-       spam: 'Text1
-  and more' }
+%span{foo: 'bar',
+      spam: 'Text1
+  and more'}
 
-!!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %}
+!!! Multiline tag attributes with comma then no marker is ignored (multiline without comma not supported) {% haml_version >= '5.2' %} {% rubocop_version >= '1.30' %}
 %span{ foo: "bar",
   spam:
    42}
 ---
-SKIP
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWW( foo: "bar",
+  spam: $$2
+   42) $$3
+haml_lint_marker_6
 ---
-SKIP
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWW(foo: 'bar',
+      spam:
+  42)
+haml_lint_marker_6
 ---
-%span{ foo: 'bar',
-       spam:
-   42}
+%span{foo: 'bar',
+      spam:
+  42}
 
 !!! Multiline tag attributes without marker {% haml_version >= '5.2' %}
 %span{ foo:
@@ -121,7 +131,7 @@ SKIP
 ---
 SKIP
 ---
-%span{ foo:
+%span{foo:
   'bar'}
 
 
@@ -162,7 +172,7 @@ SKIP
               'color: red;'
             else
               (bar ? 'color:#f28e02' : '')
-  end)}
+end)}
 
 !!! Multiline tag attributes with multiline if and a child {% haml_version >= '5.2' %}
 %h1{style: (if foo?
@@ -180,7 +190,7 @@ SKIP
               'color: red;'
             else
               (bar ? 'color:#f28e02' : '')
-  end)}
+end)}
   abc
 
 !!! Nested multiline tag with multiline if {% haml_version >= '5.2' %}
@@ -200,4 +210,4 @@ SKIP
                 'color: red;'
               else
                 (bar ? 'color:#f28e02' : '')
-    end)}
+  end)}
