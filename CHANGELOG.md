@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+### 0.56.0
+
 * Rubocop: Properly pass the whitespace around tag attributes to RuboCop. This allows some improved corrections and fixes bugs.
 
 ### 0.55.0
