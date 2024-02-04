@@ -228,7 +228,7 @@ end $$4
 def b $$5
   x $$6
 end $$7
-$$8
+ $$8
 # The empty-line above can mess with the merging logic $$9
 haml_lint_marker_10
 ---
@@ -261,8 +261,8 @@ haml_lint_marker_10
   :ruby
     foo(:bar =>  123)
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
   haml_lint_marker_3 $$3
   foo(:bar =>  123)
   haml_lint_marker_5
@@ -270,8 +270,8 @@ ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
   haml_lint_marker_3
   foo(bar: 123)
   haml_lint_marker_5

@@ -44,23 +44,15 @@ haml_lint_marker_4
 !# Those plain pass by a different place
 %tag ©#{foo(:bar =>  123)}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag ©#{foo(bar: 123)}
 
@@ -68,28 +60,20 @@ end
 !!! Multibyte char in tag attributes with tag script doesn't mess things up
 %tag{:abc => '©'}= foo(:bar =>  123)
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:abc => '©')
-  haml_lint_marker_5
-  haml_lint_marker_6
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_8
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:abc => '©')
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(:bar =>  123)
+haml_lint_marker_7
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(abc: '©')
-  haml_lint_marker_5
-  haml_lint_marker_6
-  HL.out = foo(bar: 123)
-  haml_lint_marker_8
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(abc: '©')
+haml_lint_marker_4
+haml_lint_marker_5
+HL.out = foo(bar: 123)
+haml_lint_marker_7
 ---
 %tag{abc: '©'}= foo(bar: 123)

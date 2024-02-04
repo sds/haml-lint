@@ -9,6 +9,8 @@ describe HamlLint::Linter::RuboCop do
       examples_from(path).each do |example|
         context "(#{file_name}:#{example.first_line_no}) #{example.name}" do
           let(:steps_string) { example.string }
+          let(:example_first_line_no) { example.first_line_no }
+          let(:example_path) { path }
 
           let(:options) { super().merge(file: path) }
 

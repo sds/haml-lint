@@ -1,23 +1,15 @@
 !!! fixes attribute hash
 %tag{:bar =>  123}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123)
+haml_lint_marker_4
 ---
 %tag{bar: 123}
 
@@ -27,23 +19,15 @@ end
 !# `node.dynamic_attributes_sources` returns nothing, but `node.dynamic_attributes_source[:hash]` has content.
 %tag{:bar =>  '123'}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  '123')
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  '123')
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(bar: '123')
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: '123')
+haml_lint_marker_4
 ---
 %tag{bar: '123'}
 
@@ -51,23 +35,15 @@ end
 !!! fixes multi-attributes hash
 %tag{:bar =>  123, 'string_key'  =>  code}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  123, 'string_key'  =>  code)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123, 'string_key'  =>  code)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar => 123, 'string_key' => code)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar => 123, 'string_key' => code)
+haml_lint_marker_4
 ---
 !# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
 %tag{:bar => 123, 'string_key' => code}
@@ -77,25 +53,17 @@ end
 %tag{'bar' =>  123,
      'string_key'  =>  code}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW('bar' =>  123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW('bar' =>  123,
      'string_key'  =>  code) $$2
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW('bar' => 123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW('bar' => 123,
      'string_key' => code)
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
 !# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
 %tag{'bar' => 123,
@@ -105,23 +73,15 @@ end
 !!! fixes a tag with colon-style attributes and classes and an id
 %tag.class_one.class_two#with_an_id{bar:  123, hello:'42'}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar:  123, hello:'42')
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar:  123, hello:'42')
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar: 123, hello: '42')
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW(bar: 123, hello: '42')
+haml_lint_marker_4
 ---
 %tag.class_one.class_two#with_an_id{bar: 123, hello: '42'}
 
@@ -129,23 +89,15 @@ end
 !!! fixes multi-attributes mixed-style hash
 %tag{:bar =>  123, hello:  42}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  123, hello:  42)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123, hello:  42)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(bar: 123, hello: 42)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123, hello: 42)
+haml_lint_marker_4
 ---
 !# Only the spacing gets fixed. Rubocop's default doesn't for colon-style when there are string keys
 %tag{bar: 123, hello: 42}
@@ -155,25 +107,17 @@ end
 %tag{:bar =>  123,
      :hello =>  42}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
      :hello =>  42) $$2
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(bar: 123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
      hello: 42)
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
 %tag{bar: 123,
      hello: 42}
@@ -182,25 +126,17 @@ end
 %tag{:bar =>  123,
         :hello =>  42}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(:bar =>  123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(:bar =>  123,
         :hello =>  42) $$2
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(bar: 123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(bar: 123,
      hello: 42)
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
 %tag{bar: 123,
      hello: 42}
@@ -210,25 +146,17 @@ end
 %tag-is-long{:bar =>  123,
   :hello =>  42}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WWWWWWWWWW(:bar =>  123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWW(:bar =>  123,
   :hello =>  42) $$2
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WWWWWWWWWW(bar: 123,
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWW(bar: 123,
              hello: 42)
-  haml_lint_marker_6
-ensure
-  HL.noop
-end
+haml_lint_marker_5
 ---
 %tag-is-long{bar: 123,
              hello: 42}
@@ -239,32 +167,24 @@ end
   %tag-is-long{:bar =>  123,
  :hello =>  42}
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin $$2
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WWWWWWWWWW(:bar =>  123,
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWWWWWWWWWW(:bar =>  123,
  :hello =>  42) $$3
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_marker_7
 ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WWWWWWWWWW(bar: 123,
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWWWWWWWWWW(bar: 123,
                hello: 42)
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_marker_7
 ensure
   HL.noop
 end
@@ -278,30 +198,22 @@ end
 %tag
   %tag{:bar =>  123, :hello =>  42}
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin $$2
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WW(:bar =>  123, :hello =>  42)
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWW(:bar =>  123, :hello =>  42)
+  haml_lint_marker_6
 ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WW(bar: 123, hello: 42)
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWW(bar: 123, hello: 42)
+  haml_lint_marker_6
 ensure
   HL.noop
 end
@@ -317,27 +229,19 @@ end
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin $$2
-    haml_lint_tag_5
-    haml_lint_marker_6
-    WW(:bar =>  123, :hello =>  42)
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  WWWW(:bar =>  123, :hello =>  42)
+  haml_lint_marker_7
 end
 ---
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin
-    haml_lint_tag_5
-    haml_lint_marker_6
-    WW(bar: 123, hello: 42)
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4
+  haml_lint_marker_5
+  WWWW(bar: 123, hello: 42)
+  haml_lint_marker_7
 end
 ---
 - deeper do
@@ -357,23 +261,15 @@ haml_lint_tag_1
 !!! fixes attribute methods
 %tag{foo(bar  , :hello =>  42)}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(foo(bar  , :hello =>  42))
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(bar  , :hello =>  42))
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  WW(foo(bar, hello: 42))
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+WWWW(foo(bar, hello: 42))
+haml_lint_marker_4
 ---
 %tag{foo(bar, hello: 42)}
 
@@ -382,30 +278,22 @@ end
 %tag
   %tag{foo(bar  , :hello =>  42)}
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin $$2
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WW(foo(bar  , :hello =>  42))
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3 $$2
+  haml_lint_marker_4
+  WWWW(foo(bar  , :hello =>  42))
+  haml_lint_marker_6
 ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  begin
-    haml_lint_tag_4
-    haml_lint_marker_5
-    WW(foo(bar, hello: 42))
-    haml_lint_marker_7
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_3
+  haml_lint_marker_4
+  WWWW(foo(bar, hello: 42))
+  haml_lint_marker_6
 ensure
   HL.noop
 end
@@ -420,28 +308,73 @@ end
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin $$2
-    haml_lint_tag_5
-    haml_lint_marker_6
-    WW(foo(bar  , :hello =>  42))
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4 $$2
+  haml_lint_marker_5
+  WWWW(foo(bar  , :hello =>  42))
+  haml_lint_marker_7
 end
 ---
 haml_lint_marker_1
 deeper do
   haml_lint_marker_3
-  begin
-    haml_lint_tag_5
-    haml_lint_marker_6
-    WW(foo(bar, hello: 42))
-    haml_lint_marker_8
-  ensure
-    HL.noop
-  end
+  haml_lint_tag_4
+  haml_lint_marker_5
+  WWWW(foo(bar, hello: 42))
+  haml_lint_marker_7
 end
 ---
 - deeper do
   %tag{foo(bar, hello: 42)}
+
+
+!!! Tag attributes starting on next line {% haml_version >= '5.2' %}
+.regular.html{
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  :'data-it-needs-at-least-two-attributes-to-fail' => 'something'
+}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWW(
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something', $$2
+  :'data-it-needs-at-least-two-attributes-to-fail' => 'something' $$3
+) $$4
+haml_lint_marker_7
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWW(
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  'data-it-needs-at-least-two-attributes-to-fail': 'something'
+)
+haml_lint_marker_7
+---
+.regular.html{
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  'data-it-needs-at-least-two-attributes-to-fail': 'something'
+}
+
+!!! Tag attributes starting on next line with the closing brace on the same line as an attribute asdasd {% haml_version >= '5.2' %}
+.regular.html{
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  :'data-it-needs-at-least-two-attributes-to-fail' => 'something'}
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWW(
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something', $$2
+  :'data-it-needs-at-least-two-attributes-to-fail' => 'something') $$3
+haml_lint_marker_6
+---
+haml_lint_tag_1
+haml_lint_marker_2
+WWWWWWWWWWWWW(
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  'data-it-needs-at-least-two-attributes-to-fail': 'something'
+)
+haml_lint_marker_6
+---
+.regular.html{
+  'data-very-long-so-this-cant-be-on-the-line-above': 'something',
+  'data-it-needs-at-least-two-attributes-to-fail': 'something'
+}

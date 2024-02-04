@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Rubocop: Properly pass the whitespace around tag attributes to RuboCop. This allows some improved corrections and fixes bugs.
+
 ### 0.55.0
 
 * Lazily open files to avoid file descriptor exhaustion

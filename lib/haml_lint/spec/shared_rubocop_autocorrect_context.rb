@@ -115,7 +115,7 @@ module HamlLint
 
           syntax_lints = subject.lints.select { |lint| lint.message =~ %r{Lint/Syntax} }
 
-          if start_ruby.strip != 'SKIP' && subject.last_extracted_source
+          if start_ruby.strip != 'SKIP' && subject.last_extracted_source && ENV['UPDATE_EXAMPLES'] != '1'
             matcher = eq(start_ruby)
             subject.last_extracted_source.source.should(
               matcher,
@@ -125,7 +125,7 @@ module HamlLint
 
           syntax_lints.should(be_empty, "Generated Ruby has Syntax Lints:\n#{format_lints(syntax_lints)}")
 
-          if end_ruby.strip != 'SKIP' && subject.last_new_ruby_source
+          if end_ruby.strip != 'SKIP' && subject.last_new_ruby_source && ENV['UPDATE_EXAMPLES'] != '1'
             matcher = eq(end_ruby)
             subject.last_new_ruby_source.should(
               matcher,
@@ -141,8 +141,38 @@ module HamlLint
             -> { "Final HAML is different from expected. #{matcher.failure_message}\n#{format_lints}" }
           )
 
-          if subject.last_extracted_source && start_ruby.strip != 'SKIP'
+          if subject.last_extracted_source && start_ruby.strip != 'SKIP' && ENV['UPDATE_EXAMPLES'] != '1'
             subject.last_extracted_source.source_map.should == source_map
+          end
+
+          if ENV['UPDATE_EXAMPLES'] == '1' && respond_to?(:example_first_line_no) &&
+              start_ruby.strip != 'SKIP' && end_ruby.strip != 'SKIP'
+            original_content = File.read(example_path)
+            old_steps_string = '---' + steps_string.partition('---').last.rpartition('---').first + '---'
+
+            if old_steps_string.scan(/\$\$\d+/).tally.values.any? { |v| v > 1 }
+              # If the $$3 was there twice, let's not update the example
+              return
+            end
+            original_content.scan(old_steps_string).count
+
+            new_generated_ruby_lines = subject.last_extracted_source.source.split("\n", -1)
+            last_seen_haml_line_no = 1
+            subject.last_extracted_source.source_map.each do |ruby_line_no, haml_line_no|
+              if haml_line_no != last_seen_haml_line_no
+                last_seen_haml_line_no = haml_line_no
+                new_generated_ruby_lines[ruby_line_no - 1] += " $$#{haml_line_no}"
+              end
+            end
+
+            new_steps_string = <<~NEW.chop # Chop to remove the added newlines
+              ---
+              #{new_generated_ruby_lines.join("\n")}---
+              #{subject.last_new_ruby_source}---
+            NEW
+
+            new_content = original_content.gsub(old_steps_string, new_steps_string)
+            File.write(example_path, new_content)
           end
 
           haml_different = start_haml != end_haml

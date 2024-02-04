@@ -152,8 +152,8 @@ Lorem #{foo(bar: '123')} Ipsum
 %tag
   Lorem #{foo(:bar =>  123)} Ipsum
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
   haml_lint_interpolation_3 $$2
   haml_lint_marker_4
   HL.out = foo(:bar =>  123)
@@ -162,8 +162,8 @@ ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
   haml_lint_interpolation_3
   haml_lint_marker_4
   HL.out = foo(bar: 123)
@@ -479,9 +479,9 @@ haml_lint_marker_5
   :filter
     Lorem #{foo(:bar =>  123)} Ipsum
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
-  haml_lint_marker_3  $$2
+  haml_lint_marker_3 $$2
   HL.out = <<~HAML_LINT_FILTER
     Lorem #{foo(:bar =>  123)} Ipsum $$3
   HAML_LINT_FILTER
@@ -490,8 +490,8 @@ ensure
   HL.noop
 end
 ---
+haml_lint_tag_1
 begin
-  haml_lint_tag_2
   haml_lint_marker_3
   HL.out = <<~HAML_LINT_FILTER
     Lorem #{foo(bar: 123)} Ipsum
@@ -606,7 +606,7 @@ haml_lint_marker_1
 HL.out = <<~HAML_LINT_FILTER
   Lorem #{if a $$2
     foo(:bar =>  123) $$3
-  end} Ipsum  $$4
+  end} Ipsum $$4
 HAML_LINT_FILTER
 haml_lint_marker_7
 ---
@@ -870,23 +870,15 @@ haml_lint_marker_5
 !!! Fixes interpolation in a tag's text
 %tag #{foo(:bar =>  123)}
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag #{foo(bar: 123)}
 
@@ -894,23 +886,15 @@ end
 !!! Fixes interpolation with text around it in a tag's text
 %tag hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag hello #{foo(bar: 123)} world
 
@@ -919,19 +903,11 @@ end
 %tag Dolor #{foo(:bar => |
   123)} Sit Amet |
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo(:bar => 123)
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo(:bar => 123)
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo(bar: 123)
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo(bar: 123)
 ---
 %tag Dolor #{foo(:bar => |
   123)} Sit Amet |
@@ -941,19 +917,11 @@ end
 %tag Dolor #{foo(:bar =>           |
   123)} Sit Amet              |
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo(:bar => 123)
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo(:bar => 123)
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo(bar: 123)
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo(bar: 123)
 ---
 %tag Dolor #{foo(:bar =>           |
   123)} Sit Amet              |
@@ -963,19 +931,11 @@ end
 %tag Dolor #{foo |
 bar} Sit Amet |
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo bar
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo bar
 ---
-begin
-  haml_lint_tag_2
-  HL.out = foo bar
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+HL.out = foo bar
 ---
 %tag Dolor #{foo |
 bar} Sit Amet |
@@ -1000,23 +960,15 @@ haml_lint_marker_4
 !# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
 %tag== hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag== hello #{foo(bar: 123)} world
 
@@ -1038,23 +990,15 @@ haml_lint_marker_4
 !!! Fixes interpolation with text around it in a tag's text that started with !
 %tag! hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag! hello #{foo(bar: 123)} world
 
@@ -1077,23 +1021,15 @@ haml_lint_marker_4
 !# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
 %tag!== hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag!== hello #{foo(bar: 123)} world
 
@@ -1101,23 +1037,15 @@ end
 !# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
 %tag!== hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag!== hello #{foo(bar: 123)} world
 
@@ -1141,23 +1069,15 @@ haml_lint_marker_4
 !# This is an old feature that is not needed anymore since HAML 2.2... But it's still valid.
 %tag&== hello #{foo(:bar =>  123)} world
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(:bar =>  123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(:bar =>  123)
+haml_lint_marker_4
 ---
-begin
-  haml_lint_tag_2
-  haml_lint_marker_3
-  HL.out = foo(bar: 123)
-  haml_lint_marker_5
-ensure
-  HL.noop
-end
+haml_lint_tag_1
+haml_lint_marker_2
+HL.out = foo(bar: 123)
+haml_lint_marker_4
 ---
 %tag&== hello #{foo(bar: 123)} world
 
@@ -1168,7 +1088,7 @@ end
 ---
 haml_lint_marker_1
 HL.out = <<~HAML_LINT_FILTER
-  Dolor #{foo(:bar =>  123)} and a unusual escape \. that is acceptable in a filter$$$2
+  Dolor #{foo(:bar =>  123)} and a unusual escape \. that is acceptable in a filter $$2
 HAML_LINT_FILTER
 haml_lint_marker_5
 ---

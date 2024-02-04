@@ -104,7 +104,7 @@ haml_lint_tag_5
 haml_lint_marker_1
 foo.each do |bar|
   next if bar $$2
-  $$3
+ $$3
   HL.out = execute $$4
 end
 haml_lint_marker_7
@@ -132,7 +132,7 @@ haml_lint_marker_7
 haml_lint_marker_1
 foo.each do |bar|
   next if bar $$2
-  $$3
+ $$3
   haml_lint_marker_5
   haml_lint_tag_6 $$4
 end
