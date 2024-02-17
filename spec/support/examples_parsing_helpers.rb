@@ -32,10 +32,10 @@ module ExamplesParsingHelpers
       example_string = example_string.gsub(/\s*!#.*/, '')
 
       if example_string.include?('^')
-        silent_example_string = example_string.gsub('^^', '').gsub('^', '-').gsub('%%', '')
+        silent_example_string = example_string.gsub('^^', '').tr('^', '-').gsub('%%', '')
         out_example_string = example_string.gsub('^^', 'HL.out = ')
                                            .gsub('%%', '         ')
-                                           .gsub('^', '=')
+                                           .tr('^', '=')
         [
           Example.new("(^ as -)#{title}", silent_example_string, path, cur_line_number),
           Example.new("(^ as =)#{title}", out_example_string, path, cur_line_number),

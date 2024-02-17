@@ -41,7 +41,7 @@ describe HamlLint::Tree::HamlCommentNode do
           '-# haml-lint:enable LineLength'
         ]
       end
-      let(:node) { document.tree.select { |node| node.type == :haml_comment }.last }
+      let(:node) { document.tree.select { |node| node.type == :haml_comment }.last } # rubocop:disable Performance/Detect
 
       let(:expectation) do
         [
@@ -63,7 +63,7 @@ describe HamlLint::Tree::HamlCommentNode do
           '-# haml-lint:enable LineLength'
         ]
       end
-      let(:node) { document.tree.select { |node| node.type == :haml_comment }.last }
+      let(:node) { document.tree.select { |node| node.type == :haml_comment }.last } # rubocop:disable Performance/Detect
 
       let(:out_of_scope) do
         HamlLint::Directive.new(lines[2], 3, 'disable', %w[AlignmentTabs])
