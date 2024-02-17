@@ -33,4 +33,5 @@ end
 
 appraise 'rubocop1.0' do
   gem 'rubocop', '~> 1.0.0'
+  gem 'rubocop-performance', '~> 1.10.0'
 end
