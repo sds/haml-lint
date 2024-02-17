@@ -27,8 +27,8 @@ module HamlLint
       style = STYLE[config['style'] == 'no_space' ? 'no_space' : 'space']
       source = node.hash_attributes_source
 
-      record_lint(node, style[:start_message]) unless source =~ style[:start_regex]
-      record_lint(node, style[:end_message]) unless source =~ style[:end_regex]
+      record_lint(node, style[:start_message]) unless source&.match?(style[:start_regex])
+      record_lint(node, style[:end_message]) unless source&.match?(style[:end_regex])
     end
   end
 end

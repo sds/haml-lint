@@ -74,7 +74,7 @@ module HamlLint
           current_matching_line = 1
           @source_map = {}
           lines.each.with_index do |line, i|
-            next unless line =~ /\S/
+            next unless /\S/.match?(line)
             mo = line.match(/^(.*?)\$?\s*\$\$(\d+)$/)
             if mo
               lines[i] = mo[1]

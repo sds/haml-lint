@@ -7,7 +7,7 @@ module HamlLint
 
     def visit_tag(node)
       tag = node.tag_name
-      return unless tag =~ /[A-Z]/
+      return unless /[A-Z]/.match?(tag)
 
       record_lint(node, "`#{tag}` should be written in lowercase as `#{tag.downcase}`")
     end

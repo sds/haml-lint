@@ -9,7 +9,7 @@ module HamlLint
 
     def visit_root(root)
       document.source_lines.each_with_index do |line, index|
-        next unless line =~ /\s+$/
+        next unless /\s+$/.match?(line)
 
         node = root.node_for_line(index + 1)
         unless node.disabled?(self)

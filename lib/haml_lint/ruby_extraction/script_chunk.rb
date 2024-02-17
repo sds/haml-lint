@@ -113,7 +113,7 @@ module HamlLint::RubyExtraction
       line_start_indexes_that_need_pipes = []
       haml_output_prefix = first_output_haml_prefix
       to_haml_lines = to_ruby_lines.map.with_index do |line, i| # rubocop:disable Metrics/BlockLength
-        if line !~ /\S/
+        if !/\S/.match?(line)
           # whitespace or empty lines, we don't want any indentation
           ''
         elsif statement_start_line_indexes.include?(i)

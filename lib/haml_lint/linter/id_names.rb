@@ -24,7 +24,7 @@ module HamlLint
 
       style = config['style'] || 'lisp_case'
       matcher = STYLES[style]
-      record_lint(node, "`id` attribute must be in #{STYLIZED_NAMES[style]}") unless id =~ matcher
+      record_lint(node, "`id` attribute must be in #{STYLIZED_NAMES[style]}") unless id&.match?(matcher)
     end
   end
 end
