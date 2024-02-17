@@ -37,7 +37,7 @@ module HamlLint
           :error
         )
     rescue StandardError => e
-      msg = "Couldn't process the file".dup
+      msg = +"Couldn't process the file"
       if @autocorrect
         # Those lints related to auto-correction were not saved, so don't display them
         @lints = []
@@ -231,7 +231,7 @@ module HamlLint
       # excess whitespace
       @document.source_lines[(tag_node.line - 1)...(following_node_line(tag_node) - 1)]
                .map do |line|
-        line.strip.gsub(/\|\z/, '').rstrip
+        line.strip.delete_suffix('|').rstrip
       end.join(' ')
     end
   end

@@ -546,7 +546,7 @@ module HamlLint::RubyExtraction
       joined_lines = lines.join("\n")
 
       if haml_processed_ruby_code.include?("\n")
-        haml_processed_ruby_code = haml_processed_ruby_code.gsub("\n", ' ')
+        haml_processed_ruby_code = haml_processed_ruby_code.tr("\n", ' ')
       end
 
       haml_processed_ruby_code.split(/[, ]/)
