@@ -94,6 +94,7 @@ Command Line Flag          | Description
 `--[no-]summary`           | Whether to output a summary in the default reporter
 `--show-linters`           | Show all registered linters
 `--show-reporters`         | Display available reporters
+`-s`/`--stdin FILE`        | Pipe source from STDIN, using FILE in offense when combined with --auto-correct and --stdin
 `--stderr`                 | Write all output to stderr
 `-h`/`--help`              | Show command line flag documentation
 `-v`/`--version`           | Show `haml-lint` version
