@@ -30,7 +30,7 @@ module HamlLint
       dummy_node = Struct.new(:line)
 
       document.source_lines.each_with_index do |line, index|
-        next if line =~ regex
+        next if line&.match?(regex)
 
         unless root.node_for_line(index).disabled?(self)
           record_lint dummy_node.new(index + 1), "Line contains #{wrong_characters} in indentation"

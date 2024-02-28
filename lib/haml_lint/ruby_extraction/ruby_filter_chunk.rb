@@ -19,7 +19,7 @@ module HamlLint::RubyExtraction
       haml_lines[@haml_line_index - 1] = HamlLint::Utils.indent(haml_lines[@haml_line_index - 1], delta_indent)
 
       to_haml_lines = to_ruby_lines.map do |line|
-        if line !~ /\S/
+        if !/\S/.match?(line)
           # whitespace or empty
           ''
         else

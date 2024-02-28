@@ -1,8 +1,12 @@
+require:
+  - rubocop-performance
+
 AllCops:
   Exclude:
     - 'gemfiles/**'
   TargetRubyVersion: 3.0
   NewCops: disable
+  SuggestExtensions: false
 
 Lint/AssignmentInCondition:
   Enabled: false

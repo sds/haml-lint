@@ -14,7 +14,7 @@ module HamlLint::RubyExtraction
       to_content_lines = to_ruby_lines[1...-1]
 
       to_haml_lines = to_content_lines.map do |line|
-        if line !~ /\S/
+        if !/\S/.match?(line)
           # whitespace or empty
           ''
         else

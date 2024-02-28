@@ -6,7 +6,7 @@ module HamlLint
     include LinterRegistry
 
     def visit_silent_script(node)
-      return unless node.script =~ /\A\s*\Z/
+      return unless /\A\s*\Z/.match?(node.script)
 
       record_lint(node, 'Empty script should be removed')
     end

@@ -390,7 +390,7 @@ module HamlLint::RubyExtraction
         # is indented by 0.
         lines = node.text.split("\n")
         lines.map! do |line|
-          if line !~ /\S/
+          if !/\S/.match?(line)
             # whitespace or empty
             ''
           else
@@ -546,7 +546,7 @@ module HamlLint::RubyExtraction
       joined_lines = lines.join("\n")
 
       if haml_processed_ruby_code.include?("\n")
-        haml_processed_ruby_code = haml_processed_ruby_code.gsub("\n", ' ')
+        haml_processed_ruby_code = haml_processed_ruby_code.tr("\n", ' ')
       end
 
       haml_processed_ruby_code.split(/[, ]/)
