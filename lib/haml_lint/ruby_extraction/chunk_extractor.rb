@@ -692,7 +692,7 @@ module HamlLint::RubyExtraction
         return keyword
       end
 
-      code.scan(Haml::Parser::BLOCK_KEYWORD_REGEX) do |c|
+      code.scan(Haml::Parser::BLOCK_KEYWORD_REGEX) do |_c|
         # Check that the keyword is actually a keyword, and not
         # an argument to a method.
         next_char = code[Regexp.last_match.offset(0)[1]]
@@ -702,7 +702,7 @@ module HamlLint::RubyExtraction
         return Regexp.last_match[1] || Regexp.last_match[2]
       end
 
-      return nil
+      nil
     end
   end
 end

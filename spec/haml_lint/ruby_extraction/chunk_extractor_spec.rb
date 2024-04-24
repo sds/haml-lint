@@ -261,25 +261,25 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
       expect(described_class.block_keyword(input_single_line)).to eq(nil)
 
       # Keyword as symbol not first on new line should work
-      input_multiline_1 = <<~HAML
+      input_multiline1 = <<~HAML
         = helper foo: true,
                  bar: true, if: false
       HAML
-      expect(described_class.block_keyword(input_multiline_1)).to eq(nil)
+      expect(described_class.block_keyword(input_multiline1)).to eq(nil)
 
       # Keyword as symbol first on new line should also work
-      input_multiline_2 = <<~HAML
+      input_multiline2 = <<~HAML
         = helper foo: true, bar: true,
                  if: false
       HAML
-      expect(described_class.block_keyword(input_multiline_2)).to eq(nil)
+      expect(described_class.block_keyword(input_multiline2)).to eq(nil)
 
       # Testing with another keyword
-      input_multiline_3 = <<~HAML
+      input_multiline3 = <<~HAML
         = helper foo: true, bar: true,
                  for: User.first
       HAML
-      expect(described_class.block_keyword(input_multiline_3)).to eq(nil)
+      expect(described_class.block_keyword(input_multiline3)).to eq(nil)
     end
   end
 end
