@@ -213,4 +213,73 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
       end
     end
   end
+
+  describe '.block_keyword' do
+    it 'should work for empty strings' do
+      expect(described_class.block_keyword('')).to eq(nil)
+      expect(described_class.block_keyword('             ')).to eq(nil)
+    end
+
+    it 'should extract keywords from simple input' do
+      # Cases where we can use `<keyword> value`
+      %w[if unless case].each do |keyword|
+        input = <<~HAML
+          - #{keyword} foobar
+            = foo
+        HAML
+
+        expect(described_class.block_keyword(input)).to eq(keyword)
+      end
+
+      # Case for the `begin` keyword
+      begin_input = <<~HAML
+        - begin
+      HAML
+
+      expect(described_class.block_keyword(begin_input)).to eq('begin')
+
+      # Case for the `for` keyword
+      for_input = <<~HAML
+        for user in User.all do
+      HAML
+
+      expect(described_class.block_keyword(for_input)).to eq('for')
+
+      # Cases where we can use `<keyword> value do`
+      %w[until while].each do |keyword|
+        input = <<~HAML
+          #{keyword} foobar do
+        HAML
+
+        expect(described_class.block_keyword(input)).to eq(keyword)
+      end
+    end
+
+    it 'should not raise exception when keyword is used as keyword argument' do
+      # Everything on single line, should work
+      input_single_line = '= helper foo: true, bar: true, if: false'
+      expect(described_class.block_keyword(input_single_line)).to eq(nil)
+
+      # Keyword as symbol not first on new line should work
+      input_multiline_1 = <<~HAML
+        = helper foo: true,
+                 bar: true, if: false
+      HAML
+      expect(described_class.block_keyword(input_multiline_1)).to eq(nil)
+
+      # Keyword as symbol first on new line should also work
+      input_multiline_2 = <<~HAML
+        = helper foo: true, bar: true,
+                 if: false
+      HAML
+      expect(described_class.block_keyword(input_multiline_2)).to eq(nil)
+
+      # Testing with another keyword
+      input_multiline_3 = <<~HAML
+        = helper foo: true, bar: true,
+                 for: User.first
+      HAML
+      expect(described_class.block_keyword(input_multiline_3)).to eq(nil)
+    end
+  end
 end

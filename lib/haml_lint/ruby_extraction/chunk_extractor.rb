@@ -692,8 +692,17 @@ module HamlLint::RubyExtraction
         return keyword
       end
 
-      return unless keyword = code.scan(Haml::Parser::BLOCK_KEYWORD_REGEX)[0]
-      keyword[0] || keyword[1]
+      code.scan(Haml::Parser::BLOCK_KEYWORD_REGEX) do |c|
+        # Check that the keyword is actually a keyword, and not
+        # an argument to a method.
+        next_char = code[Regexp.last_match.offset(0)[1]]
+
+        next if next_char == ':'
+
+        return Regexp.last_match[1] || Regexp.last_match[2]
+      end
+
+      return nil
     end
   end
 end
