@@ -17,6 +17,10 @@ module HamlLint::RubyExtraction
                              ::Haml::Parser.new('', {})
                            end
 
+    # HAML strips newlines when handling multi-line statements (using pipes or trailing comma)
+    # We don't. So the regex must be fixed to correctly detect the start of the string.
+    BLOCK_KEYWORD_REGEX = Regexp.new(Haml::Parser::BLOCK_KEYWORD_REGEX.source.sub('^', '\A'))
+
     def initialize(document, script_output_prefix:)
       @document = document
       @script_output_prefix = script_output_prefix
@@ -692,17 +696,8 @@ module HamlLint::RubyExtraction
         return keyword
       end
 
-      code.scan(Haml::Parser::BLOCK_KEYWORD_REGEX) do |_c|
-        # Check that the keyword is actually a keyword, and not
-        # an argument to a method.
-        next_char = code[Regexp.last_match.offset(0)[1]]
-
-        next if next_char == ':'
-
-        return Regexp.last_match[1] || Regexp.last_match[2]
-      end
-
-      nil
+      return unless keyword = code.scan(BLOCK_KEYWORD_REGEX)[0]
+      keyword[0] || keyword[1]
     end
   end
 end
