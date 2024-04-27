@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.58.0
+
+* Fix `block_keyword` method returning keywords used as arguments of method call
+
 ### 0.57.0
 
 * Add `GitHubReporter`
