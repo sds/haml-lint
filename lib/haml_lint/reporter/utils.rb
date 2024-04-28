@@ -96,7 +96,7 @@ module HamlLint
       # Prints a summary of the number of lints found in a report.
       #
       # @param report [HamlLint::Report] the report to print
-      # @param is_append [Boolean] if this is appending to a line. Will preffix with ", ".
+      # @param is_append [Boolean] if this is appending to a line. Will prefix with ", ".
       # @return [void]
       def print_summary_lints(report, is_append:)
         log.log ', ', false if is_append
@@ -114,7 +114,7 @@ module HamlLint
       # Prints a summary of the number of lints corrected in a report.
       #
       # @param report [HamlLint::Report] the report to print
-      # @param is_append [Boolean] if this is appending to a line. Will preffix with ", ".
+      # @param is_append [Boolean] if this is appending to a line. Will prefix with ", ".
       # @return [void]
       def print_summary_corrected_lints(report, is_append:)
         lint_count = report.lints.count(&:corrected)

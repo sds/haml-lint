@@ -63,7 +63,7 @@ module HamlLint::RubyExtraction
       transfer_correction_logic(coordinator, to_ruby_lines, haml_lines)
     end
 
-    # To be overriden by subclasses.
+    # To be overridden by subclasses.
     #
     # Logic to transfer the corrections that turned from_ruby_lines into to_ruby_lines.
     #
