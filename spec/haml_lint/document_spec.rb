@@ -88,7 +88,7 @@ describe HamlLint::Document do
       end
     end
 
-    context 'when source is valid UTF-8 but was interpeted as US-ASCII' do
+    context 'when source is valid UTF-8 but was interpreted as US-ASCII' do
       let(:source) { '%p Test àéùö'.force_encoding('US-ASCII') }
 
       it 'interprets it as UTF-8' do

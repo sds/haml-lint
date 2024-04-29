@@ -117,7 +117,7 @@ module HamlLint
         # so the lints will be recorded then.
         @lints = []
 
-        msg = "Corrections couldn't be transfered: #{e.message} - Consider linting the file " \
+        msg = "Corrections couldn't be transferred: #{e.message} - Consider linting the file " \
               'without auto-correct and doing the changes manually.'
         if ENV['HAML_LINT_DEBUG'] == 'true'
           msg = "#{msg} DEBUG: Rubocop corrected Ruby code follows:\n#{new_ruby_code}\n------"

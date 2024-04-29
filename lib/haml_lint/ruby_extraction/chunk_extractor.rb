@@ -678,7 +678,7 @@ module HamlLint::RubyExtraction
 
     def self.anonymous_block?(code)
       # Don't start with a comment and end with a `do`
-      # Definetly not perfect for the comment handling, but otherwise a more advanced parsing system is needed.
+      # Definitely not perfect for the comment handling, but otherwise a more advanced parsing system is needed.
       # Move the comment to its own line if it's annoying.
       code !~ /\A\s*#/ &&
         code =~ /\bdo\s*(\|[^|]*\|\s*)?(#.*)?\z/

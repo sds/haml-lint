@@ -116,7 +116,7 @@ module HamlLint
 
     # Returns indexes of all occurrences of a substring within a string.
     #
-    # Note, this will not return overlaping substrings, so searching for "aa"
+    # Note, this will not return overlapping substrings, so searching for "aa"
     # in "aaa" will only find one substring, not two.
     #
     # @param text [String] the text to search

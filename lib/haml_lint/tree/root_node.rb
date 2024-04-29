@@ -5,7 +5,7 @@ require 'haml_lint/tree/null_node'
 module HamlLint::Tree
   # Represents the root node of a HAML document that contains all other nodes.
   class RootNode < Node
-    # The name fo the file parsed to build this tree.
+    # The name of the file parsed to build this tree.
     #
     # @return [String] a file name
     def file
