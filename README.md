@@ -78,7 +78,6 @@ Command Line Flag          | Description
 ---------------------------|----------------------------------------------------
 `--auto-gen-config`        | Generate a configuration file acting as a TODO list
 `--auto-gen-exclude-limit` | Number of failures to allow in the TODO list before the entire rule is excluded
-`--auto-gen-exclude-limit` | Number of failures to allow in the TODO list before the entire rule is excluded
 `-c`/`--config`            | Specify which configuration file to use
 `-e`/`--exclude`           | Exclude one or more files from being linted
 `-i`/`--include-linter`    | Specify which linters you specifically want to run
