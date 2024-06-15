@@ -8,7 +8,7 @@
 
 `haml-lint` is a tool to help keep your [HAML](http://haml.info) files
 clean and readable. In addition to HAML-specific style and lint checks, it
-integrates with [RuboCop](https://github.com/rubocop-hq/rubocop) to bring its
+integrates with [RuboCop](https://github.com/rubocop/rubocop) to bring its
 powerful static analysis tools to your HAML documents.
 
 Experimental auto-correct features are also available.
@@ -220,7 +220,7 @@ end
 ```
 
 For more information on the different types on HAML node, please look through
-the HAML parser code: https://github.com/haml/haml/blob/master/lib/haml/parser.rb
+the HAML parser code: https://github.com/haml/haml/blob/main/lib/haml/parser.rb
 
 Keep in mind that by default your linter will be disabled by default. So you
 will need to enable it in your configuration file to have it run.
@@ -325,23 +325,23 @@ You can increase this limit with the `auto-gen-exclude-limit` option:
 
 If you use `vim`, you can have `haml-lint` automatically run against your HAML
 files after saving by using the
-[Syntastic](https://github.com/scrooloose/syntastic) plugin. If you already
+[Syntastic](https://github.com/vim-syntastic/syntastic) plugin. If you already
 have the plugin, just add `let g:syntastic_haml_checkers = ['haml_lint']` to
 your `.vimrc`.
 
 ### Vim 8 / Neovim
 
-If you use `vim` 8+ or `Neovim`, you can have `haml-lint` automatically run against your HAML files as you type by using the [Asynchronous Lint Engine (ALE)](https://github.com/w0rp/ale) plugin. ALE will automatically lint your HAML files if it detects `haml-lint` in your `PATH`.
+If you use `vim` 8+ or `Neovim`, you can have `haml-lint` automatically run against your HAML files as you type by using the [Asynchronous Lint Engine (ALE)](https://github.com/dense-analysis/ale) plugin. ALE will automatically lint your HAML files if it detects `haml-lint` in your `PATH`.
 
 ### Sublime Text 3
 
 If you use `SublimeLinter 3` with `Sublime Text 3` you can install the
-[SublimeLinter-haml-lint](https://github.com/jeroenj/SublimeLinter-contrib-haml-lint)
-plugin using [Package Control](https://sublime.wbond.net).
+[SublimeLinter-haml-lint](https://github.com/SublimeLinter/SublimeLinter-haml-lint)
+plugin using [Package Control](https://packagecontrol.io).
 
 ### Atom
 
-If you use `atom`, you can install the [linter-haml](https://atom.io/packages/linter-haml) plugin.
+If you use `atom`, you can install the [linter-haml](https://github.blog/2022-06-08-sunsetting-atom) plugin.
 
 ### TextMate 2
 
@@ -403,9 +403,9 @@ attribute.
 
 [Code documentation] is generated with [YARD] and hosted by [RubyDoc.info].
 
-[Code documentation]: http://rdoc.info/github/sds/haml-lint/master/frames
+[Code documentation]: https://www.rubydoc.info/github/sds/haml-lint/main
 [YARD]: http://yardoc.org/
-[RubyDoc.info]: http://rdoc.info/
+[RubyDoc.info]: https://www.rubydoc.info
 
 ## Contributing
 
