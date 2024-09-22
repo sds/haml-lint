@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'haml_lint/adapter/haml_5'
-require 'haml_lint/adapter/haml_6'
-require 'haml_lint/exceptions'
+require_relative 'adapter/haml_5'
+require_relative 'adapter/haml_6'
+require_relative 'exceptions'
 
 module HamlLint
   # Determines the adapter to use for the current Haml version

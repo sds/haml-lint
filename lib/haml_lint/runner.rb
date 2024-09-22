@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'parallel'
+
 require_relative 'source'
 
 module HamlLint

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/directive'
+require_relative '../directive'
 
 module HamlLint::Tree
   # Represents a HAML comment node.

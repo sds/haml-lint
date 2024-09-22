@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/adapter'
+require_relative 'adapter'
 
 module HamlLint
   # Represents a parsed Haml document and its associated metadata.

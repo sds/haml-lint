@@ -2,7 +2,8 @@
 
 require 'rake'
 require 'rake/tasklib'
-require 'haml_lint/constants'
+
+require_relative 'constants'
 
 module HamlLint
   # Rake task interface for haml-lint command line interface.
@@ -93,7 +94,7 @@ module HamlLint
 
       task(name, [:files]) do |_task, task_args|
         # Lazy-load so task doesn't affect Rakefile load time
-        require 'haml_lint/cli'
+        require_relative 'cli'
 
         run_cli(task_args)
       end

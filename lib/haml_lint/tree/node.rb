@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/comment_configuration'
+require_relative '../comment_configuration'
 
 module HamlLint::Tree
   # Decorator class that provides a convenient set of helpers for HAML's

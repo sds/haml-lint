@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/reporter/utils'
+require_relative 'utils'
 
 module HamlLint
   # Outputs lints in a simple format with the filename, line number, and lint

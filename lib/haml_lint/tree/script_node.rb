@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/parsed_ruby'
+require_relative '../parsed_ruby'
 
 module HamlLint::Tree
   # Represents a node which produces output based on Ruby code.
