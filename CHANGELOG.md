@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.59.0
+
+* Speed up load time by preferring `require_relative` in internal gem file loading
+
 ### 0.58.0
 
 * Fix `block_keyword` method returning keywords used as arguments of method call
