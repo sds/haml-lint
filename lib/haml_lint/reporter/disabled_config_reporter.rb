@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/reporter/progress_reporter'
+require_relative 'progress_reporter'
 
 module HamlLint
   # Outputs a YAML configuration file based on existing violations.

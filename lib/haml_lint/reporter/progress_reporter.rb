@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'rainbow'
-require 'haml_lint/reporter/utils'
+
+require_relative 'utils'
 
 module HamlLint
   # Outputs files as they are output as a simple symbol, then outputs

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/spec/normalize_indent'
-require 'haml_lint/spec/shared_linter_context'
-require 'haml_lint/spec/shared_rubocop_autocorrect_context'
-require 'haml_lint/spec/matchers/report_lint'
+require_relative 'spec/normalize_indent'
+require_relative 'spec/shared_linter_context'
+require_relative 'spec/shared_rubocop_autocorrect_context'
+require_relative 'spec/matchers/report_lint'

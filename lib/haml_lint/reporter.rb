@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/reporter/hooks'
+require_relative 'reporter/hooks'
 
 module HamlLint
   # Abstract lint reporter. Subclass and override {#display_report} to

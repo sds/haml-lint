@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/reporter/hash_reporter'
+require_relative 'hash_reporter'
 
 module HamlLint
   # Outputs report as a JSON document.

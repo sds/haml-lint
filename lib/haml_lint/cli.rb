@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'haml_lint'
-require 'haml_lint/options'
+require_relative '../haml_lint'
+require_relative 'options'
 
 require 'sysexits'
 

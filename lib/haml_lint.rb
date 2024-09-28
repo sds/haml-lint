@@ -3,26 +3,26 @@
 # Need to load haml before we can reference some Haml modules in our code
 require 'haml'
 
-require 'haml_lint/constants'
-require 'haml_lint/exceptions'
-require 'haml_lint/configuration'
-require 'haml_lint/configuration_loader'
-require 'haml_lint/document'
-require 'haml_lint/haml_visitor'
-require 'haml_lint/lint'
-require 'haml_lint/linter_registry'
-require 'haml_lint/ruby_parser'
-require 'haml_lint/linter'
-require 'haml_lint/logger'
-require 'haml_lint/reporter'
-require 'haml_lint/report'
-require 'haml_lint/linter_selector'
-require 'haml_lint/file_finder'
-require 'haml_lint/runner'
-require 'haml_lint/utils'
-require 'haml_lint/version'
-require 'haml_lint/version_comparer'
-require 'haml_lint/severity'
+require_relative 'haml_lint/constants'
+require_relative 'haml_lint/exceptions'
+require_relative 'haml_lint/configuration'
+require_relative 'haml_lint/configuration_loader'
+require_relative 'haml_lint/document'
+require_relative 'haml_lint/haml_visitor'
+require_relative 'haml_lint/lint'
+require_relative 'haml_lint/linter_registry'
+require_relative 'haml_lint/ruby_parser'
+require_relative 'haml_lint/linter'
+require_relative 'haml_lint/logger'
+require_relative 'haml_lint/reporter'
+require_relative 'haml_lint/report'
+require_relative 'haml_lint/linter_selector'
+require_relative 'haml_lint/file_finder'
+require_relative 'haml_lint/runner'
+require_relative 'haml_lint/utils'
+require_relative 'haml_lint/version'
+require_relative 'haml_lint/version_comparer'
+require_relative 'haml_lint/severity'
 
 # Lead all extensions to external source code
 Dir[File.expand_path('haml_lint/extensions/*.rb', File.dirname(__FILE__))].sort.each do |file|
@@ -30,8 +30,8 @@ Dir[File.expand_path('haml_lint/extensions/*.rb', File.dirname(__FILE__))].sort.
 end
 
 # Load all parse tree node classes
-require 'haml_lint/tree/node'
-require 'haml_lint/node_transformer'
+require_relative 'haml_lint/tree/node'
+require_relative 'haml_lint/node_transformer'
 Dir[File.expand_path('haml_lint/tree/*.rb', File.dirname(__FILE__))].sort.each do |file|
   require file
 end
@@ -47,7 +47,7 @@ Dir[File.expand_path('haml_lint/reporter/*.rb', File.dirname(__FILE__))].sort.ea
 end
 
 # Load all the chunks for RubyExtraction
-require 'haml_lint/ruby_extraction/base_chunk'
+require_relative 'haml_lint/ruby_extraction/base_chunk'
 Dir[File.expand_path('haml_lint/ruby_extraction/*.rb', File.dirname(__FILE__))].sort.each do |file|
   require file
 end

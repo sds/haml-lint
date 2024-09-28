@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'haml_lint/tree/null_node'
+require_relative 'null_node'
 
 module HamlLint::Tree
   # Represents the root node of a HAML document that contains all other nodes.
