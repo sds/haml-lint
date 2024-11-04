@@ -12,7 +12,7 @@ gem 'rspec-its', '~> 1.0'
 gem 'appraisal'
 
 # Run all pre-commit hooks via Overcommit during CI runs
-gem 'overcommit', '0.64.0'
+gem 'overcommit', '0.64.1'
 
 # Pin tool versions (which are executed by Overcommit) for CI builds
 gem 'rubocop', '1.66.1'
