@@ -6,7 +6,7 @@ gemspec
 
 gem 'rake' # For testing the Rake integration
 gem 'rspec', '~> 3.8'
-gem 'rspec-its', '~> 1.0'
+gem 'rspec-its', '~> 2.0'
 
 # For testing against multiple versions of Haml
 gem 'appraisal'
