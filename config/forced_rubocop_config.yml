@@ -45,6 +45,18 @@ Layout/EndAlignment:
 Layout/EndOfLine:
   Enabled: false
 
+# Complying with this lint requires the use of pipes which causes a conflict with MultilinePipe.
+Layout/FirstArrayElementLineBreak:
+  Enabled: false
+
+# Complying with this lint requires the use of pipes which causes a conflict with MultilinePipe.
+Layout/FirstHashElementLineBreak:
+  Enabled: false
+
+# Complying with this lint requires the use of pipes which causes a conflict with MultilinePipe.
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: false
+
 # Turning this cop on can turn
 # = content_tag(:span) do
 #   - foo
