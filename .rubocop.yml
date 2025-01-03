@@ -11,14 +11,8 @@ AllCops:
 Lint/AssignmentInCondition:
   Enabled: false
 
-Bundler/OrderedGems:
-  Enabled: false
-
 # Enforcing this results in a lot of unnecessary indentation.
 Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/CollectionMethods:
   Enabled: false
 
 Style/Documentation:
@@ -28,16 +22,6 @@ Style/Documentation:
 
 Layout/DotPosition:
   EnforcedStyle: leading
-
-Style/FormatString:
-  Enabled: false
-
-Naming/FileName:
-  Exclude:
-    - 'bin/haml-lint'
-    - 'Gemfile'
-    - 'Rakefile'
-    - '*.gemspec'
 
 Style/GuardClause:
   Enabled: false
@@ -107,11 +91,6 @@ Naming/PredicateName:
 Style/SignalException:
   Enabled: false
 
-# Forcing a particular name (e.g. |a, e|) for inject methods prevents you from
-# choosing intention-revealing names.
-Style/SingleLineBlockParams:
-  Enabled: false
-
 Style/SpecialGlobalVars:
   Enabled: false
 
@@ -137,9 +116,6 @@ Style/TrailingCommaInArrayLiteral:
   Enabled: false
 
 Style/TrailingCommaInHashLiteral:
-  Enabled: false
-
-Style/TrivialAccessors:
   Enabled: false
 
 Lint/Void:
