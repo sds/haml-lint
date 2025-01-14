@@ -56,6 +56,10 @@ module HamlLint
         @options[:parallel] = true
       end
 
+      parser.on('--no-parallel', 'Disable parallel linter runs') do
+        @options[:parallel] = false
+      end
+
       parser.on('-a', '--auto-correct', 'Auto-correct offenses (only when it’s safe)') do
         @options[:autocorrect] = :safe
       end

@@ -89,6 +89,14 @@ describe HamlLint::Options do
       end
     end
 
+    context 'with a no-parallel option' do
+      let(:args) { %w[--no-parallel] }
+
+      it 'sets the parallel option' do
+        subject[:parallel].should == false
+      end
+    end
+
     context 'with an auto-correct option' do
       let(:args) { %w[--auto-correct] }
 
