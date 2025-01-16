@@ -10,7 +10,7 @@ module HamlLint
     # @param args [Array<String>] arguments passed via the command line
     # @return [Hash] parsed options
     def parse(args)
-      @options = {}
+      @options = default_options
 
       OptionParser.new do |parser|
         parser.banner = "Usage: #{APP_NAME} [options] [file1, file2, ...]"
@@ -31,6 +31,10 @@ module HamlLint
     end
 
     private
+
+    def default_options
+      { parallel: true }
+    end
 
     def add_linter_options(parser) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       parser.on('--auto-gen-config', 'Generate a configuration file acting as a TODO list') do
@@ -54,6 +58,10 @@ module HamlLint
 
       parser.on('-p', '--parallel', 'Run linters in parallel using available CPUs') do
         @options[:parallel] = true
+      end
+
+      parser.on('--no-parallel', 'Disable parallel linter runs') do
+        @options[:parallel] = false
       end
 
       parser.on('-a', '--auto-correct', 'Auto-correct offenses (only when it’s safe)') do

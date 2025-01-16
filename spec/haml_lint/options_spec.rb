@@ -7,6 +7,12 @@ describe HamlLint::Options do
     subject { super().parse(args) }
     let(:args) { [] }
 
+    context 'without options' do
+      it 'sets the default values' do
+        subject[:parallel].should == true
+      end
+    end
+
     context 'with a configuration file specified' do
       let(:args) { %w[--config some-config.yml] }
 
@@ -86,6 +92,14 @@ describe HamlLint::Options do
 
       it 'sets the parallel option' do
         subject[:parallel].should == true
+      end
+    end
+
+    context 'with a no-parallel option' do
+      let(:args) { %w[--no-parallel] }
+
+      it 'sets the parallel option' do
+        subject[:parallel].should == false
       end
     end
 
