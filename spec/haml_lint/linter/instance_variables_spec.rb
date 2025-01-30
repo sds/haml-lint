@@ -4,7 +4,14 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
   include_context 'linter'
 
   context 'when the file name does not match the matcher' do
-    let(:haml) { '%p= @greeting' }
+    let(:haml) do
+      [
+        '%p= @greeting',
+        '%p{ title: @greeting }',
+        ':ruby',
+        '  x = @greeting'
+      ].join("\n")
+    end
 
     it { should_not report_lint }
   end
@@ -221,6 +228,17 @@ RSpec.describe HamlLint::Linter::InstanceVariables do
         end
 
         it { should report_lint line: 2 }
+      end
+
+      context 'in a :ruby filter' do
+        let(:haml) do
+          [
+            ':ruby',
+            '  foo = @greeting',
+          ].join("\n")
+        end
+
+        it { should report_lint line: 1 }
       end
     end
   end
