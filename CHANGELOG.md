@@ -1,5 +1,7 @@
 # HAML-Lint Changelog
 
+* Update `InstanceVariables` linter to support :ruby filters
+
 ### 0.59.0
 
 * Speed up load time by preferring `require_relative` in internal gem file loading

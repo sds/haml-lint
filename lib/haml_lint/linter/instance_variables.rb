@@ -21,7 +21,7 @@ module HamlLint
       return unless enabled?
 
       if node.parsed_script.contains_instance_variables?
-        record_lint(node, "Avoid using instance variables in #{file_types} views")
+        record_lint(node, failure_message)
       end
     end
 
@@ -41,8 +41,25 @@ module HamlLint
 
       visit_script(node) ||
         if node.parsed_attributes.contains_instance_variables?
-          record_lint(node, "Avoid using instance variables in #{file_types} views")
+          record_lint(node, failure_message)
         end
+    end
+
+    # Checks for instance variables in :ruby filters when the linter is enabled.
+    #
+    # @param [HamlLint::Tree::FilterNode]
+    # @return [void]
+    def visit_filter(node)
+      return unless enabled?
+      return unless node.filter_type == 'ruby'
+      return unless ast = parse_ruby(node.text)
+
+      ast.each_node do |i|
+        if i.type == :ivar
+          record_lint(node, failure_message)
+          break
+        end
+      end
     end
 
     private
@@ -74,6 +91,14 @@ module HamlLint
     # @return [Regexp]
     def matcher
       @matcher ||= Regexp.new(config['matchers'][file_types] || '\A_.*\.haml\z')
+    end
+
+    # The error message when an ivar is found
+    #
+    # @api private
+    # @return [String]
+    def failure_message
+      "Avoid using instance variables in #{file_types} views"
     end
   end
 end
