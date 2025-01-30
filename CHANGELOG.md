@@ -1,5 +1,8 @@
 # HAML-Lint Changelog
 
+### 0.60.0
+
+* Run linters in parallel by default
 * Update `InstanceVariables` linter to support :ruby filters
 
 ### 0.59.0
