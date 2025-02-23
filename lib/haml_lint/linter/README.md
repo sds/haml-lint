@@ -693,6 +693,51 @@ This offers the ability to ensure consistency of Haml hash
 attributes style with ruby hash literal style (compare with
 the Style/SpaceInsideHashLiteralBraces cop in Rubocop).
 
+## StrictLocals
+
+Checks for the presence of a `locals` magic comment at the beginning of a file.
+
+**Bad:**
+```haml
+%h1= title
+```
+
+**Good**
+```haml
+-# locals: (title:)
+
+%h1= title
+```
+
+If you want to disable the use of locals in partials, you can do it like this:
+
+```haml
+-# locals: ()
+```
+
+Option          | Description
+----------------|-------------------------------------------------------------
+`file_types`    | The class of files to lint (default `partial`)
+`matchers`      | The regular expressions to check file names against.
+
+By default, this linter only runs on Rails-style partial views, e.g. files that
+have a base name starting with a leading underscore `_`.
+
+You can also define your own matchers if you want to enable this linter on
+a different subset of your views. For instance, if you want to lint only files
+starting with `special_`, you can define the configuration as follows:
+
+```yaml
+StrictLocals:
+  enabled: true
+  file_types: special
+  matchers:
+    special: ^special_.*\.haml$
+```
+
+Read more about the `locals` magic comment in the
+[Ruby on Rails Guides](https://guides.rubyonrails.org/action_view_overview.html#strict-locals).
+
 ## TagName
 
 Tag names should not contain uppercase letters.
