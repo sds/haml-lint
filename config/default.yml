@@ -102,6 +102,13 @@ linters:
     enabled: true
     style: space
 
+  StrictLocals:
+    enabled: true
+    file_types: partials
+    matchers:
+      all: .*
+      partials: \A_.*\.haml\z
+
   TagName:
     enabled: true
 

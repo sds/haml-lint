@@ -25,6 +25,13 @@ module HamlLint::Tree
              .rstrip
     end
 
+    # Returns whether this comment contains a `locals` directive.
+    #
+    # @return [Boolean]
+    def is_strict_locals?
+      text.lstrip.start_with?('locals:')
+    end
+
     private
 
     def contained_directives
