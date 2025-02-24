@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.61.0
+
+* Add `StrictLocals` linter to enforce declaring locals at beginning of partial
+
 ### 0.60.0
 
 * Run linters in parallel by default
