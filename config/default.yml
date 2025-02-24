@@ -103,7 +103,7 @@ linters:
     style: space
 
   StrictLocals:
-    enabled: true
+    enabled: false
     file_types: partials
     matchers:
       all: .*
