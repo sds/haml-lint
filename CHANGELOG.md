@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.61.1
+
+* Allow `StrictLocals` to be disabled by a comment
+
 ### 0.61.0
 
 * Add `StrictLocals` linter to enforce declaring locals at beginning of partial
