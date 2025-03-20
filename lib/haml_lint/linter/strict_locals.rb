@@ -14,9 +14,12 @@ module HamlLint
     def visit_root(root)
       return unless enabled?(root)
 
-      first_children = root.children.first
-      return if first_children.is_a?(HamlLint::Tree::HamlCommentNode) &&
-                    first_children.is_strict_locals?
+      first_child = root.children.first
+      return if first_child.is_a?(HamlLint::Tree::HamlCommentNode) &&
+                    first_child.is_strict_locals?
+
+      # Check whether this linter is disabled by a comment
+      return if first_child.disabled?(self)
 
       record_lint(DummyNode.new(1), failure_message)
     end

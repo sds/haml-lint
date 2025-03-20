@@ -40,6 +40,17 @@ RSpec.describe HamlLint::Linter::StrictLocals do
 
       it { should report_lint line: 1 }
     end
+
+    context 'and the linter is disabled by a comment' do
+      let(:haml) do
+        <<~HAML
+          -# haml-lint:disable StrictLocals
+          %p Hello, world
+        HAML
+      end
+
+      it { should_not report_lint }
+    end
   end
 
   context 'with a custom matcher' do
