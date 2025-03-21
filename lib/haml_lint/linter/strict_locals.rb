@@ -14,12 +14,16 @@ module HamlLint
     def visit_root(root)
       return unless enabled?(root)
 
-      first_child = root.children.first
-      return if first_child.is_a?(HamlLint::Tree::HamlCommentNode) &&
-                    first_child.is_strict_locals?
+      # Rails technically allows the comment to be anywhere in the file,
+      # but as a best practice they should be at the top of the file.
+      # https://guides.rubyonrails.org/action_view_overview.html#strict-locals
+      # https://github.com/rails/rails/blob/v8.0.2/actionview/lib/action_view/template.rb#L368
+      found =
+        root.children
+            .take_while { |child| child.is_a?(HamlLint::Tree::HamlCommentNode) }
+            .any?(&:is_strict_locals?)
 
-      # Check whether this linter is disabled by a comment
-      return if first_child.disabled?(self)
+      return if found
 
       record_lint(DummyNode.new(1), failure_message)
     end
@@ -31,7 +35,11 @@ module HamlLint
     # @api private
     # @return [true, false]
     def enabled?(root)
-      matcher.match(File.basename(root.file)) ? true : false
+      return false unless matcher.match(File.basename(root.file))
+
+      # This linter can also be disabled by a comment at the top of the file
+      first_child = root.children.first
+      first_child.nil? || !first_child.disabled?(self)
     end
 
     # The type of files the linter is configured to check.
