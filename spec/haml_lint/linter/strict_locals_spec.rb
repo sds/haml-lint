@@ -35,8 +35,31 @@ RSpec.describe HamlLint::Linter::StrictLocals do
       it { should_not report_lint }
     end
 
+    context 'and there is a strict locals comment at the top of the file' do
+      let(:haml) do
+        <<~HAML
+          -# haml-lint:disable ViewLength
+          -# locals: (greeting:)
+          %p Hello, world
+        HAML
+      end
+
+      it { should_not report_lint }
+    end
+
     context 'and there is no strict locals comment' do
       let(:haml) { '%p Hello, world' }
+
+      it { should report_lint line: 1 }
+    end
+
+    context 'and there is a strict locals comment after other nodes' do
+      let(:haml) do
+        <<~HAML
+          %p Hello, world
+          -# locals: (greeting:)
+        HAML
+      end
 
       it { should report_lint line: 1 }
     end
