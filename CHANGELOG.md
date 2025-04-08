@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.62.0
+
+* Improve `StrictLocals` behavior toggling via comments
+
 ### 0.61.1
 
 * Allow `StrictLocals` to be disabled by a comment
