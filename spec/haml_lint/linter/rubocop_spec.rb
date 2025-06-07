@@ -13,10 +13,10 @@ describe HamlLint::Linter::RuboCop do
     # Need this block before including linter context so that stubbing occurs
     # before linter is run
     before do
-      rubocop_runner.stub(:run)
       subject.stub(:rubocop_runner).and_return(rubocop_runner)
-      HamlLint::OffenseCollector.stub(:offenses)
-                                .and_return([offence].compact)
+      rubocop_runner.stub(:run)
+      rubocop_runner.stub(:offenses)
+                    .and_return([offence].compact)
     end
 
     include_context 'linter'
@@ -339,7 +339,7 @@ describe HamlLint::Linter::RuboCop do
 
     before do
       HamlLint::Linter::RuboCop::Runner.stub(:new).and_return(rubocop_runner)
-      HamlLint::OffenseCollector.stub(:offenses).and_return([])
+      rubocop_runner.stub(:offenses).and_return([])
     end
 
     context 'when RuboCop returns true' do
@@ -352,7 +352,7 @@ describe HamlLint::Linter::RuboCop do
       let(:offense) { spy('offense') }
       before do
         rubocop_runner.stub(:run) do
-          HamlLint::OffenseCollector.offenses << offense
+          rubocop_runner.offenses << offense
         end
       end
 

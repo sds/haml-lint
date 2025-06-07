@@ -16,17 +16,28 @@ module HamlLint
   #
   # The work is spread across the classes in the HamlLint::RubyExtraction module.
   class Linter::RuboCop < Linter
+    # Processes a ruby file and reports RuboCop offenses
     class Runner < ::RuboCop::Runner
-      def stdin=(code)
+      attr_reader :offenses
+
+      def run(path, code, config:)
+        @offenses = []
         @options[:stdin] = code
+        @config_store.instance_variable_set(:@options_config, config)
+        super([path])
       end
 
       def corrected_code
         @options[:stdin]
       end
 
-      def options_config=(config)
-        @config_store.instance_variable_set(:@options_config, config)
+      # Executed when a file has been scanned by RuboCop, adding the reported
+      # offenses to our collection.
+      #
+      # @param _file [String]
+      # @param offenses [Array<RuboCop::Cop::Offense>]
+      def file_finished(_file, offenses)
+        @offenses = offenses
       end
     end
 
@@ -216,16 +227,14 @@ module HamlLint
     # @param path [String] the path to tell RuboCop we are running
     # @return [Array<RuboCop::Cop::Offense>, String]
     def run_rubocop(rubocop_runner, ruby_code, path) # rubocop:disable Metrics
-      rubocop_runner.stdin = ruby_code
-      rubocop_runner.options_config = rubocop_config_for(path)
-      rubocop_runner.run([path])
+      rubocop_runner.run(path, ruby_code, config: rubocop_config_for(path))
 
       if ENV['HAML_LINT_INTERNAL_DEBUG'] == 'true'
-        if OffenseCollector.offenses.empty?
+        if rubocop_runner.offenses.empty?
           puts "------ No lints found by RuboCop in #{@document.file}"
         else
           puts "------ Raw lints found by RuboCop in #{@document.file}"
-          OffenseCollector.offenses.each do |offense|
+          rubocop_runner.offenses.each do |offense|
             puts offense
           end
           puts '------'
@@ -236,7 +245,7 @@ module HamlLint
         corrected_ruby = rubocop_runner.corrected_code
       end
 
-      [OffenseCollector.offenses, corrected_ruby]
+      [rubocop_runner.offenses, corrected_ruby]
     rescue ::RuboCop::Error => e
       raise HamlLint::Exceptions::ConfigurationError,
             "RuboCop raised #{e}." \
@@ -292,7 +301,11 @@ module HamlLint
     #
     # @return [Hash]
     def rubocop_options
-      flags = %w[--format HamlLint::OffenseCollector --raise-cop-error]
+      # using BaseFormatter suppresses any default output
+      flags = %w[
+        --format RuboCop::Formatter::BaseFormatter
+        --raise-cop-error
+      ]
       flags += ignored_cops_flags
       flags += rubocop_autocorrect_flags
       options, _args = ::RuboCop::Options.new.parse(flags)
@@ -350,30 +363,6 @@ module HamlLint
       ivars.each do |k, v|
         instance_variable_set(k, v)
       end
-    end
-  end
-
-  # Collects offenses detected by RuboCop.
-  class OffenseCollector < ::RuboCop::Formatter::BaseFormatter
-    class << self
-      # List of offenses reported by RuboCop.
-      attr_accessor :offenses
-    end
-
-    # Executed when RuboCop begins linting.
-    #
-    # @param _target_files [Array<String>]
-    def started(_target_files)
-      self.class.offenses = []
-    end
-
-    # Executed when a file has been scanned by RuboCop, adding the reported
-    # offenses to our collection.
-    #
-    # @param _file [String]
-    # @param offenses [Array<RuboCop::Cop::Offense>]
-    def file_finished(_file, offenses)
-      self.class.offenses += offenses
     end
   end
 
