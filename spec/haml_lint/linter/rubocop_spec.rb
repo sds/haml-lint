@@ -8,13 +8,13 @@ describe HamlLint::Linter::RuboCop do
   end
 
   context 'general testing' do
-    let!(:rubocop_cli) { spy('rubocop_cli') }
+    let!(:rubocop_runner) { spy('rubocop_runner') }
 
     # Need this block before including linter context so that stubbing occurs
     # before linter is run
     before do
-      rubocop_cli.stub(:run).and_return(::RuboCop::CLI::STATUS_SUCCESS)
-      subject.stub(:rubocop_cli).and_return(rubocop_cli)
+      rubocop_runner.stub(:run)
+      subject.stub(:rubocop_runner).and_return(rubocop_runner)
       HamlLint::OffenseCollector.stub(:offenses)
                                 .and_return([offence].compact)
     end
@@ -29,10 +29,6 @@ describe HamlLint::Linter::RuboCop do
       %span to be
     HAML
 
-    it 'does not specify the --config flag by default' do
-      expect(rubocop_cli).to have_received(:run).with(array_excluding('--config'))
-    end
-
     context 'when RuboCop does not report offences' do
       it { should_not report_lint }
     end
@@ -40,7 +36,7 @@ describe HamlLint::Linter::RuboCop do
     context 'when RuboCop reports offences' do
       let(:line) { 4 }
       let(:message) { 'Lint message' }
-      let(:cop_name) { 'Lint/SomeCopName' }
+      let(:cop_name) { 'Style/StringLiterals' }
       let(:severity) { double('Severity', name: :warning) }
 
       let(:offence) do
@@ -53,7 +49,7 @@ describe HamlLint::Linter::RuboCop do
       end
 
       context 'and the offence is from an ignored cop' do
-        let(:config) { super().merge('ignored_cops' => ['Lint/SomeCopName']) }
+        let(:config) { super().merge('ignored_cops' => ['Style/StringLiterals']) }
         it { should_not report_lint }
       end
     end
@@ -336,58 +332,43 @@ describe HamlLint::Linter::RuboCop do
   end
 
   describe '#run_rubocop' do
-    subject { described_class.new(config).send(:run_rubocop, rubocop_cli, 'foo', 'some_file.rb') }
+    subject { described_class.new(config).send(:run_rubocop, rubocop_runner, 'foo', 'some_file.rb') }
 
     let(:config) { {} }
-    let(:rubocop_cli) { spy('rubocop_cli') }
+    let(:rubocop_runner) { spy('rubocop_runner') }
 
     before do
-      ::RuboCop::CLI.stub(:new).and_return(rubocop_cli)
-      rubocop_cli.stub(:run).and_return(rubocop_cli_status)
+      HamlLint::Linter::RuboCop::Runner.stub(:new).and_return(rubocop_runner)
       HamlLint::OffenseCollector.stub(:offenses).and_return([])
     end
 
-    context 'when RuboCop exits with a success status' do
-      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_SUCCESS }
+    context 'when RuboCop returns true' do
+      let(:rubocop_runner_status) { true }
 
       it { should eq [[], nil] }
     end
 
-    context 'when RuboCop exits with an offense status' do
-      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_OFFENSES }
-
-      it { should eq [[], nil] }
-    end
-
-    context 'when RuboCop exits with an error status' do
-      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_ERROR }
-
-      it {
-        expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
-                                          /RuboCop exited unsuccessfully with status 2/)
-      }
-    end
-
-    context 'when RuboCop exits with an unexpected status' do
-      let(:rubocop_cli_status) { 123 }
-
-      it {
-        expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
-                                          /RuboCop exited unsuccessfully with status 123/)
-      }
-    end
-
-    context 'when RuboCop has an infinite loop' do
+    context 'when RuboCop reports offenses' do
+      let(:offense) { spy('offense') }
       before do
-        HamlLint::Utils.stub(:with_captured_streams).and_return(['',
-                                                                 'Infinite loop detected in foo.rb and caused by ...'])
+        rubocop_runner.stub(:run) do
+          HamlLint::OffenseCollector.offenses << offense
+        end
       end
 
-      let(:rubocop_cli_status) { ::RuboCop::CLI::STATUS_ERROR }
+      it { should eq [[offense], nil] }
+    end
+
+    context 'when RuboCop throws an error' do
+      before do
+        rubocop_runner.stub(:run).and_raise(
+          RuboCop::ErrorWithAnalyzedFileLocation.new(cause: RuntimeError.new, node: spy('node'), cop: spy('cop'))
+        )
+      end
 
       it {
-        expect { subject }.to raise_error(HamlLint::Exceptions::InfiniteLoopError,
-                                          /Infinite loop/)
+        expect { subject }.to raise_error(HamlLint::Exceptions::ConfigurationError,
+                                          /RuboCop raised RuboCop::ErrorWithAnalyzedFileLocation/)
       }
     end
   end

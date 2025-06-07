@@ -16,6 +16,20 @@ module HamlLint
   #
   # The work is spread across the classes in the HamlLint::RubyExtraction module.
   class Linter::RuboCop < Linter
+    class Runner < ::RuboCop::Runner
+      def stdin=(code)
+        @options[:stdin] = code
+      end
+
+      def corrected_code
+        @options[:stdin]
+      end
+
+      def options_config=(config)
+        @config_store.instance_variable_set(:@options_config, config)
+      end
+    end
+
     include LinterRegistry
 
     supports_autocorrect(true)
@@ -168,10 +182,10 @@ module HamlLint
       false
     end
 
-    # A single CLI instance is shared between files to avoid RuboCop
+    # A single RuboCop runner is shared between files to avoid RuboCop
     # having to repeatedly reload .rubocop.yml.
-    def rubocop_cli
-      @rubocop_cli ||= ::RuboCop::CLI.new
+    def rubocop_runner
+      @rubocop_runner ||= Runner.new(rubocop_options, ::RuboCop::ConfigStore.new)
     end
 
     def rubocop_config_store
@@ -188,7 +202,7 @@ module HamlLint
     def process_ruby_source(ruby_code, source_map)
       filename = document.file || 'ruby_script.rb'
 
-      offenses, corrected_ruby = run_rubocop(rubocop_cli, ruby_code, filename)
+      offenses, corrected_ruby = run_rubocop(rubocop_runner, ruby_code, filename)
 
       extract_lints_from_offenses(offenses, source_map)
       corrected_ruby
@@ -197,16 +211,14 @@ module HamlLint
     # Runs RuboCop, returning the offenses and corrected code. Raises when RuboCop
     # fails to run correctly.
     #
-    # @param rubocop_cli [RuboCop::CLI] There to simplify tests by using a stub
+    # @param rubocop_runner [HamlLint::Linter::RuboCop::Runner] There to simplify tests by using a stub
     # @param ruby_code [String] The ruby code to run through RuboCop
     # @param path [String] the path to tell RuboCop we are running
     # @return [Array<RuboCop::Cop::Offense>, String]
-    def run_rubocop(rubocop_cli, ruby_code, path) # rubocop:disable Metrics
-      rubocop_status = nil
-      stdout_str, stderr_str = HamlLint::Utils.with_captured_streams(ruby_code) do
-        rubocop_cli.config_store.instance_variable_set(:@options_config, rubocop_config_for(path))
-        rubocop_status = rubocop_cli.run(rubocop_flags + ['--stdin', path])
-      end
+    def run_rubocop(rubocop_runner, ruby_code, path) # rubocop:disable Metrics
+      rubocop_runner.stdin = ruby_code
+      rubocop_runner.options_config = rubocop_config_for(path)
+      rubocop_runner.run([path])
 
       if ENV['HAML_LINT_INTERNAL_DEBUG'] == 'true'
         if OffenseCollector.offenses.empty?
@@ -220,32 +232,16 @@ module HamlLint
         end
       end
 
-      unless [::RuboCop::CLI::STATUS_SUCCESS, ::RuboCop::CLI::STATUS_OFFENSES].include?(rubocop_status)
-        if stderr_str.start_with?('Infinite loop')
-          msg = "RuboCop exited unsuccessfully with status #{rubocop_status}." \
-              ' This appears to be due to an autocorrection infinite loop.'
-          if ENV['HAML_LINT_DEBUG'] == 'true'
-            msg += " DEBUG: RuboCop's output:\n"
-            msg += stderr_str.strip
-          else
-            msg += " First line of RuboCop's output (Use --debug mode to see more):\n"
-            msg += stderr_str.each_line.first.strip
-          end
-
-          raise HamlLint::Exceptions::InfiniteLoopError, msg
-        end
-
-        raise HamlLint::Exceptions::ConfigurationError,
-              "RuboCop exited unsuccessfully with status #{rubocop_status}." \
-              ' Here is its output to check the stack trace or see if there was' \
-              " a misconfiguration:\n#{stderr_str}"
-      end
-
       if @autocorrect
-        corrected_ruby = stdout_str.partition("#{'=' * 20}\n").last
+        corrected_ruby = rubocop_runner.corrected_code
       end
 
       [OffenseCollector.offenses, corrected_ruby]
+    rescue ::RuboCop::Error => e
+      raise HamlLint::Exceptions::ConfigurationError,
+            "RuboCop raised #{e}." \
+            ' Here is its output to check the stack trace or see if there was' \
+            " a misconfiguration:\n#{e.message}\n#{e.backtrace}"
     end
 
     # Aggregates RuboCop offenses and converts them to {HamlLint::Lint}s
@@ -292,14 +288,15 @@ module HamlLint
                                    corrected: corrected)
     end
 
-    # Returns flags that will be passed to RuboCop CLI.
+    # Returns options that will be passed to the RuboCop runner.
     #
-    # @return [Array<String>]
-    def rubocop_flags
-      flags = %w[--format HamlLint::OffenseCollector]
+    # @return [Hash]
+    def rubocop_options
+      flags = %w[--format HamlLint::OffenseCollector --raise-cop-error]
       flags += ignored_cops_flags
       flags += rubocop_autocorrect_flags
-      flags
+      options, _args = ::RuboCop::Options.new.parse(flags)
+      options
     end
 
     def rubocop_autocorrect_flags
@@ -343,7 +340,7 @@ module HamlLint
 
     # Exclude ivars that don't marshal properly
     def marshal_dump
-      excluded_ivars = %i[@rubocop_cli @rubocop_config_store @user_config_path_to_config_object]
+      excluded_ivars = %i[@rubocop_runner @rubocop_config_store @user_config_path_to_config_object]
       (instance_variables - excluded_ivars).to_h do |ivar|
         [ivar, instance_variable_get(ivar)]
       end
