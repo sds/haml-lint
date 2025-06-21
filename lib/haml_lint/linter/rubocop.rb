@@ -98,9 +98,9 @@ module HamlLint
 
     def rubocop_config_for(path)
       user_config_path = ENV['HAML_LINT_RUBOCOP_CONF'] || config['config_file']
-      user_config_path ||= self.class.rubocop_config_store.user_rubocop_config_path_for(path)
+      user_config_path ||= rubocop_config_store.user_rubocop_config_path_for(path)
       user_config_path = File.absolute_path(user_config_path)
-      self.class.rubocop_config_store.config_object_pointing_to(user_config_path)
+      rubocop_config_store.config_object_pointing_to(user_config_path)
     end
 
     # Extracted here so that tests can stub this to always return true
@@ -170,13 +170,11 @@ module HamlLint
 
     # A single CLI instance is shared between files to avoid RuboCop
     # having to repeatedly reload .rubocop.yml.
-    def self.rubocop_cli # rubocop:disable Lint/IneffectiveAccessModifier
-      # The ivar is stored on the class singleton rather than the Linter instance
-      # because it can't be Marshal.dump'd (as used by Parallel.map)
+    def rubocop_cli
       @rubocop_cli ||= ::RuboCop::CLI.new
     end
 
-    def self.rubocop_config_store # rubocop:disable Lint/IneffectiveAccessModifier
+    def rubocop_config_store
       @rubocop_config_store ||= RubocopConfigStore.new
     end
 
@@ -190,7 +188,7 @@ module HamlLint
     def process_ruby_source(ruby_code, source_map)
       filename = document.file || 'ruby_script.rb'
 
-      offenses, corrected_ruby = run_rubocop(self.class.rubocop_cli, ruby_code, filename)
+      offenses, corrected_ruby = run_rubocop(rubocop_cli, ruby_code, filename)
 
       extract_lints_from_offenses(offenses, source_map)
       corrected_ruby
@@ -341,6 +339,20 @@ module HamlLint
 
       return [] if ignored_cops.empty?
       ['--except', ignored_cops.uniq.join(',')]
+    end
+
+    # Exclude ivars that don't marshal properly
+    def marshal_dump
+      excluded_ivars = %i[@rubocop_cli @rubocop_config_store @user_config_path_to_config_object]
+      (instance_variables - excluded_ivars).to_h do |ivar|
+        [ivar, instance_variable_get(ivar)]
+      end
+    end
+
+    def marshal_load(ivars)
+      ivars.each do |k, v|
+        instance_variable_set(k, v)
+      end
     end
   end
 

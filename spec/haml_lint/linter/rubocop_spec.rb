@@ -14,7 +14,7 @@ describe HamlLint::Linter::RuboCop do
     # before linter is run
     before do
       rubocop_cli.stub(:run).and_return(::RuboCop::CLI::STATUS_SUCCESS)
-      HamlLint::Linter::RuboCop.stub(:rubocop_cli).and_return(rubocop_cli)
+      subject.stub(:rubocop_cli).and_return(rubocop_cli)
       HamlLint::OffenseCollector.stub(:offenses)
                                 .and_return([offence].compact)
     end
