@@ -297,15 +297,23 @@ module HamlLint
                                    corrected: corrected)
     end
 
+    # rubocop:disable Style/MutableConstant
+    DEFAULT_FLAGS = %w[--format RuboCop::Formatter::BaseFormatter]
+    begin
+      ::RuboCop::Options.new.parse(['--raise-cop-error'])
+      DEFAULT_FLAGS << '--raise-cop-error'
+    rescue OptionParser::InvalidOption
+      # older versions of RuboCop don't support this flag
+    end
+    DEFAULT_FLAGS.freeze
+    # rubocop:enable Style/MutableConstant
+
     # Returns options that will be passed to the RuboCop runner.
     #
     # @return [Hash]
     def rubocop_options
       # using BaseFormatter suppresses any default output
-      flags = %w[
-        --format RuboCop::Formatter::BaseFormatter
-        --raise-cop-error
-      ]
+      flags = DEFAULT_FLAGS
       flags += ignored_cops_flags
       flags += rubocop_autocorrect_flags
       options, _args = ::RuboCop::Options.new.parse(flags)
