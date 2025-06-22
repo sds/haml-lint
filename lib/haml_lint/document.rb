@@ -14,6 +14,9 @@ module HamlLint
     # @return [String] Haml template file path
     attr_reader :file
 
+    # @return [Boolean] true if source was read directly from `file` on-disk (rather than from stdin)
+    attr_reader :file_on_disk
+
     # @return [Boolean] true if source changes (from autocorrect) should be written to stdout instead of disk
     attr_reader :write_to_stdout
 
@@ -39,12 +42,14 @@ module HamlLint
     # @param source [String] Haml code to parse
     # @param options [Hash]
     # @option options :file [String] file name of document that was parsed
+    # @option options :file_on_disk [Boolean] true if source was read straight from `file` on disk
     # @option options :write_to_stdout [Boolean] true if source changes should be written to stdout
     # @raise [Haml::Parser::Error] if there was a problem parsing the document
     def initialize(source, options)
       @config = options[:config]
       @file = options.fetch(:file, STRING_SOURCE)
       @write_to_stdout = options[:write_to_stdout]
+      @file_on_disk = options[:file_on_disk] && @file != STRING_SOURCE
       @source_was_changed = false
       process_source(source)
     end

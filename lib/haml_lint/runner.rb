@@ -89,6 +89,7 @@ module HamlLint
       begin
         document = HamlLint::Document.new source.contents, file: source.path,
                                                            config: config,
+                                                           file_on_disk: !source.stdin?,
                                                            write_to_stdout: @autocorrect_stdout
       rescue HamlLint::Exceptions::ParseError => e
         return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), source.path,
