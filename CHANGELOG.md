@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.63.0
+
+* Improve performance of RuboCop checks
+
 ### 0.62.0
 
 * Improve `StrictLocals` behavior toggling via comments
