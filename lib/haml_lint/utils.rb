@@ -249,34 +249,6 @@ module HamlLint
       $!
     end
 
-    # Overrides the global stdin, stdout and stderr while within the block, to
-    # push a string in stdin, and capture both stdout and stderr which are returned.
-    #
-    # @param stdin_str [String] the string to push in as stdin
-    # @param _block [Block] the block to perform with the overridden std streams
-    # @return [String, String]
-    def with_captured_streams(stdin_str, &_block)
-      original_stdin = $stdin
-      # The dup is needed so that stdin_data isn't altered (encoding-wise at least)
-      $stdin = StringIO.new(stdin_str.dup)
-      begin
-        original_stdout = $stdout
-        $stdout = StringIO.new
-        begin
-          original_stderr = $stderr
-          $stderr = StringIO.new
-          yield
-          [$stdout.string, $stderr.string]
-        ensure
-          $stderr = original_stderr
-        end
-      ensure
-        $stdout = original_stdout
-      end
-    ensure
-      $stdin = original_stdin
-    end
-
     def regexp_for_parts(parts, join_regexp, prefix: nil, suffix: nil)
       regexp_code = parts.map { |c| Regexp.quote(c) }.join(join_regexp)
       regexp_code = "#{prefix}#{regexp_code}#{suffix}"
