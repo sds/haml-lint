@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.64.0
+
+* Further improve performance of RuboCop checks by enabling RuboCop's built-in cache
+
 ### 0.63.0
 
 * Improve performance of RuboCop checks
