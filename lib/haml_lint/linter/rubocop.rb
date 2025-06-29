@@ -20,11 +20,12 @@ module HamlLint
     class Runner < ::RuboCop::Runner
       attr_reader :offenses
 
-      def run(path, code, config:)
+      def run(haml_path, ruby_code, config:, allow_cache: false)
+        @allow_cache = allow_cache
         @offenses = []
-        @options[:stdin] = code
         @config_store.instance_variable_set(:@options_config, config)
-        super([path])
+        @options[:stdin] = ruby_code
+        super([haml_path])
       end
 
       def corrected_code
@@ -38,6 +39,20 @@ module HamlLint
       # @param offenses [Array<RuboCop::Cop::Offense>]
       def file_finished(_file, offenses)
         @offenses = offenses
+      end
+
+      # RuboCop caches results by taking a hash of the file contents & path, among other things.
+      # It disables its cache when working on file-content from stdin.
+      # Unfortunately we always use RuboCop's stdin, even when we're linting a file on-disk.
+      # So, override RuboCop::Runner#cached_run? so that it'll allow caching results, so long
+      # as haml-lint itself isn't being invoked with files on stdin.
+      def cached_run?
+        return false unless @allow_cache
+
+        @cached_run ||=
+          (@options[:cache] == 'true' ||
+          (@options[:cache] != 'false' && @config_store.for_pwd.for_all_cops['UseCache'])) &&
+          !@options[:auto_gen_config]
       end
     end
 
@@ -227,7 +242,7 @@ module HamlLint
     # @param path [String] the path to tell RuboCop we are running
     # @return [Array<RuboCop::Cop::Offense>, String]
     def run_rubocop(rubocop_runner, ruby_code, path) # rubocop:disable Metrics
-      rubocop_runner.run(path, ruby_code, config: rubocop_config_for(path))
+      rubocop_runner.run(path, ruby_code, config: rubocop_config_for(path), allow_cache: @document&.file_on_disk)
 
       if ENV['HAML_LINT_INTERNAL_DEBUG'] == 'true'
         if rubocop_runner.offenses.empty?
@@ -298,6 +313,7 @@ module HamlLint
     end
 
     # rubocop:disable Style/MutableConstant
+    # Using BaseFormatter suppresses any default output
     DEFAULT_FLAGS = %w[--format RuboCop::Formatter::BaseFormatter]
     begin
       ::RuboCop::Options.new.parse(['--raise-cop-error'])
@@ -312,7 +328,6 @@ module HamlLint
     #
     # @return [Hash]
     def rubocop_options
-      # using BaseFormatter suppresses any default output
       flags = DEFAULT_FLAGS
       flags += ignored_cops_flags
       flags += rubocop_autocorrect_flags

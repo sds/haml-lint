@@ -158,14 +158,14 @@ describe HamlLint::Linter::RuboCop do
 
     context 'when the config_file specifies a relative config that disable that cop' do
       let(:config) do
-        # need to be an instance variable to avoid the TempFile cleaning up too soon
         tmp_dir = File.join(__dir__, '../../tmp')
         FileUtils.mkdir_p(tmp_dir)
-        config_file = Tempfile.new(%w[my-rubo-cop.yml], tmp_dir).tap do |f|
+        # need to be an instance variable to avoid the TempFile cleaning up too soon
+        @config_file = Tempfile.new(%w[my-rubo-cop.yml], tmp_dir).tap do |f|
           f.write("Lint/UselessAssignment:\n  Enabled: false\n")
           f.close
         end
-        rel_config_path = Pathname.new(config_file.path).relative_path_from(File.expand_path('.')).to_s
+        rel_config_path = Pathname.new(@config_file.path).relative_path_from(File.expand_path('.')).to_s
         super().merge('config_file' => rel_config_path)
       end
 
