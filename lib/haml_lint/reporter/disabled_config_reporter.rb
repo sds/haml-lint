@@ -88,7 +88,7 @@ module HamlLint
       output = []
       output << HEADING
       output << 'linters:' if linters_with_lints.any?
-      linters_with_lints.each do |linter, files|
+      linters_with_lints.sort.each do |linter, files|
         output << generate_config_for_linter(linter, files)
       end
       output.join("\n\n")
