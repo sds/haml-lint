@@ -102,15 +102,15 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
             '',
             'linters:',
             '',
+            '  # Offense count: 16',
+            '  OtherLinter:',
+            '    enabled: false',
+            '',
             '  # Offense count: 3',
             '  SomeLinter:',
             '    exclude:',
             '      - "other-filename.haml"',
             '      - "some-filename.haml"',
-            '',
-            '  # Offense count: 16',
-            '  OtherLinter:',
-            '    enabled: false'
           ].join("\n")
       end
 
@@ -125,13 +125,13 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
               '',
               'linters:',
               '',
+              '  # Offense count: 16',
+              '  OtherLinter:',
+              '    enabled: false',
+              '',
               '  # Offense count: 3',
               '  SomeLinter:',
               '    enabled: false',
-              '',
-              '  # Offense count: 16',
-              '  OtherLinter:',
-              '    enabled: false'
             ].join("\n")
         end
       end
