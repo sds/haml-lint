@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.65.0
+
+* Alphabetize generated TODO file
+
 ### 0.64.0
 
 * Further improve performance of RuboCop checks by enabling RuboCop's built-in cache
