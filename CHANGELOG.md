@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.65.1
+
+* Ensure trailing newline inserted in generated TODO file
+
 ### 0.65.0
 
 * Alphabetize generated TODO file
