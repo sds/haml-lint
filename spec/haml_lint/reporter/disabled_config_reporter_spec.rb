@@ -30,7 +30,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
 
       it 'creates a file with just a header' do
         subject
-        config.should == described_class::HEADING
+        config.should == described_class::HEADING + "\n"
       end
     end
 
@@ -111,6 +111,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
             '    exclude:',
             '      - "other-filename.haml"',
             '      - "some-filename.haml"',
+            '',
           ].join("\n")
       end
 
@@ -132,6 +133,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
               '  # Offense count: 3',
               '  SomeLinter:',
               '    enabled: false',
+              '',
             ].join("\n")
         end
       end

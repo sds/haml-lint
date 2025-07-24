@@ -91,7 +91,7 @@ module HamlLint
       linters_with_lints.sort.each do |linter, files|
         output << generate_config_for_linter(linter, files)
       end
-      output.join("\n\n")
+      output.join("\n\n") + "\n"
     end
 
     # Constructs the configuration for excluding a linter in some files.
