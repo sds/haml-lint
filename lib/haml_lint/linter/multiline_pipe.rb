@@ -26,7 +26,7 @@ module HamlLint
       # Plain text nodes are allowed to consist of a single pipe
       return if line.strip == '|'
 
-      record_lint(node, MESSAGE) if line.match(MULTILINE_PIPE_REGEX)
+      record_lint(node, MESSAGE) if line.match?(MULTILINE_PIPE_REGEX)
     end
 
     private
@@ -39,7 +39,7 @@ module HamlLint
 
     def check(node)
       line = line_text_for_node(node)
-      record_lint(node, MESSAGE) if line.match(MULTILINE_PIPE_REGEX)
+      record_lint(node, MESSAGE) if line.match?(MULTILINE_PIPE_REGEX)
     end
   end
 end

@@ -35,7 +35,7 @@ module HamlLint
     # @api private
     # @return [true, false]
     def enabled?(root)
-      return false unless matcher.match(File.basename(root.file))
+      return false unless matcher.match?(File.basename(root.file))
 
       # This linter can also be disabled by a comment at the top of the file
       first_child = root.children.first
