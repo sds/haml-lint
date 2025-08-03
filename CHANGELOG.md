@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.66.0
+
+* Improve performance of `InstanceVariables`, `MultilinePipe`, and `StrictLocals` checks
+
 ### 0.65.1
 
 * Ensure trailing newline inserted in generated TODO file
