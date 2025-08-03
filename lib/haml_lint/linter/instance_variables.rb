@@ -10,7 +10,7 @@ module HamlLint
     # @param [HamlLint::Tree::RootNode] the root of a syntax tree
     # @return [true, false] whether the linter is enabled for the tree
     def visit_root(node)
-      @enabled = matcher.match(File.basename(node.file)) ? true : false
+      @enabled = matcher.match?(File.basename(node.file))
     end
 
     # Checks for instance variables in script nodes when the linter is enabled.
