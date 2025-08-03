@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-performance
 
 AllCops:
@@ -85,7 +85,7 @@ Style/PercentLiteralDelimiters:
 
 # Renaming `has_something?` to `something?` obfuscates whether it is a "is-a" or
 # a "has-a" relationship.
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 
 Style/SignalException:
