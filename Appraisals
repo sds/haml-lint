@@ -32,6 +32,8 @@ appraise 'haml6.3' do
 end
 
 appraise 'rubocop1.0' do
+  gem 'base64'
+  gem 'ostruct'
   gem 'rubocop', '~> 1.0.0'
   gem 'rubocop-performance', '~> 1.10.0'
 end
