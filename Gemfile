@@ -16,7 +16,7 @@ gem 'overcommit', '0.68.0'
 
 # Pin tool versions (which are executed by Overcommit) for CI builds
 gem 'rubocop', '1.80.0'
-gem 'rubocop-performance', '1.25.0'
+gem 'rubocop-performance', '1.26.0'
 
 gem 'simplecov', '~> 0.22.0'
 gem 'simplecov-lcov', '~> 0.9.0'
