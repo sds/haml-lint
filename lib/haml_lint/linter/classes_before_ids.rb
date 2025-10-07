@@ -5,12 +5,6 @@ module HamlLint
   class Linter::ClassesBeforeIds < Linter
     include LinterRegistry
 
-    # Map of prefixes to the type of tag component
-    TYPES_BY_PREFIX = {
-      '.' => :class,
-      '#' => :id,
-    }.freeze
-
     MSG = '%s should be listed before %s (%s should precede %s)'
 
     def visit_tag(node)
