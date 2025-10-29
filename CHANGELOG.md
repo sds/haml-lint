@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.67.0
+
+* Add support for HAML 6.4 and 7
+
 ### 0.66.0
 
 * Improve performance of `InstanceVariables`, `MultilinePipe`, and `StrictLocals` checks
