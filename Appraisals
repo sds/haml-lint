@@ -31,6 +31,14 @@ appraise 'haml6.3' do
   gem 'haml', '~> 6.3.0'
 end
 
+appraise 'haml6.4' do
+  gem 'haml', '~> 6.4.0'
+end
+
+appraise 'haml7.0' do
+  gem 'haml', '~> 7.0.0'
+end
+
 appraise 'rubocop1.0' do
   gem 'base64'
   gem 'ostruct'
