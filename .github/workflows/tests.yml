@@ -26,6 +26,7 @@ jobs:
           - haml6.3
           - haml6.4
           - haml7.0
+          - haml7.1
           - rubocop1.0
         os:
           - ubuntu
