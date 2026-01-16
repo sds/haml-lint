@@ -16,6 +16,7 @@ jobs:
           - "3.2"
           - "3.3"
           - "3.4"
+          - "4.0"
         gemfile:
           - haml5.0
           - haml5.1
@@ -27,6 +28,7 @@ jobs:
           - haml6.4
           - haml7.0
           - haml7.1
+          - haml7.2
           - rubocop1.0
         os:
           - ubuntu
