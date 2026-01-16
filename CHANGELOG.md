@@ -1,6 +1,6 @@
 # HAML-Lint Changelog
 
-### unreleased
+### 0.69.0
 
 * Add support for HAML 7.2
 
