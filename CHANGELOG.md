@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.70.0
+
+* Fix `SpaceInsideParens` violations in wrapped tag attributes
+
 ### 0.69.0
 
 * Add support for HAML 7.2
