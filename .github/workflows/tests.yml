@@ -51,6 +51,7 @@ jobs:
 
       - name: Code coverage reporting
         uses: coverallsapp/github-action@v2
+        continue-on-error: true # Coveralls is sometimes down
         with:
           github-token: ${{ secrets.github_token }}
           flag-name: ruby${{ matrix.ruby-version }}-${{ matrix.gemfile }}-${{ matrix.os }}
@@ -63,6 +64,7 @@ jobs:
     steps:
       - name: Finalize code coverage report
         uses: coverallsapp/github-action@v2
+        continue-on-error: true
         with:
           github-token: ${{ secrets.github_token }}
           parallel-finished: true
