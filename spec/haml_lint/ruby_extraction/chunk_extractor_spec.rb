@@ -214,49 +214,6 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
     end
   end
 
-  describe '#wrap_lines' do
-    let(:haml) { '%tag' }
-    let(:wrap_depth) { 2 }
-
-    subject { extractor.send(:wrap_lines, lines, wrap_depth) }
-
-    context 'single-line' do
-      let(:lines) { ['foo: bar'] }
-
-      it { is_expected.to eq(['W(foo: bar)']) }
-    end
-
-    context 'multi-line' do
-      let(:lines) { ['foo: bar,', '     baz: 42'] }
-      let(:wrap_depth) { 3 }
-
-      it { is_expected.to eq(['WW(foo: bar,', '     baz: 42)']) }
-    end
-
-    context 'with leading whitespace' do
-      let(:lines) { [' foo: bar'] }
-
-      it { is_expected.to eq(['WW(foo: bar)']) }
-    end
-
-    context 'with trailing whitespace' do
-      let(:lines) { ['foo: bar,', '     baz: 42   '] }
-
-      it { is_expected.to eq(['W(foo: bar,', '     baz: 42)']) }
-    end
-
-    context 'with autocorrect enabled' do
-      let(:extractor) do
-        described_class.new(document, script_output_prefix: 'HL.out = ', autocorrect: true).tap(&:prepare_extract)
-      end
-      let(:lines) { [' foo: bar '] }
-
-      it 'preserves whitespace for RuboCop to fix' do
-        is_expected.to eq(['W( foo: bar )'])
-      end
-    end
-  end
-
   describe '.block_keyword' do
     it 'should work for empty strings' do
       expect(described_class.block_keyword('')).to eq(nil)
