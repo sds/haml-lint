@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### 0.71.0
+
+* Revert `SpaceInsideParens` violations in wrapped tag attributes change
+
 ### 0.70.0
 
 * Fix `SpaceInsideParens` violations in wrapped tag attributes
