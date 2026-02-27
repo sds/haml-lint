@@ -28,8 +28,12 @@ module HamlLint::RubyExtraction
     # @return [Array<String>] The ruby lines after correction by RuboCop
     attr_reader :corrected_ruby_lines
 
-    def initialize(document)
+    # @return [Symbol, nil] The autocorrect mode (:safe, :all, or nil)
+    attr_reader :autocorrect
+
+    def initialize(document, autocorrect:)
       @document = document
+      @autocorrect = autocorrect
       @ruby_chunks = nil
       @assembled_ruby_lines = nil
       @corrected_ruby_lines = nil
@@ -46,7 +50,8 @@ module HamlLint::RubyExtraction
       pick_a_script_output_prefix
 
       @ruby_chunks = HamlLint::RubyExtraction::ChunkExtractor.new(@document,
-                                                                  script_output_prefix: @script_output_prefix).extract
+                                                                  script_output_prefix: @script_output_prefix,
+                                                                  autocorrect: autocorrect).extract
       preprocess_chunks
 
       @assembled_ruby_lines = []
