@@ -227,22 +227,28 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
     end
 
     context 'multi-line' do
-      let(:lines) { ['foo: bar,', '     baz: 42'] }
+      let(:lines) { ['  foo: bar,', '     baz: 42'] }
       let(:wrap_depth) { 3 }
 
-      it { is_expected.to eq(['WW(foo: bar,', '     baz: 42)']) }
+      it { is_expected.to eq(['WW(foo: bar,', '   baz: 42)']) }
     end
 
     context 'with leading whitespace' do
       let(:lines) { [' foo: bar'] }
 
-      it { is_expected.to eq(['WW(foo: bar)']) }
+      it { is_expected.to eq(['W(foo: bar)']) }
     end
 
     context 'with trailing whitespace' do
       let(:lines) { ['foo: bar,', '     baz: 42   '] }
 
       it { is_expected.to eq(['W(foo: bar,', '     baz: 42)']) }
+    end
+
+    context 'with fully nested attributes' do
+      let(:lines) { ['  ', '    foo: bar,', '    baz: 42', ''] }
+
+      it { is_expected.to eq(['W(  ', '    foo: bar,', '    baz: 42', ')']) }
     end
 
     context 'with autocorrect enabled' do

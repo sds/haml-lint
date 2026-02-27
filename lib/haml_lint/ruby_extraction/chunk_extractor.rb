@@ -639,18 +639,17 @@ module HamlLint::RubyExtraction
       lines = lines.dup
       wrapping_prefix = 'W' * (wrap_depth - 1) + '('
 
-      # Strip leading/trailing space only when linting (not autocorrecting) to avoid
-      # SpaceInsideParens violations. During autocorrect, preserve spaces so RuboCop
-      # can fix them and map corrections back correctly.
-      if autocorrect
-        lines[0] = wrapping_prefix + lines[0]
-        lines[-1] = lines[-1] + ')'
-      else
+      # Strip leading/trailing space only when linting (not autocorrecting) to avoid SpaceInsideParens violations.
+      # Preserve spaces for fully nested attribute hashes that need no adjustment.
+      # Preserve spaces during autocorrect, so RuboCop can fix them and map corrections back correctly.
+      unless lines[0] =~ /^\s*$/ || autocorrect
         leading_spaces = lines[0][/^\s*/].length
-        wrapping_prefix = 'W' * (wrap_depth - 1 + leading_spaces) + '('
-        lines[0] = wrapping_prefix + lines[0].lstrip
-        lines[-1] = lines[-1].rstrip + ')'
+        lines = lines.map { |line| line.gsub(/^\s{,#{leading_spaces}}/, '') }
+        lines[-1] = lines[-1].gsub(/\s+\z/, '')
       end
+
+      lines[0] = wrapping_prefix + lines[0]
+      lines[-1] = lines[-1] + ')'
 
       lines
     end
