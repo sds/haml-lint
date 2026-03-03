@@ -94,7 +94,7 @@ module HamlLint
       @last_extracted_source = nil
       @last_new_ruby_source = nil
 
-      coordinator = HamlLint::RubyExtraction::Coordinator.new(document)
+      coordinator = HamlLint::RubyExtraction::Coordinator.new(document, autocorrect: @autocorrect)
 
       extracted_source = coordinator.extract_ruby_source
       if ENV['HAML_LINT_INTERNAL_DEBUG'] == 'true'

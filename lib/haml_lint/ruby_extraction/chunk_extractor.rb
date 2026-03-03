@@ -9,7 +9,7 @@ module HamlLint::RubyExtraction
   class ChunkExtractor
     include HamlLint::HamlVisitor
 
-    attr_reader :script_output_prefix
+    attr_reader :script_output_prefix, :autocorrect
 
     HAML_PARSER_INSTANCE = if Haml::VERSION >= '5.0.0'
                              ::Haml::Parser.new({})
@@ -21,9 +21,10 @@ module HamlLint::RubyExtraction
     # We don't. So the regex must be fixed to correctly detect the start of the string.
     BLOCK_KEYWORD_REGEX = Regexp.new(Haml::Parser::BLOCK_KEYWORD_REGEX.source.sub('^', '\A'))
 
-    def initialize(document, script_output_prefix:)
+    def initialize(document, script_output_prefix:, autocorrect: nil)
       @document = document
       @script_output_prefix = script_output_prefix
+      @autocorrect = autocorrect
     end
 
     def extract
@@ -637,8 +638,19 @@ module HamlLint::RubyExtraction
     def wrap_lines(lines, wrap_depth)
       lines = lines.dup
       wrapping_prefix = 'W' * (wrap_depth - 1) + '('
+
+      # Strip leading/trailing space only when linting (not autocorrecting) to avoid SpaceInsideParens violations.
+      # Preserve spaces for fully nested attribute hashes that need no adjustment.
+      # Preserve spaces during autocorrect, so RuboCop can fix them and map corrections back correctly.
+      unless lines[0] =~ /^\s*$/ || autocorrect
+        leading_spaces = lines[0][/^\s*/].length
+        lines = lines.map { |line| line.gsub(/^\s{,#{leading_spaces}}/, '') }
+        lines[-1] = lines[-1].gsub(/\s+\z/, '')
+      end
+
       lines[0] = wrapping_prefix + lines[0]
       lines[-1] = lines[-1] + ')'
+
       lines
     end
 
