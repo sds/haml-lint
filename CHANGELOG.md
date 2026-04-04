@@ -2,6 +2,7 @@
 
 ### 0.72.0
 
+* Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
 * Fix `SpaceInsideParens` violations in wrapped tag attributes
 
 ### 0.71.0
