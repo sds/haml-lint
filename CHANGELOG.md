@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
+
 ### 0.72.0
 
 * Fix `SpaceInsideParens` violations in wrapped tag attributes
