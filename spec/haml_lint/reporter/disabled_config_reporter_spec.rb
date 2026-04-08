@@ -16,6 +16,17 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
   describe '#display_report' do
     subject { reporter.display_report(report) }
 
+    let(:expected_command) { 'haml-lint --auto-gen-config' }
+    let(:expected_heading) do
+      format(described_class::HEADING_TEMPLATE,
+             command: expected_command,
+             timestamp: frozen_time,
+             version: HamlLint::VERSION)
+    end
+    let(:frozen_time) { Time.utc(2026, 1, 1) }
+
+    before { Time.stub(:now).and_return(frozen_time) }
+
     context 'when there are no lints' do
       let(:files) { ['some-filename.haml', 'other-filename.haml'] }
       let(:lints) { [] }
@@ -30,7 +41,19 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
 
       it 'creates a file with just a header' do
         subject
-        config.should == described_class::HEADING + "\n"
+        config.should == expected_heading + "\n"
+      end
+
+      context 'when --auto-gen-exclude-limit is passed' do
+        let(:reporter) do
+          described_class.new(logger, limit: 1, options: { auto_gen_exclude_limit: 1 })
+        end
+        let(:expected_command) { 'haml-lint --auto-gen-config --auto-gen-exclude-limit 1' }
+
+        it 'includes the flag in the config file heading' do
+          subject
+          config.should include('# `haml-lint --auto-gen-config --auto-gen-exclude-limit 1`')
+        end
       end
     end
 
@@ -98,7 +121,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
         subject
         config.should ==
           [
-            described_class::HEADING,
+            expected_heading,
             '',
             'linters:',
             '',
@@ -122,7 +145,7 @@ RSpec.describe HamlLint::Reporter::DisabledConfigReporter do
           subject
           config.should ==
             [
-              described_class::HEADING,
+              expected_heading,
               '',
               'linters:',
               '',
