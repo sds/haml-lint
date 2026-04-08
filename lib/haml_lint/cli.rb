@@ -102,7 +102,7 @@ module HamlLint
       if options[:auto_gen_config]
         HamlLint::Reporter::DisabledConfigReporter.new(
           log,
-          limit: options[:auto_gen_exclude_limit] || 15,
+          limit: options[:auto_gen_exclude_limit] || HamlLint::Reporter::DisabledConfigReporter::DEFAULT_EXCLUDE_LIMIT,
           options: options
         )
       else
