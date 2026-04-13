@@ -13,5 +13,6 @@ gem "simplecov", "~> 0.22.0"
 gem "simplecov-lcov", "~> 0.9.0"
 gem "base64"
 gem "ostruct"
+gem "tsort"
 
 gemspec path: "../"
