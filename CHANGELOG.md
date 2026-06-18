@@ -1,5 +1,15 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
+  * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
+    `ClassesBeforeIds`, `EmptyObjectReference`, `FinalNewline`,
+    `ImplicitDiv`, `LeadingCommentSpace`, `RubyComments`, `SpaceBeforeScript`,
+    `SpaceInsideHashAttributes`, `TagName`, `TrailingEmptyLines`, `TrailingWhitespace`, and
+    `UnnecessaryInterpolation`.
+  * Unsafe corrections (run only under `-A`): `ConsecutiveComments`, `EmptyScript`, and `MultilineScript`
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
