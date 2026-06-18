@@ -152,13 +152,16 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
       end
     end
 
-    context 'when the hash spans multiple lines' do
-      let(:haml) { "%tag{\n  class: 'status' }" }
+    # Multiline attributes were introduced in 5.2.1
+    if Haml::VERSION >= '5.2.1'
+      context 'when the hash spans multiple lines' do
+        let(:haml) { "%tag{\n  class: 'status' }" }
 
-      it 'reports the lint without correcting' do
-        subject
-        subject.lints.first.corrected.should == false
-        document.source_was_changed.should == false
+        it 'reports the lint without correcting' do
+          subject
+          subject.lints.first.corrected.should == false
+          document.source_was_changed.should == false
+        end
       end
     end
 
