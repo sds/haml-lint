@@ -85,4 +85,100 @@ describe HamlLint::Linter::ClassAttributeWithStaticValue do
 
     it { should_not report_lint }
   end
+
+  context 'with autocorrect' do
+    let(:autocorrect) { :safe }
+
+    context 'when the class is the only attribute' do
+      let(:haml) { "%tag{ class: 'status' }" }
+
+      it 'moves the class into the inline syntax' do
+        subject
+        document.source.should == '%tag.status'
+      end
+
+      it 'records the lint as corrected' do
+        subject
+        subject.lints.size.should == 1
+        subject.lints.first.corrected.should == true
+      end
+    end
+
+    context 'when the class value is a symbol' do
+      let(:haml) { '%tag{ class: :status }' }
+
+      it 'moves the class into the inline syntax' do
+        subject
+        document.source.should == '%tag.status'
+      end
+    end
+
+    context 'when the tag already has an inline class' do
+      let(:haml) { "%tag.existing{ class: 'status' }" }
+
+      it 'appends the class after the existing inline class' do
+        subject
+        document.source.should == '%tag.existing.status'
+      end
+    end
+
+    context 'when the tag is an implicit div' do
+      let(:haml) { ".foo{ class: 'status' }" }
+
+      it 'appends the class to the implicit div' do
+        subject
+        document.source.should == '.foo.status'
+      end
+    end
+
+    context 'when the hash has other attributes' do
+      let(:haml) { "%tag{ class: 'status', id: 'x' }" }
+
+      it 'reports the lint without correcting' do
+        subject
+        subject.lints.size.should == 1
+        subject.lints.first.corrected.should == false
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the class value duplicates an existing inline class' do
+      let(:haml) { "%tag.status{ class: 'status' }" }
+
+      it 'reports the lint without correcting' do
+        subject
+        subject.lints.first.corrected.should == false
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the hash spans multiple lines' do
+      let(:haml) { "%tag{\n  class: 'status' }" }
+
+      it 'reports the lint without correcting' do
+        subject
+        subject.lints.first.corrected.should == false
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the linter is disabled' do
+      let(:haml) { "-# haml-lint:disable ClassAttributeWithStaticValue\n%tag{ class: 'status' }" }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'under :all mode' do
+      let(:autocorrect) { :all }
+      let(:haml) { "%tag{ class: 'status' }" }
+
+      it 'also moves the class into the inline syntax' do
+        subject
+        document.source.should == '%tag.status'
+      end
+    end
+  end
 end
