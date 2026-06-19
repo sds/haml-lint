@@ -1,5 +1,10 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Fix `RuboCop` lints being reported on the wrong line when the same file is
+  linted more than once, by no longer reusing RuboCop's result cache (#593)
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`

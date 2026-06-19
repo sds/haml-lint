@@ -20,10 +20,5 @@ module HamlLint
     def contents
       @contents ||= @io&.read || File.read(path)
     end
-
-    # @return [boolean] true if we're reading from stdin rather than a file path
-    def stdin?
-      !@io.nil?
-    end
   end
 end
