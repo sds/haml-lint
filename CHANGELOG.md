@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Fix `Layout/EmptyLineAfterGuardClause` false positive for a blank line at the end of a `:ruby` filter
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`

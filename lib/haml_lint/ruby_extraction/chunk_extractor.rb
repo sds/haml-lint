@@ -392,8 +392,10 @@ module HamlLint::RubyExtraction
       filter_name_indent = @original_haml_lines[node.line - 1].index(/\S/)
       if node.filter_type == 'ruby'
         # The indentation in node.text is normalized, so that at least one line
-        # is indented by 0.
-        lines = node.text.split("\n")
+        # is indented by 0. Split("\n", -1) + pop keeps trailing blank lines (plain split drops them),
+        # which the end marker needs so it doesn't land right after the last code line.
+        lines = node.text.split("\n", -1)
+        lines.pop
         lines.map! do |line|
           if !/\S/.match?(line)
             # whitespace or empty
