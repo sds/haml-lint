@@ -33,6 +33,16 @@ module HamlLint::Tree
       @value[:parse] && !@value[:value].strip.empty?
     end
 
+    # Whether this tag outputs unescaped HTML via a `!` marker, e.g. `%tag!=` or
+    # `%tag!~`.
+    #
+    # @return [true,false]
+    def unescape_html?
+      return false unless contains_script?
+
+      /\A\s*[<>]*\s*!/.match?(inline_marker_source)
+    end
+
     # Returns whether this tag has a specified attribute.
     #
     # @return [true,false]
@@ -94,30 +104,18 @@ module HamlLint::Tree
     #
     # @return [Hash]
     def attributes_source
-      @attributes_source ||=
-        begin
-          _explicit_tag, static_attrs, rest =
-            source_code.scan(/\A\s*(%[-:\w]+)?([-:\w.\#]*)(.*)/m)[0]
+      parsed_attributes_source[:attributes]
+    end
 
-          attr_types = {
-            '{' => [:hash, %w[{ }]],
-            '(' => [:html, %w[( )]],
-            '[' => [:object_ref, %w[[ ]]],
-          }
-
-          attr_source = { static: static_attrs }
-          while rest
-            type, chars = attr_types[rest[0]]
-            break unless type # Not an attribute opening character, so we're done
-
-            # Can't define multiple of the same attribute type (e.g. two {...})
-            break if attr_source[type]
-
-            attr_source[type], rest = Haml::Util.balance(rest, *chars)
-          end
-
-          attr_source
-        end
+    # Source that follows the tag name and attributes. It begins with the
+    # content marker (e.g. `=`, `!=`, `~`, `!~`, or plain text).
+    #
+    # @example For `%tag.class!= foo`, this returns:
+    #   '!= foo'
+    #
+    # @return [String]
+    def inline_marker_source
+      parsed_attributes_source[:marker]
     end
 
     # Whether this tag node has a set of hash attributes defined via the
@@ -228,6 +226,40 @@ module HamlLint::Tree
     end
 
     private
+
+    # Parses the source code following the tag name once into its attribute
+    # sources and the remaining inline content marker.
+    #
+    # @return [Hash{Symbol => Object}] `:attributes` source hash (keyed by
+    #   `:static`/`:hash`/`:html`/`:object_ref`) and the `:marker` string
+    def parsed_attributes_source
+      @parsed_attributes_source ||=
+        begin
+          _explicit_tag, static_attrs, rest =
+            source_code.scan(/\A\s*(%[-:\w]+)?([-:\w.\#]*)(.*)/m)[0]
+
+          attr_types = {
+            '{' => [:hash, %w[{ }]],
+            '(' => [:html, %w[( )]],
+            '[' => [:object_ref, %w[[ ]]],
+          }
+
+          attr_source = { static: static_attrs }
+          while rest
+            type, chars = attr_types[rest[0]]
+            break unless type # Not an attribute opening character, so we're done
+
+            # Can't define multiple of the same attribute type (e.g. two {...})
+            break if attr_source[type]
+
+            attr_source[type], rest = Haml::Util.balance(rest, *chars)
+          end
+
+          # Whatever remains after the tag name and attributes begins with the
+          # content marker (e.g. `=`, `!=`, `~`, `!~`, or plain text).
+          { attributes: attr_source, marker: rest.to_s }
+        end
+    end
 
     def existing_attributes
       parsed_attrs = parsed_attributes
