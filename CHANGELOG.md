@@ -1,5 +1,11 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Keep the file, line, and linter name in the `github` reporter's log output, and add a
+  `title` to its annotations, so location information is no longer lost in the GitHub Actions
+  log
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
