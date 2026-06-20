@@ -33,8 +33,11 @@ module HamlLint
 
     def outputs_string_literal?(script_node)
       return unless tree = parse_ruby(script_node.script)
-      %i[str dstr].include?(tree.type) &&
-        !starts_with_reserved_character?(tree.children.first)
+      return unless %i[str dstr].include?(tree.type)
+
+      !starts_with_reserved_character?(tree.children.first) &&
+        !contains_escape_sequence?(tree) &&
+        !contains_significant_whitespace?(tree)
     rescue ::Parser::SyntaxError
       # Gracefully ignore syntax errors, as that's managed by a different linter
     end
@@ -44,6 +47,35 @@ module HamlLint
     def starts_with_reserved_character?(stringish)
       string = stringish.respond_to?(:children) ? stringish.children.first : stringish
       string =~ %r{\A\s*[/#-=%~]} if string.is_a?(String)
+    end
+
+    # The ordered segments of a string literal, including any interpolation.
+    # A plain `str` node has no interpolation, so it is its own only segment.
+    def string_segments(tree)
+      tree.type == :dstr ? tree.children : [tree]
+    end
+
+    # Returns whether any literal portion of the string contains a backslash
+    # escape (e.g. `\n`, `\t`, `\u202F`). Such escapes are interpreted inside
+    # a Ruby string but would be emitted verbatim as HAML plain text, so the
+    # `= "..."` form is not equivalent to the unwrapped plain text.
+    def contains_escape_sequence?(tree)
+      string_segments(tree).any? do |segment|
+        segment.type == :str && segment.location.expression.source.include?('\\')
+      end
+    end
+
+    # Returns whether the string begins or ends with whitespace. HAML strips
+    # trailing whitespace from plain text (and leading whitespace denotes
+    # indentation), so unwrapping such a string would change the output.
+    def contains_significant_whitespace?(tree)
+      segments = string_segments(tree)
+      bounded_by_whitespace?(segments.first, /\A\s/) ||
+        bounded_by_whitespace?(segments.last, /\s\z/)
+    end
+
+    def bounded_by_whitespace?(segment, pattern)
+      segment.type == :str && segment.children.first.to_s.match?(pattern)
     end
   end
 end

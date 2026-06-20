@@ -108,6 +108,36 @@ describe HamlLint::Linter::UnnecessaryStringOutput do
     it { should report_lint }
   end
 
+  context 'when script outputs a string containing a unicode escape sequence' do
+    let(:haml) { '= "#{price}\u202F\u0243"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outputs a string containing a tab escape sequence' do
+    let(:haml) { '= "first\tsecond"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outputs a string with a trailing space' do
+    let(:haml) { '= "#{label}: "' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outputs a string with a leading space' do
+    let(:haml) { '= " #{value}"' }
+
+    it { should_not report_lint }
+  end
+
+  context 'when script outputs a string whose interior contains whitespace' do
+    let(:haml) { '= "#{first} and #{second}"' }
+
+    it { should report_lint }
+  end
+
   context 'when script is a comment' do
     let(:haml) { '=# comment' }
 
