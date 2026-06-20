@@ -236,6 +236,30 @@ describe HamlLint::Tree::Node do
 
       it { should == (1..1) }
     end
+
+    context 'for a filter node whose content spans subsequent lines' do
+      let(:haml) do
+        <<-HAML
+          :javascript
+            let a = 1;
+            let b = 2;
+        HAML
+      end
+
+      it { should == (1..3) }
+
+      context 'with a blank line after the declaration' do
+        let(:haml) do
+          <<-HAML
+            :javascript
+
+              let a = 1;
+          HAML
+        end
+
+        it { should == (1..3) }
+      end
+    end
   end
 
   describe '#predecessor' do

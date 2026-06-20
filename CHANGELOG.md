@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
