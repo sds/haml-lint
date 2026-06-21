@@ -3,6 +3,7 @@
 ### Unreleased
 
 * Document that `RuboCop`'s `ignored_cops` is the way to disable a forced cop for HAML files, since `Enabled: false` in `.rubocop.yml` is overridden by the forced configuration
+* Move the RuboCop documentation into a dedicated [RuboCop integration](lib/haml_lint/linter/RuboCop.md) page and document known false positives with `Rails/*` cops in views (e.g. `Rails/FindEach`, `Rails/HttpStatus`)
 
 ### 0.73.0
 
