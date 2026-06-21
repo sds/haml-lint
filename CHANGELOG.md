@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Fix RuboCop reporting a false `Lint/UselessAssignment`
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
