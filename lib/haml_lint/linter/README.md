@@ -600,8 +600,25 @@ your `.rubocop.yml` files just as you would for a Ruby file. So you can do
 The simplest way of doing configurations for HAML would be to have a distinct
 .rubocop.yml in your `view` directory.
 
-Alternatively, you can ignored some Cop only for HamlLint using the `ignored_cop`
-option to the RuboCop linter (in your `.haml-lint.yml` configuration).
+#### Disabling a cop for HAML files
+
+Because the [forced configurations](/config/forced_rubocop_config.yml) always
+take precedence over your `.rubocop.yml`, setting `Enabled: false` there for a
+forced cop (such as `Layout/CaseIndentation`) has **no effect**. To turn such a
+cop off for HAML files, use the `ignored_cops` option of the RuboCop linter in
+your `.haml-lint.yml`:
+
+```yaml
+linters:
+  RuboCop:
+    ignored_cops:
+      - Layout/CaseIndentation
+```
+
+This passes the cops to RuboCop via `--except`, so they are skipped entirely
+(both when reporting and when auto-correcting), regardless of the forced
+configuration. The same option also works for any non-forced cop you want to
+ignore only for HAML.
 
 You can also explicitly set which RuboCop configuration to use via the
 `HAML_LINT_RUBOCOP_CONF` environment variable. This is intended to be used

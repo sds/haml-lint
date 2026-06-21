@@ -1,5 +1,9 @@
 # HAML-Lint Changelog
 
+### Unreleased
+
+* Document that `RuboCop`'s `ignored_cops` is the way to disable a forced cop for HAML files, since `Enabled: false` in `.rubocop.yml` is overridden by the forced configuration
+
 ### 0.73.0
 
 * Relax `parallel` dependency from `~> 1.10` to `>= 1.10`
