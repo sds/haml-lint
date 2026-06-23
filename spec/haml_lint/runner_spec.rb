@@ -84,7 +84,7 @@ describe HamlLint::Runner do
         before do
           runner.unstub(:extract_applicable_sources)
           runner.unstub(:collect_lints)
-          `echo "%div{ class:    'foo' } hello" > example.haml`
+          `echo "%div{ class:    'foo', id: 'x' } hello" > example.haml`
         end
 
         it 'warms up the cache in parallel' do
@@ -102,7 +102,7 @@ describe HamlLint::Runner do
 
             it 'successfully fixes those errors' do
               expect(subject.lints.detect(&:corrected).message).to match(/Unnecessary spacing detected./)
-              expect(File.read('example.haml')).to eq("%div{ class: 'foo' } hello\n")
+              expect(File.read('example.haml')).to eq("%div{ class: 'foo', id: 'x' } hello\n")
             end
           end
         end
@@ -168,6 +168,154 @@ describe HamlLint::Runner do
       end
     end
 
+    context 'with the source-level linters and autocorrect' do
+      let(:source_linters) { %w[TrailingWhitespace TrailingEmptyLines FinalNewline] }
+      let(:options) do
+        base_options.merge(files: %w[example.haml], included_linters: source_linters,
+                           autocorrect: autocorrect)
+      end
+      let(:autocorrect) { :safe }
+
+      include_context 'isolated environment'
+
+      before do
+        File.write('example.haml', "%p hello   \n%p world\t\n\n\n")
+      end
+
+      it 'fixes trailing whitespace and trailing empty lines in one run' do
+        subject
+        File.read('example.haml').should == "%p hello\n%p world\n"
+      end
+
+      it 'reports the corrected offenses' do
+        subject.lints.all?(&:corrected).should == true
+        subject.lints.size.should be >= 1
+      end
+
+      context 'under :all mode' do
+        let(:autocorrect) { :all }
+
+        it 'fixes the file the same way' do
+          subject
+          File.read('example.haml').should == "%p hello\n%p world\n"
+        end
+      end
+
+      context 'when a final newline is missing' do
+        before { File.write('example.haml', '%p hello   ') }
+
+        it 'strips whitespace and adds the final newline' do
+          subject
+          File.read('example.haml').should == "%p hello\n"
+        end
+      end
+
+      context 'with --auto-correct-only' do
+        let(:options) { super().merge(autocorrect_only: true) }
+
+        it 'rewrites the file and only reports corrected lints' do
+          subject
+          File.read('example.haml').should == "%p hello\n%p world\n"
+          subject.lints.all?(&:corrected).should == true
+        end
+      end
+
+      context 'when both FinalNewline and TrailingEmptyLines would act' do
+        before { File.write('example.haml', "%p hello\n\n\n") }
+
+        it 'leaves exactly one final newline and no trailing blank lines' do
+          subject
+          File.read('example.haml').should == "%p hello\n"
+        end
+      end
+
+      context 'even when FinalNewline is listed before the others' do
+        let(:source_linters) { %w[FinalNewline TrailingEmptyLines TrailingWhitespace] }
+
+        it 'applies FinalNewline last, keeping the other linters in order' do
+          invoked = []
+          source_linters.each do |name|
+            klass = HamlLint::Linter.const_get(name)
+            klass.any_instance.stub(:run).and_wrap_original do |original, *args, **kwargs|
+              invoked << name if kwargs.key?(:autocorrect)
+              original.call(*args, **kwargs)
+            end
+          end
+
+          subject
+
+          invoked.should == %w[TrailingEmptyLines TrailingWhitespace FinalNewline]
+        end
+      end
+    end
+
+    context 'with autocorrect across multiple files' do
+      # Linter instances are reused across files, so per-run autocorrect state
+      # must be reset between files. Otherwise a corrected file leaks its content
+      # into the next file processed by the same linter instance.
+      let(:options) do
+        base_options.merge(files: %w[a_dirty.haml b_clean.haml],
+                           included_linters: %w[TagName], autocorrect: :safe)
+      end
+
+      include_context 'isolated environment'
+
+      before do
+        File.write('a_dirty.haml', "%DIV foo\n")
+        File.write('b_clean.haml', "%span bar\n")
+      end
+
+      it 'corrects each file without leaking content between them' do
+        subject
+        File.read('a_dirty.haml').should == "%div foo\n"
+        File.read('b_clean.haml').should == "%span bar\n"
+      end
+    end
+
+    context 'with MultilineScript autocorrect across multiple files' do
+      # MultilineScript accumulates pending merges in instance state; that state
+      # must be reset between files, or the merge from a_dirty leaks into b_clean.
+      let(:options) do
+        base_options.merge(files: %w[a_dirty.haml b_clean.haml],
+                           included_linters: %w[MultilineScript], autocorrect: :all)
+      end
+
+      include_context 'isolated environment'
+
+      before do
+        File.write('a_dirty.haml', "- foo ||\n- bar\n")
+        File.write('b_clean.haml', "%p clean\n%p second\n")
+      end
+
+      it 'merges only the dirty file and leaves the clean file intact' do
+        subject
+        File.read('a_dirty.haml').should == "- foo || bar\n"
+        File.read('b_clean.haml').should == "%p clean\n%p second\n"
+      end
+    end
+
+    context 'with EmptyScript autocorrect across multiple files' do
+      # EmptyScript accumulates the lines to delete in instance state; that state
+      # must be reset between files, or a_dirty's deletion leaks into b_clean.
+      let(:options) do
+        base_options.merge(files: %w[a_dirty.haml b_clean.haml],
+                           included_linters: %w[EmptyScript], autocorrect: :all)
+      end
+
+      include_context 'isolated environment'
+
+      before do
+        File.write('a_dirty.haml', "- foo\n-\n")
+        File.write('b_clean.haml', "%p one\n%p two\n%p three\n")
+      end
+
+      it 'deletes only in the dirty file and leaves the clean file intact' do
+        subject
+        File.read('a_dirty.haml').should == "- foo\n"
+        File.read('b_clean.haml').should == "%p one\n%p two\n%p three\n"
+      end
+    end
+
     context 'with the stdin option' do
       let(:options) { base_options.merge(stdin: 'test.html.haml') }
       let(:stdin) { +"= \"Single-quoted strings offense\".capitalize\n" }
@@ -195,6 +343,19 @@ describe HamlLint::Runner do
         subject.lints.first.filename.should == 'test.html.haml'
         subject.lints.first.message.should match(/Prefer single-quoted strings/)
         $stdout.should have_received(:write).with("= 'Single-quoted strings offense'.capitalize\n")
+      end
+
+      context 'for a source-level linter' do
+        let(:options) do
+          base_options.merge(stdin: 'test.html.haml', stderr: true, autocorrect: :safe,
+                             included_linters: %w[TrailingWhitespace])
+        end
+        let(:stdin) { +"%p hello   \n" }
+
+        it 'writes the corrected source to stdout' do
+          subject.lints.first.corrected.should == true
+          $stdout.should have_received(:write).with("%p hello\n")
+        end
       end
     end
   end
