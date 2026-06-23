@@ -5,6 +5,8 @@ module HamlLint
   class Linter::TrailingEmptyLines < Linter
     include LinterRegistry
 
+    supports_autocorrect(true)
+
     DummyNode = Struct.new(:line)
 
     def visit_root(root)
@@ -16,7 +18,17 @@ module HamlLint
 
       return unless document.source.end_with?("\n\n")
 
-      record_lint(line_number, 'Files should not end with trailing empty lines')
+      record_lint(line_number, 'Files should not end with trailing empty lines',
+                  corrected: autocorrect?)
+
+      apply_autocorrect(corrected_source)
+    end
+
+    private
+
+    def corrected_source
+      last_non_empty_index = document.source_lines.rindex { |line| !line.empty? } || 0
+      "#{document.source_lines[0..last_non_empty_index].join("\n")}\n"
     end
   end
 end
