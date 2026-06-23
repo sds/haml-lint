@@ -5,6 +5,8 @@ module HamlLint
   class Linter::SpaceBeforeScript < Linter
     include LinterRegistry
 
+    supports_autocorrect(true)
+
     MESSAGE_FORMAT = 'The %s symbol should have one space separating it from code'
 
     ALLOWED_SEPARATORS = [' ', '#'].freeze
@@ -33,18 +35,23 @@ module HamlLint
       # (need to do it this way as the parser strips whitespace from node)
       return unless tag_with_text[index - 1] != ' '
 
-      record_lint(node, MESSAGE_FORMAT % '=')
+      corrected = correct_inline_script(node, text)
+      record_lint(node, MESSAGE_FORMAT % '=', corrected: corrected)
     end
 
     def visit_script(node)
       # Plain text nodes with interpolation are converted to script nodes, so we
       # need to ignore them here.
       return unless document.source_lines[node.line - 1].lstrip.start_with?('=')
-      record_lint(node, MESSAGE_FORMAT % '=') if missing_space?(node)
+      return unless missing_space?(node)
+
+      record_lint(node, MESSAGE_FORMAT % '=', corrected: correct_leading_marker(node, '='))
     end
 
     def visit_silent_script(node)
-      record_lint(node, MESSAGE_FORMAT % '-') if missing_space?(node)
+      return unless missing_space?(node)
+
+      record_lint(node, MESSAGE_FORMAT % '-', corrected: correct_leading_marker(node, '-'))
     end
 
     private
@@ -52,6 +59,32 @@ module HamlLint
     def missing_space?(node)
       text = node.script
       !ALLOWED_SEPARATORS.include?(text[0]) if text
+    end
+
+    # Inserts one space after a leading `=`/`-` marker.
+    #
+    # @return [Boolean]
+    def correct_leading_marker(node, marker)
+      index = node.line - 1
+      line = autocorrected_lines[index]
+      escaped = Regexp.escape(marker)
+      correct_line(index, line.sub(/\A(\s*#{escaped})(?=[^\s#{escaped}])/, '\1 '))
+    end
+
+    # Inserts a space after the `=` marker introducing a tag's inline script.
+    #
+    # @return [Boolean]
+    def correct_inline_script(node, text)
+      index = node.line - 1
+      line = autocorrected_lines[index]
+
+      pos = line.rindex("=#{text}")
+      if pos.nil? && (unquoted = strip_surrounding_quotes(text))
+        pos = line.rindex("=#{unquoted}")
+      end
+      return false unless pos
+
+      correct_line(index, "#{line[0..pos]} #{line[(pos + 1)..]}")
     end
   end
 end
