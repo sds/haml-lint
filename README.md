@@ -1,14 +1,14 @@
-# HAML-Lint
+<img src="doc/haml-lint.png" alt="Haml-Lint" />
 
 [![Gem Version](https://badge.fury.io/rb/haml_lint.svg)](http://badge.fury.io/rb/haml_lint)
 [![Build Status](https://github.com/sds/haml-lint/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/sds/haml-lint/actions/workflows/tests.yml?branch=main)
 [![Coverage Status](https://coveralls.io/repos/sds/haml-lint/badge.svg)](https://coveralls.io/r/sds/haml-lint)
 [![Inline docs](http://inch-ci.org/github/sds/haml-lint.svg?branch=master)](http://inch-ci.org/github/sds/haml-lint)
 
-`haml-lint` is a tool to help keep your [HAML](http://haml.info) files
-clean and readable. In addition to HAML-specific style and lint checks, it
+`haml-lint` is a tool to help keep your [Haml](http://haml.info) files
+clean and readable. In addition to Haml-specific style and lint checks, it
 integrates with [RuboCop](https://github.com/rubocop/rubocop) to bring its
-powerful static analysis tools to your HAML documents.
+powerful static analysis tools to your Haml documents.
 
 Experimental auto-correct features are also available.
 
@@ -33,7 +33,7 @@ your [SCM hooks](https://github.com/sds/overcommit).
 ## Requirements
 
  * Ruby 3+
- * HAML 5.0+
+ * Haml 5.0+
 
 ## Installation
 
@@ -64,7 +64,7 @@ You can also specify a list of files explicitly:
 haml-lint app/**/*.html.haml
 ```
 
-`haml-lint` will output any problems with your HAML, including the offending
+`haml-lint` will output any problems with your Haml, including the offending
 filename and line number.
 
 ### File Encoding
@@ -101,7 +101,7 @@ Command Line Flag          | Description
 ## Autocorrection
 
 `haml-lint` can automatically correct some of the errors that it detects. This includes
-running RuboCop on the Ruby parts of your HAML templates.
+running RuboCop on the Ruby parts of your Haml templates.
 
 * Run `haml-lint -a` to only do safe corrections (as defined by RuboCop)
 * Run `haml-lint -A` to also do unsafe corrections (as defined by RuboCop)
@@ -185,7 +185,7 @@ Lastly, in order to match your RuboCop configuration style, you can also use the
 ### [» Linters Documentation](lib/haml_lint/linter/README.md)
 
 `haml-lint` is an opinionated tool that helps you enforce a consistent style in
-your HAML files. As an opinionated tool, we've had to make calls about what we
+your Haml files. As an opinionated tool, we've had to make calls about what we
 think are the "best" style conventions, even when there are often reasonable
 arguments for more than one possible style. While all of our choices have a
 rational basis, we think that the opinions themselves are less important than
@@ -218,8 +218,8 @@ module HamlLint
 end
 ```
 
-For more information on the different types on HAML node, please look through
-the HAML parser code: https://github.com/haml/haml/blob/main/lib/haml/parser.rb
+For more information on the different types on Haml node, please look through
+the Haml parser code: https://github.com/haml/haml/blob/main/lib/haml/parser.rb
 
 Keep in mind that by default your linter will be disabled by default. So you
 will need to enable it in your configuration file to have it run.
@@ -322,7 +322,7 @@ You can increase this limit with the `auto-gen-exclude-limit` option:
 
 ### Vim
 
-If you use `vim`, you can have `haml-lint` automatically run against your HAML
+If you use `vim`, you can have `haml-lint` automatically run against your Haml
 files after saving by using the
 [Syntastic](https://github.com/vim-syntastic/syntastic) plugin. If you already
 have the plugin, just add `let g:syntastic_haml_checkers = ['haml_lint']` to
@@ -330,7 +330,7 @@ your `.vimrc`.
 
 ### Vim 8 / Neovim
 
-If you use `vim` 8+ or `Neovim`, you can have `haml-lint` automatically run against your HAML files as you type by using the [Asynchronous Lint Engine (ALE)](https://github.com/dense-analysis/ale) plugin. ALE will automatically lint your HAML files if it detects `haml-lint` in your `PATH`.
+If you use `vim` 8+ or `Neovim`, you can have `haml-lint` automatically run against your Haml files as you type by using the [Asynchronous Lint Engine (ALE)](https://github.com/dense-analysis/ale) plugin. ALE will automatically lint your Haml files if it detects `haml-lint` in your `PATH`.
 
 ### Sublime Text 3
 
@@ -411,7 +411,7 @@ attribute.
 We love getting feedback with or without pull requests. If you do add a new
 feature, please add tests so that we can avoid breaking it in the future.
 
-Speaking of tests, we use [Appraisal] to test against both HAML 5 and 6. We use
+Speaking of tests, we use [Appraisal] to test against both Haml 5 and 6. We use
 `rspec` to write our tests. To run the test suite, execute the following from
 the root directory of the repository:
 
@@ -430,13 +430,13 @@ STUB_RUBOCOP=true appraisal bundle exec rspec
 
 ## Community
 
-All major discussion surrounding HAML-Lint happens on the
+All major discussion surrounding Haml-Lint happens on the
 [GitHub issues page](https://github.com/sds/haml-lint/issues).
 
 ## Changelog
 
 If you're interested in seeing the changes and bug fixes between each version
-of `haml-lint`, read the [HAML-Lint Changelog](CHANGELOG.md).
+of `haml-lint`, read the [Haml-Lint Changelog](CHANGELOG.md).
 
 ## License
 

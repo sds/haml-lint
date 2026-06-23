@@ -18,7 +18,7 @@ module HamlLint::RubyExtraction
     attr_reader :must_start_chunk
 
     # @return [Array<Integer>] Line indexes to ignore when building the source_map. For examples,
-    #   implicit `end` are on their own line in the Ruby file, but in the HAML, they are absent.
+    #   implicit `end` are on their own line in the Ruby file, but in the Haml, they are absent.
     attr_reader :skip_line_indexes_in_source_map
 
     # @return [HamlLint::RubyExtraction::BaseChunk] The previous chunk can affect how

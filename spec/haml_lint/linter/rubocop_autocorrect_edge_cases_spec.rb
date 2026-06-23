@@ -27,7 +27,7 @@ describe HamlLint::Linter::RuboCop do
       TEXT
 
       let(:final_step_string) do
-        # HAML 5.2 allows end.join(', '), not those above
+        # Haml 5.2 allows end.join(', '), not those above
         if HamlLint::VersionComparer.for_haml < '6.0'
           <<~TEXT.strip
             - foo(bar: 123).map do |x|

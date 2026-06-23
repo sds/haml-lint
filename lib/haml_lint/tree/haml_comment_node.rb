@@ -3,7 +3,7 @@
 require_relative '../directive'
 
 module HamlLint::Tree
-  # Represents a HAML comment node.
+  # Represents a Haml comment node.
   class HamlCommentNode < Node
     def directives
       directives = super

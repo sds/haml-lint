@@ -181,7 +181,7 @@ Avoid writing multiple lines of Ruby using silent script markers (`-`).
   expression_three
 ```
 
-In general, large blocks of Ruby code in HAML templates are a smell, and this
+In general, large blocks of Ruby code in Haml templates are a smell, and this
 check serves to warn you of that. However, for the cases where having the code
 inline can improve readability, you can signal your intention by using a
 `:ruby` filter block instead.
@@ -307,7 +307,7 @@ Avoid writing `%div` when it would otherwise be implicit.
 .button
 ```
 
-HAML was designed to be concise, and not embracing this philosophy makes the
+Haml was designed to be concise, and not embracing this philosophy makes the
 tool less useful.
 
 ## Indentation
@@ -483,7 +483,7 @@ Don't span Ruby script over multiple lines using operators.
 ```
 
 While writing code this way may sometimes work, it is actually a result of a
-quirk in how HAML generates code from a template. While the following code
+quirk in how Haml generates code from a template. While the following code
 will compile and run:
 
 ```haml
@@ -581,7 +581,7 @@ See **[RuboCop integration](RuboCop.md)** for full documentation.
 
 ## RubyComments
 
-Prefer HAML's built-in comment over ad hoc comments in Ruby code.
+Prefer Haml's built-in comment over ad hoc comments in Ruby code.
 
 **Bad: Space before `#` means comment is actually treated as Ruby code**
 ```haml
@@ -590,15 +590,15 @@ Prefer HAML's built-in comment over ad hoc comments in Ruby code.
 
 **Good**
 ```haml
--# A HAML comment
+-# A Haml comment
 ```
 
-While both comment types will result in nothing being output, HAML comments
+While both comment types will result in nothing being output, Haml comments
 are a little more flexible in that you can have them span multiple lines, e.g.
 
 ```haml
 -# This is a multi-line
-   HAML comment
+   Haml comment
 ```
 
 ## SpaceBeforeScript
@@ -620,7 +620,7 @@ Separate Ruby script indicators (`-`/`=`) from their code with a single space.
 - some_value = 'Hello World'
 ```
 
-Ensuring space after `-`/`=` enforces a consistency that all HAML tags/script
+Ensuring space after `-`/`=` enforces a consistency that all Haml tags/script
 indicators are separated from their inline content by a space. Since it is
 optional to add a space after `-`/`=` but required when writing `%tag` or
 similar, the consistency is best enforced via a linter.
@@ -712,23 +712,23 @@ Tag names should not contain uppercase letters.
 %body
 ```
 
-This is a _de facto_ standard in writing HAML documents as well as HTML in
+This is a _de facto_ standard in writing Haml documents as well as HTML in
 general, as it is easier to type and matches the convention of many developer
-tools. If you are writing HAML to output XML documents, however, it is a strict
+tools. If you are writing Haml to output XML documents, however, it is a strict
 requirement.
 
 ## TrailingEmptyLines
 
-HAML documents should not contain empty lines at the end of the file.
+Haml documents should not contain empty lines at the end of the file.
 
 ## TrailingWhitespace
 
-HAML documents should not contain trailing whitespace (spaces or tabs) on any
+Haml documents should not contain trailing whitespace (spaces or tabs) on any
 lines.
 
 ## UnescapedHtml
 
-Flags use of HAML's unescaped-output markers (`!=`, `!~`, and the unescaped
+Flags use of Haml's unescaped-output markers (`!=`, `!~`, and the unescaped
 plain-text `!`), which bypass HTML escaping. Like `raw`, `html_safe`, and `h()`
 in Rails, these make it easy to accidentally introduce XSS vulnerabilities when
 the output includes user-controlled data.
@@ -773,7 +773,7 @@ Avoid outputting string expressions in Ruby when static text will suffice.
 %tag Some #{interpolated} string
 ```
 
-HAML gracefully handles string interpolation in static text, so you don't need
+Haml gracefully handles string interpolation in static text, so you don't need
 to work with Ruby strings in order to use interpolation.
 
 ## ViewLength

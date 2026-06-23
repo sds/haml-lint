@@ -3,7 +3,7 @@
 require_relative 'null_node'
 
 module HamlLint::Tree
-  # Represents the root node of a HAML document that contains all other nodes.
+  # Represents the root node of a Haml document that contains all other nodes.
   class RootNode < Node
     # The name of the file parsed to build this tree.
     #
@@ -21,7 +21,7 @@ module HamlLint::Tree
         return node if node.line_numbers.cover?(line) && node != self
       end
 
-      # Because HAML doesn't leave any trace in the nodes when it merges lines that
+      # Because Haml doesn't leave any trace in the nodes when it merges lines that
       # end with a comma, it's harder to assign a node to the second line here:
       # = some_call user,
       #             foo, bar

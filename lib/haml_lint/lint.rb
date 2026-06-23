@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint
-  # Contains information about a problem or issue with a HAML document.
+  # Contains information about a problem or issue with a Haml document.
   class Lint
     # @return [Boolean] If the error was corrected by auto-correct
     attr_reader :corrected

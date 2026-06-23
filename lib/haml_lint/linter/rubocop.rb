@@ -4,14 +4,14 @@ require 'rubocop'
 require 'tempfile'
 
 module HamlLint
-  # Runs RuboCop on the Ruby code contained within HAML templates.
+  # Runs RuboCop on the Ruby code contained within Haml templates.
   #
   # The processing is done by extracting a Ruby file that matches the content, including
-  # the indentation, of the HAML file. This way, we can run RuboCop with autocorrect
-  # and get new Ruby code which should be HAML compatible.
+  # the indentation, of the Haml file. This way, we can run RuboCop with autocorrect
+  # and get new Ruby code which should be Haml compatible.
   #
-  # The ruby extraction makes "Chunks" which wrap each HAML constructs. The Chunks can then
-  # use the corrected Ruby code to apply the corrections back in the HAML using logic specific
+  # The ruby extraction makes "Chunks" which wrap each Haml constructs. The Chunks can then
+  # use the corrected Ruby code to apply the corrections back in the Haml using logic specific
   # to each type of Chunk.
   #
   # The work is spread across the classes in the HamlLint::RubyExtraction module.
@@ -24,7 +24,7 @@ module HamlLint
         @offenses = []
         @config_store.instance_variable_set(:@options_config, config)
         # Using stdin also disables RuboCop's result cache, which is intentional:
-        # it reconstructs offense positions from the on-disk HAML, not the Ruby we
+        # it reconstructs offense positions from the on-disk Haml, not the Ruby we
         # inspected, so reusing it misreports lines (sds/haml-lint#593).
         @options[:stdin] = ruby_code
         super([haml_path])

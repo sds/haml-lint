@@ -20,7 +20,7 @@ module HamlLint
     end
 
     def visit_script(node)
-      # Some script nodes created by the HAML parser aren't actually script
+      # Some script nodes created by the Haml parser aren't actually script
       # nodes declared via the `=` marker. Check for it.
       return unless /\A\s*=/.match?(node.source_code)
 
@@ -57,7 +57,7 @@ module HamlLint
 
     # Returns whether any literal portion of the string contains a backslash
     # escape (e.g. `\n`, `\t`, `\u202F`). Such escapes are interpreted inside
-    # a Ruby string but would be emitted verbatim as HAML plain text, so the
+    # a Ruby string but would be emitted verbatim as Haml plain text, so the
     # `= "..."` form is not equivalent to the unwrapped plain text.
     def contains_escape_sequence?(tree)
       string_segments(tree).any? do |segment|
@@ -65,7 +65,7 @@ module HamlLint
       end
     end
 
-    # Returns whether the string begins or ends with whitespace. HAML strips
+    # Returns whether the string begins or ends with whitespace. Haml strips
     # trailing whitespace from plain text (and leading whitespace denotes
     # indentation), so unwrapping such a string would change the output.
     def contains_significant_whitespace?(tree)

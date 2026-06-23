@@ -31,26 +31,26 @@ example.haml:3 [W] Useless assignment to variable - unused_variable
 
 This linter respects any RuboCop-specific configuration you have set in your
 `.rubocop.yml` files, but it overwrites some configuration that is required to
-format Ruby code similarly to HAML code. Here are the
+format Ruby code similarly to Haml code. Here are the
 [forced configurations](/config/forced_rubocop_config.yml).
 
-You can reference HAML files for things such as `Exclude` configuration in your
+You can reference Haml files for things such as `Exclude` configuration in your
 `.rubocop.yml` files just as you would for a Ruby file, so you can do
-`Exclude: [foo.haml]`. The simplest way of configuring RuboCop for HAML is to
+`Exclude: [foo.haml]`. The simplest way of configuring RuboCop for Haml is to
 have a distinct `.rubocop.yml` in your `views` directory.
 
 You can also explicitly set which RuboCop configuration to use via the
 `HAML_LINT_RUBOCOP_CONF` environment variable. This is intended to be used by
 external tools which run the linter on files in temporary directories separate
-from the directory where the HAML template originally resided (and thus where the
+from the directory where the Haml template originally resided (and thus where the
 normal `.rubocop.yml` would not be picked up).
 
-## Disabling a cop for HAML files
+## Disabling a cop for Haml files
 
 Because the [forced configurations](/config/forced_rubocop_config.yml) always
 take precedence over your `.rubocop.yml`, setting `Enabled: false` there for a
 forced cop (such as `Layout/CaseIndentation`) has **no effect**. To turn such a
-cop off for HAML files, use the `ignored_cops` option of the RuboCop linter in
+cop off for Haml files, use the `ignored_cops` option of the RuboCop linter in
 your `.haml-lint.yml`:
 
 ```yaml
@@ -63,7 +63,7 @@ linters:
 This passes the cops to RuboCop via `--except`, so they are skipped entirely
 (both when reporting and when auto-correcting), regardless of the forced
 configuration. The same option also works for any non-forced cop you want to
-ignore only for HAML.
+ignore only for Haml.
 
 ## Known false positives with Rails cops
 
@@ -95,7 +95,7 @@ introduce bugs. A couple of known cases:
   is just a local passed to the partial.
 
 Since you control which cops run (by loading `rubocop-rails` and enabling them),
-the recommended fix is to disable the offending cop for HAML files. You can use
+the recommended fix is to disable the offending cop for Haml files. You can use
 the `ignored_cops` option described above:
 
 ```yaml

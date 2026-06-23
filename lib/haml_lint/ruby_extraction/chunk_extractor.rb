@@ -4,7 +4,7 @@
 module HamlLint::RubyExtraction
   # Extracts "chunks" of the haml file into instances of subclasses of HamlLint::RubyExtraction::BaseChunk.
   #
-  # This is the first step of generating Ruby code from a HAML file to then be processed by RuboCop.
+  # This is the first step of generating Ruby code from a Haml file to then be processed by RuboCop.
   # See HamlLint::RubyExtraction::BaseChunk for more details.
   class ChunkExtractor
     include HamlLint::HamlVisitor
@@ -17,7 +17,7 @@ module HamlLint::RubyExtraction
                              ::Haml::Parser.new('', {})
                            end
 
-    # HAML strips newlines when handling multi-line statements (using pipes or trailing comma)
+    # Haml strips newlines when handling multi-line statements (using pipes or trailing comma)
     # We don't. So the regex must be fixed to correctly detect the start of the string.
     BLOCK_KEYWORD_REGEX = Regexp.new(Haml::Parser::BLOCK_KEYWORD_REGEX.source.sub('^', '\A'))
 
@@ -124,7 +124,7 @@ module HamlLint::RubyExtraction
     def visit_script(node, &block)
       raw_first_line = @original_haml_lines[node.line - 1]
 
-      # ==, !, !==, &, &== means interpolation (was needed before HAML 2.2... it's still supported)
+      # ==, !, !==, &, &== means interpolation (was needed before Haml 2.2... it's still supported)
       # =, !=, &= mean actual ruby code is coming
       # Anything else is interpolation
       # The regex lists the case for Ruby Code. The 3 cases and making sure they are not followed by another = sign
@@ -169,20 +169,20 @@ module HamlLint::RubyExtraction
           prev_chunk.node == node.parent
         # When an outputting script is nested under another outputting script,
         # we want to block them from being merged together by rubocop, because
-        # this doesn't make sense in HAML.
+        # this doesn't make sense in Haml.
         # Example:
         #   = if this_is_short
         #     = this_is_short_too
         # Could become (after RuboCop):
         #   HL.out = (HL.out = this_is_short_too if this_is_short)
-        # Or in (broken) HAML style:
+        # Or in (broken) Haml style:
         #   = this_is_short_too = if this_is_short
         # By forcing this to start a chunk, there will be extra placeholders which
         # blocks rubocop from merging the lines.
         must_start_chunk = true
       elsif script_prefix != '='
         # In the few cases where &= and != are used to start the script,
-        # We need to remember and put it back in the final HAML. Fusing scripts together
+        # We need to remember and put it back in the final Haml. Fusing scripts together
         # would make that basically impossible. Instead, a script has a "first_output_prefix"
         # field for this specific case
         must_start_chunk = true
@@ -301,7 +301,7 @@ module HamlLint::RubyExtraction
 
       if attributes_code&.start_with?('{')
         # HTML-style (parens) attributes, e.g. %div(foo=foo), arrive as a synthesized hash string
-        # like '{"foo" => foo,}'. That text isn't present verbatim in the HAML, so we can't map
+        # like '{"foo" => foo,}'. That text isn't present verbatim in the Haml, so we can't map
         # RuboCop corrections back and intentionally don't autocorrect it. We still extract the
         # attribute *values* as a non-correctable chunk so RuboCop sees variables used here;
         # otherwise they look unused (false Lint/UselessAssignment, plus unsafe autocorrect that
@@ -406,7 +406,7 @@ module HamlLint::RubyExtraction
       end
     end
 
-    # Visiting a HAML filter. Lines looking like `  :javascript` and the following lines
+    # Visiting a Haml filter. Lines looking like `  :javascript` and the following lines
     # that are nested.
     def visit_filter(node)
       # For unknown reasons, haml doesn't escape interpolations in filters.
@@ -521,14 +521,14 @@ module HamlLint::RubyExtraction
     # The first and last lines may not be the complete lines from the Haml, only the Ruby parts
     # and the indentation between the first and last list.
 
-    # HAML transforms the ruby code in many ways as it parses a document. Often removing lines and/or
+    # Haml transforms the ruby code in many ways as it parses a document. Often removing lines and/or
     # indentation. This is quite annoying for us since we want the exact layout of the code to analyze it.
     #
     # This function receives the code as haml provides it and the line where it starts. It returns
     # the actual code as it is in the haml file, keeping breaks and indentation for the following lines.
     # In addition, the start position of the code in the first line.
     #
-    # The rules for handling multiline code in HAML are as follow:
+    # The rules for handling multiline code in Haml are as follow:
     # * if the line being processed ends with a space and a pipe, then append to the line (without
     #   newlines) every following lines that also end with a space and a pipe. This means the last line of
     #   the "block" also needs a pipe at the end.
@@ -727,7 +727,7 @@ module HamlLint::RubyExtraction
 
     LOOP_KEYWORDS = %w[for until while].freeze
     def self.block_keyword(code)
-      # Need to handle 'for'/'while' since regex stolen from HAML parser doesn't
+      # Need to handle 'for'/'while' since regex stolen from Haml parser doesn't
       if (keyword = code[/\A\s*([^\s]+)\s+/, 1]) && LOOP_KEYWORDS.include?(keyword)
         return keyword
       end

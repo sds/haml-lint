@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint::RubyExtraction
-  # HAML adds a `end` when code gets outdented. We need to add that to the Ruby too, this
+  # Haml adds a `end` when code gets outdented. We need to add that to the Ruby too, this
   # is the chunk for it.
   # However:
   # * we can't apply fixes to it, so there are no markers

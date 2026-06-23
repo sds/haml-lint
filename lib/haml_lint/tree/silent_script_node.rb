@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint::Tree
-  # Represents a HAML silent script node (`- some_expression`) which executes
+  # Represents a Haml silent script node (`- some_expression`) which executes
   # code without producing output.
   class SilentScriptNode < Node
     # The Ruby script contents parsed into a syntax tree.
