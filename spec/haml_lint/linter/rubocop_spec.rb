@@ -342,6 +342,55 @@ describe HamlLint::Linter::RuboCop do
     end
   end
 
+  context 'when linting the same on-disk file more than once (#593)' do
+    # sds/haml-lint#593: RuboCop's result cache reconstructs offense positions
+    # from the on-disk HAML, but we inspect the extracted Ruby via stdin, so a
+    # cache hit misreports lines. haml-lint must never use that cache.
+    include_context 'linter'
+
+    # We drive the runs manually so we can lint the file twice.
+    let(:run_method_to_use) { nil }
+
+    let(:haml) { <<~HAML }
+      %p
+        Hi \#{foo}
+        \#{ foo}
+    HAML
+
+    around do |example|
+      Dir.mktmpdir do |dir|
+        @haml_path = File.join(dir, 'foo.haml')
+        File.write(@haml_path, normalize_indent(haml))
+        # Isolated, empty cache dir: starts cold and spares the real one.
+        ::RuboCop::ResultCache.instance_variable_set(:@cache_root, nil)
+        HamlLint::Utils.with_environment('RUBOCOP_CACHE_ROOT' => File.join(dir, 'rubocop_cache')) do
+          example.run
+        end
+      ensure
+        ::RuboCop::ResultCache.instance_variable_set(:@cache_root, nil)
+      end
+    end
+
+    def lint_line_numbers
+      # Point the document at the real on-disk file so RuboCop would be able to
+      # cache results for it (the path is part of the cache key).
+      document = HamlLint::Document.new(normalize_indent(haml),
+                                        options.merge(file: @haml_path))
+      linter = described_class.new(config)
+      linter.run(document)
+      linter.lints.map(&:line)
+    end
+
+    it 'reports offenses on the same correct line on every run' do
+      # `#{ foo}` (with the extra space) is on line 3.
+      first_run = lint_line_numbers
+      second_run = lint_line_numbers
+
+      expect(first_run).to all(eq(3))
+      expect(second_run).to eq(first_run)
+    end
+  end
+
   describe '#run_rubocop' do
     subject { described_class.new(config).send(:run_rubocop, rubocop_runner, 'foo', 'some_file.rb') }
 

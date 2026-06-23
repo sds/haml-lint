@@ -2,6 +2,8 @@
 
 ### Unreleased
 
+* Fix `RuboCop` lints being reported on the wrong line when the same file is
+  linted more than once, by no longer reusing RuboCop's result cache (#593)
 * Add `UnescapedHtml` linter to flag use of `!=`/`!~`/`!` unescaped HTML output
 * Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
 * Fix RuboCop reporting a false `Lint/UselessAssignment`
