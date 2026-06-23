@@ -120,6 +120,9 @@ linters:
   TrailingWhitespace:
     enabled: true
 
+  UnescapedHtml:
+    enabled: true
+
   UnnecessaryInterpolation:
     enabled: true
 

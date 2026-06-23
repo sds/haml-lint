@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Add `UnescapedHtml` linter to flag use of `!=`/`!~`/`!` unescaped HTML output
 * Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
 * Fix RuboCop reporting a false `Lint/UselessAssignment`
 * Keep the file, line, and linter name in the `github` reporter's log output

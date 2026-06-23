@@ -31,6 +31,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [TagName](#tagname)
 * [TrailingEmptyLines](#trailingemptylines)
 * [TrailingWhitespace](#trailingwhitespace)
+* [UnescapedHtml](#unescapedhtml)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
 * [UnnecessaryStringOutput](#unnecessarystringoutput)
 * [ViewLength](#viewlength)
@@ -724,6 +725,25 @@ HAML documents should not contain empty lines at the end of the file.
 
 HAML documents should not contain trailing whitespace (spaces or tabs) on any
 lines.
+
+## UnescapedHtml
+
+Flags use of HAML's unescaped-output markers (`!=`, `!~`, and the unescaped
+plain-text `!`), which bypass HTML escaping. Like `raw`, `html_safe`, and `h()`
+in Rails, these make it easy to accidentally introduce XSS vulnerabilities when
+the output includes user-controlled data.
+
+**Bad: output is not HTML-escaped**
+```haml
+!= "Username: <strong>#{user.name}</strong>"
+%p!= user_supplied_html
+```
+
+**Good: output is HTML-escaped**
+```haml
+= "Username: #{user.name}"
+%p= user_supplied_html
+```
 
 ## UnnecessaryInterpolation
 
