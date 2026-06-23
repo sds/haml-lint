@@ -2,9 +2,14 @@
 
 ### Unreleased
 
-* Keep the file, line, and linter name in the `github` reporter's log output, and add a
-  `title` to its annotations, so location information is no longer lost in the GitHub Actions
-  log
+* Keep the file, line, and linter name in the `github` reporter's log output
+* Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
+  * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
+    `ClassesBeforeIds`, `EmptyObjectReference`, `FinalNewline`,
+    `ImplicitDiv`, `LeadingCommentSpace`, `RubyComments`, `SpaceBeforeScript`,
+    `SpaceInsideHashAttributes`, `TagName`, `TrailingEmptyLines`, `TrailingWhitespace`, and
+    `UnnecessaryInterpolation`.
+  * Unsafe corrections (run only under `-A`): `ConsecutiveComments`, `EmptyScript`, and `MultilineScript`
 
 ### 0.73.0
 
