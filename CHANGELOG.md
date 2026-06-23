@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Fix RuboCop reporting a false `Lint/UselessAssignment`
 * Keep the file, line, and linter name in the `github` reporter's log output
 * Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
   * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
