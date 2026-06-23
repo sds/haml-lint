@@ -56,7 +56,7 @@ module HamlLint
     end
 
     # Runs the linter against the given Haml document, raises if the file cannot be processed due to
-    # Syntax or HAML-Lint internal errors. (For testing purposes)
+    # Syntax or Haml-Lint internal errors. (For testing purposes)
     #
     # @param document [HamlLint::Document]
     def run_or_raise(document, autocorrect: nil)
@@ -164,7 +164,7 @@ module HamlLint
     # mutation path (`Document#change_source`), but only when the safety gate permits.
     # No-ops otherwise; `change_source` itself also no-ops when the source is unchanged.
     #
-    # @param new_source [String] the corrected HAML source
+    # @param new_source [String] the corrected Haml source
     def apply_autocorrect(new_source)
       return unless autocorrect?
       document.change_source(new_source)

@@ -9,7 +9,7 @@ module HamlLint::Tree
     end
 
     def text
-      # Seems HAML strips the starting blank lines... without them, line numbers become offset,
+      # Seems Haml strips the starting blank lines... without them, line numbers become offset,
       # breaking the source_map and auto-correct
 
       nb_blank_lines = 0

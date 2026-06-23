@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Collection of exceptions that can be raised by the HAML Lint application.
+# Collection of exceptions that can be raised by the Haml Lint application.
 module HamlLint::Exceptions
   # Raised when a {Configuration} could not be loaded from a file.
   class ConfigurationError < StandardError; end
@@ -17,7 +17,7 @@ module HamlLint::Exceptions
   # Raised when an invalid file path is specified
   class InvalidFilePath < StandardError; end
 
-  # Raised when a problem occurs parsing a HAML document.
+  # Raised when a problem occurs parsing a Haml document.
   class ParseError < ::Haml::SyntaxError; end
 
   # Raised when attempting to execute `Runner` with options that would result in

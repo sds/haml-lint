@@ -3,7 +3,7 @@
 # This is an opinionated list of which hooks are valuable to run and what their
 # out of the box settings should be.
 
-# Whether to ignore frontmatter at the beginning of HAML documents for
+# Whether to ignore frontmatter at the beginning of Haml documents for
 # frameworks such as Jekyll/Middleman
 skip_frontmatter: false
 
@@ -89,7 +89,7 @@ linters:
   RuboCop:
     enabled: true
     # Cops listed here are skipped entirely (passed to RuboCop via `--except`), both when
-    # reporting and when auto-correcting. This is the way to disable a cop only for HAML files,
+    # reporting and when auto-correcting. This is the way to disable a cop only for Haml files,
     # and the only way to disable a forced cop (see config/forced_rubocop_config.yml), since the
     # forced configuration always overrides `Enabled: false` set in your own .rubocop.yml.
     ignored_cops: []

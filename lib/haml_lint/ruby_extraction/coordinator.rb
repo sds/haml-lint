@@ -9,7 +9,7 @@ module HamlLint::RubyExtraction
   # * Preprocess the chunks to cleanup/fuse some of them.
   # * Generates the extracted ruby code from the Chunks.
   # * Handles the markers (see below)
-  # * Use the chunks to transfer corrections from corrected Ruby code back to HAML
+  # * Use the chunks to transfer corrections from corrected Ruby code back to Haml
   #
   # The generated Ruby code uses markers to wrap around the Ruby code from the chunks.
   # Those markers look like function calls, like: `haml_lint_marker_1`, so are valid ruby.
@@ -22,7 +22,7 @@ module HamlLint::RubyExtraction
     # @return [String] The prefix used for markers in the Ruby code
     attr_reader :marker_prefix
 
-    # @return [Array<String>] The ruby lines after extraction from HAML (before RuboCop)
+    # @return [Array<String>] The ruby lines after extraction from Haml (before RuboCop)
     attr_reader :assembled_ruby_lines
 
     # @return [Array<String>] The ruby lines after correction by RuboCop

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint::Tree
-  # Represents a tag node in a HAML document.
+  # Represents a tag node in a Haml document.
   class TagNode < Node
     # Computed set of attribute hashes code.
     #

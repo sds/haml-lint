@@ -2,7 +2,7 @@
 
 module HamlLint
   # Provides an interface which when included allows a class to visit nodes in
-  # the parse tree of a HAML document.
+  # the parse tree of a Haml document.
   module HamlVisitor
     def visit(node)
       # Keep track of whether this block was consumed by the visitor. This

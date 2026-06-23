@@ -132,8 +132,8 @@ module HamlLint
     # @param original_tree [Haml::Parser::ParseNode]
     # @return [Haml::Tree::Node]
     def process_tree(original_tree)
-      # Remove the trailing empty HAML comment that the parser creates to signal
-      # the end of the HAML document
+      # Remove the trailing empty Haml comment that the parser creates to signal
+      # the end of the Haml document
       if Gem::Requirement.new('~> 4.0.0').satisfied_by?(Gem.loaded_specs['haml'].version)
         original_tree.children.pop
       end
@@ -142,7 +142,7 @@ module HamlLint
       convert_tree(original_tree)
     end
 
-    # Converts a HAML parse tree to a tree of {HamlLint::Tree::Node} objects.
+    # Converts a Haml parse tree to a tree of {HamlLint::Tree::Node} objects.
     #
     # This provides a cleaner interface with which the linters can interact with
     # the parse tree.

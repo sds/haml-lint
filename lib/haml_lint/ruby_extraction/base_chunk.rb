@@ -2,13 +2,13 @@
 
 module HamlLint::RubyExtraction
   # This is the base class for all of the Chunks of HamlLint::RubyExtraction.
-  # A Chunk represents a part of the HAML file that HamlLint::Linter::RuboCop
+  # A Chunk represents a part of the Haml file that HamlLint::Linter::RuboCop
   # is processing and will insert some Ruby code in a file passed to RuboCop.
   #
-  # There are chunks for most HAML concepts, even if they don't represent Ruby
+  # There are chunks for most Haml concepts, even if they don't represent Ruby
   # code. For example, there is a chunk that represents a `%div` tag, which
   # uses a `begin` in the generated Ruby to add indentation for the children
-  # of the %div in the Ruby file just like there is in the HAML file.
+  # of the %div in the Ruby file just like there is in the Haml file.
   class BaseChunk
     COMMA_CHANGES_LINES = true
 

@@ -1,8 +1,8 @@
-# HAML-Lint Changelog
+# Haml-Lint Changelog
 
 ### 0.74.0
 
-* Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
+* Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to Haml-level linters.
   * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
     `ClassesBeforeIds`, `EmptyObjectReference`, `FinalNewline`,
     `ImplicitDiv`, `LeadingCommentSpace`, `RubyComments`, `SpaceBeforeScript`,
@@ -36,15 +36,15 @@
 
 ### 0.69.0
 
-* Add support for HAML 7.2
+* Add support for Haml 7.2
 
 ### 0.68.0
 
-* Add support for HAML 7.1
+* Add support for Haml 7.1
 
 ### 0.67.0
 
-* Add support for HAML 6.4 and 7
+* Add support for Haml 6.4 and 7
 
 ### 0.66.0
 
@@ -176,7 +176,7 @@
 
 ### 0.43.0
 
-* Add support for HAML 6.1
+* Add support for Haml 6.1
 
 ### 0.42.0
 
@@ -185,7 +185,7 @@
 
 ### 0.41.0
 
-* Add support for HAML 6 beta
+* Add support for Haml 6 beta
 * Fix Ruby extractor to keep newlines in certain cases
 
 ### 0.40.1
@@ -194,11 +194,11 @@
 
 ### 0.40.0
 
-* Fix `SpaceInsideHashAttribute` to allow attributes across multiple lines on HAML 5.2.
+* Fix `SpaceInsideHashAttribute` to allow attributes across multiple lines on Haml 5.2.
 
 ### 0.39.0
 
-* Revert change to `SpaceInsideHashAttribute` since it was not compatible across all HAML versions
+* Revert change to `SpaceInsideHashAttribute` since it was not compatible across all Haml versions
 
 ### 0.38.0
 
@@ -221,7 +221,7 @@
 
 ### 0.35.0
 
-* [#318](https://github.com/sds/haml-lint/pull/318) Fail HAML-Lint run when RuboCop exits unsuccessfully
+* [#318](https://github.com/sds/haml-lint/pull/318) Fail Haml-Lint run when RuboCop exits unsuccessfully
 * [#320](https://github.com/sds/haml-lint/pull/320) Add support for Ruby 2.7
 
 ### 0.34.2
@@ -242,16 +242,16 @@
 
 ### 0.32.0
 
-* [#305](https://github.com/sds/haml-lint/pull/305) - Support HAML 5.1
+* [#305](https://github.com/sds/haml-lint/pull/305) - Support Haml 5.1
 * [#309](https://github.com/sds/haml-lint/pull/309) - Ignore `Layout/CaseIndentation` RuboCop cop by default
 
 ### 0.31.0
 
-* Allow HAML Lint spec helpers to be loaded with `require` in other projects
+* Allow Haml Lint spec helpers to be loaded with `require` in other projects
 
 ### 0.30.0
 
-* Drop support for HAML 4.1 beta
+* Drop support for Haml 4.1 beta
 * Fix broken Rake task regression introduced in 0.28.0
 
 ### 0.29.0
@@ -276,7 +276,7 @@
 
 * Respect severity levels of RuboCop cops in reported lints
 * Fix `--fail-level` and `--fail-fast` to work when specified together
-* Fix erroneous `Layout/CommentIndentation` cop warnings for HAML multiline comments
+* Fix erroneous `Layout/CommentIndentation` cop warnings for Haml multiline comments
 * Update default RuboCop exclusions to handle new `Layout/ElseAlignment`,
   `Layout/EndOfLine`, `Metrics/BlockNesting`, and `Naming/FileName` cops which were
   moved to new namespaces. `Style/FinalNewline` was removed.
@@ -378,7 +378,7 @@
 
 ### 0.18.1
 
-* Fix handling of multiline HAML comments to not pass invalid Ruby code to
+* Fix handling of multiline Haml comments to not pass invalid Ruby code to
   RuboCop
 
 ### 0.18.0
@@ -386,7 +386,7 @@
 * Fix `RuboCop` linter's `ignored_cops` setting to not crash when empty string
 * Include linter name in JSON reporter output
 * Allow IDs before classes to be preferred in `ClassesBeforeIds` linter
-* Respect HAML comments as Ruby code comments so RuboCop cops can be
+* Respect Haml comments as Ruby code comments so RuboCop cops can be
   disabled/enabled inline via comments
 
 ### 0.17.1
@@ -451,7 +451,7 @@
 
 * Change required Ruby version from 1.9.3+ to 2.0.0+ since 1.9.3 has been EOLed
 * Fix false positives in `UnnecessaryStringOutput` for strings starting with
-  reserved HAML characters (where enclosing in a string is required)
+  reserved Haml characters (where enclosing in a string is required)
 * Add `severity` linter option allowing the severity of a lint to be explicitly
   specified
 * Fix `RuboCop` to report correct lines for cops reported on interpolated Ruby
@@ -467,10 +467,10 @@
 * Fix non-visible line number on light-colored terminal backgrounds
 * Allow files without `.haml` extension to be linted when explicitly specified
 * Ignore `Style/TrailingBlankLines` warnings from RuboCop by default
-* Fix `RuboCop` linter to not report `Style/AlignHash` warnings for HAML code
+* Fix `RuboCop` linter to not report `Style/AlignHash` warnings for Haml code
   with 1.8-style hash rockets spanning multiple lines
-* Fix `RuboCop` linter to not report `Style/EmptyElse` warnings for HAML code
-  containing `if`/`else` blocks containing only HAML filters
+* Fix `RuboCop` linter to not report `Style/EmptyElse` warnings for Haml code
+  containing `if`/`else` blocks containing only Haml filters
 * Add `MultilineScript` linter to report scripts with trailing operators that
   should be merged with the following line
 * Add `AltText` linter to report missing `alt` attributes on `img` tags
@@ -507,19 +507,19 @@
 * Fix bug where any `haml` version 4.0.6 or later would not remove the special
   end-of-document marker from parse trees
 * Fix bug where RuboCop's `Style/OneLineConditional` cop would incorrectly be
-  reported for HAML code with `if`/`else` statements
+  reported for Haml code with `if`/`else` statements
 * Fix bug where RuboCop's `Style/SymbolProc` cop would incorrectly be reported
 
 ### 0.8.0
 
 * Fix bug in `ConsecutiveSilentScripts` where control statements with nested
-  HAML would incorrectly be reported as silent scripts
+  Haml would incorrectly be reported as silent scripts
 * Fix bug in `ImplicitDiv` where incorrect lint would be reported for `div`
   tags with dynamic ids or classes
 * Fix bug in `ClassAttributeWithStaticValue` where syntax errors in attributes
   would result in a crash
 * Add `TrailingWhitespace` linter which checks for whitespace at the end of a line
-* Fix bug where last statement of HAML document would be removed when using
+* Fix bug where last statement of Haml document would be removed when using
   `haml` 4.1.0.beta.1
 * Fix bug where `ObjectReferenceAttributes` would incorrectly report a bug for
   all tags when using `haml` 4.1.0.beta.1
@@ -534,7 +534,7 @@
   in tags
 * Linter name is now included in output when error/warning reported
 * New lint `RubyComments` checks for comments that can be converted to
-  HAML comments
+  Haml comments
 * New lint `EmptyScript` checks for empty scripts (e.g. `-` followed by
   nothing)
 * New lint `LeadingCommentSpace` checks for a space after the `#` in
@@ -546,7 +546,7 @@
   that could be condensed into a single `:ruby` filter block
 * Fix bug in Linter::UnnecessaryStringOutput when tag is empty
 * Add `skip_frontmatter` option to configuration which customizes whether
-  frontmatter included at the beginning of HAML files in frameworks like
+  frontmatter included at the beginning of Haml files in frameworks like
   Jekyll/Middleman are ignored
 * Change parse tree hierarchy to use `HamlLint::Tree::Node` subclasses instead
   of the `Haml::Parser::ParseNode` struct to make working with it easier
@@ -593,7 +593,7 @@
 
 ### 0.4.1
 
-* Relax HAML dependency from `4.0.3` to `4.0`+
+* Relax Haml dependency from `4.0.3` to `4.0`+
 
 ### 0.4.0
 
@@ -622,7 +622,7 @@
 
 ### 0.1.0
 
-* New lint `SpaceBeforeScript` ensures that Ruby code in HAML indicated with the
+* New lint `SpaceBeforeScript` ensures that Ruby code in Haml indicated with the
   `-` and `=` characters always has one space separating them from code
 * New lint `RubyScript` integrates with [Rubocop](https://github.com/rubocop-hq/rubocop)
   to report lints supported by that tool (respecting any existing `.rubocop.yml`

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint
-  # Checks for Ruby comments that can be written as HAML comments.
+  # Checks for Ruby comments that can be written as Haml comments.
   class Linter::RubyComments < Linter
     include LinterRegistry
 

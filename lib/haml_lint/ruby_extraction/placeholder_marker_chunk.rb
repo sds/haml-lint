@@ -5,7 +5,7 @@ module HamlLint::RubyExtraction
   # transfer the corrections it receives to the indentation of the associated lines.
   #
   # Also used so that Rubocop doesn't think that there is nothing in `if` and other such structures,
-  # so that it does corrections that make sense for the HAML.
+  # so that it does corrections that make sense for the Haml.
   class PlaceholderMarkerChunk < BaseChunk
     def initialize(node, marker_name, indent:, nb_lines: 1, **kwargs)
       @marker_name = marker_name

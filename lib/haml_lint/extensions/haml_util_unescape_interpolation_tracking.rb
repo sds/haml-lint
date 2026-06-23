@@ -14,8 +14,8 @@ module Haml::Util
     Thread.current[:haml_lint_unescape_interpolation_to_original_cache] ||= {}
   end
 
-  # As soon as a HamlLint::Document has finished processing a HAML source, this gets called to
-  # get a copy of this cache and clear up for the next HAML processing
+  # As soon as a HamlLint::Document has finished processing a Haml source, this gets called to
+  # get a copy of this cache and clear up for the next Haml processing
   def self.unescape_interpolation_to_original_cache_take_and_wipe
     value = unescape_interpolation_to_original_cache.dup
     unescape_interpolation_to_original_cache.clear

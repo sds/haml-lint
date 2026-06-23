@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint
-  # Flags HAML's unescaped-output markers (`!=`, `!~`, and the unescaped
+  # Flags Haml's unescaped-output markers (`!=`, `!~`, and the unescaped
   # plain-text `!`), which bypass HTML escaping.
   #
   # Like `raw`, `html_safe`, and `h()` in Rails, these make it easy to

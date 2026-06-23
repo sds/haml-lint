@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HamlLint::RubyExtraction
-  # Chunk for dealing with every HAML filter other than `:ruby`
+  # Chunk for dealing with every Haml filter other than `:ruby`
   # The generated Ruby for these is just a HEREDOC, so interpolation is corrected at
   # the same time by RuboCop.
   class NonRubyFilterChunk < BaseChunk

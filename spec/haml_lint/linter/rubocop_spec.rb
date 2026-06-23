@@ -344,7 +344,7 @@ describe HamlLint::Linter::RuboCop do
 
   context 'when linting the same on-disk file more than once (#593)' do
     # sds/haml-lint#593: RuboCop's result cache reconstructs offense positions
-    # from the on-disk HAML, but we inspect the extracted Ruby via stdin, so a
+    # from the on-disk Haml, but we inspect the extracted Ruby via stdin, so a
     # cache hit misreports lines. haml-lint must never use that cache.
     include_context 'linter'
 

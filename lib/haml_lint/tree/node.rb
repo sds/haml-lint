@@ -3,13 +3,13 @@
 require_relative '../comment_configuration'
 
 module HamlLint::Tree
-  # Decorator class that provides a convenient set of helpers for HAML's
+  # Decorator class that provides a convenient set of helpers for Haml's
   # {Haml::Parser::ParseNode} struct.
   #
   # The goal is to abstract away the details of the underlying struct and
   # provide a cleaner and more uniform interface for getting information about a
   # node, as there are a number of weird/special cases in the struct returned by
-  # the HAML parser.
+  # the Haml parser.
   #
   # @abstract
   class Node
@@ -21,7 +21,7 @@ module HamlLint::Tree
     # Creates a node wrapping the given {Haml::Parser::ParseNode} struct.
     #
     # @param document [HamlLint::Document] Haml document that created this node
-    # @param parse_node [Haml::Parser::ParseNode] parse node created by HAML's parser
+    # @param parse_node [Haml::Parser::ParseNode] parse node created by Haml's parser
     def initialize(document, parse_node)
       @line = parse_node.line
       @document = document
