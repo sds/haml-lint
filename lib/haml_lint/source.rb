@@ -13,12 +13,13 @@ module HamlLint
     # @param [IO] io
     def initialize(path: nil, io: nil)
       @path = path
+      @file_path = File.expand_path(path) if path
       @io = io
     end
 
     # @return [String] Contents of the given IO object.
     def contents
-      @contents ||= @io&.read || File.read(path)
+      @contents ||= @io&.read || File.read(@file_path)
     end
   end
 end

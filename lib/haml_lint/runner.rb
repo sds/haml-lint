@@ -23,7 +23,8 @@ module HamlLint
     def run(options = {})
       @config = load_applicable_config(options)
       @sources = extract_applicable_sources(config, options)
-      @linter_selector = HamlLint::LinterSelector.new(config, options)
+      @options = options
+      @linter_selector = build_linter_selector
       @fail_fast = options.fetch(:fail_fast, false)
       @cache = {}
       @autocorrect = options[:autocorrect]
@@ -60,6 +61,17 @@ module HamlLint
     #
     # @return [HamlLint::LinterSelector]
     attr_reader :linter_selector
+
+    # Returns a fresh selector for this run.
+    #
+    # LinterSelector memoizes linter instances, and linters mutate instance
+    # state while processing a document. JRuby runs Parallel.map in threads, so
+    # parallel jobs must not share a selector.
+    #
+    # @return [HamlLint::LinterSelector]
+    def build_linter_selector
+      HamlLint::LinterSelector.new(config, @options)
+    end
 
     # Returns the {HamlLint::Configuration} that should be used given the
     # specified options.
@@ -193,7 +205,7 @@ module HamlLint
     # @return [void]
     def warm_cache
       results = Parallel.map(sources) do |source|
-        lints = collect_lints(source, linter_selector, config)
+        lints = collect_lints(source, build_linter_selector, config)
         [source.path, lints]
       end
       @cache = results.to_h

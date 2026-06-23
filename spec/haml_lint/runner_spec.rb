@@ -92,6 +92,22 @@ describe HamlLint::Runner do
           subject
         end
 
+        context 'with multiple files' do
+          let(:options) { base_options.merge(parallel: true, files: %w[example.haml other.haml]) }
+
+          before do
+            File.write('other.haml', "%p hello\n")
+            Parallel.stub(:map) do |sources, &block|
+              sources.map { |source| block.call(source) }
+            end
+          end
+
+          it 'builds a fresh linter selector for each parallel job' do
+            runner.should_receive(:build_linter_selector).exactly(3).times.and_call_original
+            subject
+          end
+        end
+
         context 'when errors are present' do
           it 'successfully reports those errors' do
             expect(subject.lints.first.message).to match(/Avoid defining `class` in attributes hash/)
