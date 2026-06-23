@@ -1,8 +1,7 @@
 # HAML-Lint Changelog
 
-### Unreleased
+### 0.74.0
 
-  linted more than once, by no longer reusing RuboCop's result cache (#593)
 * Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
   * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
     `ClassesBeforeIds`, `EmptyObjectReference`, `FinalNewline`,
@@ -14,7 +13,7 @@
 * Fix RuboCop reporting a false `Lint/UselessAssignment`
 * Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
 * Add `UnescapedHtml` linter to flag use of `!=`/`!~`/`!` unescaped HTML output
-* Fix `RuboCop` lints being reported on the wrong line when the same file is
+* Fix `RuboCop` lints being reported on the wrong line when the same file is linted more than once
 * Fix `Layout/EmptyLineAfterGuardClause` false positive for a blank line at the end of a `:ruby` filter
 * Fix `UnnecessaryStringOutput` false positives
 * Fix cached path handling in parallelized runs under JRuby
