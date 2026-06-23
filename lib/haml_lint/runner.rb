@@ -89,7 +89,6 @@ module HamlLint
       begin
         document = HamlLint::Document.new source.contents, file: source.path,
                                                            config: config,
-                                                           file_on_disk: !source.stdin?,
                                                            write_to_stdout: @autocorrect_stdout
       rescue HamlLint::Exceptions::ParseError => e
         return [HamlLint::Lint.new(HamlLint::Linter::Syntax.new(config), source.path,
@@ -122,6 +121,9 @@ module HamlLint
       lint_arrays = []
 
       autocorrecting_linters = linters.select(&:supports_autocorrect?)
+                                      .each_with_index
+                                      .sort_by { |linter, index| [linter.class.autocorrect_priority, index] }
+                                      .map(&:first)
       lint_arrays << autocorrecting_linters.map do |linter|
         linter.run(document, autocorrect: @autocorrect)
       end
