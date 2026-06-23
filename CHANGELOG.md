@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
 * Fix RuboCop reporting a false `Lint/UselessAssignment`
 * Keep the file, line, and linter name in the `github` reporter's log output
 * Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
