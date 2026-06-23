@@ -2,6 +2,7 @@
 
 ### Unreleased
 
+* Fix `UnnecessaryStringOutput` false positives
 * Fix `Layout/EmptyLineAfterGuardClause` false positive for a blank line at the end of a `:ruby` filter
 * Fix `RuboCop` lints being reported on the wrong line when the same file is
   linted more than once, by no longer reusing RuboCop's result cache (#593)
