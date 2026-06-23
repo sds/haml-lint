@@ -248,14 +248,58 @@ end
   %tag{bar: 123, hello: 42}
 
 
-!!! ignores old style attribute hash
+!!! extracts values of old style (parens) attributes so they count as used
 %tag(bar  =  123)
 ---
 haml_lint_tag_1
+HL.out = 123
 ---
 haml_lint_tag_1
+HL.out = 123
 ---
 %tag(bar  =  123)
+
+
+!!! parens attributes mark a variable as used, no false UselessAssignment
+- foo = 'foo'
+%div(foo=foo)
+---
+haml_lint_marker_1
+foo = 'foo'
+haml_lint_marker_3
+haml_lint_tag_4 $$2
+HL.out = foo
+---
+haml_lint_marker_1
+foo = 'foo'
+haml_lint_marker_3
+haml_lint_tag_4
+HL.out = foo
+---
+- foo = 'foo'
+%div(foo=foo)
+
+
+!!! parens attributes mark variables as used for every value (#648)
+- foo = 'foo'
+%div(foo=foo bar=foo)
+---
+haml_lint_marker_1
+foo = 'foo'
+haml_lint_marker_3
+haml_lint_tag_4 $$2
+HL.out = foo
+HL.out = foo
+---
+haml_lint_marker_1
+foo = 'foo'
+haml_lint_marker_3
+haml_lint_tag_4
+HL.out = foo
+HL.out = foo
+---
+- foo = 'foo'
+%div(foo=foo bar=foo)
 
 
 !!! fixes attribute methods

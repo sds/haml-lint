@@ -5,6 +5,8 @@ module HamlLint
   class Linter::ClassesBeforeIds < Linter
     include LinterRegistry
 
+    supports_autocorrect(true)
+
     MSG = '%s should be listed before %s (%s should precede %s)'
 
     def visit_tag(node)
@@ -17,13 +19,26 @@ module HamlLint
         next unless next_val.start_with?(first) &&
                     current_val.start_with?(second)
 
+        corrected = correct_attribute_order(node, components)
         failure_message = format(MSG, *(attribute_type_order + [next_val, current_val]))
-        record_lint(node, failure_message)
+        record_lint(node, failure_message, corrected: corrected)
         break
       end
     end
 
     private
+
+    # @param node [HamlLint::Tree::TagNode]
+    # @param components [Array<String>] the `.class`/`#id` components in source order
+    # @return [Boolean]
+    def correct_attribute_order(node, components)
+      classes, ids = components.partition { |component| component.start_with?('.') }
+      new_source = (ids_first? ? ids + classes : classes + ids).join
+
+      index = node.line - 1
+      line = autocorrected_lines[index]
+      correct_line(index, line.sub(node.static_attributes_source, new_source))
+    end
 
     def attribute_prefix_order
       default = %w[. #]

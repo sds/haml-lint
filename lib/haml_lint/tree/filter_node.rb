@@ -17,5 +17,18 @@ module HamlLint::Tree
 
       "#{"\n" * nb_blank_lines}#{super}"
     end
+
+    # The line numbers that are contained within the node.
+    #
+    # Unlike most nodes, a filter's content begins on the line *after* the
+    # `:filtername` declaration, so the span runs from the declaration line
+    # through all of the indented content lines.
+    #
+    # @return [Range]
+    def line_numbers
+      return super if lines.empty?
+
+      (line..(line + lines.count))
+    end
   end
 end

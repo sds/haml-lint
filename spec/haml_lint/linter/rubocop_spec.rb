@@ -234,6 +234,17 @@ describe HamlLint::Linter::RuboCop do
       it { should report_lint line: 2, corrected: false }
     end
 
+    context 'for a variable used only in HTML-style (parens) attributes' do
+      let(:haml) do
+        [
+          "- foo = 'foo'",
+          '%div(foo=foo)',
+        ].join("\n")
+      end
+
+      it { should_not report_lint }
+    end
+
     context 'indentation detection edge cases' do
       let(:run_method_to_use) { nil }
 
@@ -328,6 +339,55 @@ describe HamlLint::Linter::RuboCop do
           should_not report_lint line: 1, corrected: false
         end
       end
+    end
+  end
+
+  context 'when linting the same on-disk file more than once (#593)' do
+    # sds/haml-lint#593: RuboCop's result cache reconstructs offense positions
+    # from the on-disk HAML, but we inspect the extracted Ruby via stdin, so a
+    # cache hit misreports lines. haml-lint must never use that cache.
+    include_context 'linter'
+
+    # We drive the runs manually so we can lint the file twice.
+    let(:run_method_to_use) { nil }
+
+    let(:haml) { <<~HAML }
+      %p
+        Hi \#{foo}
+        \#{ foo}
+    HAML
+
+    around do |example|
+      Dir.mktmpdir do |dir|
+        @haml_path = File.join(dir, 'foo.haml')
+        File.write(@haml_path, normalize_indent(haml))
+        # Isolated, empty cache dir: starts cold and spares the real one.
+        ::RuboCop::ResultCache.instance_variable_set(:@cache_root, nil)
+        HamlLint::Utils.with_environment('RUBOCOP_CACHE_ROOT' => File.join(dir, 'rubocop_cache')) do
+          example.run
+        end
+      ensure
+        ::RuboCop::ResultCache.instance_variable_set(:@cache_root, nil)
+      end
+    end
+
+    def lint_line_numbers
+      # Point the document at the real on-disk file so RuboCop would be able to
+      # cache results for it (the path is part of the cache key).
+      document = HamlLint::Document.new(normalize_indent(haml),
+                                        options.merge(file: @haml_path))
+      linter = described_class.new(config)
+      linter.run(document)
+      linter.lints.map(&:line)
+    end
+
+    it 'reports offenses on the same correct line on every run' do
+      # `#{ foo}` (with the extra space) is on line 3.
+      first_run = lint_line_numbers
+      second_run = lint_line_numbers
+
+      expect(first_run).to all(eq(3))
+      expect(second_run).to eq(first_run)
     end
   end
 

@@ -31,6 +31,7 @@ Below is a list of linters supported by `haml-lint`, ordered alphabetically.
 * [TagName](#tagname)
 * [TrailingEmptyLines](#trailingemptylines)
 * [TrailingWhitespace](#trailingwhitespace)
+* [UnescapedHtml](#unescapedhtml)
 * [UnnecessaryInterpolation](#unnecessaryinterpolation)
 * [UnnecessaryStringOutput](#unnecessarystringoutput)
 * [ViewLength](#viewlength)
@@ -570,54 +571,13 @@ Option         | Description
 ---------------|--------------------------------------------
 `ignored_cops` | Array of RuboCop cops to ignore.
 
-This linter integrates with [RuboCop](https://github.com/rubocop-hq/rubocop)
-(a static code analyzer and style enforcer) to check the actual Ruby code in
-your templates.
+Integrates with [RuboCop](https://github.com/rubocop/rubocop) to check the Ruby
+code embedded in your templates, including auto-correction that is fed back into
+the template. This is the most configurable linter in `haml-lint`, with its own
+forced configurations, ways to disable individual cops, and known false-positive
+caveats.
 
-```haml
--# example.haml
-- name = 'James Brown'
-- unused_variable = 42
-
-%p Hello #{name}!
-```
-
-**Output from `haml-lint`**
-```
-example.haml:3 [W] Useless assignment to variable - unused_variable
-```
-
-This linter will respect any RuboCop-specific configuration you have
-set in your `.rubocop.yml` files, but will overwrite some configuration that
-are required to format Ruby code similarly to HAML code.
-
-Here are the [forced configurations](/config/forced_rubocop_config.yml).
-
-You can reference to HAML files for things such as "Exclude" configuration in
-your `.rubocop.yml` files just as you would for a Ruby file. So you can do
-`Exclude: [foo.haml]`.
-
-The simplest way of doing configurations for HAML would be to have a distinct
-.rubocop.yml in your `view` directory.
-
-Alternatively, you can ignored some Cop only for HamlLint using the `ignored_cop`
-option to the RuboCop linter (in your `.haml-lint.yml` configuration).
-
-You can also explicitly set which RuboCop configuration to use via the
-`HAML_LINT_RUBOCOP_CONF` environment variable. This is intended to be used
-by external tools which run the linter on files in temporary directories
-separate from the directory where the HAML template originally resided (and
-thus where the normal `.rubocop.yml` would be ignored picked up).
-
-### Displaying Cop Names
-
-You can display the name of the cop by adding the following to your
-`.rubocop.yml` configuration:
-
-```yaml
-AllCops:
-  DisplayCopNames: true
-```
+See **[RuboCop integration](RuboCop.md)** for full documentation.
 
 ## RubyComments
 
@@ -765,6 +725,25 @@ HAML documents should not contain empty lines at the end of the file.
 
 HAML documents should not contain trailing whitespace (spaces or tabs) on any
 lines.
+
+## UnescapedHtml
+
+Flags use of HAML's unescaped-output markers (`!=`, `!~`, and the unescaped
+plain-text `!`), which bypass HTML escaping. Like `raw`, `html_safe`, and `h()`
+in Rails, these make it easy to accidentally introduce XSS vulnerabilities when
+the output includes user-controlled data.
+
+**Bad: output is not HTML-escaped**
+```haml
+!= "Username: <strong>#{user.name}</strong>"
+%p!= user_supplied_html
+```
+
+**Good: output is HTML-escaped**
+```haml
+= "Username: #{user.name}"
+%p= user_supplied_html
+```
 
 ## UnnecessaryInterpolation
 

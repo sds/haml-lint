@@ -3,6 +3,19 @@
 ### Unreleased
 
 * Fix `Layout/EmptyLineAfterGuardClause` false positive for a blank line at the end of a `:ruby` filter
+* Fix `RuboCop` lints being reported on the wrong line when the same file is
+  linted more than once, by no longer reusing RuboCop's result cache (#593)
+* Add `UnescapedHtml` linter to flag use of `!=`/`!~`/`!` unescaped HTML output
+* Fix `LineLength` not being disabled by `haml-lint:disable` comments inside filter blocks such as `:javascript` and `:css`
+* Fix RuboCop reporting a false `Lint/UselessAssignment`
+* Keep the file, line, and linter name in the `github` reporter's log output
+* Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to HAML-level linters.
+  * Safe corrections (run under both `-a` and `-A`): `ClassAttributeWithStaticValue`,
+    `ClassesBeforeIds`, `EmptyObjectReference`, `FinalNewline`,
+    `ImplicitDiv`, `LeadingCommentSpace`, `RubyComments`, `SpaceBeforeScript`,
+    `SpaceInsideHashAttributes`, `TagName`, `TrailingEmptyLines`, `TrailingWhitespace`, and
+    `UnnecessaryInterpolation`.
+  * Unsafe corrections (run only under `-A`): `ConsecutiveComments`, `EmptyScript`, and `MultilineScript`
 
 ### 0.73.0
 

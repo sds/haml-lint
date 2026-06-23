@@ -179,4 +179,87 @@ describe HamlLint::Linter::SpaceBeforeScript do
       it { should_not report_lint }
     end
   end
+
+  context 'with autocorrect' do
+    let(:autocorrect) { :safe }
+
+    context 'when a silent script has no separating space' do
+      let(:haml) { '-some_code' }
+
+      it 'inserts a space after the `-`' do
+        subject
+        document.source.should == '- some_code'
+      end
+
+      it 'records the lint as corrected' do
+        subject
+        subject.lints.first.corrected.should == true
+      end
+    end
+
+    context 'when an output script has no separating space' do
+      let(:haml) { '=some_code' }
+
+      it 'inserts a space after the `=`' do
+        subject
+        document.source.should == '= some_code'
+      end
+    end
+
+    context 'when an inline tag script has no separating space' do
+      let(:haml) { "%span='there'" }
+
+      it 'inserts a space after the `=`' do
+        subject
+        document.source.should == "%span= 'there'"
+      end
+    end
+
+    context 'when an inline tag script with interpolation has no separating space' do
+      let(:haml) { '%p="Some #{interpolated} text"' }
+
+      it 'inserts a space after the `=`' do
+        subject
+        document.source.should == '%p= "Some #{interpolated} text"'
+      end
+    end
+
+    context 'when the script already has a separating space' do
+      let(:haml) { '= some_code' }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the linter is disabled' do
+      let(:haml) { "-# haml-lint:disable SpaceBeforeScript\n=some_code" }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when an inline script spreads across multiple lines via comma' do
+      let(:haml) { "%tag=link_to 'Link',\n             path\n%tag" }
+
+      it 'reports the lint without correcting it' do
+        subject
+        document.source_was_changed.should == false
+        subject.lints.first.corrected.should == false
+      end
+    end
+
+    context 'under :all mode' do
+      let(:autocorrect) { :all }
+      let(:haml) { '=some_code' }
+
+      it 'also inserts a space' do
+        subject
+        document.source.should == '= some_code'
+      end
+    end
+  end
 end
