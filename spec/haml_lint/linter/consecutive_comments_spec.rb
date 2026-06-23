@@ -63,4 +63,45 @@ describe HamlLint::Linter::ConsecutiveComments do
       it { should_not report_lint }
     end
   end
+
+  context 'with autocorrect' do
+    context 'under :safe mode (unsafe linter is not applied)' do
+      let(:autocorrect) { :safe }
+      let(:haml) { "-# A collection\n-# of many\n-# consecutive comments" }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+
+      it 'records the lint as not corrected' do
+        subject
+        subject.lints.first.corrected.should == false
+      end
+    end
+
+    context 'under :all mode' do
+      let(:autocorrect) { :all }
+      let(:haml) { "-# A collection\n-# of many\n-# consecutive comments" }
+
+      it 'merges them into a single multiline comment' do
+        subject
+        document.source.should == "-# A collection\n   of many\n   consecutive comments"
+      end
+
+      it 'records the lint as corrected' do
+        subject
+        subject.lints.first.corrected.should == true
+      end
+
+      context 'but the linter is disabled in the file' do
+        let(:haml) { "-# haml-lint:disable ConsecutiveComments\n" + super() }
+
+        it 'does not change the source' do
+          subject
+          document.source_was_changed.should == false
+        end
+      end
+    end
+  end
 end
