@@ -63,6 +63,7 @@ module HamlLint
       @document = document
       @lints = []
       @autocorrect = autocorrect
+      reset_autocorrect_state
       visit(document.tree)
       @lints
     end
@@ -85,6 +86,30 @@ module HamlLint
       self.class.supports_autocorrect?
     end
 
+    # Returns whether this linter's autocorrect is safe. Defaults to true (safe)
+    # unless the linter declares otherwise via `autocorrect_safe(false)`.
+    #
+    # @return [Boolean]
+    def self.autocorrect_safe?
+      @autocorrect_safe != false
+    end
+
+    # The autocorrect ordering priority for this linter. During autocorrect,
+    # linters with a lower priority run first and higher priority run later,
+    # against the same (already mutated) document. Linters with the same priority
+    # keep their default (alphabetical) order.
+    #
+    # Called with an argument (e.g. `autocorrect_priority(1)`) in a linter's
+    # top-level scope, it sets the priority; called with no argument it reads it.
+    # The default, when never set, is 0.
+    #
+    # @param value [Integer, nil] the new priority, or nil to read the current one
+    # @return [Integer]
+    def self.autocorrect_priority(value = nil)
+      @autocorrect_priority = value unless value.nil?
+      @autocorrect_priority || 0
+    end
+
     private
 
     attr_reader :config, :document
@@ -95,6 +120,92 @@ module HamlLint
     # @params value [Boolean] The new value for supports_autocorrect
     private_class_method def self.supports_autocorrect(value)
       @supports_autocorrect = value
+    end
+
+    # Linters can call autocorrect_safe(false) in their top-level scope to declare that their
+    # autocorrect is unsafe, meaning it only runs under `--auto-correct-all` (`:all`).
+    # The default, when not called, is safe.
+    #
+    # @params value [Boolean] The new value for autocorrect_safe
+    private_class_method def self.autocorrect_safe(value)
+      @autocorrect_safe = value
+    end
+
+    # Resets the per-run autocorrect bookkeeping. Linter instances are reused
+    # across files, so subclasses that accumulate extra autocorrect state during
+    # a traversal (e.g. a list of lines to merge or delete) must override this,
+    # calling `super`, to clear that state between files. Otherwise corrections
+    # from one file leak into the next.
+    def reset_autocorrect_state
+      @autocorrected_lines = nil
+      @autocorrect_changed = false
+    end
+
+    # Whether the linter is currently allowed to apply autocorrections, given the active
+    # autocorrect mode and this linter's declared safety:
+    #
+    #   * safe linters correct under both `:safe` and `:all`;
+    #   * unsafe linters correct only under `:all`;
+    #   * with no mode (`nil`) nothing is corrected (detection only).
+    #
+    # @return [Boolean]
+    def autocorrect?
+      case @autocorrect
+      when :all
+        true
+      when :safe
+        self.class.autocorrect_safe?
+      else
+        false
+      end
+    end
+
+    # Applies a corrected, full-document source to the document through the single
+    # mutation path (`Document#change_source`), but only when the safety gate permits.
+    # No-ops otherwise; `change_source` itself also no-ops when the source is unchanged.
+    #
+    # @param new_source [String] the corrected HAML source
+    def apply_autocorrect(new_source)
+      return unless autocorrect?
+      document.change_source(new_source)
+    end
+
+    # Lazily-initialized working copy of the document's source lines, used to
+    # accumulate line-level corrections during a single tree traversal. Editing
+    # this copy (rather than calling `apply_autocorrect` per node) avoids
+    # reparsing the document mid-walk, which would invalidate the tree being
+    # visited.
+    #
+    # @return [Array<String>]
+    def autocorrected_lines
+      @autocorrected_lines ||= document.source_lines.dup
+    end
+
+    # Replaces a single source line (0-indexed) in the working copy, but only
+    # when autocorrect is permitted and the new text actually differs.
+    #
+    # @param index [Integer] the 0-indexed line to replace
+    # @param new_text [String] the corrected line
+    # @return [Boolean] true if a change was recorded, false otherwise
+    def correct_line(index, new_text)
+      return false unless autocorrect?
+      return false if autocorrected_lines[index] == new_text
+
+      autocorrected_lines[index] = new_text
+      @autocorrect_changed = true
+    end
+
+    # Flushes any corrections accumulated via `correct_line` through the single
+    # mutation path, once, after the whole tree has been visited. Defined on the
+    # base so per-node linters need no boilerplate; no-ops for linters that never
+    # accumulated a change (including those that apply within `visit_root`).
+    #
+    # NOTE: a linter that overrides `after_visit_root` must call `super`, or
+    # accumulated corrections will not be applied.
+    def after_visit_root(_node)
+      return unless @autocorrect_changed
+
+      apply_autocorrect(autocorrected_lines.join("\n"))
     end
 
     # Record a lint for reporting back to the user.

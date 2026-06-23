@@ -300,7 +300,13 @@ module HamlLint::RubyExtraction
       end
 
       if attributes_code&.start_with?('{')
-        # Looks like the .foo(bar = 123) case. Ignoring.
+        # HTML-style (parens) attributes, e.g. %div(foo=foo), arrive as a synthesized hash string
+        # like '{"foo" => foo,}'. That text isn't present verbatim in the HAML, so we can't map
+        # RuboCop corrections back and intentionally don't autocorrect it. We still extract the
+        # attribute *values* as a non-correctable chunk so RuboCop sees variables used here;
+        # otherwise they look unused (false Lint/UselessAssignment, plus unsafe autocorrect that
+        # removes the assignment). See issue #648.
+        add_html_attributes_value_usage(node, attributes_code, indent: indent)
         attributes_code = nil
       end
 
@@ -343,6 +349,22 @@ module HamlLint::RubyExtraction
                                              indent_to_remove: extra_indent)
 
       final_line_index
+    end
+
+    # For HTML-style (parens) attributes, adds the attribute value expressions as a
+    # non-autocorrectable chunk purely so RuboCop counts the variables/methods used there.
+    def add_html_attributes_value_usage(node, attributes_code, indent:)
+      ast = parse_ruby(attributes_code)
+      return unless ast&.type == :hash
+
+      value_sources = ast.children.filter_map do |pair|
+        next unless pair.type == :pair
+        pair.children[1]&.source
+      end
+      return if value_sources.empty?
+
+      lines = value_sources.map { |value| "#{' ' * indent}#{script_output_prefix}#{value}" }
+      @ruby_chunks << AdHocChunk.new(node, lines)
     end
 
     # Visiting the script besides tag. The part to the right of the equal sign of

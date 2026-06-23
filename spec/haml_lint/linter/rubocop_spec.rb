@@ -234,6 +234,17 @@ describe HamlLint::Linter::RuboCop do
       it { should report_lint line: 2, corrected: false }
     end
 
+    context 'for a variable used only in HTML-style (parens) attributes' do
+      let(:haml) do
+        [
+          "- foo = 'foo'",
+          '%div(foo=foo)',
+        ].join("\n")
+      end
+
+      it { should_not report_lint }
+    end
+
     context 'indentation detection edge cases' do
       let(:run_method_to_use) { nil }
 

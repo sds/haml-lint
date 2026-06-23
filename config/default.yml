@@ -88,8 +88,10 @@ linters:
 
   RuboCop:
     enabled: true
-    # Users can ignore cops using this configuration instead of editing their rubocop configuration.
-    # Mostly there for backward compatibility.
+    # Cops listed here are skipped entirely (passed to RuboCop via `--except`), both when
+    # reporting and when auto-correcting. This is the way to disable a cop only for HAML files,
+    # and the only way to disable a forced cop (see config/forced_rubocop_config.yml), since the
+    # forced configuration always overrides `Enabled: false` set in your own .rubocop.yml.
     ignored_cops: []
 
   RubyComments:
