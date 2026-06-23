@@ -121,6 +121,9 @@ module HamlLint
       lint_arrays = []
 
       autocorrecting_linters = linters.select(&:supports_autocorrect?)
+                                      .each_with_index
+                                      .sort_by { |linter, index| [linter.class.autocorrect_priority, index] }
+                                      .map(&:first)
       lint_arrays << autocorrecting_linters.map do |linter|
         linter.run(document, autocorrect: @autocorrect)
       end

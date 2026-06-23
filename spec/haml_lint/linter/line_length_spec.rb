@@ -48,6 +48,44 @@ describe HamlLint::Linter::LineLength do
     it { should report_lint line: 6 }
   end
 
+  context 'when a long line within a filter block is disabled' do
+    let(:haml) do
+      [
+        '-# haml-lint:disable LineLength',
+        ':javascript',
+        '  let thisIsAVeryLongLineThatGoesWellBeyondTheConfiguredMaximumLineLengthLimitForThisLinter = true;',
+      ].join("\n")
+    end
+
+    it { should_not report_lint }
+
+    context 'across multiple content lines' do
+      let(:haml) do
+        [
+          '-# haml-lint:disable LineLength',
+          ':javascript',
+          '  let a = 1;',
+          '  let thisIsAVeryLongLineThatGoesWellBeyondTheConfiguredMaximumLineLengthLimitForThisLinter = true;',
+          '  let b = 2;',
+        ].join("\n")
+      end
+
+      it { should_not report_lint }
+    end
+
+    context 'within a :css filter' do
+      let(:haml) do
+        [
+          '-# haml-lint:disable LineLength',
+          ':css',
+          '  .hero { background-image: url(https://example.com/assets/images/hero-background.png); }',
+        ].join("\n")
+      end
+
+      it { should_not report_lint }
+    end
+  end
+
   context 'when there is a directive on the line before a multiline pipe' do
     let(:haml) do
       <<-HAML

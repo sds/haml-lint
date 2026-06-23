@@ -43,17 +43,30 @@ describe HamlLint::Reporter::GithubReporter do
         output[-1].should == "\n"
       end
 
-      it 'prints the filename for each lint' do
+      it 'sets the workflow command file property for each lint' do
         subject
         filenames.each do |filename|
-          output.scan(/#{filename}/).count.should == 1
+          output.scan(/file=#{filename}/).count.should == 1
         end
       end
 
-      it 'prints the line number for each lint' do
+      it 'sets the workflow command line property for each lint' do
         subject
         lines.each do |line|
-          output.scan(/#{line}/).count.should == 1
+          output.scan(/line=#{line}/).count.should == 1
+        end
+      end
+
+      it 'sets the annotation title to the linter name for each lint' do
+        subject
+        output.scan(/title=haml-lint SomeLinter/).count.should == 2
+      end
+
+      it 'keeps the location and linter name in the message so the log stays readable' do
+        subject
+        filenames.each_with_index do |filename, index|
+          location = "#{filename}:#{lines[index]} SomeLinter: #{descriptions[index]}"
+          output.scan(/#{Regexp.escape(location)}/).count.should == 1
         end
       end
 
@@ -84,8 +97,31 @@ describe HamlLint::Reporter::GithubReporter do
         end
       end
 
+      context 'when a message contains characters that delimit workflow commands' do
+        let(:descriptions) { ["Use 100%% width\nand height", 'Description of lint 2'] }
+
+        it 'escapes them so the command stays on a single line' do
+          subject
+          output.count("\n").should == 2
+          output.should include('Use 100%25%25 width%0Aand height')
+        end
+      end
+
       context 'when lint has no associated linter' do
         let(:linter) { nil }
+
+        it 'falls back to a generic annotation title' do
+          subject
+          output.scan(/title=haml-lint::/).count.should == 2
+        end
+
+        it 'keeps the location in the message without a linter name' do
+          subject
+          filenames.each_with_index do |filename, index|
+            location = "#{filename}:#{lines[index]} #{descriptions[index]}"
+            output.scan(/#{Regexp.escape(location)}/).count.should == 1
+          end
+        end
 
         it 'prints the description for each lint' do
           subject
