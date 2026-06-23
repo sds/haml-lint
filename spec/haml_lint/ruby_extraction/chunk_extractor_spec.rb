@@ -93,6 +93,25 @@ describe HamlLint::RubyExtraction::ChunkExtractor do
     end
   end
 
+  describe '#extract' do
+    let(:ruby_filter_chunk) do
+      chunks = described_class.new(document, script_output_prefix: 'HL.out = ').extract
+      chunks.find { |chunk| chunk.is_a?(HamlLint::RubyExtraction::RubyFilterChunk) }
+    end
+
+    context 'with a :ruby filter ending in a blank line' do
+      # A trailing blank line must be kept so that the chunk's end marker doesn't
+      # land right after the last line of code, which would make cops such as
+      # Layout/EmptyLineAfterGuardClause misfire. (String#split drops trailing
+      # empty strings unless given -1.)
+      let(:haml) { "- collection.each do |item|\n  :ruby\n    a = item.foo\n    next if a.nil?\n\n  %p= a\n" }
+
+      it 'preserves the trailing blank line in the extracted ruby' do
+        expect(ruby_filter_chunk.ruby_lines).to eq(['  a = item.foo', '  next if a.nil?', ''])
+      end
+    end
+  end
+
   describe '#extract_raw_tag_attributes_ruby_lines' do
     context 'with a tag attributes' do
       def do_test
