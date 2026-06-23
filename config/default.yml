@@ -50,8 +50,8 @@ linters:
 
   Indentation:
     enabled: true
-    character: space # or tab
-    width: 2 # ignored if character == tab
+    character: space  # or tab
+    width: 2  # ignored if character == tab
 
   InlineStyles:
     enabled: true

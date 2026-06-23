@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   rspec:
     timeout-minutes: 10
@@ -36,10 +39,12 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/gemfiles/${{ matrix.gemfile }}.gemfile
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        with:
+          persist-credentials: false
 
       - name: Set up Ruby ${{ matrix.ruby-version }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74  # v1.314.0
         with:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
@@ -49,8 +54,8 @@ jobs:
         run: HAML_LINT_DEBUG=false bundle exec rspec
 
       - name: Code coverage reporting
-        uses: coverallsapp/github-action@v2
-        continue-on-error: true # Coveralls is sometimes down
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
+        continue-on-error: true  # Coveralls is sometimes down
         with:
           github-token: ${{ secrets.github_token }}
           flag-name: ruby${{ matrix.ruby-version }}-${{ matrix.gemfile }}-${{ matrix.os }}
@@ -62,7 +67,7 @@ jobs:
 
     steps:
       - name: Finalize code coverage report
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@5cbfd81b66ca5d10c19b062c04de0199c215fb6e  # v2.3.7
         continue-on-error: true
         with:
           github-token: ${{ secrets.github_token }}

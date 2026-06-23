@@ -5,5 +5,5 @@
 # Activating it here, but it's also disabled in config/forced_rubocop_config.yml
 # Because this cop was added in '1.37.0', we can't enable it all the time for now, or tests will fail
 # So this is used to easily uncomment them when testing manually
-#Style/RedundantStringEscape:
-#  Enabled: true
+# Style/RedundantStringEscape:
+#   Enabled: true
