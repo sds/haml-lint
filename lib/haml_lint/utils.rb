@@ -233,7 +233,7 @@ module HamlLint
 
     # Returns true if line is only whitespace.
     # Note, this is not like blank? is rails. For nil, this returns false.
-    def is_blank_line?(line)
+    def is_blank_line?(line) # rubocop:disable Naming
       line && line.index(/\S/).nil?
     end
 

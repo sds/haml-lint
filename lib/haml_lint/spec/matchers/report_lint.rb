@@ -65,7 +65,7 @@ module HamlLint
             (expected_severity ? " with severity '#{expected_severity}'" : '')
         end
 
-        def has_lints?(linter, expected_line, count, expected_message, expected_severity, # rubocop:disable Metrics/ParameterLists
+        def has_lints?(linter, expected_line, count, expected_message, expected_severity, # rubocop:disable Metrics/ParameterLists,Naming
                        expected_corrected)
           if expected_line
             has_expected_line_lints?(linter,
@@ -83,7 +83,7 @@ module HamlLint
           end
         end
 
-        def has_expected_line_lints?(linter, # rubocop:disable Metrics/ParameterLists
+        def has_expected_line_lints?(linter, # rubocop:disable Metrics/ParameterLists,Naming
                                      expected_line,
                                      count,
                                      expected_message,

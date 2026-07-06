@@ -46,7 +46,7 @@ module HamlLint::Tree
     # Returns whether this tag has a specified attribute.
     #
     # @return [true,false]
-    def has_hash_attribute?(attribute)
+    def has_hash_attribute?(attribute) # rubocop:disable Naming
       hash_attributes? && existing_attributes.include?(attribute)
     end
 
