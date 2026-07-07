@@ -28,7 +28,7 @@ module HamlLint::Tree
     # Returns whether this comment contains a `locals` directive.
     #
     # @return [Boolean]
-    def is_strict_locals?
+    def is_strict_locals? # rubocop:disable Naming
       text.lstrip.start_with?('locals:')
     end
 
