@@ -92,17 +92,25 @@ describe HamlLint::Runner do
           subject
         end
 
-        context 'with multiple files' do
-          let(:options) { base_options.merge(parallel: true, files: %w[example.haml other.haml]) }
+        context 'with multiple files handled by fewer parallel workers' do
+          let(:options) do
+            base_options.merge(parallel: true,
+                               files: %w[example.haml other.haml third.haml fourth.haml])
+          end
 
           before do
-            File.write('other.haml', "%p hello\n")
+            %w[other.haml third.haml fourth.haml].each do |file|
+              File.write(file, "%p hello\n")
+            end
+
             Parallel.stub(:map) do |sources, &block|
-              sources.map { |source| block.call(source) }
+              sources.each_slice(2).map do |worker_sources|
+                Thread.new { worker_sources.map { |source| block.call(source) } }
+              end.flat_map(&:value)
             end
           end
 
-          it 'builds a fresh linter selector for each parallel job' do
+          it 'builds a fresh linter selector for each parallel worker' do
             runner.should_receive(:build_linter_selector).exactly(3).times.and_call_original
             subject
           end

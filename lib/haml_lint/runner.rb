@@ -62,6 +62,8 @@ module HamlLint
     # @return [HamlLint::LinterSelector]
     attr_reader :linter_selector
 
+    PARALLEL_LINTER_SELECTOR_THREAD_KEY = :haml_lint_runner_parallel_linter_selectors
+
     # Returns a fresh selector for this run.
     #
     # LinterSelector memoizes linter instances, and linters mutate instance
@@ -71,6 +73,18 @@ module HamlLint
     # @return [HamlLint::LinterSelector]
     def build_linter_selector
       HamlLint::LinterSelector.new(config, @options)
+    end
+
+    # Returns a selector scoped to the current parallel worker.
+    #
+    # MRI runs Parallel.map in forked processes, so each worker can safely reuse
+    # its own linter instances. JRuby runs Parallel.map in threads, so this must
+    # be isolated per thread to avoid sharing mutable linter state.
+    #
+    # @return [HamlLint::LinterSelector]
+    def parallel_linter_selector
+      selectors = Thread.current[PARALLEL_LINTER_SELECTOR_THREAD_KEY] ||= {}.compare_by_identity
+      selectors[self] ||= build_linter_selector
     end
 
     # Returns the {HamlLint::Configuration} that should be used given the
@@ -205,7 +219,7 @@ module HamlLint
     # @return [void]
     def warm_cache
       results = Parallel.map(sources) do |source|
-        lints = collect_lints(source, build_linter_selector, config)
+        lints = collect_lints(source, parallel_linter_selector, config)
         [source.path, lints]
       end
       @cache = results.to_h
