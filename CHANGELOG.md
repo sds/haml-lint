@@ -1,5 +1,9 @@
 # Haml-Lint Changelog
 
+### 0.75.0
+
+* Fix performance regression when using `--parallel` flag
+
 ### 0.74.0
 
 * Add auto-correction (`-a`/`--auto-correct` and `-A`/`--auto-correct-all`) to Haml-level linters.
