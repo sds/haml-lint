@@ -212,11 +212,14 @@ module HamlLint
     #
     # @param node_or_line [#line] line number or node to extract the line number from
     # @param message [String] error/warning to display to the user
-    def record_lint(node_or_line, message, corrected: false)
+    # @param corrected [Boolean] whether the lint was fixed by auto-correct
+    # @param correctable [Boolean] whether the lint can be fixed by auto-correct;
+    #   defaults to whether this linter supports auto-correct at all
+    def record_lint(node_or_line, message, corrected: false, correctable: supports_autocorrect?)
       line = node_or_line.is_a?(Integer) ? node_or_line : node_or_line.line
       @lints << HamlLint::Lint.new(self, @document.file, line, message,
                                    config.fetch('severity', :warning).to_sym,
-                                   corrected: corrected)
+                                   corrected: corrected, correctable: correctable)
     end
 
     # Parse Ruby code into an abstract syntax tree.

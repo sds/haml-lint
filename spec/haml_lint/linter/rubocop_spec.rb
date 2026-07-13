@@ -38,14 +38,31 @@ describe HamlLint::Linter::RuboCop do
       let(:message) { 'Lint message' }
       let(:cop_name) { 'Style/StringLiterals' }
       let(:severity) { double('Severity', name: :warning) }
+      let(:correctable) { true }
 
       let(:offence) do
         double('offence', line: line, message: message, cop_name: cop_name,
-               severity: severity, status: :uncorrected)
+               severity: severity, status: :uncorrected, correctable?: correctable)
       end
 
       it 'uses the source map to transform line numbers' do
         subject.should report_lint line: 2
+      end
+
+      it 'marks the lint as not corrected' do
+        subject.should report_lint line: 2, corrected: false
+      end
+
+      it 'marks the lint as correctable when the cop supports autocorrect' do
+        subject.should report_lint line: 2, correctable: true
+      end
+
+      context 'and the offence is not correctable' do
+        let(:correctable) { false }
+
+        it 'marks the lint as not correctable' do
+          subject.should report_lint line: 2, correctable: false
+        end
       end
 
       context 'and the offence is from an ignored cop' do

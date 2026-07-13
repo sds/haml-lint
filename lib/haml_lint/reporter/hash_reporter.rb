@@ -47,6 +47,8 @@ module HamlLint
       {
         severity: offense.severity,
         message: offense.message,
+        corrected: offense.corrected,
+        correctable: offense.correctable,
         location: {
           line: offense.line,
         },

@@ -11,10 +11,11 @@ module HamlLint
         expected_message = options[:message]
         expected_severity = options[:severity]
         expected_corrected = options[:corrected]
+        expected_correctable = options[:correctable]
 
         match do |linter|
           has_lints?(linter, expected_line, count, expected_message, expected_severity,
-                     expected_corrected)
+                     expected_corrected, expected_correctable)
         end
 
         failure_message do |linter|
@@ -66,14 +67,15 @@ module HamlLint
         end
 
         def has_lints?(linter, expected_line, count, expected_message, expected_severity, # rubocop:disable Metrics/ParameterLists,Naming
-                       expected_corrected)
+                       expected_corrected, expected_correctable)
           if expected_line
             has_expected_line_lints?(linter,
                                      expected_line,
                                      count,
                                      expected_message,
                                      expected_severity,
-                                     expected_corrected)
+                                     expected_corrected,
+                                     expected_correctable)
           elsif count
             linter.lints.count == count
           elsif expected_message
@@ -88,7 +90,8 @@ module HamlLint
                                      count,
                                      expected_message,
                                      expected_severity,
-                                     expected_corrected)
+                                     expected_corrected,
+                                     expected_correctable)
           if count
             multiple_lints_match_line?(linter, expected_line, count)
           elsif expected_message
@@ -97,6 +100,8 @@ module HamlLint
             lint_on_line_matches_severity?(linter, expected_line, expected_severity)
           elsif !expected_corrected.nil?
             lint_on_line_matches_corrected?(linter, expected_line, expected_corrected)
+          elsif !expected_correctable.nil?
+            lint_on_line_matches_correctable?(linter, expected_line, expected_correctable)
           else
             lint_lines(linter).include?(expected_line)
           end
@@ -124,6 +129,12 @@ module HamlLint
           linter
             .lints
             .any? { |lint| lint.line == expected_line && lint.corrected == expected_corrected }
+        end
+
+        def lint_on_line_matches_correctable?(linter, expected_line, expected_correctable)
+          linter
+            .lints
+            .any? { |lint| lint.line == expected_line && lint.correctable == expected_correctable }
         end
 
         def lint_messages_match?(linter, expected_message)

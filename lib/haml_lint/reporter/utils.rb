@@ -58,6 +58,8 @@ module HamlLint
       def print_message(lint)
         if lint.corrected
           log.success('[Corrected] ', false)
+        elsif lint.correctable
+          log.info('[Correctable] ', false)
         end
 
         if lint.linter
