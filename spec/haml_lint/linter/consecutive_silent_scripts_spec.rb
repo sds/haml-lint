@@ -60,4 +60,71 @@ describe HamlLint::Linter::ConsecutiveSilentScripts do
       it { should_not report_lint }
     end
   end
+
+  context 'with autocorrect' do
+    let(:autocorrect) { :all }
+
+    context 'when consecutive scripts are over the limit' do
+      let(:haml) { "- a = 1\n- b = 2\n- c = 3" }
+
+      it 'merges them into a `:ruby` filter block' do
+        subject
+        document.source.should == ":ruby\n  a = 1\n  b = 2\n  c = 3"
+      end
+
+      it 'records a single corrected lint' do
+        subject
+        subject.lints.size.should == 1
+        subject.lints.first.corrected.should == true
+      end
+    end
+
+    context 'when the scripts are nested under a tag' do
+      let(:haml) { "%div\n  - a = 1\n  - b = 2\n  - c = 3" }
+
+      it 'preserves the indentation of the block' do
+        subject
+        document.source.should == "%div\n  :ruby\n    a = 1\n    b = 2\n    c = 3"
+      end
+    end
+
+    context 'when the run is longer than the minimum' do
+      let(:haml) { "- a = 1\n- b = 2\n- c = 3\n- d = 4\n- e = 5" }
+
+      it 'merges the whole run into one block and reports it once' do
+        subject
+        subject.lints.size.should == 1
+        document.source.should == ":ruby\n  a = 1\n  b = 2\n  c = 3\n  d = 4\n  e = 5"
+      end
+    end
+
+    context 'under :safe mode' do
+      let(:autocorrect) { :safe }
+      let(:haml) { "- a = 1\n- b = 2\n- c = 3" }
+
+      it 'reports the lint but does not correct it' do
+        subject
+        subject.lints.first.corrected.should == false
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the scripts are under the limit' do
+      let(:haml) { "- a = 1\n- b = 2" }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+    end
+
+    context 'when the linter is disabled inline' do
+      let(:haml) { "-# haml-lint:disable ConsecutiveSilentScripts\n- a = 1\n- b = 2\n- c = 3" }
+
+      it 'does not change the source' do
+        subject
+        document.source_was_changed.should == false
+      end
+    end
+  end
 end
