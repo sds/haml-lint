@@ -75,6 +75,37 @@ describe HamlLint::Reporter::JsonReporter do
         offenses.map { |o| o['linter_name'] }.uniq.should eq [linter.name]
       end
 
+      it 'has the corrected flag for each lint' do
+        subject
+        offenses.map { |o| o['corrected'] }.should eq [false, false]
+      end
+
+      it 'has the correctable flag for each lint' do
+        subject
+        offenses.map { |o| o['correctable'] }.should eq [false, false]
+      end
+
+      context 'when lints are corrected and correctable' do
+        let(:lints) do
+          filenames.each_with_index.map do |filename, index|
+            HamlLint::Lint.new(linter, filename, lines[index], descriptions[index],
+                               severities[index], corrected: index.even?, correctable: true)
+          end
+        end
+
+        it 'reflects the corrected flag for each lint' do
+          subject
+          offenses_for = ->(name) { output['files'].find { |f| f['path'] == name }['offenses'] }
+          offenses_for.call(filenames[0]).first['corrected'].should eq true
+          offenses_for.call(filenames[1]).first['corrected'].should eq false
+        end
+
+        it 'reflects the correctable flag for each lint' do
+          subject
+          offenses.map { |o| o['correctable'] }.uniq.should eq [true]
+        end
+      end
+
       it_behaves_like 'output format specification'
 
       context 'when lint has no associated linter' do

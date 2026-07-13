@@ -282,7 +282,7 @@ module HamlLint
           end
         end
         record_lint(line, offense.message, offense.severity.name,
-                    corrected: autocorrected)
+                    corrected: autocorrected, correctable: offense.correctable?)
       end
     end
 
@@ -291,13 +291,15 @@ module HamlLint
     # @param line [#line] line number of the lint
     # @param message [String] error/warning to display to the user
     # @param severity [Symbol] RuboCop severity level for the offense
-    def record_lint(line, message, severity, corrected:)
+    # @param corrected [Boolean] whether RuboCop auto-corrected the offense
+    # @param correctable [Boolean] whether RuboCop is able to auto-correct the offense
+    def record_lint(line, message, severity, corrected:, correctable: false)
       # TODO: actual handling for RuboCop's new :info severity
       return if severity == :info
 
       @lints << HamlLint::Lint.new(self, @document.file, line, message,
                                    SEVERITY_MAP.fetch(severity, :warning),
-                                   corrected: corrected)
+                                   corrected: corrected, correctable: correctable)
     end
 
     # rubocop:disable Style/MutableConstant

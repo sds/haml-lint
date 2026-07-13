@@ -216,6 +216,10 @@ describe HamlLint::Runner do
         subject.lints.size.should be >= 1
       end
 
+      it 'reports the corrected offenses as correctable' do
+        subject.lints.all?(&:correctable).should == true
+      end
+
       context 'under :all mode' do
         let(:autocorrect) { :all }
 

@@ -5,6 +5,10 @@
 * Add unsafe auto-correction (run only under `-A`/`--auto-correct-all`) to `UnnecessaryStringOutput`, `HtmlAttributes`, `ConsecutiveSilentScripts`, and `AlignmentTabs`
 * Fix `AlignmentTabs` never running, as it was missing its `LinterRegistry` registration
 * Fix `ConsecutiveSilentScripts` reporting overlapping duplicate lints for a run of more than `max_consecutive + 1` scripts
+* Add `corrected` and `correctable` flags to each offense in the `json`/`hash` reporter output,
+  mirroring RuboCop's JSON format. `correctable` reports whether an offense could be auto-corrected;
+  for RuboCop offenses it uses RuboCop's own per-offense correctability.
+* Mark correctable-but-uncorrected lints with `[Correctable]` in the default (text) reporter.
 
 ### 0.75.0
 

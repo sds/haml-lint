@@ -101,6 +101,40 @@ describe HamlLint::Reporter::DefaultReporter do
           end
         end
       end
+
+      context 'when a lint is correctable but not corrected' do
+        let(:lints) do
+          [HamlLint::Lint.new(linter, filenames.first, lines.first, descriptions.first,
+                              :warning, correctable: true)]
+        end
+
+        it 'marks the lint as [Correctable]' do
+          subject
+          output.scan(/\[Correctable\]/).count.should == 1
+        end
+
+        it 'does not mark the lint as [Corrected]' do
+          subject
+          output.should_not include('[Corrected]')
+        end
+      end
+
+      context 'when a lint is corrected' do
+        let(:lints) do
+          [HamlLint::Lint.new(linter, filenames.first, lines.first, descriptions.first,
+                              :warning, corrected: true, correctable: true)]
+        end
+
+        it 'marks the lint as [Corrected]' do
+          subject
+          output.scan(/\[Corrected\]/).count.should == 1
+        end
+
+        it 'does not also mark the lint as [Correctable]' do
+          subject
+          output.should_not include('[Correctable]')
+        end
+      end
     end
   end
 

@@ -6,6 +6,9 @@ module HamlLint
     # @return [Boolean] If the error was corrected by auto-correct
     attr_reader :corrected
 
+    # @return [Boolean] If the error could be corrected by auto-correct
+    attr_reader :correctable
+
     # @return [String] file path to which the lint applies
     attr_reader :filename
 
@@ -28,13 +31,14 @@ module HamlLint
     # @param line [Fixnum]
     # @param message [String]
     # @param severity [Symbol]
-    def initialize(linter, filename, line, message, severity = :warning, corrected: false) # rubocop:disable Metrics/ParameterLists
+    def initialize(linter, filename, line, message, severity = :warning, corrected: false, correctable: false) # rubocop:disable Metrics/ParameterLists
       @linter   = linter
       @filename = filename
       @line     = line || 0
       @message  = message
       @severity = Severity.new(severity)
       @corrected = corrected
+      @correctable = correctable
     end
 
     # Return whether this lint has a severity of error.
@@ -45,7 +49,8 @@ module HamlLint
     end
 
     def inspect
-      "#{self.class.name}(corrected=#{corrected}, filename=#{filename}, line=#{line}, " \
+      "#{self.class.name}(corrected=#{corrected}, correctable=#{correctable}, " \
+        "filename=#{filename}, line=#{line}, " \
         "linter=#{linter.class.name}, message=#{message}, severity=#{severity})"
     end
   end
