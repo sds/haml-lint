@@ -155,6 +155,18 @@ module HamlLint::Tree
       dynamic_attributes_source[:html][/\A\((.*)\)\z/, 1] if html_attributes?
     end
 
+    # The tag's static (non-Ruby) attributes parsed into a Ruby hash. Keys are
+    # strings and values are their literal parsed values (e.g. `true` for a
+    # boolean attribute such as `(required)`).
+    #
+    # @note When the tag uses the `.class`/`#id` shorthand, the resulting
+    #   `class`/`id` entries are merged into this hash as well.
+    #
+    # @return [Hash]
+    def static_attributes
+      @value[:attributes]
+    end
+
     # ID of the HTML tag.
     #
     # @return [String]
