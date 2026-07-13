@@ -1,6 +1,6 @@
 # Haml-Lint Changelog
 
-### Unreleased
+### 0.76.0
 
 * Add unsafe auto-correction (run only under `-A`/`--auto-correct-all`) to `UnnecessaryStringOutput`, `HtmlAttributes`, `ConsecutiveSilentScripts`, and `AlignmentTabs`
 * Fix `AlignmentTabs` never running, as it was missing its `LinterRegistry` registration
