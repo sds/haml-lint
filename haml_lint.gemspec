@@ -33,5 +33,6 @@ Gem::Specification.new do |s|
     'bug_tracker_uri' => 'https://github.com/sds/haml-lint/issues',
     'changelog_uri' => 'https://github.com/sds/haml-lint/blob/main/CHANGELOG.md',
     'source_code_uri' => 'https://github.com/sds/haml-lint',
+    'rubygems_mfa_required' => 'true',
   }
 end
