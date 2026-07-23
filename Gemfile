@@ -18,5 +18,5 @@ gem 'overcommit', '0.71.0'
 gem 'rubocop', '1.88.2'
 gem 'rubocop-performance', '1.26.1'
 
-gem 'simplecov', '~> 0.22.0'
+gem 'simplecov', '~> 1.0.1'
 gem 'simplecov-lcov', '~> 0.9.0'
