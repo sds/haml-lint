@@ -1,5 +1,9 @@
 # Haml-Lint Changelog
 
+### Unreleased
+
+* Relax `haml` gem constraint to not have an upper bound, so we're not blocking usage when new Haml versions are released
+
 ### 0.76.0
 
 * Add unsafe auto-correction (run only under `-A`/`--auto-correct-all`) to `UnnecessaryStringOutput`, `HtmlAttributes`, `ConsecutiveSilentScripts`, and `AlignmentTabs`
