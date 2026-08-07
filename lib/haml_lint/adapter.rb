@@ -18,21 +18,18 @@ module HamlLint
     def self.detect_class
       version = haml_version
       case version
-      when '~> 5.0', '~> 5.1', '~> 5.2' then HamlLint::Adapter::Haml5
-      when '~> 6.0', '~> 6.0.a', '~> 6.1', '~> 6.2', '~> 6.3', '~> 6.4' then HamlLint::Adapter::Haml6
-      when '~> 7.0', '~> 7.1', '~> 7.2' then HamlLint::Adapter::Haml6
+      when Gem::Requirement.new('~> 5.0') then HamlLint::Adapter::Haml5
+      when Gem::Requirement.new('>= 6.0.a') then HamlLint::Adapter::Haml6
       else fail HamlLint::Exceptions::UnknownHamlVersion, "Cannot handle Haml version: #{version}"
       end
     end
 
-    # Determines the approximate version of Haml that is installed
+    # Determines the version of Haml that is installed
     #
     # @api private
-    # @return [String] the approximate Haml version
+    # @return [Gem::Version] the Haml version
     def self.haml_version
-      Gem::Version
-        .new(Haml::VERSION)
-        .approximate_recommendation
+      Gem::Version.new(Haml::VERSION)
     end
     private_class_method :haml_version
   end
