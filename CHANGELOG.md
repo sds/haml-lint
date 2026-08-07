@@ -1,6 +1,6 @@
 # Haml-Lint Changelog
 
-### Unreleased
+### 0.77.0
 
 * Relax `haml` gem constraint to not have an upper bound, so we're not blocking usage when new Haml versions are released
 
