@@ -24,8 +24,8 @@ module Haml::Util
 
   # Overriding the unescape_interpolation method to store the return and original string
   # in the cache.
-  def unescape_interpolation_with_original_tracking(str, escape_html = nil)
-    value = unescape_interpolation_without_original_tracking(str, escape_html)
+  def unescape_interpolation_with_original_tracking(str, *args)
+    value = unescape_interpolation_without_original_tracking(str, *args)
     Haml::Util.unescape_interpolation_to_original_cache[value] = str
     value
   end
