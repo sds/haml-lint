@@ -47,6 +47,10 @@ appraise 'haml7.2' do
   gem 'haml', '~> 7.2.0'
 end
 
+appraise 'haml7.3' do
+  gem 'haml', '~> 7.3.0'
+end
+
 appraise 'haml7.4' do
   gem 'haml', '~> 7.4.0'
 end
