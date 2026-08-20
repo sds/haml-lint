@@ -346,10 +346,6 @@ If you use `atom`, you can install the [linter-haml](https://github.blog/2022-06
 
 If you use `TextMate 2`, you can install the [Haml-Lint.tmbundle](https://github.com/jjuliano/Haml-Lint.tmbundle) bundle.
 
-### Visual Studio Code
-
-If you use `Visual Studio Code`, you can install the [Haml Lint](https://marketplace.visualstudio.com/items?itemName=aki77.haml-lint) extension
-
 ### RubyMine
 
 If you use `RubyMine`, you can install the [HamlLint](https://plugins.jetbrains.com/plugin/21585-hamllint) plugin.
