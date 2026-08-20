@@ -1,8 +1,7 @@
 # Haml-Lint Changelog
 
-### Unreleased
+### 0.78.0
 
-* Add support for Haml 7.3
 * Add support for Haml 7.4, which dropped the `escape_html` parameter from
   `Haml::Util#unescape_interpolation` and raised `ArgumentError` on any template
   containing interpolation
